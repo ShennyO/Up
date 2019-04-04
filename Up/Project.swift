@@ -10,15 +10,15 @@ import Foundation
 class Project {
     
     var title: String
-    var description: String
-    var time: Int?
+    var description: String?
+    var time: String?
     
     init(title: String, description: String) {
         self.title = title
         self.description = description
     }
     
-    init(title: String, description: String, time: Int) {
+    init(title: String, description: String, time: String) {
         self.title = title
         self.description = description
         self.time = time

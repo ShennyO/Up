@@ -15,7 +15,7 @@ class upViewController: UIViewController {
     var upTableView = UITableView()
     
     //MARK: VARIABLES
-    var projects: [Project] = [Project(title: "Google Call", description: "call with google interviewer", time: 30), Project(title: "Wake up 6 A.M", description: "wake up don't waste time"), Project(title: "Work up", description: "work on up", time: 60)]
+    var projects: [Project] = [Project(title: "Google Call", description: "call with google interviewer", time: "30"), Project(title: "Wake up 6 A.M", description: "wake up don't waste time"), Project(title: "Work up", description: "work on up", time: "60")]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +23,6 @@ class upViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
-   
-
 }
 
 extension upViewController {
@@ -35,6 +32,7 @@ extension upViewController {
         configNavBar()
         self.title = "Up"
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        setUpTableView()
     }
     
     private func configNavBar() {
@@ -67,8 +65,12 @@ extension upViewController {
 extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 2
+//    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -77,6 +79,7 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "upCell") as! upTableViewCell
+        cell.project = projects[indexPath.row]
         return cell
         
     }
