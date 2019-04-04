@@ -21,7 +21,7 @@ class upTableViewCell: UITableViewCell {
     var containerView: UIView = {
         let containerView = UIView()
         containerView.backgroundColor = UIColor.white
-        containerView.layer.cornerRadius = 15
+        containerView.layer.cornerRadius = 5
         containerView.layer.borderColor = UIColor.white.cgColor
         containerView.clipsToBounds = false
         containerView.layer.shadowColor = UIColor.black.cgColor
@@ -57,7 +57,12 @@ class upTableViewCell: UITableViewCell {
     var leftStackView: UIStackView!
     
     private func setUpLeftStackView() {
-        leftStackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
+        if project.description != "" {
+            leftStackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
+        } else {
+            leftStackView = UIStackView(arrangedSubviews: [titleLabel])
+        }
+        
         leftStackView.distribution = .fillEqually
         leftStackView.alignment = .fill
         leftStackView.axis = .vertical
@@ -66,6 +71,7 @@ class upTableViewCell: UITableViewCell {
     }
 
     private func setUpCell() {
+        self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         addOutlets()
         setConstraints()
         titleLabel.text = project.title
@@ -84,20 +90,21 @@ class upTableViewCell: UITableViewCell {
     
     private func setConstraints() {
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(15)
             make.bottom.equalToSuperview()
-            make.left.right.equalToSuperview().offset(10)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
         }
         
         timeLabel.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
+            make.right.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
         }
         
         leftStackView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
-            make.right.equalTo(timeLabel.snp.left).offset(-15)
+            
         }
         
     }
