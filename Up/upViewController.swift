@@ -13,6 +13,12 @@ class upViewController: UIViewController {
     
     //MARK: OUTLETS
     var upTableView = UITableView()
+    let infoButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "AddButton"), for: .normal)
+//        button.addTarget(self, action:#selector(infoButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     //MARK: VARIABLES
     var projects: [Project] = [Project(title: "Wake up 6 A.M", description: "wake up don't waste time"), Project(title: "Example Title", description: "")]
@@ -39,6 +45,8 @@ extension upViewController {
         self.title = "Up"
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
+        self.view.addSubview(infoButton)
+        setConstraints()
     }
     
     private func configNavBar() {
@@ -68,16 +76,29 @@ extension upViewController {
         }
         
     }
+    
+    private func setConstraints() {
+        infoButton.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-100)
+            make.width.height.equalTo(65)
+        }
+    }
+    
 }
 
 extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
-            return HeaderViewHelper.createTasksTitleHeaderView(title: "Tasks", fontSize: 25, frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
+            return HeaderViewHelper.createTasksTitleHeaderView(title: "Tasks", fontSize: 25, frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 150), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
         } else {
-            return HeaderViewHelper.createTasksTitleHeaderView(title: "Sessions", fontSize: 25, frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
+            return HeaderViewHelper.createTasksTitleHeaderView(title: "Sessions", fontSize: 25, frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 150), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
         }
     }
     
