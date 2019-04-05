@@ -73,6 +73,15 @@ extension upViewController {
 extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            return HeaderViewHelper.createTasksTitleHeaderView(title: "Tasks", fontSize: 25, frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
+        } else {
+            return HeaderViewHelper.createTasksTitleHeaderView(title: "Sessions", fontSize: 25, frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
+        }
+    }
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
