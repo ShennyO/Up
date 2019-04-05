@@ -21,8 +21,8 @@ class upViewController: UIViewController {
     }()
     
     //MARK: VARIABLES
-    var projects: [Project] = [Project(title: "Wake up 6 A.M", description: "wake up don't waste time"), Project(title: "Example Title", description: "")]
-    var timedProjects: [timedProject] = [timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60")]
+    var projects: [Project] = []
+    var timedProjects: [timedProject] = [timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60"), timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60"), timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60")]
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -60,12 +60,14 @@ extension upViewController {
     }
     
     private func setUpTableView() {
+        self.upTableView.style = .plain
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
         self.upTableView.delegate = self
         self.upTableView.dataSource = self
         self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
         self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
+        self.upTableView.register(instructionCell.self, forCellReuseIdentifier: "instructionCell")
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in
@@ -88,6 +90,8 @@ extension upViewController {
 }
 
 extension upViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -113,8 +117,14 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
+            if projects.count == 0 {
+                return 1
+            }
             return projects.count
         } else {
+            if timedProjects.count == 0 {
+                return 1
+            }
             return timedProjects.count
         }
         
@@ -124,11 +134,23 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
+            if projects.count == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "instructionCell") as! instructionCell
+                cell.setUpCell(type: .untimed)
+                cell.selectionStyle = .none
+                return cell
+            }
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
             cell.selectionStyle = .none
             cell.project = projects[indexPath.row]
             return cell
         } else {
+            if timedProjects.count == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "instructionCell") as! instructionCell
+                cell.setUpCell(type: .timed)
+                cell.selectionStyle = .none
+                return cell
+            }
             let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
             cell.selectionStyle = .none
             cell.timedProject = timedProjects[indexPath.row]
