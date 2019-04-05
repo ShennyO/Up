@@ -15,7 +15,13 @@ class upViewController: UIViewController {
     var upTableView = UITableView()
     
     //MARK: VARIABLES
-    var projects: [Project] = [Project(title: "Google Call", description: "call with google interviewer", time: "30"), Project(title: "Wake up 6 A.M", description: "wake up don't waste time"), Project(title: "Work up", description: "work on up", time: "60"), Project(title: "Example Title", description: "")]
+    var projects: [Project] = [Project(title: "Wake up 6 A.M", description: "wake up don't waste time"), Project(title: "Example Title", description: "")]
+    var timedProjects: [timedProject] = [timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60")]
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +56,8 @@ extension upViewController {
         self.upTableView.separatorStyle = .none
         self.upTableView.delegate = self
         self.upTableView.dataSource = self
-        self.upTableView.register(upTableViewCell.self, forCellReuseIdentifier: "upCell")
+        self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
+        self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in
@@ -66,23 +73,39 @@ extension upViewController {
 extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 2
-//    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 85
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return projects.count
+        if section == 0 {
+            return projects.count
+        } else {
+            return timedProjects.count
+        }
+        
     }
     
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "upCell") as! upTableViewCell
-        cell.selectionStyle = .none
-        cell.project = projects[indexPath.row]
-        return cell
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
+            cell.selectionStyle = .none
+            cell.project = projects[indexPath.row]
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
+            cell.selectionStyle = .none
+            cell.timedProject = timedProjects[indexPath.row]
+            return cell
+        }
+        
+       
         
     }
     

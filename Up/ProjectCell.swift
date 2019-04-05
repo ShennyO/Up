@@ -1,23 +1,22 @@
 //
-//  upTableViewCell.swift
+//  ProjectCell.swift
 //  Up
 //
-//  Created by Sunny Ouyang on 4/3/19.
+//  Created by Sunny Ouyang on 4/4/19.
 //
 
 import UIKit
 
-class upTableViewCell: UITableViewCell {
+class ProjectCell: UITableViewCell {
 
-    //MARK: VARIABLES
     var project: Project! {
         didSet {
             setUpCell()
         }
     }
     
-    
     //MARK: OUTLETS
+    
     var containerView: UIView = {
         let containerView = UIView()
         containerView.backgroundColor = UIColor.white
@@ -46,17 +45,19 @@ class upTableViewCell: UITableViewCell {
         return label
     }()
     
-    var timeLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
-        label.numberOfLines = 0
-        label.textColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        return label
+    var taskSquareButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "Rectangle"), for: .normal)
+        return button
     }()
     
     var leftStackView: UIStackView!
     
-    private func setUpLeftStackView() {
+    
+    //MARK: FUNCTIONS
+    private func addOutlets() {
+        self.addSubview(containerView)
+        
         if project.description != "" {
             leftStackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
         } else {
@@ -68,27 +69,12 @@ class upTableViewCell: UITableViewCell {
         leftStackView.axis = .vertical
         leftStackView.spacing = 5
         containerView.addSubview(leftStackView)
-    }
-
-    private func setUpCell() {
-        self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        addOutlets()
-        setConstraints()
-        titleLabel.text = project.title
-        descriptionLabel.text = project.description ?? ""
-        timeLabel.text = project.time ?? ""
+        containerView.addSubview(taskSquareButton)
         
     }
     
-
-    
-    private func addOutlets() {
-        self.addSubview(containerView)
-        setUpLeftStackView()
-        containerView.addSubview(timeLabel)
-    }
-    
     private func setConstraints() {
+        
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(15)
             make.bottom.equalToSuperview()
@@ -96,10 +82,6 @@ class upTableViewCell: UITableViewCell {
             make.right.equalToSuperview().offset(-20)
         }
         
-        timeLabel.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-20)
-            make.centerY.equalToSuperview()
-        }
         
         leftStackView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
@@ -107,7 +89,21 @@ class upTableViewCell: UITableViewCell {
             
         }
         
+        taskSquareButton.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(-20)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(20)
+        }
+        
     }
     
-}
+    private func setUpCell() {
+        self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        addOutlets()
+        setConstraints()
+        titleLabel.text = project.title
+        descriptionLabel.text = project.description ?? ""
+        
+    }
 
+}

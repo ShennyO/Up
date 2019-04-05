@@ -11,17 +11,21 @@ class Project {
     
     var title: String
     var description: String?
-    var time: String?
     
     init(title: String, description: String) {
         self.title = title
         self.description = description
     }
     
+    
+}
+
+class timedProject: Project {
+    
+    var time: String
     init(title: String, description: String, time: String) {
-        self.title = title
-        self.description = description
         self.time = time
+        super.init(title: title, description: description)
     }
     
 }
