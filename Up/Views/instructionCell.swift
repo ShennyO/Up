@@ -30,7 +30,7 @@ class instructionCell: UITableViewCell {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.addSubview(instructionLabel)
         instructionLabel.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(7)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
         }

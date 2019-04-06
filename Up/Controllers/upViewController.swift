@@ -12,17 +12,17 @@ class upViewController: UIViewController {
     
     
     //MARK: OUTLETS
-    var upTableView = UITableView()
+    var upTableView: UITableView!
     let infoButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "AddButton"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "AddButton Copy"), for: .normal)
 //        button.addTarget(self, action:#selector(infoButtonTapped), for: .touchUpInside)
         return button
     }()
     
     //MARK: VARIABLES
     var projects: [Project] = []
-    var timedProjects: [timedProject] = [timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60"), timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60"), timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60")]
+    var timedProjects: [timedProject] = [timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60"), timedProject(title: "Call with Yelp", description: "accept offer", time: "30")]
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -60,7 +60,7 @@ extension upViewController {
     }
     
     private func setUpTableView() {
-        self.upTableView.style = .plain
+        self.upTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), style: .grouped)
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
         self.upTableView.delegate = self
@@ -92,7 +92,7 @@ extension upViewController {
 extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
-    
+    //MARK: TABLEVIEW FUNCTIONS
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
@@ -112,6 +112,15 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            if projects.count == 0 {
+                return 50
+            }
+        } else {
+            if timedProjects.count == 0 {
+                return 50
+            }
+        }
         return 85
     }
     
