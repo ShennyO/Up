@@ -21,8 +21,8 @@ class upViewController: UIViewController {
     }()
     
     //MARK: VARIABLES
-    var projects: [Project] = [Project(title: "Finish Up", description: "")]
-    var timedProjects: [timedProject] = [timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60"), timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "Test3", description: "", time: "30")]
+    var projects: [Project] = [Project(title: "Finish Up", description: ""), Project(title: "one hundered push ups", description: "")]
+    var timedProjects: [timedProject] = [timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60"), timedProject(title: "Call with Yelp", description: "accept offer", time: "30")]
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

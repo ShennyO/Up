@@ -33,6 +33,8 @@ class NewProjectViewController: UIViewController {
     
     var descriptionTextView: UITextView = {
         let textView = UITextView()
+        textView.text = "Optional"
+        textView.textColor = UIColor.gray
         textView.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         textView.layer.cornerRadius = 3
         return textView
@@ -145,4 +147,21 @@ class NewProjectViewController: UIViewController {
     
 
     
+}
+
+
+extension NewProjectViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Optional"
+            textView.textColor = UIColor.lightGray
+        }
+    }
 }
