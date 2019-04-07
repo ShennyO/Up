@@ -61,7 +61,7 @@ class NewProjectViewController: UIViewController {
         button.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         button.setTitle("Task", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         return button
     }()
     
@@ -69,10 +69,11 @@ class NewProjectViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Session", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         return button
     }()
     
+    var typeStackView: UIStackView!
     
     
     //MARK: PRIVATE FUNCTIONS
@@ -87,9 +88,14 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel, taskButton, sessionButton].forEach { (view) in
+        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel].forEach { (view) in
             self.view.addSubview(view)
         }
+        typeStackView = UIStackView(arrangedSubviews: [taskButton, sessionButton])
+        typeStackView.distribution = .fillEqually
+        typeStackView.alignment = .fill
+        typeStackView.spacing = 45
+        self.view.addSubview(typeStackView)
         
     }
     
@@ -120,18 +126,12 @@ class NewProjectViewController: UIViewController {
             make.top.equalTo(descriptionTextView.snp.bottom).offset(75)
             make.left.equalToSuperview().offset(20)
         }
-        taskButton.snp.makeConstraints { (make) in
-            make.left.equalTo(typeLabel.snp.right).offset(40)
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(75)
-            
-            
-        }
         
-        sessionButton.snp.makeConstraints { (make) in
-            make.left.equalTo(taskButton.snp.right).offset(15)
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(75)
-            
+        typeStackView.snp.makeConstraints { (make) in
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(70)
+            make.centerX.equalTo(descriptionTextView)
         }
+
     }
     
     override func viewDidLoad() {
