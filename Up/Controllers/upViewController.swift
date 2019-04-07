@@ -60,7 +60,7 @@ extension upViewController {
     }
     
     private func setUpTableView() {
-        self.upTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), style: .grouped)
+        self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
         self.upTableView.delegate = self
@@ -68,6 +68,7 @@ extension upViewController {
         self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
         self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
         self.upTableView.register(instructionCell.self, forCellReuseIdentifier: "instructionCell")
+        self.upTableView.tableHeaderView = HeaderViewHelper.createTasksTitleHeaderView(title: "Today", fontSize: 30, frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in
@@ -83,7 +84,7 @@ extension upViewController {
         infoButton.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview().offset(-100)
-            make.width.height.equalTo(65)
+            make.width.height.equalTo(50)
         }
     }
     
@@ -93,18 +94,6 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     //MARK: TABLEVIEW FUNCTIONS
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 0 {
-            return HeaderViewHelper.createTasksTitleHeaderView(title: "Tasks", fontSize: 25, frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 150), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
-        } else {
-            return HeaderViewHelper.createTasksTitleHeaderView(title: "Sessions", fontSize: 25, frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 150), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
-        }
-    }
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -116,7 +105,7 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
             if projects.count == 0 {
                 return 50
             }
-        } else {
+        } else if indexPath.section == 1 {
             if timedProjects.count == 0 {
                 return 50
             }
