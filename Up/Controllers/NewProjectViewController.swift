@@ -34,6 +34,7 @@ class NewProjectViewController: UIViewController {
         let textView = UITextView()
         textView.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
         textView.layer.cornerRadius = 3
+        textView.tag = 1
         return textView
     }()
     
@@ -95,6 +96,16 @@ class NewProjectViewController: UIViewController {
         return picker
     }()
     
+    var addButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 4
+        button.setTitle("Add", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        button.addTarget(self, action: #selector(sessionButtonSelected), for: .touchUpInside)
+        return button
+    }()
     
     //MARK: PRIVATE FUNCTIONS
     private func configNavBar() {
@@ -108,7 +119,7 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel, timePicker].forEach { (view) in
+        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel, timePicker, addButton].forEach { (view) in
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
@@ -163,12 +174,19 @@ class NewProjectViewController: UIViewController {
         }
         
         timePicker.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(20)
+            make.top.equalTo(typeStackView.snp.bottom).offset(30)
             make.width.equalTo(200)
             make.height.equalTo(100)
             make.left.equalTo(typeStackView)
         }
 
+        addButton.snp.makeConstraints { (make) in
+            make.top.equalTo(timePicker.snp.bottom).offset(30)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(110)
+            make.height.equalTo(45)
+        }
+        
     }
     
     @objc private func taskButtonSelected() {
@@ -208,6 +226,7 @@ class NewProjectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         descriptionTextView.delegate = self
+        titleTextView.delegate = self
         timePicker.delegate = self
         timePicker.dataSource = self
         configNavBar()
@@ -236,8 +255,8 @@ extension NewProjectViewController: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "Optional"
+        if textView.text.isEmpty && textView.tag != 1 {
+            textView.text = "Optional description"
             textView.textColor = UIColor.lightGray
         }
     }
