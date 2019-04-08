@@ -12,6 +12,7 @@ class NewProjectViewController: UIViewController {
     //VARIABLES
     var projectToReturn: Project!
     var timedProjectToReturn: timedProject!
+    var times = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     
     
     
@@ -86,6 +87,13 @@ class NewProjectViewController: UIViewController {
     
     var typeStackView: UIStackView!
     
+    var timePicker: UIPickerView = {
+        let picker = MyPickerView()
+        picker.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        picker.layer.cornerRadius = 4
+        return picker
+    }()
+    
     
     //MARK: PRIVATE FUNCTIONS
     private func configNavBar() {
@@ -99,7 +107,7 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel].forEach { (view) in
+        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel, timePicker].forEach { (view) in
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [taskButton, sessionButton])
@@ -152,6 +160,13 @@ class NewProjectViewController: UIViewController {
             make.top.equalTo(descriptionTextView.snp.bottom).offset(65)
             make.centerX.equalTo(descriptionTextView)
         }
+        
+        timePicker.snp.makeConstraints { (make) in
+            make.top.equalTo(typeStackView.snp.bottom).offset(30)
+            make.width.equalTo(200)
+            make.height.equalTo(45)
+            make.centerX.equalTo(typeStackView)
+        }
 
     }
     
@@ -180,6 +195,8 @@ class NewProjectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         descriptionTextView.delegate = self
+        timePicker.delegate = self
+        timePicker.dataSource = self
         configNavBar()
         addOutlets()
         setConstraints()
@@ -221,3 +238,20 @@ extension NewProjectViewController: UITextViewDelegate {
 }
 
 
+extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return times.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        
+        let string = String(describing: times[row]) + " min"
+        return NSAttributedString(string: string, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+    }
+    
+    
+}
