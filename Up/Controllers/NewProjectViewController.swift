@@ -91,6 +91,7 @@ class NewProjectViewController: UIViewController {
         let picker = MyPickerView()
         picker.backgroundColor = UIColor.black
         picker.layer.cornerRadius = 4
+        picker.isHidden = true
         return picker
     }()
     
@@ -110,7 +111,7 @@ class NewProjectViewController: UIViewController {
         [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel, timePicker].forEach { (view) in
             self.view.addSubview(view)
         }
-        typeStackView = UIStackView(arrangedSubviews: [taskButton, sessionButton])
+        typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
         typeStackView.alignment = .fill
         typeStackView.spacing = 15
         self.view.addSubview(typeStackView)
@@ -162,32 +163,44 @@ class NewProjectViewController: UIViewController {
         }
         
         timePicker.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(15)
+            make.top.equalTo(typeStackView.snp.bottom).offset(20)
             make.width.equalTo(200)
             make.height.equalTo(100)
-            make.centerX.equalTo(typeStackView)
+            make.left.equalTo(typeStackView)
         }
 
     }
     
     @objc private func taskButtonSelected() {
         //switching button mode
-        if !taskButton.isSelected {
+        if taskButton.isSelected == false {
             taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             sessionButton.backgroundColor = nil
             sessionButton.isSelected = false
             taskButton.isSelected = true
+            
+            //animate alpha value of picker to be 0, then set hide picker view
+            UIView.animate(withDuration: 0.4, animations: {
+                self.timePicker.alpha = 0
+            }, completion:  {
+                (value: Bool) in
+                self.timePicker.isHidden = true
+            })
         }
-        
     }
     
     @objc private func sessionButtonSelected() {
         //switching button mode
-        if !sessionButton.isSelected {
+        if sessionButton.isSelected == false {
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
             sessionButton.isSelected = true
             taskButton.isSelected = false
+            timePicker.isHidden = false
+            timePicker.alpha = 0
+            UIView.animate(withDuration: 0.4, animations: {
+                self.timePicker.alpha = 1
+            })
         }
     }
     
@@ -246,7 +259,7 @@ extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource
             let label = UILabel()
             label.text = String(describing: times[row]) + " minutes"
             label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-            label.textAlignment = .center
+            label.textAlignment = .left
             label.textColor = UIColor.white
             return label
             
@@ -262,11 +275,6 @@ extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource
         return times.count
     }
     
-//    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-//
-//        let string = String(describing: times[row]) + " min"
-//        return NSAttributedString(string: string, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-//    }
-//
+
     
 }
