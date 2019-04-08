@@ -34,7 +34,7 @@ class NewProjectViewController: UIViewController {
     var descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.text = "Optional"
-        textView.textColor = UIColor.gray
+        textView.textColor = UIColor.lightGray
         textView.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         textView.layer.cornerRadius = 3
         return textView
@@ -58,7 +58,8 @@ class NewProjectViewController: UIViewController {
     
     var taskButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        button.layer.cornerRadius = 4
         button.setTitle("Task", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
@@ -127,6 +128,14 @@ class NewProjectViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
         }
         
+        taskButton.snp.makeConstraints { (make) in
+            make.height.equalTo(50)
+        }
+        
+        sessionButton.snp.makeConstraints { (make) in
+            make.height.equalTo(50)
+        }
+        
         typeStackView.snp.makeConstraints { (make) in
             make.top.equalTo(descriptionTextView.snp.bottom).offset(70)
             make.centerX.equalTo(descriptionTextView)
@@ -136,6 +145,7 @@ class NewProjectViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        descriptionTextView.delegate = self
         configNavBar()
         addOutlets()
         setConstraints()
@@ -151,6 +161,8 @@ class NewProjectViewController: UIViewController {
 
 
 extension NewProjectViewController: UITextViewDelegate {
+    
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
             textView.text = nil
@@ -164,4 +176,14 @@ extension NewProjectViewController: UITextViewDelegate {
             textView.textColor = UIColor.lightGray
         }
     }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
 }
+
+
