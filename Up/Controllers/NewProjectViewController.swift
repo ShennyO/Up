@@ -10,6 +10,11 @@ import UIKit
 class NewProjectViewController: UIViewController {
     
     //VARIABLES
+    var projectToReturn: Project!
+    var timedProjectToReturn: timedProject!
+    
+    
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -63,14 +68,19 @@ class NewProjectViewController: UIViewController {
         button.setTitle("Task", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.isSelected = true
+        button.addTarget(self, action: #selector(taskButtonSelected), for: .touchUpInside)
         return button
     }()
     
     var sessionButton: UIButton = {
         let button = UIButton()
+        button.layer.cornerRadius = 4
         button.setTitle("Session", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.isSelected = false
+        button.addTarget(self, action: #selector(sessionButtonSelected), for: .touchUpInside)
         return button
     }()
     
@@ -93,9 +103,8 @@ class NewProjectViewController: UIViewController {
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [taskButton, sessionButton])
-        typeStackView.distribution = .fillEqually
         typeStackView.alignment = .fill
-        typeStackView.spacing = 45
+        typeStackView.spacing = 15
         self.view.addSubview(typeStackView)
         
     }
@@ -130,18 +139,43 @@ class NewProjectViewController: UIViewController {
         
         taskButton.snp.makeConstraints { (make) in
             make.height.equalTo(50)
+            make.width.equalTo(70)
         }
         
         sessionButton.snp.makeConstraints { (make) in
             make.height.equalTo(50)
+            make.width.equalTo(120)
         }
         
+        
         typeStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(70)
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(65)
             make.centerX.equalTo(descriptionTextView)
         }
 
     }
+    
+    @objc private func taskButtonSelected() {
+        //switching button mode
+        if !taskButton.isSelected {
+            taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+            sessionButton.backgroundColor = nil
+            sessionButton.isSelected = false
+            taskButton.isSelected = true
+        }
+        
+    }
+    
+    @objc private func sessionButtonSelected() {
+        //switching button mode
+        if !sessionButton.isSelected {
+            sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+            taskButton.backgroundColor = nil
+            sessionButton.isSelected = true
+            taskButton.isSelected = false
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
