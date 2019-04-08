@@ -39,7 +39,7 @@ class NewProjectViewController: UIViewController {
     
     var descriptionTextView: UITextView = {
         let textView = UITextView()
-        textView.text = "Optional"
+        textView.text = "Optional description"
         textView.textColor = UIColor.lightGray
         textView.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         textView.layer.cornerRadius = 3
@@ -89,7 +89,7 @@ class NewProjectViewController: UIViewController {
     
     var timePicker: UIPickerView = {
         let picker = MyPickerView()
-        picker.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        picker.backgroundColor = UIColor.black
         picker.layer.cornerRadius = 4
         return picker
     }()
@@ -162,9 +162,9 @@ class NewProjectViewController: UIViewController {
         }
         
         timePicker.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(30)
+            make.top.equalTo(typeStackView.snp.bottom).offset(15)
             make.width.equalTo(200)
-            make.height.equalTo(45)
+            make.height.equalTo(100)
             make.centerX.equalTo(typeStackView)
         }
 
@@ -200,6 +200,7 @@ class NewProjectViewController: UIViewController {
         configNavBar()
         addOutlets()
         setConstraints()
+        timePicker.selectRow(3, inComponent: 0, animated: false)
         titleLabel.text = "Title:"
         descriptionLabel.text = "Desc:"
         typeLabel.text = "Type:"
@@ -239,6 +240,20 @@ extension NewProjectViewController: UITextViewDelegate {
 
 
 extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let pickerLabel: UILabel = {
+            let label = UILabel()
+            label.text = String(describing: times[row]) + " minutes"
+            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+            label.textAlignment = .center
+            label.textColor = UIColor.white
+            return label
+            
+        }()
+        return pickerLabel
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -247,11 +262,11 @@ extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource
         return times.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        
-        let string = String(describing: times[row]) + " min"
-        return NSAttributedString(string: string, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-    }
-    
+//    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+//
+//        let string = String(describing: times[row]) + " min"
+//        return NSAttributedString(string: string, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+//    }
+//
     
 }
