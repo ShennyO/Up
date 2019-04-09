@@ -13,7 +13,7 @@ class upViewController: UIViewController {
     
     //MARK: OUTLETS
     var upTableView: UITableView!
-    let infoButton: UIButton = {
+    let addNewButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "AddButton Copy"), for: .normal)
 //        button.addTarget(self, action:#selector(infoButtonTapped), for: .touchUpInside)
@@ -45,7 +45,7 @@ extension upViewController {
         self.title = "Up"
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
-        self.view.addSubview(infoButton)
+        self.view.addSubview(addNewButton)
         setConstraints()
     }
     
@@ -81,8 +81,8 @@ extension upViewController {
     }
     
     private func setConstraints() {
-        infoButton.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-20)
+        addNewButton.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(-15)
             make.bottom.equalToSuperview().offset(-100)
             make.width.height.equalTo(50)
         }

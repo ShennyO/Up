@@ -78,8 +78,8 @@ class ProjectCell: UITableViewCell {
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(15)
             make.bottom.equalToSuperview()
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.left.equalToSuperview().offset(25)
+            make.right.equalToSuperview().offset(-25)
         }
         
         

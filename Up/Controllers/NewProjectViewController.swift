@@ -107,6 +107,14 @@ class NewProjectViewController: UIViewController {
         return button
     }()
     
+    var cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Cancel", for: .normal)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        button.setTitleColor(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), for: .normal)
+        return button
+    }()
+    
     //MARK: PRIVATE FUNCTIONS
     private func configNavBar() {
         extendedLayoutIncludesOpaqueBars = true
@@ -119,7 +127,7 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel, timePicker, addButton].forEach { (view) in
+        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel, timePicker, addButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
@@ -185,6 +193,13 @@ class NewProjectViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalTo(110)
             make.height.equalTo(45)
+        }
+        
+        cancelButton.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(40)
+            make.left.equalToSuperview().offset(15)
+            make.height.equalTo(20)
+//            make.width.equalTo(55)
         }
         
     }
