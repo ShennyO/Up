@@ -22,21 +22,19 @@ class NewProjectViewController: UIViewController {
     
     
     //MARK: OUTLETS
-    var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-        label.numberOfLines = 0
-        label.textColor = UIColor.white
-        return label
+    
+    var titleTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
+        textField.placeholder = "Title"
+        textField.layer.cornerRadius = 3
+        textField.backgroundColor = UIColor.white
+        let leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 2.0))
+        textField.leftView = leftView
+        textField.leftViewMode = .always
+        return textField
     }()
     
-    var titleTextView: UITextView = {
-        let textView = UITextView()
-        textView.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        textView.layer.cornerRadius = 3
-        textView.tag = 1
-        return textView
-    }()
     
     var descriptionTextView: UITextView = {
         let textView = UITextView()
@@ -47,13 +45,6 @@ class NewProjectViewController: UIViewController {
         return textView
     }()
     
-    var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-        label.numberOfLines = 0
-        label.textColor = UIColor.white
-        return label
-    }()
     
     var typeLabel: UILabel = {
         let label = UILabel()
@@ -127,7 +118,7 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [titleLabel,titleTextView,descriptionLabel,descriptionTextView, typeLabel, timePicker, addButton, cancelButton].forEach { (view) in
+        [titleTextField,descriptionTextView, typeLabel, timePicker, addButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
@@ -138,25 +129,19 @@ class NewProjectViewController: UIViewController {
     }
     
     private func setConstraints() {
-        titleLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(150)
-        }
-        titleTextView.snp.makeConstraints { (make) in
-            make.left.equalTo(titleLabel.snp.right).offset(15)
-            make.top.equalToSuperview().offset(150)
+
+        titleTextField.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(40)
+            make.right.equalToSuperview().offset(-40)
             make.height.equalTo(40)
-            make.right.equalToSuperview().offset(-20)
+            make.top.equalToSuperview().offset(150)
         }
         
-        descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(75)
-            make.left.equalToSuperview().offset(20)
-        }
+        
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(75)
-            make.left.equalTo(descriptionLabel.snp.right).offset(15)
-            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(titleTextField.snp.bottom).offset(75)
+            make.left.equalToSuperview().offset(40)
+            make.right.equalToSuperview().offset(-40)
             make.height.equalTo(100)
         }
         
@@ -199,7 +184,6 @@ class NewProjectViewController: UIViewController {
             make.top.equalToSuperview().offset(40)
             make.left.equalToSuperview().offset(15)
             make.height.equalTo(20)
-//            make.width.equalTo(55)
         }
         
     }
@@ -240,16 +224,15 @@ class NewProjectViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         descriptionTextView.delegate = self
-        titleTextView.delegate = self
+//        titleTextView.delegate = self
         timePicker.delegate = self
         timePicker.dataSource = self
         configNavBar()
         addOutlets()
         setConstraints()
         timePicker.selectRow(3, inComponent: 0, animated: false)
-        titleLabel.text = "Title:"
-        descriptionLabel.text = "Desc:"
         typeLabel.text = "Type:"
         // Do any additional setup after loading the view.
     }
@@ -270,7 +253,7 @@ extension NewProjectViewController: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty && textView.tag != 1 {
+        if textView.text.isEmpty {
             textView.text = "Optional description"
             textView.textColor = UIColor.lightGray
         }
