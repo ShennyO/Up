@@ -16,7 +16,7 @@ class upViewController: UIViewController {
     let addNewButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "AddButton Copy"), for: .normal)
-//        button.addTarget(self, action:#selector(infoButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action:#selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -87,6 +87,11 @@ extension upViewController {
             make.bottom.equalToSuperview().offset(-100)
             make.width.height.equalTo(50)
         }
+    }
+    
+    @objc private func addButtonTapped() {
+        let nextVC = NewProjectViewController()
+        self.present(nextVC, animated: true, completion: nil)
     }
     
 }

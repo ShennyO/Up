@@ -103,6 +103,7 @@ class NewProjectViewController: UIViewController {
         button.setTitle("Cancel", for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
         button.setTitleColor(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), for: .normal)
+        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -221,10 +222,15 @@ class NewProjectViewController: UIViewController {
         }
     }
     
+    @objc private func cancelButtonTapped() {
+        self.dismiss(animated: true)
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         descriptionTextView.delegate = self
 //        titleTextView.delegate = self
         timePicker.delegate = self
