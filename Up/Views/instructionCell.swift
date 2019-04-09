@@ -18,14 +18,9 @@ class instructionCell: UITableViewCell {
         return label
     }()
     
-    func setUpCell(type: projectType) {
+    func setUpCell() {
         
-        switch type {
-        case .timed:
-            instructionLabel.text = "Add a Session to start"
-        case .untimed:
-            instructionLabel.text = "Add a Task to start"
-        }
+        instructionLabel.text = "Add a project to get started!"
         
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.addSubview(instructionLabel)

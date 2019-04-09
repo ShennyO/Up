@@ -23,7 +23,8 @@ class upViewController: UIViewController {
     //MARK: VARIABLES
     var projects: [Project] = [Project(title: "Finish Up", description: ""), Project(title: "one hundered push ups", description: "")]
     var timedProjects: [timedProject] = [timedProject(title: "Call with Yelp", description: "accept offer", time: "30"), timedProject(title: "work on Up", description: "spend 2-3 hrs on Up", time: "60"), timedProject(title: "Call with Yelp", description: "accept offer", time: "30")]
-    
+//    var projects: [Project] = []
+//    var timedProjects: [timedProject] = []
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -97,6 +98,9 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if projects.count == 0 && timedProjects.count == 0 {
+            return 1
+        }
         return 2
     }
     
@@ -114,15 +118,12 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if projects.count == 0 && timedProjects.count == 0 {
+            return 1
+        }
         if section == 0 {
-            if projects.count == 0 {
-                return 1
-            }
             return projects.count
         } else {
-            if timedProjects.count == 0 {
-                return 1
-            }
             return timedProjects.count
         }
         
@@ -131,24 +132,21 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if projects.count == 0 && timedProjects.count == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "instructionCell") as! instructionCell
+            cell.setUpCell()
+            return cell
+        }
+        
         if indexPath.section == 0 {
-            if projects.count == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "instructionCell") as! instructionCell
-                cell.setUpCell(type: .untimed)
-                cell.selectionStyle = .none
-                return cell
-            }
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
             cell.selectionStyle = .none
             cell.project = projects[indexPath.row]
             return cell
         } else {
-            if timedProjects.count == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "instructionCell") as! instructionCell
-                cell.setUpCell(type: .timed)
-                cell.selectionStyle = .none
-                return cell
-            }
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
             cell.selectionStyle = .none
             cell.timedProject = timedProjects[indexPath.row]
