@@ -25,13 +25,14 @@ class NewProjectViewController: UIViewController {
     
     var titleTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
+        textField.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
         textField.placeholder = "Title"
         textField.layer.cornerRadius = 3
         textField.backgroundColor = UIColor.white
         let leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 2.0))
         textField.leftView = leftView
         textField.leftViewMode = .always
+        textField.contentVerticalAlignment = .center
         return textField
     }()
     
@@ -45,14 +46,6 @@ class NewProjectViewController: UIViewController {
         return textView
     }()
     
-    
-    var typeLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-        label.numberOfLines = 0
-        label.textColor = UIColor.white
-        return label
-    }()
     
     var taskButton: UIButton = {
         let button = UIButton()
@@ -81,7 +74,7 @@ class NewProjectViewController: UIViewController {
     
     var timePicker: UIPickerView = {
         let picker = MyPickerView()
-        picker.backgroundColor = UIColor.black
+        picker.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         picker.layer.cornerRadius = 4
         picker.isHidden = true
         return picker
@@ -102,7 +95,7 @@ class NewProjectViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
-        button.setTitleColor(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -119,12 +112,12 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [titleTextField,descriptionTextView, typeLabel, timePicker, addButton, cancelButton].forEach { (view) in
+        [titleTextField,descriptionTextView, timePicker, addButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
         typeStackView.alignment = .fill
-        typeStackView.spacing = 15
+        typeStackView.spacing = 25
         self.view.addSubview(typeStackView)
         
     }
@@ -134,7 +127,7 @@ class NewProjectViewController: UIViewController {
         titleTextField.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(40)
             make.right.equalToSuperview().offset(-40)
-            make.height.equalTo(40)
+            make.height.equalTo(35)
             make.top.equalToSuperview().offset(150)
         }
         
@@ -146,10 +139,6 @@ class NewProjectViewController: UIViewController {
             make.height.equalTo(100)
         }
         
-        typeLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(75)
-            make.left.equalToSuperview().offset(20)
-        }
         
         taskButton.snp.makeConstraints { (make) in
             make.height.equalTo(50)
@@ -171,7 +160,7 @@ class NewProjectViewController: UIViewController {
             make.top.equalTo(typeStackView.snp.bottom).offset(30)
             make.width.equalTo(200)
             make.height.equalTo(100)
-            make.left.equalTo(typeStackView)
+            make.centerX.equalToSuperview()
         }
 
         addButton.snp.makeConstraints { (make) in
@@ -239,7 +228,6 @@ class NewProjectViewController: UIViewController {
         addOutlets()
         setConstraints()
         timePicker.selectRow(3, inComponent: 0, animated: false)
-        typeLabel.text = "Type:"
         // Do any additional setup after loading the view.
     }
     
@@ -282,7 +270,7 @@ extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource
             let label = UILabel()
             label.text = String(describing: times[row]) + " minutes"
             label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-            label.textAlignment = .left
+            label.textAlignment = .center
             label.textColor = UIColor.white
             return label
             
