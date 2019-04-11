@@ -17,14 +17,22 @@ enum inputType {
 class SunnyCustomInputView: UIView {
     
     //MARK: OUTLETS
+    
+    let tv: UITextView = {
+        let tv = UITextView()
+        tv.backgroundColor = UIColor.white
+        tv.layer.cornerRadius = 4
+        tv.textColor = UIColor.lightGray
+        tv.text = "Optional description"
+        return tv
+    }()
+    
     let tf: UITextField = {
         
         let tf = UITextField()
         tf.backgroundColor = UIColor.white
         tf.layer.cornerRadius = 4
-        let leftview = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 2))
-        tf.leftView = leftview
-        tf.leftViewMode = .always
+        tf.borderStyle = .none
         return tf
         
     }()
@@ -50,6 +58,7 @@ class SunnyCustomInputView: UIView {
         self.backgroundColor = UIColor.white
         self.layer.cornerRadius = 4
         tf.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
+        tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         switch type {
         case .textField:
@@ -57,6 +66,7 @@ class SunnyCustomInputView: UIView {
             tf.delegate = self
         case .textView:
             tfOverlayLabel.text = "Description"
+            tv.delegate = self
         }
         
         addOutlets(type: type)
@@ -73,8 +83,7 @@ class SunnyCustomInputView: UIView {
             case .textField:
                 self.addSubview(tf)
             case .textView:
-                print("wow")
-//                self.addSubview(tv)
+                self.addSubview(tv)
         
         }
         
@@ -89,11 +98,20 @@ class SunnyCustomInputView: UIView {
         case .textField:
             tf.snp.makeConstraints { (make) in
                 make.top.equalToSuperview().offset(15)
-                make.left.right.bottom.equalToSuperview()
+                make.left.equalToSuperview().offset(10)
+                make.right.equalToSuperview().offset(-10)
+                make.bottom.equalToSuperview()
                 
             }
         case .textView:
-            print("TODO")
+            
+            tv.snp.makeConstraints { (make) in
+                make.top.equalToSuperview().offset(15)
+                make.left.equalToSuperview().offset(5)
+                make.right.equalToSuperview().offset(-10)
+                make.bottom.equalToSuperview()
+            }
+            
         }
         
         
@@ -130,6 +148,35 @@ class SunnyCustomInputView: UIView {
     }
     
     
+}
+
+extension SunnyCustomInputView: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+        tfOverlayLabel.textColor = #colorLiteral(red: 0.09016115218, green: 0.3289901018, blue: 1, alpha: 1)
+        animateBottomBorder()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Optional description"
+            textView.textColor = UIColor.lightGray
+        }
+        tfOverlayLabel.textColor = UIColor.black
+        dismissBottomBorder()
+    }
 }
 
 extension SunnyCustomInputView: UITextFieldDelegate {

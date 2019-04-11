@@ -26,15 +26,9 @@ class NewProjectViewController: UIViewController {
     var titleTextField = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 50), fontSize: 20, type: .textField)
     
     
-    var descriptionTextView: UITextView = {
-        let textView = UITextView()
-        textView.text = "Optional description"
-        textView.textColor = UIColor.lightGray
-        textView.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
-        textView.layer.cornerRadius = 3
-        return textView
-    }()
+    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 100), fontSize: 17, type: .textView)
     
+
     
     var taskButton: UIButton = {
         let button = UIButton()
@@ -209,8 +203,6 @@ class NewProjectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        descriptionTextView.delegate = self
-//        titleTextView.delegate = self
         timePicker.delegate = self
         timePicker.dataSource = self
         configNavBar()
@@ -222,33 +214,6 @@ class NewProjectViewController: UIViewController {
     
 
     
-}
-
-
-extension NewProjectViewController: UITextViewDelegate {
-    
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "Optional description"
-            textView.textColor = UIColor.lightGray
-        }
-    }
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if (text == "\n") {
-            textView.resignFirstResponder()
-            return false
-        }
-        return true
-    }
 }
 
 
