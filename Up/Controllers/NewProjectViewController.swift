@@ -23,20 +23,7 @@ class NewProjectViewController: UIViewController {
     
     //MARK: OUTLETS
     
-//    var titleTextField: UITextField = {
-//        let textField = UITextField()
-//        textField.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
-//        textField.placeholder = "Title"
-//        textField.layer.cornerRadius = 3
-//        textField.backgroundColor = UIColor.white
-//        let leftView = TextFieldHelper.createTextLabelView(title: "Title", fontSize: 15, frame: CGRect(x: 0, y: 0, width: 20, height: 35))
-//        textField.leftView = leftView
-//        textField.leftViewMode = .always
-//        textField.contentVerticalAlignment = .center
-//        return textField
-//    }()
-    
-    var titleTextField = SunnyCustomTextFieldView(frame: CGRect(x: 0, y: 0, width: 230, height: 50), fontSize: 20)
+    var titleTextField = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 50), fontSize: 20, type: .textField)
     
     
     var descriptionTextView: UITextView = {

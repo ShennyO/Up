@@ -8,7 +8,13 @@
 import Foundation
 import UIKit
 
-class SunnyCustomTextFieldView: UIView {
+
+enum inputType {
+    case textField
+    case textView
+}
+
+class SunnyCustomInputView: UIView {
     
     //MARK: OUTLETS
     let tf: UITextField = {
@@ -39,34 +45,58 @@ class SunnyCustomTextFieldView: UIView {
         return view
     }()
     
-    init(frame: CGRect, fontSize: CGFloat) {
+    init(frame: CGRect, fontSize: CGFloat, type: inputType) {
         super.init(frame: frame)
-        tf.delegate = self
         self.backgroundColor = UIColor.white
         self.layer.cornerRadius = 4
         tf.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        tfOverlayLabel.text = "Title"
-        addOutlets()
-        setConstraints()
+        switch type {
+        case .textField:
+            tfOverlayLabel.text = "Title"
+            tf.delegate = self
+        case .textView:
+            tfOverlayLabel.text = "Description"
+        }
+        
+        addOutlets(type: type)
+        setConstraints(type: type)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func addOutlets() {
-        [tf, tfOverlayLabel, bottomBorder].forEach { (view) in
+    private func addOutlets(type: inputType) {
+        
+        switch type {
+            case .textField:
+                self.addSubview(tf)
+            case .textView:
+                print("wow")
+//                self.addSubview(tv)
+        
+        }
+        
+        [tfOverlayLabel, bottomBorder].forEach { (view) in
             self.addSubview(view)
         }
     }
     
-    private func setConstraints() {
-        tf.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(15)
-            make.left.right.bottom.equalToSuperview()
-            
+    private func setConstraints(type: inputType) {
+        
+        switch type {
+        case .textField:
+            tf.snp.makeConstraints { (make) in
+                make.top.equalToSuperview().offset(15)
+                make.left.right.bottom.equalToSuperview()
+                
+            }
+        case .textView:
+            print("TODO")
         }
+        
+        
         
         tfOverlayLabel.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(5)
@@ -85,13 +115,13 @@ class SunnyCustomTextFieldView: UIView {
     private func animateBottomBorder() {
         bottomBorder.isHidden = false
         bottomBorder.alpha = 0
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.2) {
             self.bottomBorder.alpha = 1
         }
     }
     
     private func dismissBottomBorder() {
-        UIView.animate(withDuration: 0.4, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             self.bottomBorder.alpha = 0
         }, completion:  {
             (value: Bool) in
@@ -102,7 +132,7 @@ class SunnyCustomTextFieldView: UIView {
     
 }
 
-extension SunnyCustomTextFieldView: UITextFieldDelegate {
+extension SunnyCustomInputView: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         tfOverlayLabel.textColor = #colorLiteral(red: 0.09016115218, green: 0.3289901018, blue: 1, alpha: 1)
