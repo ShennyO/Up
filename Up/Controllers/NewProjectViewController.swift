@@ -23,18 +23,20 @@ class NewProjectViewController: UIViewController {
     
     //MARK: OUTLETS
     
-    var titleTextField: UITextField = {
-        let textField = UITextField()
-        textField.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
-        textField.placeholder = "Title"
-        textField.layer.cornerRadius = 3
-        textField.backgroundColor = UIColor.white
-        let leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 2.0))
-        textField.leftView = leftView
-        textField.leftViewMode = .always
-        textField.contentVerticalAlignment = .center
-        return textField
-    }()
+//    var titleTextField: UITextField = {
+//        let textField = UITextField()
+//        textField.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+//        textField.placeholder = "Title"
+//        textField.layer.cornerRadius = 3
+//        textField.backgroundColor = UIColor.white
+//        let leftView = TextFieldHelper.createTextLabelView(title: "Title", fontSize: 15, frame: CGRect(x: 0, y: 0, width: 20, height: 35))
+//        textField.leftView = leftView
+//        textField.leftViewMode = .always
+//        textField.contentVerticalAlignment = .center
+//        return textField
+//    }()
+    
+    var titleTextField = SunnyCustomTextFieldView(frame: CGRect(x: 0, y: 0, width: 230, height: 50), fontSize: 20)
     
     
     var descriptionTextView: UITextView = {
@@ -127,7 +129,7 @@ class NewProjectViewController: UIViewController {
         titleTextField.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(40)
             make.right.equalToSuperview().offset(-40)
-            make.height.equalTo(35)
+            make.height.equalTo(55)
             make.top.equalToSuperview().offset(150)
         }
         

@@ -8,19 +8,60 @@
 import Foundation
 import UIKit
 
-class TextField: UITextField {
+class SunnyCustomTextFieldView: UIView {
     
-    let padding = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+    //MARK: OUTLETS
+    let tf: UITextField = {
+        
+        let tf = UITextField()
+        tf.backgroundColor = UIColor.white
+        tf.layer.cornerRadius = 4
+        return tf
+        
+    }()
     
-    override open func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
+    let tfOverlayLabel: UILabel = {
+        
+        let label = UILabel()
+        label.textColor = UIColor.black
+        return label
+        
+    }()
+    
+    init(frame: CGRect, fontSize: CGFloat) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.white
+        self.layer.cornerRadius = 4
+        tf.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
+        tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        tfOverlayLabel.text = "Title"
+        addOutlets()
+        setConstraints()
     }
     
-    override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    override open func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
+    private func addOutlets() {
+        [tf, tfOverlayLabel].forEach { (view) in
+            self.addSubview(view)
+        }
     }
+    
+    private func setConstraints() {
+        tf.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(15)
+            make.left.right.bottom.equalToSuperview()
+            
+        }
+        
+        tfOverlayLabel.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(5)
+            make.left.equalToSuperview().offset(5)
+        }
+        
+    }
+    
+    
 }
