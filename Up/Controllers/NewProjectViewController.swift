@@ -36,13 +36,14 @@ class NewProjectViewController: UIViewController {
     
     var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 100), fontSize: 18, type: .textView)
     
-
+    
     
     var taskButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 4
-        button.setTitle("Untimed", for: .normal)
+        button.setImage(#imageLiteral(resourceName: "whiteRectangle"), for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 17, left: 17, bottom: 17, right: 17)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = true
@@ -53,7 +54,9 @@ class NewProjectViewController: UIViewController {
     var sessionButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 4
-        button.setTitle("Timed", for: .normal)
+//        button.setTitle("Timed", for: .normal)
+        button.setImage(#imageLiteral(resourceName: "whiteTimeIcon"), for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = false
@@ -78,7 +81,6 @@ class NewProjectViewController: UIViewController {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-//        button.addTarget(self, action: #selector(sessionButtonSelected), for: .touchUpInside)
         return button
     }()
     
@@ -116,7 +118,7 @@ class NewProjectViewController: UIViewController {
     private func setConstraints() {
 
         newProjectLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(110)
+            make.top.equalToSuperview().offset(100)
             make.centerX.equalToSuperview()
         }
         
@@ -136,14 +138,15 @@ class NewProjectViewController: UIViewController {
         }
         
         
+        
         taskButton.snp.makeConstraints { (make) in
-            make.height.equalTo(50)
-            make.width.equalTo(120)
+            make.height.equalTo(65)
+            make.width.equalTo(65)
         }
         
         sessionButton.snp.makeConstraints { (make) in
-            make.height.equalTo(50)
-            make.width.equalTo(100)
+            make.height.equalTo(65)
+            make.width.equalTo(65)
         }
         
         
@@ -168,7 +171,7 @@ class NewProjectViewController: UIViewController {
         
         cancelButton.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(40)
-            make.left.equalToSuperview().offset(15)
+            make.left.equalToSuperview().offset(20)
             make.height.equalTo(20)
         }
         

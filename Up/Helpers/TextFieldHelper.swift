@@ -30,6 +30,7 @@ class SunnyCustomInputView: UIView {
     let tf: UITextField = {
         
         let tf = UITextField()
+        tf.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         tf.backgroundColor = UIColor.white
         tf.layer.cornerRadius = 4
         tf.borderStyle = .none
@@ -164,7 +165,7 @@ extension SunnyCustomInputView: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
             textView.text = nil
-            textView.textColor = UIColor.black
+            textView.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
         tfOverlayLabel.textColor = #colorLiteral(red: 0.1754467785, green: 0.3823254108, blue: 0.9967435002, alpha: 1)
         animateBottomBorder()
