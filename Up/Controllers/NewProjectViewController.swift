@@ -23,10 +23,18 @@ class NewProjectViewController: UIViewController {
     
     //MARK: OUTLETS
     
+    var newProjectLabel: UILabel = {
+        let label = UILabel()
+        label.text = "New Project"
+        label.textColor = UIColor.white
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 35)
+        return label
+    }()
+    
     var titleTextField = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 50), fontSize: 20, type: .textField)
     
     
-    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 100), fontSize: 17, type: .textView)
+    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 100), fontSize: 18, type: .textView)
     
 
     
@@ -34,7 +42,7 @@ class NewProjectViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 4
-        button.setTitle("Task", for: .normal)
+        button.setTitle("Untimed", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = true
@@ -45,7 +53,7 @@ class NewProjectViewController: UIViewController {
     var sessionButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 4
-        button.setTitle("Session", for: .normal)
+        button.setTitle("Timed", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = false
@@ -70,7 +78,7 @@ class NewProjectViewController: UIViewController {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        button.addTarget(self, action: #selector(sessionButtonSelected), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(sessionButtonSelected), for: .touchUpInside)
         return button
     }()
     
@@ -95,7 +103,7 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [titleTextField,descriptionTextView, timePicker, addButton, cancelButton].forEach { (view) in
+        [newProjectLabel,titleTextField,descriptionTextView, timePicker, addButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
@@ -107,16 +115,21 @@ class NewProjectViewController: UIViewController {
     
     private func setConstraints() {
 
+        newProjectLabel.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(110)
+            make.centerX.equalToSuperview()
+        }
+        
         titleTextField.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(40)
             make.right.equalToSuperview().offset(-40)
             make.height.equalTo(55)
-            make.top.equalToSuperview().offset(150)
+            make.top.equalTo(newProjectLabel.snp.bottom).offset(50)
         }
         
         
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalTo(titleTextField.snp.bottom).offset(75)
+            make.top.equalTo(titleTextField.snp.bottom).offset(30)
             make.left.equalToSuperview().offset(40)
             make.right.equalToSuperview().offset(-40)
             make.height.equalTo(100)
@@ -125,17 +138,17 @@ class NewProjectViewController: UIViewController {
         
         taskButton.snp.makeConstraints { (make) in
             make.height.equalTo(50)
-            make.width.equalTo(70)
+            make.width.equalTo(120)
         }
         
         sessionButton.snp.makeConstraints { (make) in
             make.height.equalTo(50)
-            make.width.equalTo(120)
+            make.width.equalTo(100)
         }
         
         
         typeStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(65)
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(45)
             make.centerX.equalTo(descriptionTextView)
         }
         
@@ -147,7 +160,7 @@ class NewProjectViewController: UIViewController {
         }
 
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(timePicker.snp.bottom).offset(30)
+            make.top.equalTo(timePicker.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.width.equalTo(110)
             make.height.equalTo(45)
