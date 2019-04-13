@@ -21,6 +21,8 @@ class NewProjectViewController: UIViewController {
     }
     
     
+    
+    
     //MARK: OUTLETS
     
     var newProjectLabel: UILabel = {
@@ -73,21 +75,8 @@ class NewProjectViewController: UIViewController {
         return picker
     }()
     
-//    var timeButton: UIButton = {
-//
-//        let button = UIButton()
-//        button.setTitle("10 minutes", for: .normal)
-//        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
-//        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-//        button.setTitleColor(UIColor.white, for: .normal)
-//        button.layer.cornerRadius = 4
-//        button.alpha = 0
-//        button.isHidden = true
-//        return button
-//
-//    }()
-    
-    var timeButton = timeInputView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+
+    var timeButton = timeInputView(frame: CGRect(x: 0, y: 0, width: 200, height: 75))
     
     var addButton: UIButton = {
         let button = UIButton()
@@ -207,14 +196,6 @@ class NewProjectViewController: UIViewController {
                 self.timeButton.isHidden = true
             })
 
-            
-            //animate alpha value of picker to be 0, then set hide picker view
-//            UIView.animate(withDuration: 0.4, animations: {
-//                self.timePicker.alpha = 0
-//            }, completion:  {
-//                (value: Bool) in
-//                self.timePicker.isHidden = true
-//            })
         }
     }
     
@@ -238,12 +219,16 @@ class NewProjectViewController: UIViewController {
         
     }
     
+    @objc func handleTap() {
+        print("Tapped")
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-//        timePicker.delegate = self
-//        timePicker.dataSource = self
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        timeButton.addGestureRecognizer(tap)
         configNavBar()
         addOutlets()
         setConstraints()

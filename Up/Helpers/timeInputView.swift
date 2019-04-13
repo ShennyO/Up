@@ -9,13 +9,22 @@ import Foundation
 import UIKit
 
 
+
 class timeInputView: UIView {
     
+    //MARK: GESTURE
+    
+    
+    //MARK: VARIABLES
+    
+    
+    //MARK: OUTLETS
     let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
         label.textColor = UIColor.white
         label.text = "20 minutes"
+        label.isUserInteractionEnabled = true
         return label
     }()
     
@@ -23,6 +32,7 @@ class timeInputView: UIView {
         
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 15))
         imageView.image = #imageLiteral(resourceName: "downArrow")
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
@@ -32,9 +42,9 @@ class timeInputView: UIView {
         self.isHidden = true
         self.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         self.layer.cornerRadius = 4
+        self.isUserInteractionEnabled = true
         addOutlets()
         setConstraints()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,9 +72,7 @@ class timeInputView: UIView {
             make.centerY.equalToSuperview()
         }
 
-        
-        
-        
     }
+    
     
 }
