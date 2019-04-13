@@ -12,6 +12,11 @@ class timeSelectorViewController: UIViewController {
     //MARK: VARIABLES
     var times = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    
     //MARK: OUTLETS
     let containerView: UIView = {
         
@@ -28,6 +33,7 @@ class timeSelectorViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 4
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.setTitle("Done", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
@@ -66,21 +72,27 @@ class timeSelectorViewController: UIViewController {
     
     private func configNavBar() {
         extendedLayoutIncludesOpaqueBars = true
-        navigationController?.navigationBar.barTintColor = UIColor.lightGray
+//        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    @objc func doneButtonTapped() {
+        dismiss(animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.lightGray
+        configNavBar()
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+        self.view.isOpaque = false
         timePickerView.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         timePickerView.layer.cornerRadius = 4
         timePickerView.delegate = self
         timePickerView.dataSource = self
+        timePickerView.selectRow(3, inComponent: 0, animated: false)
         addOutlets()
         setConstraints()
         // Do any additional setup after loading the view.

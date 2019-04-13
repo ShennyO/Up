@@ -219,7 +219,9 @@ class NewProjectViewController: UIViewController {
     }
     
     @objc func handleTap() {
-        print("Tapped")
+        let nextVC = timeSelectorViewController()
+        nextVC.modalPresentationStyle = .overCurrentContext
+        self.present(nextVC, animated: true, completion: nil)
     }
     
     
@@ -231,7 +233,7 @@ class NewProjectViewController: UIViewController {
         configNavBar()
         addOutlets()
         setConstraints()
-        timePicker.selectRow(3, inComponent: 0, animated: false)
+        
         // Do any additional setup after loading the view.
     }
     
