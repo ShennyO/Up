@@ -20,9 +20,9 @@ class SunnyCustomInputView: UIView {
     
     let tv: UITextView = {
         let tv = UITextView()
-        tv.backgroundColor = UIColor.white
+        tv.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
         tv.layer.cornerRadius = 4
-        tv.textColor = UIColor.lightGray
+        tv.textColor = UIColor.gray
         tv.text = "Optional description"
         return tv
     }()
@@ -31,7 +31,7 @@ class SunnyCustomInputView: UIView {
         
         let tf = UITextField()
         tf.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
-        tf.backgroundColor = UIColor.white
+        tf.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
         tf.layer.cornerRadius = 4
         tf.borderStyle = .none
         return tf
@@ -41,7 +41,7 @@ class SunnyCustomInputView: UIView {
     let tfOverlayLabel: UILabel = {
         
         let label = UILabel()
-        label.textColor = #colorLiteral(red: 0.4666666667, green: 0.4941176471, blue: 0.5411764706, alpha: 1)
+        label.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         return label
         
     }()
@@ -58,7 +58,7 @@ class SunnyCustomInputView: UIView {
         super.init(frame: frame)
         addOutlets(type: type)
         setConstraints(type: type)
-        self.backgroundColor = UIColor.white
+        self.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
         self.layer.cornerRadius = 4
         tf.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
@@ -162,8 +162,9 @@ extension SunnyCustomInputView: UITextViewDelegate {
         return true
     }
     
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
+        if textView.textColor == UIColor.gray {
             textView.text = nil
             textView.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
@@ -174,14 +175,22 @@ extension SunnyCustomInputView: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "Optional description"
-            textView.textColor = UIColor.lightGray
+            textView.textColor = UIColor.gray
         }
-        tfOverlayLabel.textColor = #colorLiteral(red: 0.4666666667, green: 0.4941176471, blue: 0.5411764706, alpha: 1)
+        tfOverlayLabel.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         dismissBottomBorder()
     }
 }
 
 extension SunnyCustomInputView: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (string == "\n") {
+            textField.resignFirstResponder()
+            return false
+        }
+        return true
+    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         tfOverlayLabel.textColor = #colorLiteral(red: 0.1737573147, green: 0.3813245595, blue: 0.9967152476, alpha: 1)
@@ -189,7 +198,7 @@ extension SunnyCustomInputView: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        tfOverlayLabel.textColor = #colorLiteral(red: 0.4666666667, green: 0.4941176471, blue: 0.5411764706, alpha: 1)
+        tfOverlayLabel.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         dismissBottomBorder()
     }
     

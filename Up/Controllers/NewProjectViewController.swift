@@ -54,7 +54,6 @@ class NewProjectViewController: UIViewController {
     var sessionButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 4
-//        button.setTitle("Timed", for: .normal)
         button.setImage(#imageLiteral(resourceName: "whiteTimeIcon"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         button.setTitleColor(UIColor.white, for: .normal)
