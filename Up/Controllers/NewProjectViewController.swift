@@ -9,10 +9,13 @@ import UIKit
 
 class NewProjectViewController: UIViewController {
     
+    
+    
+    
     //VARIABLES
     var projectToReturn: Project!
     var timedProjectToReturn: timedProject!
-    
+    var blurEffectView: UIVisualEffectView?
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -66,15 +69,7 @@ class NewProjectViewController: UIViewController {
     
     var typeStackView: UIStackView!
     
-    var timePicker: UIPickerView = {
-        let picker = MyPickerView()
-        picker.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        picker.layer.cornerRadius = 4
-        picker.isHidden = true
-        return picker
-    }()
     
-
     var timeButton = timeInputViewButton(frame: CGRect(x: 0, y: 0, width: 200, height: 75))
     
     var addButton: UIButton = {
@@ -220,9 +215,29 @@ class NewProjectViewController: UIViewController {
     
     @objc func handleTap() {
         let nextVC = timeSelectorViewController()
+        //BLOCK
+        nextVC.onDoneBlock = { result in
+            // Do something
+            self.blurEffectView?.isHidden = true
+        }
+        blurEffectView?.isHidden = false
         nextVC.modalPresentationStyle = .overCurrentContext
         self.present(nextVC, animated: true, completion: nil)
     }
+    
+    
+    private func addBlur() {
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView?.frame = view.bounds
+        blurEffectView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView?.isHidden = true
+        blurEffectView?.alpha = 0.5
+        if blurEffectView != nil {
+            view.addSubview(blurEffectView!)
+        }
+    }
+    
     
     
     override func viewDidLoad() {
@@ -232,6 +247,7 @@ class NewProjectViewController: UIViewController {
         timeButton.addGestureRecognizer(tap)
         configNavBar()
         addOutlets()
+        addBlur()
         setConstraints()
         
         // Do any additional setup after loading the view.

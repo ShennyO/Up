@@ -21,7 +21,6 @@ class SunnyCustomInputView: UIView {
     let tv: UITextView = {
         let tv = UITextView()
         tv.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
-        tv.layer.cornerRadius = 4
         tv.textColor = UIColor.gray
         tv.text = "Optional description"
         return tv
@@ -32,7 +31,6 @@ class SunnyCustomInputView: UIView {
         let tf = UITextField()
         tf.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         tf.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
-        tf.layer.cornerRadius = 4
         tf.borderStyle = .none
         return tf
         
@@ -56,10 +54,11 @@ class SunnyCustomInputView: UIView {
     
     init(frame: CGRect, fontSize: CGFloat, type: inputType) {
         super.init(frame: frame)
+        self.layer.masksToBounds = true
         addOutlets(type: type)
         setConstraints(type: type)
         self.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
-        self.layer.cornerRadius = 4
+        self.layer.cornerRadius = 5
         tf.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
