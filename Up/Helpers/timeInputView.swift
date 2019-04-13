@@ -19,12 +19,17 @@ class timeInputView: UIView {
         return label
     }()
     
-    let arrowImage = UIImageView(image: #imageLiteral(resourceName: "downArrow"))
+    let arrowImage: UIImageView = {
+        
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 15))
+        imageView.image = #imageLiteral(resourceName: "downArrow")
+        return imageView
+    }()
     
-    var stack: UIStackView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.isHidden = true
         self.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         self.layer.cornerRadius = 4
         addOutlets()
@@ -37,22 +42,28 @@ class timeInputView: UIView {
     }
     
     private func addOutlets() {
-        stack = UIStackView(arrangedSubviews: [timeLabel, arrowImage])
-//        stack.alignment = .fill
-        stack.spacing = 10
-        self.addSubview(stack)
+   
+        self.addSubview(timeLabel)
+        self.addSubview(arrowImage)
+        
     }
     
     private func setConstraints() {
+        
+        timeLabel.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
+        }
+        
         arrowImage.snp.makeConstraints { (make) in
             make.height.equalTo(15)
             make.width.equalTo(20)
+            make.left.equalTo(timeLabel.snp.right).offset(15)
+            make.centerY.equalToSuperview()
         }
+
         
-        stack.snp.makeConstraints { (make) in
-            make.centerX.centerY.equalToSuperview()
-//            make.height.equalTo(20)
-        }
+        
         
     }
     
