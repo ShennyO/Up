@@ -86,7 +86,7 @@ class timeSelectorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavBar()
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+        self.view.backgroundColor = UIColor.clear
         self.view.isOpaque = false
         timePickerView.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         timePickerView.layer.cornerRadius = 4
