@@ -10,12 +10,7 @@ import UIKit
 
 
 
-class timeInputView: UIView {
-    
-    //MARK: GESTURE
-    
-    
-    //MARK: VARIABLES
+class timeInputViewButton: UIView {
     
     
     //MARK: OUTLETS

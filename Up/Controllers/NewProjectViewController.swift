@@ -12,7 +12,6 @@ class NewProjectViewController: UIViewController {
     //VARIABLES
     var projectToReturn: Project!
     var timedProjectToReturn: timedProject!
-    var times = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     
     
     
@@ -76,7 +75,7 @@ class NewProjectViewController: UIViewController {
     }()
     
 
-    var timeButton = timeInputView(frame: CGRect(x: 0, y: 0, width: 200, height: 75))
+    var timeButton = timeInputViewButton(frame: CGRect(x: 0, y: 0, width: 200, height: 75))
     
     var addButton: UIButton = {
         let button = UIButton()
@@ -241,29 +240,3 @@ class NewProjectViewController: UIViewController {
 }
 
 
-//extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-//
-//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-//        let pickerLabel: UILabel = {
-//            let label = UILabel()
-//            label.text = String(describing: times[row]) + " minutes"
-//            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-//            label.textAlignment = .center
-//            label.textColor = UIColor.white
-//            return label
-//
-//        }()
-//        return pickerLabel
-//    }
-//
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        return 1
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        return times.count
-//    }
-//
-//
-//
-//}
