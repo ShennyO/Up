@@ -113,7 +113,7 @@ class NewProjectViewController: UIViewController {
         }
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
         typeStackView.alignment = .fill
-        typeStackView.spacing = 25
+        typeStackView.spacing = 35
         self.view.addSubview(typeStackView)
         
     }
@@ -162,8 +162,8 @@ class NewProjectViewController: UIViewController {
         timeButton.snp.makeConstraints { (make) in
             make.top.equalTo(typeStackView.snp.bottom).offset(30)
             make.centerX.equalToSuperview()
-            make.width.equalTo(175)
-            make.height.equalTo(60)
+            make.width.equalTo(165)
+            make.height.equalTo(50)
         }
 
         addButton.snp.makeConstraints { (make) in
