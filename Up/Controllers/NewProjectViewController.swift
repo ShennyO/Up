@@ -73,6 +73,22 @@ class NewProjectViewController: UIViewController {
         return picker
     }()
     
+//    var timeButton: UIButton = {
+//
+//        let button = UIButton()
+//        button.setTitle("10 minutes", for: .normal)
+//        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+//        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+//        button.setTitleColor(UIColor.white, for: .normal)
+//        button.layer.cornerRadius = 4
+//        button.alpha = 0
+//        button.isHidden = true
+//        return button
+//
+//    }()
+    
+    var timeButton = timeInputView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+    
     var addButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 4
@@ -104,7 +120,7 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [newProjectLabel,titleTextField,descriptionTextView, timePicker, addButton, cancelButton].forEach { (view) in
+        [newProjectLabel,titleTextField,descriptionTextView, timeButton, addButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
@@ -154,15 +170,16 @@ class NewProjectViewController: UIViewController {
             make.centerX.equalTo(descriptionTextView)
         }
         
-        timePicker.snp.makeConstraints { (make) in
+        
+        timeButton.snp.makeConstraints { (make) in
             make.top.equalTo(typeStackView.snp.bottom).offset(30)
-            make.width.equalTo(200)
-            make.height.equalTo(100)
             make.centerX.equalToSuperview()
+            make.width.equalTo(175)
+            make.height.equalTo(60)
         }
 
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(timePicker.snp.bottom).offset(20)
+            make.top.equalTo(timeButton.snp.bottom).offset(30)
             make.centerX.equalToSuperview()
             make.width.equalTo(110)
             make.height.equalTo(45)
@@ -183,14 +200,21 @@ class NewProjectViewController: UIViewController {
             sessionButton.backgroundColor = nil
             sessionButton.isSelected = false
             taskButton.isSelected = true
-            
-            //animate alpha value of picker to be 0, then set hide picker view
             UIView.animate(withDuration: 0.4, animations: {
-                self.timePicker.alpha = 0
+                self.timeButton.alpha = 0
             }, completion:  {
                 (value: Bool) in
-                self.timePicker.isHidden = true
+                self.timeButton.isHidden = true
             })
+
+            
+            //animate alpha value of picker to be 0, then set hide picker view
+//            UIView.animate(withDuration: 0.4, animations: {
+//                self.timePicker.alpha = 0
+//            }, completion:  {
+//                (value: Bool) in
+//                self.timePicker.isHidden = true
+//            })
         }
     }
     
@@ -201,10 +225,10 @@ class NewProjectViewController: UIViewController {
             taskButton.backgroundColor = nil
             sessionButton.isSelected = true
             taskButton.isSelected = false
-            timePicker.isHidden = false
-            timePicker.alpha = 0
+            timeButton.isHidden = false
+            timeButton.alpha = 0
             UIView.animate(withDuration: 0.4, animations: {
-                self.timePicker.alpha = 1
+                self.timeButton.alpha = 1
             })
         }
     }
@@ -218,8 +242,8 @@ class NewProjectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        timePicker.delegate = self
-        timePicker.dataSource = self
+//        timePicker.delegate = self
+//        timePicker.dataSource = self
         configNavBar()
         addOutlets()
         setConstraints()
@@ -232,29 +256,29 @@ class NewProjectViewController: UIViewController {
 }
 
 
-extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let pickerLabel: UILabel = {
-            let label = UILabel()
-            label.text = String(describing: times[row]) + " minutes"
-            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-            label.textAlignment = .center
-            label.textColor = UIColor.white
-            return label
-            
-        }()
-        return pickerLabel
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return times.count
-    }
-    
-
-    
-}
+//extension NewProjectViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+//
+//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+//        let pickerLabel: UILabel = {
+//            let label = UILabel()
+//            label.text = String(describing: times[row]) + " minutes"
+//            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+//            label.textAlignment = .center
+//            label.textColor = UIColor.white
+//            return label
+//
+//        }()
+//        return pickerLabel
+//    }
+//
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        return 1
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        return times.count
+//    }
+//
+//
+//
+//}
