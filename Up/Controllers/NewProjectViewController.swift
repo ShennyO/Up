@@ -22,9 +22,7 @@ class NewProjectViewController: UIViewController {
         return .lightContent
     }
     
-    
-    
-    
+
     //MARK: OUTLETS
     
     var newProjectLabel: UILabel = {
@@ -228,7 +226,7 @@ class NewProjectViewController: UIViewController {
         blurEffectView?.isHidden = false
         blurEffectView?.alpha = 0
         UIView.animate(withDuration: 0.3, animations: {
-            self.blurEffectView?.alpha = 1
+            self.blurEffectView?.alpha = 0.6
         })
         nextVC.modalPresentationStyle = .overCurrentContext
         self.present(nextVC, animated: true, completion: nil)
