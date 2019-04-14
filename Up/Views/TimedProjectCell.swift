@@ -120,7 +120,7 @@ class TimedProjectCell: UITableViewCell {
         setConstraints()
 //        titleLabel.text = timedProject.title
         descriptionLabel.text = timedProject.description
-        timeLabel.text = timedProject.time
+        timeLabel.text = String(describing: timedProject.time)
         
         
     }

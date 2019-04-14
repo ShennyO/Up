@@ -22,7 +22,7 @@ class upViewController: UIViewController {
     
     //MARK: VARIABLES
     var projects: [Project] = [Project(description: "Go out to eat with Fam"), Project(description: "Hang out with Victor")]
-    var timedProjects: [timedProject] = [timedProject(description: "accept offer", time: "30"), timedProject(description: "spend 2-3 hrs on Up", time: "60"), timedProject(description: "accept offer", time: "30")]
+    var timedProjects: [timedProject] = [timedProject(description: "accept offer", time: 30), timedProject(description: "spend 2-3 hrs on Up", time: 60), timedProject(description: "accept offer a big time offer and start my next steps", time: 30)]
 //    var projects: [Project] = []
 //    var timedProjects: [timedProject] = []
     
@@ -143,23 +143,25 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
             cell.setUpCell()
             return cell
         }
-        
         if indexPath.section == 0 {
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
             cell.selectionStyle = .none
             cell.project = projects[indexPath.row]
             return cell
         } else {
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
             cell.selectionStyle = .none
             cell.timedProject = timedProjects[indexPath.row]
             return cell
         }
-        
-       
-        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            let sessionVC = SessionViewController()
+            sessionVC.timedProject = timedProjects[indexPath.row]
+            self.present(sessionVC, animated: true, completion: nil)
+        }
     }
     
     

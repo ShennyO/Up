@@ -10,8 +10,12 @@ import UIKit
 class SessionViewController: UIViewController {
 
     //MARK: VARIABLES
-    var project: Project?
     var timedProject: timedProject?
+    var currentTime: TimeInterval!
+    var endTime: TimeInterval!
+    
+    
+    var timeInSeconds: Int = 0
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -25,9 +29,8 @@ class SessionViewController: UIViewController {
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Study the JTAppleCalendar and customize it"
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -63,13 +66,44 @@ class SessionViewController: UIViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
     
+    //MARK: TIMER
+    var timer = Timer()
+    
+    
+    func runTimer() {
+        endTime = Date.timeIntervalSinceReferenceDate + Double(timeInSeconds)
+        currentTime = Date.timeIntervalSinceReferenceDate
+        let elapsedTimeDouble = endTime - currentTime
+        let elapsedtimeInt = Int(elapsedTimeDouble)
+        minutesLabel.text = "\(timeString(time: elapsedtimeInt))" //This will update the label.
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(updateTimer)), userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateTimer() {
+        
+        currentTime = Date.timeIntervalSinceReferenceDate
+        let elapsedTimeDouble = endTime - currentTime
+        let elapsedtimeInt = Int(elapsedTimeDouble)
+        minutesLabel.text = "\(timeString(time: elapsedtimeInt))" //This will update the label.
+    }
+    
+    func timeString(time:Int) -> String {
+        let hours = Int(time) / 3600
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        if hours < 1 {
+            return String(format:"%02i:%02i", minutes, seconds)
+        }
+        return String(format:"%2i:%02i:%02i", hours, minutes, seconds)
+    }
+    
     private func addLayer() {
         let center = view.center
         let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         
         let backgroundLayer = CAShapeLayer()
         backgroundLayer.path = circularPath.cgPath
-        backgroundLayer.strokeColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        backgroundLayer.strokeColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         backgroundLayer.lineWidth = 10
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.lineCap = .round
@@ -122,10 +156,16 @@ class SessionViewController: UIViewController {
     
     @objc func startButtonTapped() {
         runAnimation()
+        runTimer()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if timedProject != nil {
+            timeInSeconds = timedProject!.time * 60
+            descriptionLabel.text = timedProject!.description
+        }
+        minutesLabel.text = "\(timeString(time: timeInSeconds))"
         configNavBar()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         addOutlets()

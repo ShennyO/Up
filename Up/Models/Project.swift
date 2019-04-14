@@ -21,8 +21,8 @@ class Project {
 
 class timedProject: Project {
     
-    var time: String
-    init(description: String, time: String) {
+    var time: Int
+    init(description: String, time: Int) {
         self.time = time
         super.init(description: description)
     }
