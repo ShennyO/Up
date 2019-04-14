@@ -56,7 +56,7 @@ class timeInputViewButton: UIView {
     private func setConstraints() {
         
         timeLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
         }
         

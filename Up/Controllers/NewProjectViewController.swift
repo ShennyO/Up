@@ -218,9 +218,18 @@ class NewProjectViewController: UIViewController {
         //BLOCK
         nextVC.onDoneBlock = { result in
             // Do something
-            self.blurEffectView?.isHidden = true
+            UIView.animate(withDuration: 0.4, animations: {
+                self.blurEffectView?.alpha = 0
+            }, completion:  {
+                (value: Bool) in
+                self.blurEffectView?.isHidden = true
+            })
         }
         blurEffectView?.isHidden = false
+        blurEffectView?.alpha = 0
+        UIView.animate(withDuration: 0.3, animations: {
+            self.blurEffectView?.alpha = 1
+        })
         nextVC.modalPresentationStyle = .overCurrentContext
         self.present(nextVC, animated: true, completion: nil)
     }
@@ -232,7 +241,7 @@ class NewProjectViewController: UIViewController {
         blurEffectView?.frame = view.bounds
         blurEffectView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         blurEffectView?.isHidden = true
-        blurEffectView?.alpha = 0.5
+        blurEffectView?.alpha = 0.4
         if blurEffectView != nil {
             view.addSubview(blurEffectView!)
         }
