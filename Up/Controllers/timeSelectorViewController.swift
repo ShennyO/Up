@@ -28,6 +28,14 @@ class timeSelectorViewController: UIViewController {
         
     }()
     
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Select duration"
+        label.textColor = UIColor.white
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        return label
+    }()
+    
     let timePickerView = MyPickerView()
     
     let doneButton: UIButton = {
@@ -43,27 +51,35 @@ class timeSelectorViewController: UIViewController {
     
     private func addOutlets() {
         self.view.addSubview(containerView)
+        containerView.addSubview(titleLabel)
         containerView.addSubview(timePickerView)
         containerView.addSubview(doneButton)
     }
     
     private func setConstraints() {
+        
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(200)
             make.left.equalToSuperview().offset(85)
             make.right.equalToSuperview().offset(-85)
-            make.height.equalTo(300)
+            make.height.equalTo(350)
+        }
+        
+        titleLabel.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(45)
+            make.centerX.equalToSuperview()
+            
         }
         
         timePickerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(45)
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.height.equalTo(185)
         }
         
         doneButton.snp.makeConstraints { (make) in
-            make.top.equalTo(timePickerView.snp.bottom)
+            make.top.equalTo(timePickerView.snp.bottom).offset(5)
             make.centerX.equalToSuperview()
             make.height.equalTo(45)
             make.width.equalTo(125)
