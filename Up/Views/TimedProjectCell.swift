@@ -30,17 +30,17 @@ class TimedProjectCell: UITableViewCell {
         return containerView
     }()
     
-    var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        label.numberOfLines = 0
-        label.textColor = #colorLiteral(red: 0.09240043908, green: 0.0924237594, blue: 0.09239736944, alpha: 1)
-        return label
-    }()
+//    var titleLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+//        label.numberOfLines = 0
+//        label.textColor = #colorLiteral(red: 0.09240043908, green: 0.0924237594, blue: 0.09239736944, alpha: 1)
+//        return label
+//    }()
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.numberOfLines = 0
         label.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         return label
@@ -59,23 +59,24 @@ class TimedProjectCell: UITableViewCell {
         return image
     }()
     
-    var leftStackView: UIStackView!
+//    var leftStackView: UIStackView!
     
     //MARK: FUNCTIONS
     private func addOutlets() {
-        if timedProject.description != "" {
-            leftStackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
-        } else {
-            leftStackView = UIStackView(arrangedSubviews: [titleLabel])
-        }
-        leftStackView.distribution = .fillEqually
-        leftStackView.alignment = .fill
-        leftStackView.axis = .vertical
-        leftStackView.spacing = 5
+//        if timedProject.description != "" {
+//            leftStackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
+//        } else {
+//            leftStackView = UIStackView(arrangedSubviews: [titleLabel])
+//        }
+//        leftStackView.distribution = .fillEqually
+//        leftStackView.alignment = .fill
+//        leftStackView.axis = .vertical
+//        leftStackView.spacing = 5
         
         
         self.addSubview(containerView)
-        containerView.addSubview(leftStackView)
+//        containerView.addSubview(leftStackView)
+        containerView.addSubview(descriptionLabel)
         containerView.addSubview(timeLabel)
         containerView.addSubview(timeImageView)
         
@@ -91,10 +92,14 @@ class TimedProjectCell: UITableViewCell {
         }
         
         
-        leftStackView.snp.makeConstraints { (make) in
+//        leftStackView.snp.makeConstraints { (make) in
+//            make.left.equalToSuperview().offset(15)
+//            make.centerY.equalToSuperview()
+//
+//        }
+        descriptionLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
-            
         }
         
         timeLabel.snp.makeConstraints { (make) in
@@ -113,8 +118,8 @@ class TimedProjectCell: UITableViewCell {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         addOutlets()
         setConstraints()
-        titleLabel.text = timedProject.title
-        descriptionLabel.text = timedProject.description ?? ""
+//        titleLabel.text = timedProject.title
+        descriptionLabel.text = timedProject.description
         timeLabel.text = timedProject.time
         
         

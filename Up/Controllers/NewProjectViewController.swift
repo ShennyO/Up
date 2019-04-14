@@ -33,7 +33,7 @@ class NewProjectViewController: UIViewController {
         return label
     }()
     
-    var titleTextField = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 50), fontSize: 20, type: .textField)
+//    var titleTextField = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 50), fontSize: 20, type: .textField)
     
     
     var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 100), fontSize: 18, type: .textView)
@@ -101,7 +101,7 @@ class NewProjectViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [newProjectLabel,titleTextField,descriptionTextView, timeButton, addButton, cancelButton].forEach { (view) in
+        [newProjectLabel,descriptionTextView, timeButton, addButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
@@ -118,16 +118,16 @@ class NewProjectViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-        titleTextField.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(40)
-            make.right.equalToSuperview().offset(-40)
-            make.height.equalTo(55)
-            make.top.equalTo(newProjectLabel.snp.bottom).offset(50)
-        }
+//        titleTextField.snp.makeConstraints { (make) in
+//            make.left.equalToSuperview().offset(40)
+//            make.right.equalToSuperview().offset(-40)
+//            make.height.equalTo(55)
+//            make.top.equalTo(newProjectLabel.snp.bottom).offset(50)
+//        }
         
         
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalTo(titleTextField.snp.bottom).offset(30)
+            make.top.equalTo(newProjectLabel.snp.bottom).offset(60)
             make.left.equalToSuperview().offset(40)
             make.right.equalToSuperview().offset(-40)
             make.height.equalTo(100)
