@@ -13,19 +13,15 @@ class SessionViewController: UIViewController {
     var project: Project?
     var timedProject: timedProject?
     
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
     
     //MARK: OUTLETS
-    var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Work on up"
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 35)
-        return label
-    }()
+    
+    let circleLayer = CAShapeLayer()
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
@@ -38,14 +34,6 @@ class SessionViewController: UIViewController {
         
     }()
     
-    var circleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        view.layer.cornerRadius = 100
-        view.layer.borderWidth = 10
-        view.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        return view
-    }()
     
     var minutesLabel: UILabel = {
         let label = UILabel()
@@ -62,6 +50,7 @@ class SessionViewController: UIViewController {
         button.setTitle("Start", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -74,43 +63,65 @@ class SessionViewController: UIViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
     
+    private func addLayer() {
+        let center = view.center
+        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        
+        let backgroundLayer = CAShapeLayer()
+        backgroundLayer.path = circularPath.cgPath
+        backgroundLayer.strokeColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        backgroundLayer.lineWidth = 10
+        backgroundLayer.fillColor = UIColor.clear.cgColor
+        backgroundLayer.lineCap = .round
+        self.view.layer.addSublayer(backgroundLayer)
+        
+        circleLayer.path = circularPath.cgPath
+        circleLayer.strokeColor = UIColor.white.cgColor
+        circleLayer.lineWidth = 10
+        circleLayer.fillColor = UIColor.clear.cgColor
+        circleLayer.lineCap = .round
+        self.view.layer.addSublayer(circleLayer)
+    }
+    
+    private func runAnimation() {
+        let circleBorderAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        circleBorderAnimation.toValue = 0
+        circleBorderAnimation.duration = 3
+        circleLayer.add(circleBorderAnimation, forKey: "borderAnimation")
+    }
+    
     private func addOutlets() {
-        [titleLabel, descriptionLabel, circleView, startButton].forEach { (view) in
+        [descriptionLabel, minutesLabel, startButton].forEach { (view) in
             self.view.addSubview(view)
         }
-        circleView.addSubview(minutesLabel)
         
     }
     
     private func setConstraints() {
-        titleLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(100)
-            make.centerX.equalToSuperview()
-        }
+        
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(45)
+            make.top.equalToSuperview().offset(125)
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
         }
         
-        circleView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(60)
-            make.centerX.equalToSuperview()
-            make.height.width.equalTo(200)
+        minutesLabel.snp.makeConstraints { (make) in
+            make.centerY.centerX.equalToSuperview()
         }
         
-        minutesLabel.snp.makeConstraints { (make) in
-            make.centerX.centerY.equalToSuperview()
-        }
         
         startButton.snp.makeConstraints { (make) in
-            make.top.equalTo(circleView.snp.bottom).offset(75)
+            make.top.equalTo(minutesLabel.snp.bottom).offset(150)
             make.centerX.equalToSuperview()
-            make.height.equalTo(45)
+            make.height.equalTo(50)
             make.width.equalTo(125)
         }
         
+    }
+    
+    @objc func startButtonTapped() {
+        runAnimation()
     }
     
     override func viewDidLoad() {
@@ -118,6 +129,7 @@ class SessionViewController: UIViewController {
         configNavBar()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         addOutlets()
+        addLayer()
         setConstraints()
         // Do any additional setup after loading the view.
     }

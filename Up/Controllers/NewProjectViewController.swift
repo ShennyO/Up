@@ -114,7 +114,7 @@ class NewProjectViewController: UIViewController {
     private func setConstraints() {
 
         newProjectLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview().offset(125)
             make.centerX.equalToSuperview()
         }
         
