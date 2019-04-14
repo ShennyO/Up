@@ -118,13 +118,6 @@ class NewProjectViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-//        titleTextField.snp.makeConstraints { (make) in
-//            make.left.equalToSuperview().offset(40)
-//            make.right.equalToSuperview().offset(-40)
-//            make.height.equalTo(55)
-//            make.top.equalTo(newProjectLabel.snp.bottom).offset(50)
-//        }
-        
         
         descriptionTextView.snp.makeConstraints { (make) in
             make.top.equalTo(newProjectLabel.snp.bottom).offset(60)
@@ -160,9 +153,9 @@ class NewProjectViewController: UIViewController {
         }
 
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(timeButton.snp.bottom).offset(30)
+            make.top.equalTo(timeButton.snp.bottom).offset(-15)
             make.centerX.equalToSuperview()
-            make.width.equalTo(110)
+            make.width.equalTo(100)
             make.height.equalTo(45)
         }
         
@@ -181,12 +174,16 @@ class NewProjectViewController: UIViewController {
             sessionButton.backgroundColor = nil
             sessionButton.isSelected = false
             taskButton.isSelected = true
-            UIView.animate(withDuration: 0.4, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.timeButton.alpha = 0
             }, completion:  {
                 (value: Bool) in
                 self.timeButton.isHidden = true
             })
+            
+            UIView.animate(withDuration: 0.4) {
+                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y - 50, width: self.addButton.frame.width, height: self.addButton.frame.height)
+            }
 
         }
     }
@@ -202,7 +199,12 @@ class NewProjectViewController: UIViewController {
             timeButton.alpha = 0
             UIView.animate(withDuration: 0.4, animations: {
                 self.timeButton.alpha = 1
+                
             })
+            
+            UIView.animate(withDuration: 0.3) {
+                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y + 50, width: self.addButton.frame.width, height: self.addButton.frame.height)
+            }
         }
     }
     
