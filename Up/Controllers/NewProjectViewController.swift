@@ -27,7 +27,7 @@ class NewProjectViewController: UIViewController {
     
     var newProjectLabel: UILabel = {
         let label = UILabel()
-        label.text = "New Project"
+        label.text = "New Goal"
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 35)
         return label
@@ -182,7 +182,7 @@ class NewProjectViewController: UIViewController {
             })
             
             UIView.animate(withDuration: 0.4) {
-                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y - 50, width: self.addButton.frame.width, height: self.addButton.frame.height)
+                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y - 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
             }
 
         }
@@ -203,7 +203,7 @@ class NewProjectViewController: UIViewController {
             })
             
             UIView.animate(withDuration: 0.3) {
-                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y + 50, width: self.addButton.frame.width, height: self.addButton.frame.height)
+                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y + 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
             }
         }
     }

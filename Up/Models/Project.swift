@@ -9,11 +9,10 @@ import Foundation
 
 class Project {
     
-    var title: String
-    var description: String?
+    var description: String
     
-    init(title: String, description: String) {
-        self.title = title
+    init(description: String) {
+
         self.description = description
     }
     
@@ -23,9 +22,9 @@ class Project {
 class timedProject: Project {
     
     var time: String
-    init(title: String, description: String, time: String) {
+    init(description: String, time: String) {
         self.time = time
-        super.init(title: title, description: description)
+        super.init(description: description)
     }
     
 }

@@ -22,7 +22,7 @@ class SunnyCustomInputView: UIView {
         let tv = UITextView()
         tv.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
         tv.textColor = UIColor.gray
-        tv.text = "Add project description"
+        tv.text = "Goal description"
         return tv
     }()
     
@@ -173,7 +173,7 @@ extension SunnyCustomInputView: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "Add project description"
+            textView.text = "Goal description"
             textView.textColor = UIColor.gray
         }
         tfOverlayLabel.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
