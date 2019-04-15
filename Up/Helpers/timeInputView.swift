@@ -17,7 +17,7 @@ class timeInputViewButton: UIView {
     let darkView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 5
-        view.backgroundColor = .black
+        view.backgroundColor = UIColor.gray
         view.alpha = 0.5
         view.isHidden = true
         return view
@@ -35,7 +35,7 @@ class timeInputViewButton: UIView {
     let arrowImage: UIImageView = {
         
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 15))
-        imageView.image = #imageLiteral(resourceName: "downArrow")
+        imageView.image = #imageLiteral(resourceName: "upArrow")
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
@@ -71,7 +71,7 @@ class timeInputViewButton: UIView {
         
         timeLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(2)
         }
         
         arrowImage.snp.makeConstraints { (make) in
@@ -88,10 +88,12 @@ class timeInputViewButton: UIView {
 
 extension timeInputViewButton: inputDelegate {
     func tapStarted() {
-        darkView.isHidden = false
+        timeLabel.textColor = UIColor.gray
+        arrowImage.image = #imageLiteral(resourceName: "Combined Shape")
     }
     
     func tapEnded() {
-        darkView.isHidden = true
+        timeLabel.textColor = UIColor.white
+        arrowImage.image = #imageLiteral(resourceName: "upArrow")
     }
 }

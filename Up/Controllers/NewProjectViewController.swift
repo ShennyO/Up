@@ -214,7 +214,6 @@ class NewProjectViewController: UIViewController {
     @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
         
         if gestureRecognizer.state == .began {
-            print("started")
             timeInputDelegate.tapStarted()
         }
         
