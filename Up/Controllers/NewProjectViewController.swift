@@ -71,7 +71,7 @@ class NewProjectViewController: UIViewController {
     var timeButton = timeInputViewButton(frame: CGRect(x: 0, y: 0, width: 200, height: 75))
     
     var addButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.layer.cornerRadius = 4
         button.setTitle("Add", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
@@ -81,7 +81,7 @@ class NewProjectViewController: UIViewController {
     }()
     
     var cancelButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.setTitle("Cancel", for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
         button.setTitleColor(UIColor.white, for: .normal)

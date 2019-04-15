@@ -47,13 +47,22 @@ class SessionViewController: UIViewController {
     }()
     
     var startButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 5
         button.setTitle("Start", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    var cancelButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Cancel", for: .normal)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -128,7 +137,7 @@ class SessionViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [descriptionLabel, minutesLabel, startButton].forEach { (view) in
+        [descriptionLabel, minutesLabel, startButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         
@@ -155,11 +164,21 @@ class SessionViewController: UIViewController {
             make.width.equalTo(125)
         }
         
+        cancelButton.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(40)
+            make.left.equalToSuperview().offset(20)
+            make.height.equalTo(20)
+        }
+        
     }
     
     @objc func startButtonTapped() {
         runAnimation()
         runTimer()
+    }
+    
+    @objc func cancelButtonTapped() {
+        self.dismiss(animated: true)
     }
     
     override func viewDidLoad() {

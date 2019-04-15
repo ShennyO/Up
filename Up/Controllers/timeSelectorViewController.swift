@@ -39,7 +39,7 @@ class timeSelectorViewController: UIViewController {
     let timePickerView = MyPickerView()
     
     let doneButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
