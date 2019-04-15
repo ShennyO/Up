@@ -66,6 +66,36 @@ class SessionViewController: UIViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
     
+   
+    
+    private func addLayer() {
+        let center = view.center
+        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        
+        let backgroundLayer = CAShapeLayer()
+        backgroundLayer.path = circularPath.cgPath
+        backgroundLayer.strokeColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        backgroundLayer.lineWidth = 10
+        backgroundLayer.fillColor = UIColor.clear.cgColor
+        backgroundLayer.lineCap = .round
+        self.view.layer.addSublayer(backgroundLayer)
+        
+        circleLayer.path = circularPath.cgPath
+        circleLayer.strokeColor = UIColor.white.cgColor
+        circleLayer.lineWidth = 10
+        circleLayer.fillColor = UIColor.clear.cgColor
+        circleLayer.lineCap = .round
+        circleLayer.strokeEnd = 0.8
+        self.view.layer.addSublayer(circleLayer)
+    }
+    
+    private func runAnimation() {
+        let circleBorderAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        circleBorderAnimation.toValue = 0
+        circleBorderAnimation.duration = Double(timeInSeconds)
+        circleLayer.add(circleBorderAnimation, forKey: "borderAnimation")
+    }
+    
     //MARK: TIMER
     var timer = Timer()
     
@@ -95,33 +125,6 @@ class SessionViewController: UIViewController {
             return String(format:"%02i:%02i", minutes, seconds)
         }
         return String(format:"%2i:%02i:%02i", hours, minutes, seconds)
-    }
-    
-    private func addLayer() {
-        let center = view.center
-        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
-        
-        let backgroundLayer = CAShapeLayer()
-        backgroundLayer.path = circularPath.cgPath
-        backgroundLayer.strokeColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        backgroundLayer.lineWidth = 10
-        backgroundLayer.fillColor = UIColor.clear.cgColor
-        backgroundLayer.lineCap = .round
-        self.view.layer.addSublayer(backgroundLayer)
-        
-        circleLayer.path = circularPath.cgPath
-        circleLayer.strokeColor = UIColor.white.cgColor
-        circleLayer.lineWidth = 10
-        circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.lineCap = .round
-        self.view.layer.addSublayer(circleLayer)
-    }
-    
-    private func runAnimation() {
-        let circleBorderAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        circleBorderAnimation.toValue = 0
-        circleBorderAnimation.duration = 3
-        circleLayer.add(circleBorderAnimation, forKey: "borderAnimation")
     }
     
     private func addOutlets() {
