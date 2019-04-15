@@ -22,7 +22,7 @@ class upViewController: UIViewController {
     
     //MARK: VARIABLES
     var projects: [Project] = [Project(description: "Go out to eat with Fam"), Project(description: "Hang out with Victor")]
-    var timedProjects: [timedProject] = [timedProject(description: "accept offer", time: 30), timedProject(description: "spend 2-3 hrs on Up", time: 60), timedProject(description: "accept offer a big time offer and start my next steps", time: 5)]
+    var timedProjects: [timedProject] = [timedProject(description: "accept offer", time: 30), timedProject(description: "spend 2-3 hrs on Up", time: 60), timedProject(description: "accept offer a big time offer and start my next steps adding more text just to see", time: 5)]
 //    var projects: [Project] = []
 //    var timedProjects: [timedProject] = []
     

@@ -90,7 +90,7 @@ class SessionViewController: UIViewController {
     
     private func addLayer() {
 
-        let point = CGPoint(x: view.center.x, y: view.center.y + 25)
+        let point = CGPoint(x: view.center.x, y: view.center.y + 15)
         let circularPath = UIBezierPath(arcCenter: point, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         
         let backgroundLayer = CAShapeLayer()
@@ -192,13 +192,13 @@ class SessionViewController: UIViewController {
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(goalLabel.snp.bottom).offset(45)
+            make.top.equalTo(goalLabel.snp.bottom).offset(40)
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
         }
         
         minutesLabel.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview().offset(25)
+            make.centerY.equalToSuperview().offset(15)
             make.centerX.equalToSuperview()
         }
         
