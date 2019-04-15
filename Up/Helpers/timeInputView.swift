@@ -87,9 +87,14 @@ class timeInputViewButton: UIView {
 }
 
 extension timeInputViewButton: inputDelegate {
+    func sendSelectedTime(time: Int) {
+        timeLabel.text = String(describing: time) + " minutes"
+    }
+    
+    
     func tapStarted() {
         timeLabel.textColor = UIColor.gray
-        arrowImage.image = #imageLiteral(resourceName: "Combined Shape")
+        arrowImage.image = #imageLiteral(resourceName: "grayArrow")
     }
     
     func tapEnded() {

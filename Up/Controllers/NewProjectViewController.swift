@@ -222,16 +222,27 @@ class NewProjectViewController: UIViewController {
             timeInputDelegate.tapEnded()
             
             let nextVC = timeSelectorViewController()
-            //BLOCK
-            nextVC.onDoneBlock = { result in
+           
+            
+            //MARK: CALLBACK
+            //CALLBACK IS RUN WHEN timeSelectorVC is dismissed
+            nextVC.onDoneBlock = { (result) in
                 // Do something
+                
+                
                 UIView.animate(withDuration: 0.4, animations: {
                     self.blurEffectView?.alpha = 0
                 }, completion:  {
                     (value: Bool) in
                     self.blurEffectView?.isHidden = true
                 })
+                
+                self.timeInputDelegate.sendSelectedTime(time: result)
+                self.loadViewIfNeeded()
+                
             }
+            
+            
             blurEffectView?.isHidden = false
             blurEffectView?.alpha = 0
             UIView.animate(withDuration: 0.3, animations: {
@@ -242,6 +253,8 @@ class NewProjectViewController: UIViewController {
         }
 
     }
+    
+    
     
     
     private func addBlur() {
@@ -280,6 +293,8 @@ extension NewProjectViewController {
 }
 
 protocol inputDelegate {
+    func sendSelectedTime(time: Int)
+    
     func tapStarted()
     
     func tapEnded()

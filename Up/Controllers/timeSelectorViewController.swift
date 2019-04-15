@@ -11,7 +11,9 @@ class timeSelectorViewController: UIViewController {
 
     //MARK: VARIABLES
     var times = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
-    var onDoneBlock: ((Bool) -> Void)?
+    var selectedTime = 20
+    var onDoneBlock: ((Int) -> ())?
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -97,12 +99,13 @@ class timeSelectorViewController: UIViewController {
     }
     
     @objc func doneButtonTapped() {
-        onDoneBlock!(true)
+        onDoneBlock!(selectedTime)
         dismiss(animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configNavBar()
         self.view.backgroundColor = UIColor.clear
         self.view.isOpaque = false
@@ -142,6 +145,10 @@ extension timeSelectorViewController: UIPickerViewDelegate, UIPickerViewDataSour
         return times.count
     }
 
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedTime = times[row]
+    }
 
 
 }
