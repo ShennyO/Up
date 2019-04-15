@@ -30,13 +30,13 @@ class TimedProjectCell: UITableViewCell {
         return containerView
     }()
     
-//    var titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-//        label.numberOfLines = 0
-//        label.textColor = #colorLiteral(red: 0.09240043908, green: 0.0924237594, blue: 0.09239736944, alpha: 1)
-//        return label
-//    }()
+    let darkView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 5
+        view.backgroundColor = .black
+        view.alpha = 0
+        return view
+    }()
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
@@ -59,23 +59,13 @@ class TimedProjectCell: UITableViewCell {
         return image
     }()
     
-//    var leftStackView: UIStackView!
+
     
     //MARK: FUNCTIONS
     private func addOutlets() {
-//        if timedProject.description != "" {
-//            leftStackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
-//        } else {
-//            leftStackView = UIStackView(arrangedSubviews: [titleLabel])
-//        }
-//        leftStackView.distribution = .fillEqually
-//        leftStackView.alignment = .fill
-//        leftStackView.axis = .vertical
-//        leftStackView.spacing = 5
-        
-        
+
         self.addSubview(containerView)
-//        containerView.addSubview(leftStackView)
+        containerView.addSubview(darkView)
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(timeLabel)
         containerView.addSubview(timeImageView)
@@ -83,6 +73,13 @@ class TimedProjectCell: UITableViewCell {
     }
     
     private func setConstraints() {
+        
+        darkView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.right.equalToSuperview()
+            make.left.equalToSuperview()
+        }
         
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(15)
@@ -119,6 +116,14 @@ class TimedProjectCell: UITableViewCell {
         timeLabel.text = String(describing: timedProject.time)
         
         
+    }
+    
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        if highlighted {
+            darkView.alpha = 0.55
+        } else {
+            darkView.alpha = 0
+        }
     }
     
     

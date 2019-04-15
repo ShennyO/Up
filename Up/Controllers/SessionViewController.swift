@@ -31,7 +31,7 @@ class SessionViewController: UIViewController {
     
     var goalLabel: UILabel = {
         let label = UILabel()
-        label.text = "Current Goal:"
+        label.text = "Goal:"
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
         label.textAlignment = .center
@@ -193,8 +193,8 @@ class SessionViewController: UIViewController {
         
         descriptionLabel.snp.makeConstraints { (make) in
             make.top.equalTo(goalLabel.snp.bottom).offset(40)
-            make.left.equalToSuperview().offset(15)
-            make.right.equalToSuperview().offset(-15)
+            make.left.equalToSuperview().offset(30)
+            make.right.equalToSuperview().offset(-30)
         }
         
         minutesLabel.snp.makeConstraints { (make) in

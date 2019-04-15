@@ -33,10 +33,9 @@ class NewProjectViewController: UIViewController {
         return label
     }()
     
-//    var titleTextField = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 50), fontSize: 20, type: .textField)
     
     
-    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 100), fontSize: 18, type: .textView)
+    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 85), fontSize: 18, type: .textView)
     
     
     
