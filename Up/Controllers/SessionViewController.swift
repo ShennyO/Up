@@ -26,6 +26,7 @@ class SessionViewController: UIViewController {
     //MARK: OUTLETS
     
     let circleLayer = CAShapeLayer()
+    let pulsatingLayer = CAShapeLayer()
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
@@ -84,14 +85,23 @@ class SessionViewController: UIViewController {
         let backgroundLayer = CAShapeLayer()
         backgroundLayer.path = circularPath.cgPath
         backgroundLayer.strokeColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        backgroundLayer.lineWidth = 10
+        backgroundLayer.lineWidth = 12
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.lineCap = .round
         self.view.layer.addSublayer(backgroundLayer)
         
+        
+        let pulsatingPath = UIBezierPath(arcCenter: center, radius: 112, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        pulsatingLayer.path = pulsatingPath.cgPath
+        pulsatingLayer.strokeColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
+        pulsatingLayer.lineWidth = 0
+        pulsatingLayer.fillColor = UIColor.clear.cgColor
+        pulsatingLayer.opacity = 0
+        self.view.layer.addSublayer(pulsatingLayer)
+        
         circleLayer.path = circularPath.cgPath
         circleLayer.strokeColor = UIColor.white.cgColor
-        circleLayer.lineWidth = 10
+        circleLayer.lineWidth = 12
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineCap = .round
         circleLayer.strokeEnd = 0.8
@@ -99,10 +109,30 @@ class SessionViewController: UIViewController {
     }
     
     private func runAnimation() {
+        //MARK: STROKE ANIMATION
         let circleBorderAnimation = CABasicAnimation(keyPath: "strokeEnd")
         circleBorderAnimation.toValue = 0
         circleBorderAnimation.duration = Double(timeInSeconds)
         circleLayer.add(circleBorderAnimation, forKey: "borderAnimation")
+        
+        //MARK: PULSATING ANIMATION
+        let pulsatingAnimation = CABasicAnimation(keyPath: "lineWidth")
+        pulsatingAnimation.toValue = 12
+        pulsatingAnimation.duration = 1.5
+        pulsatingAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        pulsatingAnimation.autoreverses = true
+        pulsatingAnimation.repeatCount = .greatestFiniteMagnitude
+        pulsatingLayer.add(pulsatingAnimation, forKey: "pulsingAnimation")
+        
+        //MARK: OPACITY ANIMATION
+        let opacityAnimation = CABasicAnimation(keyPath: "opacity")
+        opacityAnimation.toValue = 0.6
+        opacityAnimation.duration = 1.5
+        opacityAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        opacityAnimation.autoreverses = true
+        opacityAnimation.repeatCount = .greatestFiniteMagnitude
+        pulsatingLayer.add(opacityAnimation, forKey: "opacityAnimation")
+
     }
     
     //MARK: TIMER
