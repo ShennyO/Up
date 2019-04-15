@@ -92,14 +92,9 @@ class TimedProjectCell: UITableViewCell {
         }
         
         
-//        leftStackView.snp.makeConstraints { (make) in
-//            make.left.equalToSuperview().offset(15)
-//            make.centerY.equalToSuperview()
-//
-//        }
         descriptionLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
-            make.right.equalToSuperview().offset(-50)
+            make.right.equalToSuperview().offset(-75)
             make.centerY.equalToSuperview()
         }
         

@@ -108,7 +108,7 @@ class SunnyCustomInputView: UIView {
         case .textView:
             
             tv.snp.makeConstraints { (make) in
-                make.top.equalToSuperview().offset(15)
+                make.top.equalToSuperview().offset(25)
                 make.left.equalToSuperview().offset(5)
                 make.right.equalToSuperview().offset(-10)
                 make.bottom.equalToSuperview()
@@ -159,7 +159,11 @@ extension SunnyCustomInputView: UITextViewDelegate {
             textView.resignFirstResponder()
             return false
         }
-        return true
+        
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars < 75
+        
     }
     
     
@@ -183,6 +187,7 @@ extension SunnyCustomInputView: UITextViewDelegate {
 }
 
 extension SunnyCustomInputView: UITextFieldDelegate {
+    
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if (string == "\n") {
