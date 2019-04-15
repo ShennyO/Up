@@ -47,7 +47,7 @@ class SunnyCustomInputView: UIView {
     let bottomBorder: UIView = {
         let view = UIView()
         view.isHidden = true
-        view.backgroundColor = #colorLiteral(red: 0.1754467785, green: 0.3823254108, blue: 0.9967435002, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         view.alpha = 0
         return view
     }()
@@ -61,6 +61,7 @@ class SunnyCustomInputView: UIView {
         self.layer.cornerRadius = 5
         tf.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
+        tv.tintColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         switch type {
         case .textField:
@@ -167,7 +168,7 @@ extension SunnyCustomInputView: UITextViewDelegate {
             textView.text = nil
             textView.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
-        tfOverlayLabel.textColor = #colorLiteral(red: 0.1754467785, green: 0.3823254108, blue: 0.9967435002, alpha: 1)
+        tfOverlayLabel.textColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         animateBottomBorder()
     }
     

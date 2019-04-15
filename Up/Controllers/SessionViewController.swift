@@ -28,10 +28,20 @@ class SessionViewController: UIViewController {
     let circleLayer = CAShapeLayer()
     let pulsatingLayer = CAShapeLayer()
     
+    
+    var goalLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Current Goal:"
+        label.textColor = UIColor.white
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
+        label.textAlignment = .center
+        return label
+    }()
+    
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -79,8 +89,9 @@ class SessionViewController: UIViewController {
    
     
     private func addLayer() {
-        let center = view.center
-        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+
+        let point = CGPoint(x: view.center.x, y: view.center.y + 25)
+        let circularPath = UIBezierPath(arcCenter: point, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         
         let backgroundLayer = CAShapeLayer()
         backgroundLayer.path = circularPath.cgPath
@@ -91,16 +102,16 @@ class SessionViewController: UIViewController {
         self.view.layer.addSublayer(backgroundLayer)
         
         
-        let pulsatingPath = UIBezierPath(arcCenter: center, radius: 112, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        let pulsatingPath = UIBezierPath(arcCenter: point, radius: 112, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         pulsatingLayer.path = pulsatingPath.cgPath
-        pulsatingLayer.strokeColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
+        pulsatingLayer.strokeColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         pulsatingLayer.lineWidth = 0
         pulsatingLayer.fillColor = UIColor.clear.cgColor
         pulsatingLayer.opacity = 0
         self.view.layer.addSublayer(pulsatingLayer)
         
         circleLayer.path = circularPath.cgPath
-        circleLayer.strokeColor = UIColor.white.cgColor
+        circleLayer.strokeColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         circleLayer.lineWidth = 12
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineCap = .round
@@ -167,7 +178,7 @@ class SessionViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [descriptionLabel, minutesLabel, startButton, cancelButton].forEach { (view) in
+        [goalLabel, descriptionLabel, minutesLabel, startButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         
@@ -175,15 +186,20 @@ class SessionViewController: UIViewController {
     
     private func setConstraints() {
         
+        goalLabel.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(100)
+            make.centerX.equalToSuperview()
+        }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(125)
+            make.top.equalTo(goalLabel.snp.bottom).offset(45)
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
         }
         
         minutesLabel.snp.makeConstraints { (make) in
-            make.centerY.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(25)
+            make.centerX.equalToSuperview()
         }
         
         
