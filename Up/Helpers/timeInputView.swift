@@ -14,6 +14,15 @@ class timeInputViewButton: UIView {
     
     
     //MARK: OUTLETS
+    let darkView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 5
+        view.backgroundColor = .black
+        view.alpha = 0.5
+        view.isHidden = true
+        return view
+    }()
+    
     let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
@@ -50,10 +59,15 @@ class timeInputViewButton: UIView {
    
         self.addSubview(timeLabel)
         self.addSubview(arrowImage)
+        self.addSubview(darkView)
         
     }
     
     private func setConstraints() {
+        
+        darkView.snp.makeConstraints { (make) in
+            make.top.bottom.right.left.equalToSuperview()
+        }
         
         timeLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
@@ -70,4 +84,14 @@ class timeInputViewButton: UIView {
     }
     
     
+}
+
+extension timeInputViewButton: inputDelegate {
+    func tapStarted() {
+        darkView.isHidden = false
+    }
+    
+    func tapEnded() {
+        darkView.isHidden = true
+    }
 }

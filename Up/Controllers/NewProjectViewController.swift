@@ -9,13 +9,12 @@ import UIKit
 
 class NewProjectViewController: UIViewController {
     
-    
-    
-    
+
     //VARIABLES
     var projectToReturn: Project!
     var timedProjectToReturn: timedProject!
     var blurEffectView: UIVisualEffectView?
+    var timeInputDelegate: inputDelegate!
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -212,25 +211,37 @@ class NewProjectViewController: UIViewController {
         
     }
     
-    @objc func handleTap() {
-        let nextVC = timeSelectorViewController()
-        //BLOCK
-        nextVC.onDoneBlock = { result in
-            // Do something
-            UIView.animate(withDuration: 0.4, animations: {
-                self.blurEffectView?.alpha = 0
-            }, completion:  {
-                (value: Bool) in
-                self.blurEffectView?.isHidden = true
-            })
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        
+        if gestureRecognizer.state == .began {
+            print("started")
+            timeInputDelegate.tapStarted()
         }
-        blurEffectView?.isHidden = false
-        blurEffectView?.alpha = 0
-        UIView.animate(withDuration: 0.3, animations: {
-            self.blurEffectView?.alpha = 0.6
-        })
-        nextVC.modalPresentationStyle = .overCurrentContext
-        self.present(nextVC, animated: true, completion: nil)
+        
+        if gestureRecognizer.state == .ended {
+            
+            timeInputDelegate.tapEnded()
+            
+            let nextVC = timeSelectorViewController()
+            //BLOCK
+            nextVC.onDoneBlock = { result in
+                // Do something
+                UIView.animate(withDuration: 0.4, animations: {
+                    self.blurEffectView?.alpha = 0
+                }, completion:  {
+                    (value: Bool) in
+                    self.blurEffectView?.isHidden = true
+                })
+            }
+            blurEffectView?.isHidden = false
+            blurEffectView?.alpha = 0
+            UIView.animate(withDuration: 0.3, animations: {
+                self.blurEffectView?.alpha = 0.6
+            })
+            nextVC.modalPresentationStyle = .overCurrentContext
+            self.present(nextVC, animated: true, completion: nil)
+        }
+
     }
     
     
@@ -247,17 +258,17 @@ class NewProjectViewController: UIViewController {
     }
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tap.minimumPressDuration = 0
         timeButton.addGestureRecognizer(tap)
         configNavBar()
         addOutlets()
         addBlur()
         setConstraints()
-        
+        timeInputDelegate = timeButton
         // Do any additional setup after loading the view.
     }
     
@@ -265,4 +276,13 @@ class NewProjectViewController: UIViewController {
     
 }
 
+extension NewProjectViewController {
+    
+}
+
+protocol inputDelegate {
+    func tapStarted()
+    
+    func tapEnded()
+}
 
