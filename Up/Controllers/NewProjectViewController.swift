@@ -66,7 +66,7 @@ class NewProjectViewController: UIViewController {
     var typeStackView: UIStackView!
     
     
-    var timeButton = timeInputViewButton(frame: CGRect(x: 0, y: 0, width: 200, height: 75))
+    var timeButton = timeInputViewButton(frame: CGRect(x: 0, y: 0, width: 165, height: 50))
     
     var addButton: UIButton = {
         let button = UIButton(type: .system)
@@ -179,9 +179,20 @@ class NewProjectViewController: UIViewController {
                 self.timeButton.isHidden = true
             })
             
-            UIView.animate(withDuration: 0.4) {
+            
+            UIView.animate(withDuration: 0.4, animations: {
                 self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y - 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
-            }
+            }, completion: { result in
+                self.addButton.snp.makeConstraints { (make) in
+                    make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
+                    make.centerX.equalToSuperview()
+                    make.width.equalTo(100)
+                    make.height.equalTo(45)
+                }
+                
+                self.view.layoutIfNeeded()
+            })
+            
 
         }
     }
@@ -200,9 +211,20 @@ class NewProjectViewController: UIViewController {
                 
             })
             
-            UIView.animate(withDuration: 0.3) {
+//            UIView.animate(withDuration: 0.3) {
+//                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y + 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
+//            }
+            UIView.animate(withDuration: 0.4, animations: {
                 self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y + 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
-            }
+            }, completion: { result in
+                self.addButton.snp.makeConstraints { (make) in
+                    make.top.equalTo(self.timeButton.snp.bottom).offset(45)
+                    make.centerX.equalToSuperview()
+                    make.width.equalTo(100)
+                    make.height.equalTo(45)
+                }
+                self.view.layoutIfNeeded()
+            })
         }
     }
     
@@ -238,7 +260,7 @@ class NewProjectViewController: UIViewController {
                 })
                 
                 self.timeInputDelegate.sendSelectedTime(time: result)
-                self.loadViewIfNeeded()
+                
                 
             }
             

@@ -101,7 +101,6 @@ class SunnyCustomInputView: UIView {
     private func setConstraints(type: inputType) {
         
         
-        
         switch type {
         case .textField:
             tf.snp.makeConstraints { (make) in
