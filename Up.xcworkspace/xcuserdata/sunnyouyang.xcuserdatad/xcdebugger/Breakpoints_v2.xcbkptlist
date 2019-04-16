@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Up/Helpers/TextFieldHelper.swift"
-            timestampString = "577067659.148505"
+            timestampString = "577082352.289124"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "99"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Up/Helpers/timeInputView.swift"
-            timestampString = "577067659.148584"
+            timestampString = "577082352.289192"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
@@ -42,12 +42,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Up/Controllers/NewProjectViewController.swift"
-            timestampString = "577067659.148643"
+            timestampString = "577082352.289246"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
-            landmarkName = "taskButtonSelected()"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Up/Helpers/timeInputView.swift"
+            timestampString = "577082352.289624"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "sendSelectedTime(time:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,42 +74,42 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Up/Controllers/NewProjectViewController.swift"
-            timestampString = "577067659.149043"
+            timestampString = "577082352.289668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "sessionButtonSelected()"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
+            landmarkName = "setConstraints()"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #3 (Swift.Bool) -&gt; () in Up.NewProjectViewController.(sessionButtonSelected in _F09E2AF00C2BEF18562D2954E32BEB83)() -&gt; ()"
+                  symbolName = "Up.NewProjectViewController.(setConstraints in _F09E2AF00C2BEF18562D2954E32BEB83)() -&gt; ()"
                   moduleName = "Up"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunnyouyang/Desktop/Projects/Up/Up/Controllers/NewProjectViewController.swift"
-                  timestampString = "577067557.081853"
+                  timestampString = "577070300.067068"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "218"
-                  endingLineNumber = "218"
-                  offsetFromSymbolStart = "30">
+                  startingLineNumber = "153"
+                  endingLineNumber = "153"
+                  offsetFromSymbolStart = "1013">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (SnapKit.ConstraintMaker) -&gt; () in closure #3 (Swift.Bool) -&gt; () in Up.NewProjectViewController.(sessionButtonSelected in _F09E2AF00C2BEF18562D2954E32BEB83)() -&gt; ()"
+                  symbolName = "closure #7 (SnapKit.ConstraintMaker) -&gt; () in Up.NewProjectViewController.(setConstraints in _F09E2AF00C2BEF18562D2954E32BEB83)() -&gt; ()"
                   moduleName = "Up"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunnyouyang/Desktop/Projects/Up/Up/Controllers/NewProjectViewController.swift"
-                  timestampString = "577067557.084486"
+                  timestampString = "577070300.068694"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "219"
-                  endingLineNumber = "219"
+                  startingLineNumber = "154"
+                  endingLineNumber = "154"
                   offsetFromSymbolStart = "37">
                </Location>
             </Locations>
@@ -106,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Up/Controllers/NewProjectViewController.swift"
-            timestampString = "577067659.149308"
+            timestampString = "577082352.289871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
             landmarkName = "sessionButtonSelected()"
             landmarkType = "7">
          </BreakpointContent>

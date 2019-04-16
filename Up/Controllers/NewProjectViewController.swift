@@ -149,7 +149,7 @@ class NewProjectViewController: UIViewController {
             make.width.equalTo(165)
             make.height.equalTo(50)
         }
-
+        
         addButton.snp.makeConstraints { (make) in
             make.top.equalTo(timeButton.snp.bottom).offset(-15)
             make.centerX.equalToSuperview()
@@ -172,33 +172,31 @@ class NewProjectViewController: UIViewController {
             sessionButton.backgroundColor = nil
             sessionButton.isSelected = false
             taskButton.isSelected = true
+            self.addButton.snp.updateConstraints { (make) in
+                make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
+                make.centerX.equalToSuperview()
+                make.width.equalTo(100)
+                make.height.equalTo(45)
+            }
+            
             UIView.animate(withDuration: 0.3, animations: {
                 self.timeButton.alpha = 0
+                self.view.layoutIfNeeded()
             }, completion:  {
                 (value: Bool) in
                 self.timeButton.isHidden = true
             })
-            
-            
-            UIView.animate(withDuration: 0.4, animations: {
-                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y - 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
-            }, completion: { result in
-                self.addButton.snp.makeConstraints { (make) in
-                    make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
-                    make.centerX.equalToSuperview()
-                    make.width.equalTo(100)
-                    make.height.equalTo(45)
-                }
-                
-                self.view.layoutIfNeeded()
-            })
+            self.view.layoutIfNeeded()
             
 
         }
     }
     
+    
+    
     @objc private func sessionButtonSelected() {
         //switching button mode
+        
         if sessionButton.isSelected == false {
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
@@ -206,25 +204,27 @@ class NewProjectViewController: UIViewController {
             taskButton.isSelected = false
             timeButton.isHidden = false
             timeButton.alpha = 0
+            
+            self.addButton.snp.updateConstraints { (make) in
+                make.top.equalTo(self.timeButton.snp.bottom).offset(45)
+                make.centerX.equalToSuperview()
+                make.width.equalTo(100)
+                make.height.equalTo(45)
+            }
+            
             UIView.animate(withDuration: 0.4, animations: {
                 self.timeButton.alpha = 1
+                self.view.layoutIfNeeded()
                 
             })
             
-//            UIView.animate(withDuration: 0.3) {
+//            UIView.animate(withDuration: 0.4, animations: {
 //                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y + 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
-//            }
-            UIView.animate(withDuration: 0.4, animations: {
-                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y + 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
-            }, completion: { result in
-                self.addButton.snp.makeConstraints { (make) in
-                    make.top.equalTo(self.timeButton.snp.bottom).offset(45)
-                    make.centerX.equalToSuperview()
-                    make.width.equalTo(100)
-                    make.height.equalTo(45)
-                }
-                self.view.layoutIfNeeded()
-            })
+//            }, completion: { result in
+//                self.view.setNeedsUpdateConstraints()
+//            })
+//
+            
         }
     }
     
