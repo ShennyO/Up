@@ -14,7 +14,15 @@ enum inputType {
     case textView
 }
 
+protocol textViewDelegate {
+    func sendText(text: String)
+}
+
 class SunnyCustomInputView: UIView {
+    
+    //MARK: VARIABLES
+    var textDelegate: textViewDelegate!
+    
     
     //MARK: OUTLETS
     
@@ -161,6 +169,11 @@ extension SunnyCustomInputView: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
+            
+            if !textView.text.isEmpty {
+                textDelegate.sendText(text: textView.text)
+            }
+            
             textView.resignFirstResponder()
             return false
         }
@@ -185,6 +198,8 @@ extension SunnyCustomInputView: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = "Goal description"
             textView.textColor = UIColor.gray
+        } else {
+            textDelegate.sendText(text: textView.text)
         }
         tfOverlayLabel.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         dismissBottomBorder()

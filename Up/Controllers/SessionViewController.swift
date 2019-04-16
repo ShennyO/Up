@@ -40,7 +40,7 @@ class SessionViewController: UIViewController {
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.white
+        label.textColor = #colorLiteral(red: 0.6745760441, green: 0.6705681682, blue: 0.6776582003, alpha: 1)
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
         label.numberOfLines = 0
         label.textAlignment = .center

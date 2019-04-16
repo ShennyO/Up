@@ -11,11 +11,12 @@ class NewProjectViewController: UIViewController {
     
 
     //VARIABLES
-    var projectToReturn: Project!
-    var timedProjectToReturn: timedProject!
     var blurEffectView: UIVisualEffectView?
+    var selectedTime = 20
+    var descriptionText: String?
     var timeInputDelegate: inputDelegate!
-    
+    var sendSelectedProject: ((Project) -> ())?
+    var sendSelectedTimedProject: ((timedProject) -> ())?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -75,6 +76,7 @@ class NewProjectViewController: UIViewController {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -102,6 +104,7 @@ class NewProjectViewController: UIViewController {
         [newProjectLabel,descriptionTextView, timeButton, addButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
+        descriptionTextView.textDelegate = self
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
         typeStackView.alignment = .fill
         typeStackView.spacing = 35
@@ -165,6 +168,10 @@ class NewProjectViewController: UIViewController {
         
     }
     
+    
+    //MARK: OBJC FUNCTIONS
+    
+    
     @objc private func taskButtonSelected() {
         //switching button mode
         if taskButton.isSelected == false {
@@ -218,10 +225,26 @@ class NewProjectViewController: UIViewController {
                 self.view.layoutIfNeeded()
                 
             })
-            
-            
         }
     }
+    
+    
+    @objc private func addButtonTapped() {
+        guard let text = descriptionText else {
+            return
+        }
+        
+        if sessionButton.isSelected {
+            let newProject = timedProject(description: text, time: selectedTime)
+            sendSelectedTimedProject!(newProject)
+        } else {
+            let newProject = Project(description: text)
+            sendSelectedProject!(newProject)
+        }
+
+        self.dismiss(animated: true)
+    }
+    
     
     @objc private func cancelButtonTapped() {
         self.dismiss(animated: true)
@@ -253,9 +276,9 @@ class NewProjectViewController: UIViewController {
                     (value: Bool) in
                     self.blurEffectView?.isHidden = true
                 })
-                
+                //THIS IS SENDING THE SELECTED TIME BACK TO THE TIMEINPUTBUTTONVIEW
                 self.timeInputDelegate.sendSelectedTime(time: result)
-                
+                self.selectedTime = result
                 
             }
             
@@ -305,7 +328,11 @@ class NewProjectViewController: UIViewController {
     
 }
 
-extension NewProjectViewController {
+extension NewProjectViewController: textViewDelegate {
+    func sendText(text: String) {
+        descriptionText = text
+    }
+    
     
 }
 
