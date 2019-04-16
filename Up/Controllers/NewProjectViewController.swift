@@ -172,6 +172,7 @@ class NewProjectViewController: UIViewController {
             sessionButton.backgroundColor = nil
             sessionButton.isSelected = false
             taskButton.isSelected = true
+            
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
                 make.centerX.equalToSuperview()
@@ -206,7 +207,7 @@ class NewProjectViewController: UIViewController {
             timeButton.alpha = 0
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(45)
+                make.top.equalTo(self.timeButton.snp.bottom).offset(35)
                 make.centerX.equalToSuperview()
                 make.width.equalTo(100)
                 make.height.equalTo(45)
@@ -218,12 +219,6 @@ class NewProjectViewController: UIViewController {
                 
             })
             
-//            UIView.animate(withDuration: 0.4, animations: {
-//                self.addButton.frame = CGRect(x: self.addButton.frame.origin.x, y: self.addButton.frame.origin.y + 60, width: self.addButton.frame.width, height: self.addButton.frame.height)
-//            }, completion: { result in
-//                self.view.setNeedsUpdateConstraints()
-//            })
-//
             
         }
     }
@@ -315,6 +310,7 @@ extension NewProjectViewController {
 }
 
 protocol inputDelegate {
+    
     func sendSelectedTime(time: Int)
     
     func tapStarted()
