@@ -9,49 +9,60 @@ import Foundation
 import UIKit
 
 
-struct HeaderViewHelper {
-    //In Progress Title Header
-    //TODO: create enum so we only need one titleHeaderView
-    static func createTasksTitleHeaderView(title: String, fontSize: CGFloat, frame: CGRect, color: UIColor) -> UIView
-    {
-        let vw = UIView(frame:frame)
-        vw.backgroundColor = color
-        
-        let titleLabel = UILabel()
-        titleLabel.clipsToBounds = false
-        titleLabel.textColor = UIColor.white
-        titleLabel.text = title
-        titleLabel.textAlignment = .left
-        titleLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
-        titleLabel.bounds.size.width = vw.bounds.width / 3
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 25)
-        
-        let editButton: UIButton = {
-            let button = UIButton()
-            button.setBackgroundImage(#imageLiteral(resourceName: "editIcon"), for: .normal)
-            button.frame = CGRect(x: 0, y: 0, width: 35, height: 30)
-//            button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
-            button.clipsToBounds = true
-            return button
-        }()
+protocol editButtonDelegate {
+    func editButtonTapped()
+}
 
-        
-        
-        vw.addSubview(titleLabel)
-        vw.addSubview(editButton)
-        // Constraints
+class HeaderView: UIView {
+    
+    //MARK: OUTLETS
+    var titleLabel: UILabel = {
+        let label = UILabel()
+        label.clipsToBounds = false
+        label.textColor = UIColor.white
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
+        label.textAlignment = .left
+        return label
+    }()
+    
+    let editButton: UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(#imageLiteral(resourceName: "editIcon"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        //            button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        button.clipsToBounds = true
+        return button
+    }()
+    
+    private func addOutlets() {
+        self.addSubview(titleLabel)
+        self.addSubview(editButton)
+    }
+    
+    private func setConstraints() {
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(20)
             make.centerY.equalToSuperview().offset(5)
         }
-        
+    
         editButton.snp.makeConstraints { (make) in
             make.height.width.equalTo(30)
-            make.right.equalToSuperview().offset(-20)
+            make.right.equalToSuperview().offset(-25)
             make.centerY.equalToSuperview().offset(5)
         }
-        
-        return vw
     }
+    
+    init(frame: CGRect, title: String) {
+        super.init(frame: frame)
+        titleLabel.text = title
+        addOutlets()
+        setConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
 }
 

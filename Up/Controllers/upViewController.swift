@@ -71,7 +71,8 @@ extension upViewController {
         self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
         self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
         self.upTableView.register(instructionCell.self, forCellReuseIdentifier: "instructionCell")
-        self.upTableView.tableHeaderView = HeaderViewHelper.createTasksTitleHeaderView(title: "Today", fontSize: 30, frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
+        self.upTableView.tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), title: "Today")
+//        self.upTableView.tableHeaderView = HeaderViewHelper.createTasksTitleHeaderView(title: "Today", fontSize: 30, frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in
@@ -157,6 +158,7 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
         if projects.count == 0 && timedProjects.count == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "instructionCell") as! instructionCell
             cell.setUpCell()
+            cell.selectionStyle = .none
             return cell
         }
         if indexPath.section == 0 {
