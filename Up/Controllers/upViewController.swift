@@ -20,11 +20,12 @@ class upViewController: UIViewController {
         return button
     }()
     
+    
+    
     //MARK: VARIABLES
-    var projects: [Project] = [Project(description: "Go out to eat with Fam"), Project(description: "Hang out with Victor")]
-    var timedProjects: [timedProject] = [timedProject(description: "accept offer", time: 30), timedProject(description: "spend 2-3 hrs on Up", time: 60), timedProject(description: "accept offer a big time offer and start my next steps adding more text just to", time: 3), timedProject(description: "Shower after long day", time: 20)]
-//    var projects: [Project] = []
-//    var timedProjects: [timedProject] = []
+
+    var projects: [Project] = []
+    var timedProjects: [timedProject] = []
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -88,7 +89,11 @@ extension upViewController {
             make.bottom.equalToSuperview().offset(-100)
             make.width.height.equalTo(50)
         }
+        
     }
+    
+    
+    //MARK: OBJC FUNCTIONS
     
     @objc private func addButtonTapped() {
         let nextVC = NewProjectViewController()
@@ -103,6 +108,11 @@ extension upViewController {
         }
         
         self.present(nextVC, animated: true, completion: nil)
+    }
+    
+    @objc private func editButtonTapped() {
+        upTableView.setEditing(!upTableView.isEditing, animated: true) // Set opposite value of current editing status
+        navigationItem.rightBarButtonItem?.title = upTableView.isEditing ? "Done" : "Edit" // Set title depending on the editing status
     }
     
 }
@@ -121,14 +131,9 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            if projects.count == 0 {
-                return 50
-            }
-        } else if indexPath.section == 1 {
-            if timedProjects.count == 0 {
-                return 50
-            }
+
+        if projects.count == 0 && timedProjects.count == 0 {
+            return 50
         }
         return 85
     }

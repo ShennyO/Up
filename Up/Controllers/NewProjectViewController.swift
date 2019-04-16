@@ -328,7 +328,7 @@ class NewProjectViewController: UIViewController {
     
 }
 
-extension NewProjectViewController: textViewDelegate {
+extension NewProjectViewController: customTextViewDelegate {
     func sendText(text: String) {
         descriptionText = text
     }

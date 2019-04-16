@@ -88,10 +88,7 @@ class timeInputViewButton: UIView {
 
 extension timeInputViewButton: inputDelegate {
     func sendSelectedTime(time: Int) {
-        print("running")
-//        timeLabel.backgroundColor = UIColor.red
         timeLabel.text = String(describing: time) + " minutes"
-//        arrowImage.image = #imageLiteral(resourceName: "Rectangle")
     }
     
     

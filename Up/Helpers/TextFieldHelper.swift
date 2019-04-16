@@ -14,14 +14,14 @@ enum inputType {
     case textView
 }
 
-protocol textViewDelegate {
+protocol customTextViewDelegate {
     func sendText(text: String)
 }
 
 class SunnyCustomInputView: UIView {
     
     //MARK: VARIABLES
-    var textDelegate: textViewDelegate!
+    var textDelegate: customTextViewDelegate!
     
     
     //MARK: OUTLETS
