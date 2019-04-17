@@ -85,7 +85,7 @@ class ProjectCell: UITableViewCell {
         }
         
         deleteButton.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(8)
             make.right.equalToSuperview().offset(-15)
             make.height.width.equalTo(30)
         }
