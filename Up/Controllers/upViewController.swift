@@ -20,6 +20,8 @@ class upViewController: UIViewController {
         return button
     }()
     
+    var tableHeaderView: HeaderView!
+    
     
     
     //MARK: VARIABLES
@@ -40,8 +42,11 @@ class upViewController: UIViewController {
     
 }
 
+
 extension upViewController {
     //MARK: PRIVATE FUNCTIONS
+    
+    
     
     private func setUp() {
         configNavBar()
@@ -63,6 +68,8 @@ extension upViewController {
     }
     
     private func setUpTableView() {
+        tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), title: "Today")
+        tableHeaderView.delegate = self
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
@@ -71,8 +78,7 @@ extension upViewController {
         self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
         self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
         self.upTableView.register(instructionCell.self, forCellReuseIdentifier: "instructionCell")
-        self.upTableView.tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), title: "Today")
-//        self.upTableView.tableHeaderView = HeaderViewHelper.createTasksTitleHeaderView(title: "Today", fontSize: 30, frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), color: #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1))
+        self.upTableView.tableHeaderView = tableHeaderView
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in
@@ -111,10 +117,6 @@ extension upViewController {
         self.present(nextVC, animated: true, completion: nil)
     }
     
-    @objc private func editButtonTapped() {
-        upTableView.setEditing(!upTableView.isEditing, animated: true) // Set opposite value of current editing status
-        navigationItem.rightBarButtonItem?.title = upTableView.isEditing ? "Done" : "Edit" // Set title depending on the editing status
-    }
     
 }
 
@@ -182,6 +184,14 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    
+    
+}
+
+extension upViewController: editButtonDelegate {
+    func editButtonTapped() {
+        
+    }
     
     
 }

@@ -186,7 +186,7 @@ class NewProjectViewController: UIViewController {
                 make.width.equalTo(100)
                 make.height.equalTo(45)
             }
-            
+            //hiding timeButton
             UIView.animate(withDuration: 0.3, animations: {
                 self.timeButton.alpha = 0
                 self.view.layoutIfNeeded()
@@ -219,7 +219,7 @@ class NewProjectViewController: UIViewController {
                 make.width.equalTo(100)
                 make.height.equalTo(45)
             }
-            
+            //showing timeButton
             UIView.animate(withDuration: 0.4, animations: {
                 self.timeButton.alpha = 1
                 self.view.layoutIfNeeded()
