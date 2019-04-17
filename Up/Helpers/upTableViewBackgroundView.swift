@@ -28,7 +28,7 @@ class upTableViewBackgroundView: UIView {
         
         getStartedLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(25)
-            make.top.equalToSuperview().offset(200)
+            make.top.equalToSuperview().offset(225)
         }
         
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)

@@ -122,7 +122,7 @@ class TimedProjectCell: UITableViewCell {
         
         deleteButton.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview().offset(8)
-            make.right.equalToSuperview().offset(-15)
+            make.right.equalToSuperview().offset(-10)
             make.height.width.equalTo(30)
         }
         
