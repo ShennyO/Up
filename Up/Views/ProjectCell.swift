@@ -94,32 +94,31 @@ class ProjectCell: UITableViewCell {
     
     private func setUpCell() {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        NotificationCenter.default.addObserver(self, selector: #selector(editModeOn), name: .editModeOn, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
         addOutlets()
         setConstraints()
         descriptionLabel.text = project.description
         
     }
+    
+    @objc func editModeOff() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.deleteButton.alpha = 0
+        }, completion:  {
+            (value: Bool) in
+            self.deleteButton.isHidden = true
+        })
+    }
+    
+    @objc func editModeOn() {
+        
+        deleteButton.isHidden = false
+        deleteButton.alpha = 0
+        UIView.animate(withDuration: 0.4, animations: {
+            self.deleteButton.alpha = 1
+        })
+    }
 
 }
 
-//extension ProjectCell: tableViewEditDelegate {
-//    func editModeOff() {
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.deleteButton.alpha = 0
-//        }, completion:  {
-//            (value: Bool) in
-//            self.deleteButton.isHidden = true
-//        })
-//    }
-//    
-//    func editModeOn() {
-//        deleteButton.isHidden = false
-//        deleteButton.alpha = 0
-//        UIView.animate(withDuration: 0.4, animations: {
-//            self.deleteButton.alpha = 1
-//        })
-//    }
-//    
-//    
-//    
-//}
