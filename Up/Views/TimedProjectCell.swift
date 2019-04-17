@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol timedCellDelegate {
+    func passIndex(index: IndexPath)
+}
+
 class TimedProjectCell: UITableViewCell {
 
     //MARK: VARIABLES
@@ -15,7 +19,8 @@ class TimedProjectCell: UITableViewCell {
             setUpCell()
         }
     }
-    
+    var index: IndexPath!
+    var delegate: timedCellDelegate!
     
     //MARK: OUTLETS
     var containerView: UIView = {
@@ -127,6 +132,7 @@ class TimedProjectCell: UITableViewCell {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         NotificationCenter.default.addObserver(self, selector: #selector(editModeOn), name: .editModeOn, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         addOutlets()
         setConstraints()
         descriptionLabel.text = timedProject.description
@@ -141,6 +147,25 @@ class TimedProjectCell: UITableViewCell {
         } else {
             darkView.alpha = 0
         }
+    }
+    
+    @objc func deleteButtonTapped() {
+        delegate.passIndex(index: index)
+//        containerView.snp.updateConstraints { (make) in
+//
+//            make.top.equalToSuperview().offset(15)
+//            make.bottom.equalToSuperview()
+//            make.left.equalToSuperview().offset(-375)
+//            make.right.equalToSuperview().offset(-425)
+//
+//        }
+//
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.layoutIfNeeded()
+//        }) { (result) in
+//            print("ok")
+//        }
+        
     }
     
     @objc func editModeOff() {

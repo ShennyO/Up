@@ -19,7 +19,7 @@ class HeaderView: UIView {
     //MARK: OUTLETS
     var titleLabel: UILabel = {
         let label = UILabel()
-        label.clipsToBounds = false
+//        label.clipsToBounds = false
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
         label.textAlignment = .left

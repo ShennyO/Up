@@ -24,6 +24,7 @@ class upViewController: UIViewController {
     
     
     
+    
     //MARK: VARIABLES
 
     var projects: [Project] = []
@@ -76,8 +77,8 @@ extension upViewController {
         self.upTableView.dataSource = self
         self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
         self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
-        self.upTableView.register(instructionCell.self, forCellReuseIdentifier: "instructionCell")
         self.upTableView.tableHeaderView = tableHeaderView
+        self.upTableView.backgroundView = upTableViewBackgroundView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in
@@ -126,24 +127,17 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if projects.count == 0 && timedProjects.count == 0 {
-            return 1
-        }
+        
         return 2
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if projects.count == 0 && timedProjects.count == 0 {
-            return 50
-        }
         return 85
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if projects.count == 0 && timedProjects.count == 0 {
-            return 1
-        }
+        
         if section == 0 {
             return projects.count
         } else {
@@ -156,12 +150,6 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if projects.count == 0 && timedProjects.count == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "instructionCell") as! instructionCell
-            cell.setUpCell()
-            cell.selectionStyle = .none
-            return cell
-        }
         
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
@@ -172,6 +160,8 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
             cell.selectionStyle = .none
+            cell.index = indexPath
+            cell.delegate = self
             cell.timedProject = timedProjects[indexPath.row]
             return cell
         }
@@ -185,9 +175,16 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+}
+
+extension upViewController: timedCellDelegate {
+    
+    func passIndex(index: IndexPath) {
+        timedProjects.remove(at: index.row)
+        upTableView.deleteRows(at: [index], with: .fade)
+    }
     
     
 }
-
 
 
