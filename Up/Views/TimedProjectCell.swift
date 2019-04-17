@@ -8,7 +8,7 @@
 import UIKit
 
 protocol timedCellDelegate {
-    func passIndex(index: IndexPath)
+    func passTimedCellIndex(index: IndexPath)
 }
 
 class TimedProjectCell: UITableViewCell {
@@ -150,21 +150,7 @@ class TimedProjectCell: UITableViewCell {
     }
     
     @objc func deleteButtonTapped() {
-        delegate.passIndex(index: index)
-//        containerView.snp.updateConstraints { (make) in
-//
-//            make.top.equalToSuperview().offset(15)
-//            make.bottom.equalToSuperview()
-//            make.left.equalToSuperview().offset(-375)
-//            make.right.equalToSuperview().offset(-425)
-//
-//        }
-//
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.layoutIfNeeded()
-//        }) { (result) in
-//            print("ok")
-//        }
+        delegate.passTimedCellIndex(index: index)
         
     }
     

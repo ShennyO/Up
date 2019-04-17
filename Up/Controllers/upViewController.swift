@@ -154,6 +154,8 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
             cell.selectionStyle = .none
+            cell.delegate = self
+            cell.index = indexPath
             cell.project = projects[indexPath.row]
             
             return cell
@@ -177,12 +179,17 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-extension upViewController: timedCellDelegate {
-    
-    func passIndex(index: IndexPath) {
+extension upViewController: timedCellDelegate, nonTimedCellDelegate {
+    func passTimedCellIndex(index: IndexPath) {
         timedProjects.remove(at: index.row)
-        upTableView.deleteRows(at: [index], with: .fade)
+        upTableView.deleteRows(at: [index], with: .left)
     }
+    
+    func passNonTimedCellIndex(index: IndexPath) {
+        projects.remove(at: index.row)
+        upTableView.deleteRows(at: [index], with: .left)
+    }
+    
     
     
 }

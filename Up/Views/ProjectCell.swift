@@ -7,6 +7,11 @@
 
 import UIKit
 
+
+protocol nonTimedCellDelegate {
+    func passNonTimedCellIndex(index: IndexPath)
+}
+
 class ProjectCell: UITableViewCell {
 
     var project: Project! {
@@ -14,6 +19,8 @@ class ProjectCell: UITableViewCell {
             setUpCell()
         }
     }
+    var index: IndexPath!
+    var delegate: nonTimedCellDelegate!
     
     //MARK: OUTLETS
     
@@ -99,6 +106,12 @@ class ProjectCell: UITableViewCell {
         addOutlets()
         setConstraints()
         descriptionLabel.text = project.description
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        
+    }
+    
+    @objc func deleteButtonTapped() {
+        delegate.passNonTimedCellIndex(index: index)
         
     }
     
