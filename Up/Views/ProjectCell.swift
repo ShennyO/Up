@@ -29,14 +29,7 @@ class ProjectCell: UITableViewCell {
         return containerView
     }()
     
-//    var titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-//        label.numberOfLines = 0
-//        label.textColor = #colorLiteral(red: 0.09240043908, green: 0.0924237594, blue: 0.09239736944, alpha: 1)
-//        return label
-//    }()
-    
+
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
@@ -51,24 +44,20 @@ class ProjectCell: UITableViewCell {
         return button
     }()
     
-//    var leftStackView: UIStackView!
+    var deleteButton: UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(#imageLiteral(resourceName: "deleteButton"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        button.isHidden = true
+        return button
+    }()
+    
     
     
     //MARK: FUNCTIONS
     private func addOutlets() {
         self.addSubview(containerView)
-        
-//        if project.description != "" {
-//            leftStackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
-//        } else {
-//            leftStackView = UIStackView(arrangedSubviews: [titleLabel])
-//        }
-//
-//        leftStackView.distribution = .fillEqually
-//        leftStackView.alignment = .fill
-//        leftStackView.axis = .vertical
-//        leftStackView.spacing = 5
-//        containerView.addSubview(leftStackView)
+        self.addSubview(deleteButton)
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(taskSquareButton)
         
@@ -88,16 +77,17 @@ class ProjectCell: UITableViewCell {
             make.centerY.equalToSuperview()
         }
         
-//        leftStackView.snp.makeConstraints { (make) in
-//            make.left.equalToSuperview().offset(15)
-//            make.centerY.equalToSuperview()
-//
-//        }
         
         taskSquareButton.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(20)
+        }
+        
+        deleteButton.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview().offset(-15)
+            make.height.width.equalTo(30)
         }
         
     }
@@ -106,9 +96,30 @@ class ProjectCell: UITableViewCell {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         addOutlets()
         setConstraints()
-//        titleLabel.text = project.title
         descriptionLabel.text = project.description
         
     }
 
 }
+
+//extension ProjectCell: tableViewEditDelegate {
+//    func editModeOff() {
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.deleteButton.alpha = 0
+//        }, completion:  {
+//            (value: Bool) in
+//            self.deleteButton.isHidden = true
+//        })
+//    }
+//    
+//    func editModeOn() {
+//        deleteButton.isHidden = false
+//        deleteButton.alpha = 0
+//        UIView.animate(withDuration: 0.4, animations: {
+//            self.deleteButton.alpha = 1
+//        })
+//    }
+//    
+//    
+//    
+//}

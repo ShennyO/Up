@@ -69,7 +69,6 @@ extension upViewController {
     
     private func setUpTableView() {
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), title: "Today")
-        tableHeaderView.delegate = self
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
@@ -163,10 +162,12 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = .none
             return cell
         }
+        
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
             cell.selectionStyle = .none
             cell.project = projects[indexPath.row]
+            
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
@@ -188,10 +189,5 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-extension upViewController: editButtonDelegate {
-    func editButtonTapped() {
-        
-    }
-    
-    
-}
+
+

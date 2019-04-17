@@ -59,12 +59,21 @@ class TimedProjectCell: UITableViewCell {
         return image
     }()
     
+    var deleteButton: UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(#imageLiteral(resourceName: "deleteButton"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        button.isHidden = true
+        return button
+    }()
+    
 
     
     //MARK: FUNCTIONS
     private func addOutlets() {
 
         self.addSubview(containerView)
+        self.addSubview(deleteButton)
         containerView.addSubview(darkView)
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(timeLabel)
@@ -105,13 +114,21 @@ class TimedProjectCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.width.height.equalTo(25)
         }
+        
+        deleteButton.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview().offset(8)
+            make.right.equalToSuperview().offset(-15)
+            make.height.width.equalTo(30)
+        }
+        
     }
     
     private func setUpCell() {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        NotificationCenter.default.addObserver(self, selector: #selector(editModeOn), name: .editModeOn, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
         addOutlets()
         setConstraints()
-//        titleLabel.text = timedProject.title
         descriptionLabel.text = timedProject.description
         timeLabel.text = String(describing: timedProject.time)
         
@@ -126,5 +143,25 @@ class TimedProjectCell: UITableViewCell {
         }
     }
     
+    @objc func editModeOff() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.deleteButton.alpha = 0
+        }, completion:  {
+            (value: Bool) in
+            self.deleteButton.isHidden = true
+        })
+    }
+    
+    @objc func editModeOn() {
+        
+        deleteButton.isHidden = false
+        deleteButton.alpha = 0
+        UIView.animate(withDuration: 0.4, animations: {
+            self.deleteButton.alpha = 1
+        })
+    }
+    
     
 }
+
+

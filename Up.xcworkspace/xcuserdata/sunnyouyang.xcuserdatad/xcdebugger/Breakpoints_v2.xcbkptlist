@@ -9,62 +9,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Up/Controllers/NewProjectViewController.swift"
-            timestampString = "577166638.707592"
+            filePath = "Up/Controllers/upViewController.swift"
+            timestampString = "577176840.900068"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Up/Controllers/NewProjectViewController.swift"
-            timestampString = "577166638.707684"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "setConstraints()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Up.NewProjectViewController.(setConstraints in _F09E2AF00C2BEF18562D2954E32BEB83)() -&gt; ()"
-                  moduleName = "Up"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunnyouyang/Desktop/Projects/Up/Up/Controllers/NewProjectViewController.swift"
-                  timestampString = "577156132.705462"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "156"
-                  endingLineNumber = "156"
-                  offsetFromSymbolStart = "1013">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #7 (SnapKit.ConstraintMaker) -&gt; () in Up.NewProjectViewController.(setConstraints in _F09E2AF00C2BEF18562D2954E32BEB83)() -&gt; ()"
-                  moduleName = "Up"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunnyouyang/Desktop/Projects/Up/Up/Controllers/NewProjectViewController.swift"
-                  timestampString = "577156132.7079459"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "157"
-                  endingLineNumber = "157"
-                  offsetFromSymbolStart = "37">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

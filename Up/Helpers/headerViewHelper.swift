@@ -9,14 +9,11 @@ import Foundation
 import UIKit
 
 
-protocol editButtonDelegate {
-    func editButtonTapped()
-}
+
 
 class HeaderView: UIView {
     
     //MARK: VARIABLES
-    var delegate: editButtonDelegate!
     var editButtonActive = false
     
     //MARK: OUTLETS
@@ -34,7 +31,6 @@ class HeaderView: UIView {
         button.setBackgroundImage(#imageLiteral(resourceName: "editIcon"), for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
-        button.clipsToBounds = true
         return button
     }()
     
@@ -93,11 +89,17 @@ class HeaderView: UIView {
                 self.dotDotDotLabel.isHidden = true
             })
             
+
+            NotificationCenter.default.post(name: .editModeOff, object: nil)
+            
         } else {
+            NotificationCenter.default.post(name: .editModeOn, object: nil)
+
+            
             editButtonActive = true
             editButton.snp.updateConstraints { (make) in
                 make.height.width.equalTo(30)
-                make.right.equalToSuperview().offset(-45)
+                make.right.equalToSuperview().offset(-35)
                 make.centerY.equalToSuperview().offset(5)
             }
             //showing the dotDotDots
@@ -115,7 +117,6 @@ class HeaderView: UIView {
             
         })
         
-        delegate.editButtonTapped()
     }
     
     init(frame: CGRect, title: String) {
