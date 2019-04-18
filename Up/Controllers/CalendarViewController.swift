@@ -33,6 +33,7 @@ class CalendarViewController: UIViewController {
         self.view.addSubview(calendarView)
         calendarView.minimumLineSpacing = 2
         calendarView.minimumInteritemSpacing = 2
+        calendarView.register(CalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "calendarSectionHeader")
         calendarView.register(CalendarCell.self, forCellWithReuseIdentifier: "calendarCell")
         calendarView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         calendarView.cellSize = self.view.frame.size.width / 7 - 4.0
@@ -71,17 +72,30 @@ extension CalendarViewController: JTAppleCalendarViewDelegate, JTAppleCalendarVi
     
     func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
         let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "calendarCell", for: indexPath) as! CalendarCell
-//        cell.snp.makeConstraints { (make) in
-//            make.height.equalTo(self.view.frame.width / 7)
-//        }
         cell.setUpCell()
         return cell
+    }
+    
+    func calendar(_ calendar: JTAppleCalendarView, headerViewForDateRange range: (start: Date, end: Date), at indexPath: IndexPath) -> JTAppleCollectionReusableView {
+        let header = calendar.dequeueReusableJTAppleSupplementaryView(withReuseIdentifier: "calendarSectionHeader", for: indexPath) as! CalendarHeaderView
+        let date = range.start
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM YYYY"
+        header.setUpView(month: formatter.string(from: date))
+        return header
+    }
+    
+    func calendarSizeForMonths(_ calendar: JTAppleCalendarView?) -> MonthSize? {
+        return MonthSize(defaultSize: 40)
     }
     
     func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
+        formatter.locale = Calendar.current.locale
+        formatter.timeZone = Calendar.current.timeZone
+        calendar.scrollingMode = .stopAtEachSection
         
         
         let startDate = formatter.date(from: "2018 01 01")!
