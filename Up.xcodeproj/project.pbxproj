@@ -28,6 +28,7 @@
 		C3751A422267045A00FF0E22 /* notificationNameHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A412267045A00FF0E22 /* notificationNameHelper.swift */; };
 		C3751A44226797CF00FF0E22 /* upTableViewBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A43226797CF00FF0E22 /* upTableViewBackgroundView.swift */; };
 		C3751A462267FC6400FF0E22 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A452267FC6400FF0E22 /* CalendarViewController.swift */; };
+		C3C5C0B82268088E00EA8523 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B72268088E00EA8523 /* CalendarCell.swift */; };
 		EA9435B687C0529AF11F85F8 /* Pods_UpTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302688DDD8A6251B5E3A8D14 /* Pods_UpTests.framework */; };
 		F19ADCF59C11CE8EF7F54125 /* Pods_Up.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7BAEDF3155CE5AAB0935E5 /* Pods_Up.framework */; };
 /* End PBXBuildFile section */
@@ -84,6 +85,7 @@
 		C3751A412267045A00FF0E22 /* notificationNameHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationNameHelper.swift; sourceTree = "<group>"; };
 		C3751A43226797CF00FF0E22 /* upTableViewBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = upTableViewBackgroundView.swift; sourceTree = "<group>"; };
 		C3751A452267FC6400FF0E22 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		C3C5C0B72268088E00EA8523 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		F42DC5CA08EDB9F40DBC9907 /* Pods-UpTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UpTests.release.xcconfig"; path = "Target Support Files/Pods-UpTests/Pods-UpTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -198,6 +200,7 @@
 			children = (
 				C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */,
 				C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */,
+				C3C5C0B72268088E00EA8523 /* CalendarCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3751A462267FC6400FF0E22 /* CalendarViewController.swift in Sources */,
+				C3C5C0B82268088E00EA8523 /* CalendarCell.swift in Sources */,
 				C37519E52255114900FF0E22 /* AppDelegate.swift in Sources */,
 				C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */,
 				C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */,
