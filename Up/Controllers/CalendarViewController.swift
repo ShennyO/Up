@@ -34,14 +34,15 @@ class CalendarViewController: UIViewController {
         calendarView.minimumLineSpacing = 2
         calendarView.minimumInteritemSpacing = 2
         calendarView.register(CalendarCell.self, forCellWithReuseIdentifier: "calendarCell")
-        calendarView.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        calendarView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        calendarView.cellSize = self.view.frame.size.width / 7 - 4.0
         calendarView.calendarDelegate = self
         calendarView.calendarDataSource = self
         calendarView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalToSuperview()
-            make.height.equalTo(350)
+            make.height.equalToSuperview()
             
         }
     }
@@ -61,6 +62,7 @@ class CalendarViewController: UIViewController {
 
 extension CalendarViewController: JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource {
     
+    
     func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
         let cell = cell as! CalendarCell
         cell.setUpCell()
@@ -69,6 +71,9 @@ extension CalendarViewController: JTAppleCalendarViewDelegate, JTAppleCalendarVi
     
     func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
         let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "calendarCell", for: indexPath) as! CalendarCell
+//        cell.snp.makeConstraints { (make) in
+//            make.height.equalTo(self.view.frame.width / 7)
+//        }
         cell.setUpCell()
         return cell
     }
