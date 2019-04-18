@@ -9,13 +9,109 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Up/Controllers/CalendarViewController.swift"
-            timestampString = "577262670.367623"
+            filePath = "Up/Helpers/headerViewHelper.swift"
+            timestampString = "577318590.472728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "calendar(_:headerViewForDateRange:at:)"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "editButtonTapped()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Up.HeaderView.(editButtonTapped in _0251A0868D268662304AA1A0F7FFD694)() -&gt; ()"
+                  moduleName = "Up"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunnyouyang/Desktop/Projects/Up/Up/Helpers/headerViewHelper.swift"
+                  timestampString = "577318171.64649"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (SnapKit.ConstraintMaker) -&gt; () in Up.HeaderView.(editButtonTapped in _0251A0868D268662304AA1A0F7FFD694)() -&gt; ()"
+                  moduleName = "Up"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunnyouyang/Desktop/Projects/Up/Up/Helpers/headerViewHelper.swift"
+                  timestampString = "577318171.648721"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "95"
+                  endingLineNumber = "95"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Up/Helpers/headerViewHelper.swift"
+            timestampString = "577318590.472793"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "editButtonTapped()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Up.HeaderView.(editButtonTapped in _0251A0868D268662304AA1A0F7FFD694)() -&gt; ()"
+                  moduleName = "Up"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunnyouyang/Desktop/Projects/Up/Up/Helpers/headerViewHelper.swift"
+                  timestampString = "577318171.65294"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115"
+                  offsetFromSymbolStart = "1496">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 (SnapKit.ConstraintMaker) -&gt; () in Up.HeaderView.(editButtonTapped in _0251A0868D268662304AA1A0F7FFD694)() -&gt; ()"
+                  moduleName = "Up"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunnyouyang/Desktop/Projects/Up/Up/Helpers/headerViewHelper.swift"
+                  timestampString = "577318171.6546479"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Up/Helpers/headerViewHelper.swift"
+            timestampString = "577318590.472837"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "editButtonTapped()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +121,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Up/Controllers/CalendarViewController.swift"
-            timestampString = "577262670.367691"
+            filePath = "Up/Helpers/headerViewHelper.swift"
+            timestampString = "577318590.4728791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "calendar(_:willDisplay:forItemAt:cellState:indexPath:)"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "editButtonTapped()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,14 +137,78 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Up/Controllers/CalendarViewController.swift"
-            timestampString = "577262670.3677419"
+            filePath = "Up/Helpers/headerViewHelper.swift"
+            timestampString = "577318590.472917"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "configureCalendar(_:)"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
+            landmarkName = "editButtonTapped()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Up/Helpers/headerViewHelper.swift"
+            timestampString = "577318590.472955"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "editButtonTapped()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Up/Helpers/headerViewHelper.swift"
+            timestampString = "577318590.4729919"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
+            landmarkName = "alertHeaderView(total:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Up/Controllers/upViewController.swift"
+            timestampString = "577318590.473029"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "projects"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Up/Controllers/upViewController.swift"
+            timestampString = "577318590.473376"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "timedProjects"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

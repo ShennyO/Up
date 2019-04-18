@@ -8,6 +8,11 @@
 import UIKit
 import SnapKit
 
+
+protocol upVCToUpVCHeaderDelegate {
+    func alertHeaderView(total: Int)
+}
+
 class upViewController: UIViewController {
     
     
@@ -26,9 +31,37 @@ class upViewController: UIViewController {
     
     
     //MARK: VARIABLES
-
-    var projects: [Project] = []
-    var timedProjects: [timedProject] = []
+    
+    var delegate: upVCToUpVCHeaderDelegate!
+    
+    var projects: [Project] = [] {
+        didSet {
+            let total = projects.count + timedProjects.count
+            if total != 0 {
+                tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100), title: "Today")
+                self.upTableView.tableHeaderView = tableHeaderView
+            } else {
+                tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
+                self.upTableView.tableHeaderView = tableHeaderView
+            }
+            delegate.alertHeaderView(total: total)
+            
+        }
+    }
+    var timedProjects: [timedProject] = [] {
+        didSet {
+            let total = projects.count + timedProjects.count
+            if total != 0 {
+                tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100), title: "Today")
+                self.upTableView.tableHeaderView = tableHeaderView
+            } else {
+                tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
+                self.upTableView.tableHeaderView = tableHeaderView
+            }
+            delegate.alertHeaderView(total: total)
+            
+        }
+    }
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -69,7 +102,8 @@ extension upViewController {
     }
     
     private func setUpTableView() {
-        tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75), title: "Today")
+        tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
+        delegate = tableHeaderView
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
@@ -78,7 +112,7 @@ extension upViewController {
         self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
         self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
         self.upTableView.tableHeaderView = tableHeaderView
-        self.upTableView.backgroundView = upTableViewBackgroundView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+//        self.upTableView.backgroundView = upTableViewBackgroundView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in
@@ -181,6 +215,7 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension upViewController: timedCellDelegate, nonTimedCellDelegate {
     func passTimedCellIndex(index: IndexPath) {
+        
         timedProjects.remove(at: index.row)
         upTableView.deleteRows(at: [index], with: .left)
     }

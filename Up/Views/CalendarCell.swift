@@ -16,7 +16,8 @@ class CalendarCell: JTAppleCell {
     
     
     func setUpCell() {
-        self.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1).withAlphaComponent(0.3)
+        self.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        self.layer.cornerRadius = 3
 
     }
     
