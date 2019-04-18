@@ -13,20 +13,20 @@
 		C37519EF2255114C00FF0E22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C37519ED2255114C00FF0E22 /* LaunchScreen.storyboard */; };
 		C37519FA2255114D00FF0E22 /* UpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37519F92255114D00FF0E22 /* UpTests.swift */; };
 		C3751A052255114D00FF0E22 /* UpUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A042255114D00FF0E22 /* UpUITests.swift */; };
-		C3751A1722552DFE00FF0E22 /* upViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1622552DFE00FF0E22 /* upViewController.swift */; };
+		C3751A1722552DFE00FF0E22 /* UpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1622552DFE00FF0E22 /* UpViewController.swift */; };
 		C3751A1922552F3D00FF0E22 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1822552F3D00FF0E22 /* Project.swift */; };
 		C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */; };
 		C3751A1D2256D6A100FF0E22 /* ProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */; };
-		C3751A1F22573A1E00FF0E22 /* headerViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1E22573A1E00FF0E22 /* headerViewHelper.swift */; };
-		C3751A2C225804DC00FF0E22 /* projectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A2B225804DC00FF0E22 /* projectType.swift */; };
+		C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */; };
+		C3751A2C225804DC00FF0E22 /* ProjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A2B225804DC00FF0E22 /* ProjectType.swift */; };
 		C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */; };
 		C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */; };
 		C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */; };
-		C3751A3A226178D500FF0E22 /* timeInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A39226178D500FF0E22 /* timeInputView.swift */; };
-		C3751A3E2261A25C00FF0E22 /* timeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3D2261A25C00FF0E22 /* timeSelectorViewController.swift */; };
+		C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A39226178D500FF0E22 /* TimeInputView.swift */; };
+		C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */; };
 		C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */; };
-		C3751A422267045A00FF0E22 /* notificationNameHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A412267045A00FF0E22 /* notificationNameHelper.swift */; };
-		C3751A44226797CF00FF0E22 /* upTableViewBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A43226797CF00FF0E22 /* upTableViewBackgroundView.swift */; };
+		C3751A422267045A00FF0E22 /* NotificationNameHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */; };
+		C3751A44226797CF00FF0E22 /* UpTableViewBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A43226797CF00FF0E22 /* UpTableViewBackgroundView.swift */; };
 		C3751A462267FC6400FF0E22 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A452267FC6400FF0E22 /* CalendarViewController.swift */; };
 		C3C5C0B82268088E00EA8523 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B72268088E00EA8523 /* CalendarCell.swift */; };
 		C3C5C0BA22684F7E00EA8523 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */; };
@@ -71,20 +71,20 @@
 		C3751A002255114D00FF0E22 /* UpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UpUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3751A042255114D00FF0E22 /* UpUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpUITests.swift; sourceTree = "<group>"; };
 		C3751A062255114D00FF0E22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C3751A1622552DFE00FF0E22 /* upViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = upViewController.swift; sourceTree = "<group>"; };
+		C3751A1622552DFE00FF0E22 /* UpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpViewController.swift; sourceTree = "<group>"; };
 		C3751A1822552F3D00FF0E22 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedProjectCell.swift; sourceTree = "<group>"; };
 		C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
-		C3751A1E22573A1E00FF0E22 /* headerViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = headerViewHelper.swift; sourceTree = "<group>"; };
-		C3751A2B225804DC00FF0E22 /* projectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = projectType.swift; sourceTree = "<group>"; };
+		C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewHelper.swift; sourceTree = "<group>"; };
+		C3751A2B225804DC00FF0E22 /* ProjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectType.swift; sourceTree = "<group>"; };
 		C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
 		C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPickerHelper.swift; sourceTree = "<group>"; };
 		C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldHelper.swift; sourceTree = "<group>"; };
-		C3751A39226178D500FF0E22 /* timeInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timeInputView.swift; sourceTree = "<group>"; };
-		C3751A3D2261A25C00FF0E22 /* timeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timeSelectorViewController.swift; sourceTree = "<group>"; };
+		C3751A39226178D500FF0E22 /* TimeInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputView.swift; sourceTree = "<group>"; };
+		C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
-		C3751A412267045A00FF0E22 /* notificationNameHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationNameHelper.swift; sourceTree = "<group>"; };
-		C3751A43226797CF00FF0E22 /* upTableViewBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = upTableViewBackgroundView.swift; sourceTree = "<group>"; };
+		C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNameHelper.swift; sourceTree = "<group>"; };
+		C3751A43226797CF00FF0E22 /* UpTableViewBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpTableViewBackgroundView.swift; sourceTree = "<group>"; };
 		C3751A452267FC6400FF0E22 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		C3C5C0B72268088E00EA8523 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
@@ -142,6 +142,62 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		487E1BC4226929EE000F9B09 /* CalendarVC */ = {
+			isa = PBXGroup;
+			children = (
+				C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */,
+				C3C5C0B72268088E00EA8523 /* CalendarCell.swift */,
+				C3751A452267FC6400FF0E22 /* CalendarViewController.swift */,
+			);
+			path = CalendarVC;
+			sourceTree = "<group>";
+		};
+		487E1BC522692A1E000F9B09 /* SessionVC */ = {
+			isa = PBXGroup;
+			children = (
+				C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */,
+			);
+			path = SessionVC;
+			sourceTree = "<group>";
+		};
+		487E1BC622692A67000F9B09 /* NewProjectVC */ = {
+			isa = PBXGroup;
+			children = (
+				C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */,
+			);
+			path = NewProjectVC;
+			sourceTree = "<group>";
+		};
+		487E1BC722692A7D000F9B09 /* TimeSelectorVC */ = {
+			isa = PBXGroup;
+			children = (
+				C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */,
+			);
+			path = TimeSelectorVC;
+			sourceTree = "<group>";
+		};
+		487E1BC822692F62000F9B09 /* UpVC */ = {
+			isa = PBXGroup;
+			children = (
+				C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */,
+				C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */,
+				C3751A1622552DFE00FF0E22 /* UpViewController.swift */,
+			);
+			path = UpVC;
+			sourceTree = "<group>";
+		};
+		487E1BC922692F80000F9B09 /* ControllersAndViews */ = {
+			isa = PBXGroup;
+			children = (
+				487E1BC722692A7D000F9B09 /* TimeSelectorVC */,
+				487E1BC622692A67000F9B09 /* NewProjectVC */,
+				487E1BC522692A1E000F9B09 /* SessionVC */,
+				487E1BC4226929EE000F9B09 /* CalendarVC */,
+				487E1BC822692F62000F9B09 /* UpVC */,
+			);
+			path = ControllersAndViews;
+			sourceTree = "<group>";
+		};
 		C37519D82255114900FF0E22 = {
 			isa = PBXGroup;
 			children = (
@@ -168,9 +224,8 @@
 			isa = PBXGroup;
 			children = (
 				C37519E42255114900FF0E22 /* AppDelegate.swift */,
-				C3751A242257FF9F00FF0E22 /* Controllers */,
+				487E1BC922692F80000F9B09 /* ControllersAndViews */,
 				C3751A212257FF1800FF0E22 /* Models */,
-				C3751A202257FE7A00FF0E22 /* Views */,
 				C3751A232257FF4100FF0E22 /* Helpers */,
 				C37519EB2255114C00FF0E22 /* Assets.xcassets */,
 				C37519ED2255114C00FF0E22 /* LaunchScreen.storyboard */,
@@ -197,17 +252,6 @@
 			path = UpUITests;
 			sourceTree = "<group>";
 		};
-		C3751A202257FE7A00FF0E22 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */,
-				C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */,
-				C3C5C0B72268088E00EA8523 /* CalendarCell.swift */,
-				C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		C3751A212257FF1800FF0E22 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,27 +263,15 @@
 		C3751A232257FF4100FF0E22 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				C3751A1E22573A1E00FF0E22 /* headerViewHelper.swift */,
-				C3751A2B225804DC00FF0E22 /* projectType.swift */,
+				C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */,
+				C3751A2B225804DC00FF0E22 /* ProjectType.swift */,
 				C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */,
 				C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */,
-				C3751A39226178D500FF0E22 /* timeInputView.swift */,
-				C3751A412267045A00FF0E22 /* notificationNameHelper.swift */,
-				C3751A43226797CF00FF0E22 /* upTableViewBackgroundView.swift */,
+				C3751A39226178D500FF0E22 /* TimeInputView.swift */,
+				C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */,
+				C3751A43226797CF00FF0E22 /* UpTableViewBackgroundView.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		C3751A242257FF9F00FF0E22 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				C3751A1622552DFE00FF0E22 /* upViewController.swift */,
-				C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */,
-				C3751A3D2261A25C00FF0E22 /* timeSelectorViewController.swift */,
-				C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */,
-				C3751A452267FC6400FF0E22 /* CalendarViewController.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -474,17 +506,17 @@
 				C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */,
 				C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */,
 				C3751A1D2256D6A100FF0E22 /* ProjectCell.swift in Sources */,
-				C3751A1722552DFE00FF0E22 /* upViewController.swift in Sources */,
+				C3751A1722552DFE00FF0E22 /* UpViewController.swift in Sources */,
 				C3C5C0BA22684F7E00EA8523 /* CalendarHeaderView.swift in Sources */,
 				C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */,
-				C3751A1F22573A1E00FF0E22 /* headerViewHelper.swift in Sources */,
+				C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */,
 				C3751A1922552F3D00FF0E22 /* Project.swift in Sources */,
-				C3751A422267045A00FF0E22 /* notificationNameHelper.swift in Sources */,
-				C3751A2C225804DC00FF0E22 /* projectType.swift in Sources */,
-				C3751A3A226178D500FF0E22 /* timeInputView.swift in Sources */,
-				C3751A44226797CF00FF0E22 /* upTableViewBackgroundView.swift in Sources */,
+				C3751A422267045A00FF0E22 /* NotificationNameHelper.swift in Sources */,
+				C3751A2C225804DC00FF0E22 /* ProjectType.swift in Sources */,
+				C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */,
+				C3751A44226797CF00FF0E22 /* UpTableViewBackgroundView.swift in Sources */,
 				C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */,
-				C3751A3E2261A25C00FF0E22 /* timeSelectorViewController.swift in Sources */,
+				C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */,
 				C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -654,7 +686,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X3T6G6B4MK;
+				DEVELOPMENT_TEAM = JDYWQEVARC;
 				INFOPLIST_FILE = Up/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -673,7 +705,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X3T6G6B4MK;
+				DEVELOPMENT_TEAM = JDYWQEVARC;
 				INFOPLIST_FILE = Up/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
