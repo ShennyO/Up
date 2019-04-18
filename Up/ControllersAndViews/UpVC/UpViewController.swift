@@ -9,11 +9,11 @@ import UIKit
 import SnapKit
 
 
-protocol upVCToUpVCHeaderDelegate {
+protocol UpVCToUpVCHeaderDelegate {
     func alertHeaderView(total: Int)
 }
 
-class upViewController: UIViewController {
+class UpViewController: UIViewController {
     
     
     //MARK: OUTLETS
@@ -32,7 +32,7 @@ class upViewController: UIViewController {
     
     //MARK: VARIABLES
     
-    var delegate: upVCToUpVCHeaderDelegate!
+    var delegate: UpVCToUpVCHeaderDelegate!
     
     var projects: [Project] = [] {
         didSet {
@@ -48,7 +48,7 @@ class upViewController: UIViewController {
             
         }
     }
-    var timedProjects: [timedProject] = [] {
+    var timedProjects: [TimedProject] = [] {
         didSet {
             let total = projects.count + timedProjects.count
             if total != 0 {
@@ -103,7 +103,7 @@ extension UpViewController {
     
     private func setUpTableView() {
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
-        delegate = tableHeaderView
+        delegate = TableHeaderView
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
