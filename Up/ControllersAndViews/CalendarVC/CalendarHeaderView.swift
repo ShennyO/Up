@@ -14,7 +14,7 @@ class CalendarHeaderView: JTAppleCollectionReusableView {
     //MARK: OUTLETS
     var monthLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
         label.numberOfLines = 0
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return label
@@ -23,7 +23,8 @@ class CalendarHeaderView: JTAppleCollectionReusableView {
     func setUpView(month: String) {
         self.addSubview(monthLabel)
         monthLabel.snp.makeConstraints { (make) in
-            make.centerX.centerY.equalToSuperview()
+            make.left.equalToSuperview().offset(25)
+            make.centerY.equalToSuperview()
         }
         monthLabel.text = month
     }

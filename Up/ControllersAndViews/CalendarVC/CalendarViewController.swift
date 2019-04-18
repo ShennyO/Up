@@ -85,6 +85,14 @@ extension CalendarViewController: JTAppleCalendarViewDelegate, JTAppleCalendarVi
         return header
     }
     
+    
+    
+    
+    func calendar(_ calendar: JTAppleCalendarView, sectionHeaderSizeFor range: (start: Date, end: Date), belongingTo month: Int) -> CGSize {
+        return CGSize(width: 0, height: 200)
+    }
+    
+    
     func calendarSizeForMonths(_ calendar: JTAppleCalendarView?) -> MonthSize? {
         return MonthSize(defaultSize: 40)
     }
@@ -95,7 +103,8 @@ extension CalendarViewController: JTAppleCalendarViewDelegate, JTAppleCalendarVi
         formatter.dateFormat = "yyyy/MM/dd"
         formatter.locale = Calendar.current.locale
         formatter.timeZone = Calendar.current.timeZone
-        calendar.scrollingMode = .stopAtEachSection
+//        calendar.scrollDirection = .horizontal
+//        calendar.scrollingMode = .stopAtEachSection
         
         
         let startDate = formatter.date(from: "2018 01 01")!
