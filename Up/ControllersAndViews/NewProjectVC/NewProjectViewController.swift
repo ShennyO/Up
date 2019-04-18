@@ -14,9 +14,9 @@ class NewProjectViewController: UIViewController {
     var blurEffectView: UIVisualEffectView?
     var selectedTime = 20
     var descriptionText: String?
-    var timeInputDelegate: inputDelegate!
+    var timeInputDelegate: InputDelegate!
     var sendSelectedProject: ((Project) -> ())?
-    var sendSelectedTimedProject: ((timedProject) -> ())?
+    var sendSelectedTimedProject: ((TimedProject) -> ())?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -67,7 +67,7 @@ class NewProjectViewController: UIViewController {
     var typeStackView: UIStackView!
     
     
-    var timeButton = timeInputViewButton(frame: CGRect(x: 0, y: 0, width: 165, height: 50))
+    var timeButton = TimeInputViewButton(frame: CGRect(x: 0, y: 0, width: 165, height: 50))
     
     var addButton: UIButton = {
         let button = UIButton(type: .system)
@@ -235,7 +235,7 @@ class NewProjectViewController: UIViewController {
         }
         
         if sessionButton.isSelected {
-            let newProject = timedProject(description: text, time: selectedTime)
+            let newProject = TimedProject(description: text, time: selectedTime)
             sendSelectedTimedProject!(newProject)
         } else {
             let newProject = Project(description: text)
@@ -261,7 +261,7 @@ class NewProjectViewController: UIViewController {
             
             timeInputDelegate.tapEnded()
             
-            let nextVC = timeSelectorViewController()
+            let nextVC = TimeSelectorViewController()
            
             
             //MARK: CALLBACK
@@ -328,7 +328,7 @@ class NewProjectViewController: UIViewController {
     
 }
 
-extension NewProjectViewController: customTextViewDelegate {
+extension NewProjectViewController: CustomTextViewDelegate {
     func sendText(text: String) {
         descriptionText = text
     }
@@ -336,7 +336,7 @@ extension NewProjectViewController: customTextViewDelegate {
     
 }
 
-protocol inputDelegate {
+protocol InputDelegate {
     
     func sendSelectedTime(time: Int)
     

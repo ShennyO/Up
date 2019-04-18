@@ -10,7 +10,7 @@ import UIKit
 class SessionViewController: UIViewController {
 
     //MARK: VARIABLES
-    var timedProject: timedProject?
+    var timedProject: TimedProject?
     var currentTime: TimeInterval!
     var endTime: TimeInterval!
     

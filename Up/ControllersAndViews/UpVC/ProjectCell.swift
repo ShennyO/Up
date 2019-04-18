@@ -8,7 +8,7 @@
 import UIKit
 
 
-protocol nonTimedCellDelegate {
+protocol NonTimedCellDelegate {
     func passNonTimedCellIndex(index: IndexPath)
 }
 
@@ -20,7 +20,7 @@ class ProjectCell: UITableViewCell {
         }
     }
     var index: IndexPath!
-    var delegate: nonTimedCellDelegate!
+    var delegate: NonTimedCellDelegate!
     
     //MARK: OUTLETS
     

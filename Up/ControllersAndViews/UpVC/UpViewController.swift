@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class upViewController: UIViewController {
+class UpViewController: UIViewController {
     
     
     //MARK: OUTLETS
@@ -28,7 +28,7 @@ class upViewController: UIViewController {
     //MARK: VARIABLES
 
     var projects: [Project] = []
-    var timedProjects: [timedProject] = []
+    var timedProjects: [TimedProject] = []
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -44,7 +44,7 @@ class upViewController: UIViewController {
 }
 
 
-extension upViewController {
+extension UpViewController {
     //MARK: PRIVATE FUNCTIONS
     
     
@@ -78,7 +78,7 @@ extension upViewController {
         self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
         self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
         self.upTableView.tableHeaderView = tableHeaderView
-        self.upTableView.backgroundView = upTableViewBackgroundView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+        self.upTableView.backgroundView = UpTableViewBackgroundView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in
@@ -120,7 +120,7 @@ extension upViewController {
     
 }
 
-extension upViewController: UITableViewDataSource, UITableViewDelegate {
+extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     //MARK: TABLEVIEW FUNCTIONS
@@ -179,7 +179,7 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-extension upViewController: timedCellDelegate, nonTimedCellDelegate {
+extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
     func passTimedCellIndex(index: IndexPath) {
         timedProjects.remove(at: index.row)
         upTableView.deleteRows(at: [index], with: .left)

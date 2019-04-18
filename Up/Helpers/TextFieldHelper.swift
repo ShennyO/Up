@@ -9,19 +9,19 @@ import Foundation
 import UIKit
 
 
-enum inputType {
+enum InputType {
     case textField
     case textView
 }
 
-protocol customTextViewDelegate {
+protocol CustomTextViewDelegate {
     func sendText(text: String)
 }
 
 class SunnyCustomInputView: UIView {
     
     //MARK: VARIABLES
-    var textDelegate: customTextViewDelegate!
+    var textDelegate: CustomTextViewDelegate!
     
     
     //MARK: OUTLETS
@@ -62,7 +62,7 @@ class SunnyCustomInputView: UIView {
         return view
     }()
     
-    init(frame: CGRect, fontSize: CGFloat, type: inputType) {
+    init(frame: CGRect, fontSize: CGFloat, type: InputType) {
         super.init(frame: frame)
         self.layer.masksToBounds = true
         addOutlets(type: type)
@@ -89,7 +89,7 @@ class SunnyCustomInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func addOutlets(type: inputType) {
+    private func addOutlets(type: InputType) {
         
         switch type {
             case .textField:
@@ -106,7 +106,7 @@ class SunnyCustomInputView: UIView {
     
   
     
-    private func setConstraints(type: inputType) {
+    private func setConstraints(type: InputType) {
         
         
         switch type {
