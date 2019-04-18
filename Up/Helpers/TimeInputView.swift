@@ -1,5 +1,5 @@
 //
-//  timeInputView.swift
+//  TimeInputViewButton.swift
 //  Up
 //
 //  Created by Sunny Ouyang on 4/12/19.
@@ -10,7 +10,7 @@ import UIKit
 
 
 
-class timeInputViewButton: UIView {
+class TimeInputViewButton: UIView {
     
     
     //MARK: OUTLETS
@@ -86,7 +86,7 @@ class timeInputViewButton: UIView {
     
 }
 
-extension timeInputViewButton: inputDelegate {
+extension TimeInputViewButton: InputDelegate {
     func sendSelectedTime(time: Int) {
         timeLabel.text = String(describing: time) + " minutes"
     }

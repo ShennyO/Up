@@ -19,7 +19,7 @@ class Project {
     
 }
 
-class timedProject: Project {
+class TimedProject: Project {
     
     var time: Int
     init(description: String, time: Int) {

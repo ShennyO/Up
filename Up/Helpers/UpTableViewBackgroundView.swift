@@ -1,5 +1,5 @@
 //
-//  upTableViewBackgroundView.swift
+//  UpTableViewBackgroundView.swift
 //  Up
 //
 //  Created by Sunny Ouyang on 4/17/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class upTableViewBackgroundView: UIView {
+class UpTableViewBackgroundView: UIView {
     
     //MARK: OUTLETS
     var getStartedLabel: UILabel = {

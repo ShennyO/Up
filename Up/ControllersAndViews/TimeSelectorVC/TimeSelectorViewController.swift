@@ -1,5 +1,5 @@
 //
-//  timeSelectorViewController.swift
+//  TimeSelectorViewController.swift
 //  Up
 //
 //  Created by Sunny Ouyang on 4/12/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class timeSelectorViewController: UIViewController {
+class TimeSelectorViewController: UIViewController {
 
     //MARK: VARIABLES
     var times = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
@@ -122,7 +122,7 @@ class timeSelectorViewController: UIViewController {
     
 }
 
-extension timeSelectorViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension TimeSelectorViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let pickerLabel: UILabel = {

@@ -7,20 +7,20 @@
 
 import UIKit
 
-protocol timedCellDelegate {
+protocol TimedCellDelegate {
     func passTimedCellIndex(index: IndexPath)
 }
 
 class TimedProjectCell: UITableViewCell {
 
     //MARK: VARIABLES
-    var timedProject: timedProject! {
+    var timedProject: TimedProject! {
         didSet {
             setUpCell()
         }
     }
     var index: IndexPath!
-    var delegate: timedCellDelegate!
+    var delegate: TimedCellDelegate!
     
     //MARK: OUTLETS
     var containerView: UIView = {

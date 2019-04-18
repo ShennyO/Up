@@ -9,11 +9,11 @@ import UIKit
 import SnapKit
 
 
-protocol upVCToUpVCHeaderDelegate {
+protocol UpVCToUpVCHeaderDelegate {
     func alertHeaderView(total: Int)
 }
 
-class upViewController: UIViewController {
+class UpViewController: UIViewController {
     
     
     //MARK: OUTLETS
@@ -32,7 +32,7 @@ class upViewController: UIViewController {
     
     //MARK: VARIABLES
     
-    var delegate: upVCToUpVCHeaderDelegate!
+    var delegate: UpVCToUpVCHeaderDelegate!
     
     var projects: [Project] = [] {
         didSet {
@@ -48,7 +48,7 @@ class upViewController: UIViewController {
             
         }
     }
-    var timedProjects: [timedProject] = [] {
+    var timedProjects: [TimedProject] = [] {
         didSet {
             let total = projects.count + timedProjects.count
             if total != 0 {
@@ -77,7 +77,7 @@ class upViewController: UIViewController {
 }
 
 
-extension upViewController {
+extension UpViewController {
     //MARK: PRIVATE FUNCTIONS
     
     
@@ -154,7 +154,7 @@ extension upViewController {
     
 }
 
-extension upViewController: UITableViewDataSource, UITableViewDelegate {
+extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     //MARK: TABLEVIEW FUNCTIONS
@@ -213,7 +213,7 @@ extension upViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-extension upViewController: timedCellDelegate, nonTimedCellDelegate {
+extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
     func passTimedCellIndex(index: IndexPath) {
         
         timedProjects.remove(at: index.row)

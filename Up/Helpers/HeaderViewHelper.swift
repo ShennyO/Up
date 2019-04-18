@@ -148,7 +148,7 @@ class HeaderView: UIView {
     
 }
 
-extension HeaderView: upVCToUpVCHeaderDelegate {
+extension HeaderView: UpVCToUpVCHeaderDelegate {
     func alertHeaderView(total: Int) {
         if total == 0 {
             
