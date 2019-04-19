@@ -149,7 +149,6 @@ extension UpViewController {
         self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
         self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
         self.upTableView.tableHeaderView = tableHeaderView
-//        self.upTableView.backgroundView = upTableViewBackgroundView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         self.view.addSubview(upTableView)
         
         self.upTableView.snp.makeConstraints { (make) in

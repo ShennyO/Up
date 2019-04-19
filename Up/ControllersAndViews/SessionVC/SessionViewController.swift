@@ -89,6 +89,10 @@ class SessionViewController: UIViewController {
         return button
     }()
     
+    
+    
+    
+    
     private func configNavBar() {
         extendedLayoutIncludesOpaqueBars = true
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
