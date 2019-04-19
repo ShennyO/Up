@@ -14,14 +14,6 @@ class TimeInputViewButton: UIView {
     
     
     //MARK: OUTLETS
-    let darkView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 5
-        view.backgroundColor = UIColor.gray
-        view.alpha = 0.5
-        view.isHidden = true
-        return view
-    }()
     
     let timeLabel: UILabel = {
         let label = UILabel()
@@ -59,15 +51,11 @@ class TimeInputViewButton: UIView {
    
         self.addSubview(timeLabel)
         self.addSubview(arrowImage)
-        self.addSubview(darkView)
+        
         
     }
     
     private func setConstraints() {
-        
-        darkView.snp.makeConstraints { (make) in
-            make.top.bottom.right.left.equalToSuperview()
-        }
         
         timeLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
