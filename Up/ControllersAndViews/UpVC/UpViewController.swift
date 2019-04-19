@@ -31,6 +31,7 @@ class UpViewController: UIViewController {
     //MARK: VARIABLES
     //this is to alert the HeaderView when to enable and disable the edit button
     var delegate: UpVCToUpVCHeaderDelegate!
+    var editingMode = false
     
     var projects: [Project] = [] {
         didSet {
@@ -78,7 +79,8 @@ class UpViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 }
                 
-            } else {
+            } else { //if total is 0, editing mode is automatically changed back to false
+                editingMode = false
                 let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
                 tableHeaderView.frame = tableHeaderFrame
                 UIView.animate(withDuration: 0.5) {
@@ -240,7 +242,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        if indexPath.section == 1 && editingMode == false {
             let sessionVC = SessionViewController()
             sessionVC.timedProject = timedProjects[indexPath.row]
             self.present(sessionVC, animated: true, completion: nil)
@@ -273,9 +275,9 @@ extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
 extension UpViewController: HeaderViewToUpVCDelegate {
     func alertUpVCOfEditMode(mode: Bool) {
         //if editMode is on
+        editingMode = mode
         if mode == true {
             //hide addButton
-            
             UIView.animate(withDuration: 0.3, animations: {
                 self.addNewButton.alpha = 0
             }, completion:  {
