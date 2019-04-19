@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TimedCellDelegate {
-    func passTimedCellIndex(index: IndexPath)
+    func passTimedCellIndex(cell: UITableViewCell)
 }
 
 class TimedProjectCell: UITableViewCell {
@@ -109,9 +109,10 @@ class TimedProjectCell: UITableViewCell {
             make.centerY.equalToSuperview()
         }
         
+        
         timeLabel.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-15)
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
         }
         
         timeImageView.snp.makeConstraints { (make) in
@@ -150,7 +151,7 @@ class TimedProjectCell: UITableViewCell {
     }
     
     @objc func deleteButtonTapped() {
-        delegate.passTimedCellIndex(index: index)
+        delegate.passTimedCellIndex(cell: self)
         
     }
     

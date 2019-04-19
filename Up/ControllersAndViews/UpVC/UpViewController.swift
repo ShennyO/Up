@@ -214,15 +214,18 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
-    func passTimedCellIndex(index: IndexPath) {
-        
-        timedProjects.remove(at: index.row)
-        upTableView.deleteRows(at: [index], with: .left)
+    func passTimedCellIndex(cell: UITableViewCell) {
+        if let index = upTableView.indexPath(for: cell) {
+            timedProjects.remove(at: index.row)
+            upTableView.deleteRows(at: [index], with: .left)
+        }
     }
     
-    func passNonTimedCellIndex(index: IndexPath) {
-        projects.remove(at: index.row)
-        upTableView.deleteRows(at: [index], with: .left)
+    func passNonTimedCellIndex(cell: UITableViewCell) {
+        if let index = upTableView.indexPath(for: cell) {
+            projects.remove(at: index.row)
+            upTableView.deleteRows(at: [index], with: .left)
+        }
     }
     
     

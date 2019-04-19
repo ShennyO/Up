@@ -9,7 +9,7 @@ import UIKit
 
 
 protocol NonTimedCellDelegate {
-    func passNonTimedCellIndex(index: IndexPath)
+    func passNonTimedCellIndex(cell: UITableViewCell)
 }
 
 class ProjectCell: UITableViewCell {
@@ -111,7 +111,8 @@ class ProjectCell: UITableViewCell {
     }
     
     @objc func deleteButtonTapped() {
-        delegate.passNonTimedCellIndex(index: index)
+        print(index.row)
+        delegate.passNonTimedCellIndex(cell: self)
         
     }
     
