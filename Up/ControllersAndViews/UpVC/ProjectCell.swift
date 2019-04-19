@@ -54,6 +54,16 @@ class ProjectCell: UITableViewCell {
         return view
     }()
     
+    var taskSquareFillView: UIView = {
+        
+        let view = UIView()
+        view.backgroundColor = UIColor.black
+        view.layer.cornerRadius = 3
+        view.isHidden = true
+        return view
+        
+    }()
+    
 
     
     var deleteButton: UIButton = {
@@ -72,6 +82,7 @@ class ProjectCell: UITableViewCell {
         self.addSubview(deleteButton)
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(taskSquareView)
+        containerView.addSubview(taskSquareFillView)
         
     }
     
@@ -95,6 +106,12 @@ class ProjectCell: UITableViewCell {
             make.right.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(25)
+        }
+        
+        taskSquareFillView.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(-20)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(0)
         }
         
         deleteButton.snp.makeConstraints { (make) in
