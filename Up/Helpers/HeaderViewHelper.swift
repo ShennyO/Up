@@ -154,14 +154,14 @@ extension HeaderView: UpVCToUpVCHeaderDelegate {
             
             getStartedLabel.isHidden = false
             getStartedLabel.alpha = 0
-            UIView.animate(withDuration: 0.4, animations: {
+            UIView.animate(withDuration: 0.7, animations: {
                 self.getStartedLabel.alpha = 1
             })
             
             
         } else {
             
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: 0.6, animations: {
                 self.getStartedLabel.alpha = 0
             }, completion:  {
                 (value: Bool) in
