@@ -68,6 +68,18 @@ class SessionViewController: UIViewController {
         return button
     }()
     
+    var doneButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        button.layer.cornerRadius = 5
+        button.setTitle("Done", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+    
     var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Cancel", for: .normal)
@@ -76,6 +88,10 @@ class SessionViewController: UIViewController {
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    
+    
+    
     
     private func configNavBar() {
         extendedLayoutIncludesOpaqueBars = true
@@ -178,7 +194,7 @@ class SessionViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [goalLabel, descriptionLabel, minutesLabel, startButton, cancelButton].forEach { (view) in
+        [goalLabel, descriptionLabel, minutesLabel, startButton, doneButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
         
@@ -210,6 +226,15 @@ class SessionViewController: UIViewController {
             make.width.equalTo(125)
         }
         
+        doneButton.snp.makeConstraints { (make) in
+            make.top.equalTo(minutesLabel.snp.bottom).offset(150)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(50)
+            make.width.equalTo(125)
+        }
+        
+        
+        
         cancelButton.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(40)
             make.left.equalToSuperview().offset(20)
@@ -218,9 +243,28 @@ class SessionViewController: UIViewController {
         
     }
     
+    @objc func doneButtonTapped() {
+        print("ok")
+    }
+    
     @objc func startButtonTapped() {
         runAnimation()
         runTimer()
+        //hiding start button and showing done button
+        doneButton.isHidden = false
+        doneButton.alpha = 0
+        UIView.animate(withDuration: 0.7, animations: {
+            self.startButton.alpha = 0
+        }, completion:  {
+            (value: Bool) in
+            self.startButton.isHidden = true
+            
+        })
+        
+        UIView.animate(withDuration: 0.85, delay: 1.7, animations: {
+            self.doneButton.alpha = 1
+        })
+        
     }
     
     @objc func cancelButtonTapped() {

@@ -111,7 +111,6 @@ class ProjectCell: UITableViewCell {
     }
     
     @objc func deleteButtonTapped() {
-        print(index.row)
         delegate.passNonTimedCellIndex(cell: self)
         
     }

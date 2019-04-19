@@ -26,7 +26,6 @@
 		C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */; };
 		C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */; };
 		C3751A422267045A00FF0E22 /* NotificationNameHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */; };
-		C3751A44226797CF00FF0E22 /* UpTableViewBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A43226797CF00FF0E22 /* UpTableViewBackgroundView.swift */; };
 		C3751A462267FC6400FF0E22 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A452267FC6400FF0E22 /* CalendarViewController.swift */; };
 		C3C5C0B82268088E00EA8523 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B72268088E00EA8523 /* CalendarCell.swift */; };
 		C3C5C0BA22684F7E00EA8523 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */; };
@@ -84,7 +83,6 @@
 		C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
 		C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNameHelper.swift; sourceTree = "<group>"; };
-		C3751A43226797CF00FF0E22 /* UpTableViewBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpTableViewBackgroundView.swift; sourceTree = "<group>"; };
 		C3751A452267FC6400FF0E22 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		C3C5C0B72268088E00EA8523 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
@@ -269,7 +267,6 @@
 				C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */,
 				C3751A39226178D500FF0E22 /* TimeInputView.swift */,
 				C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */,
-				C3751A43226797CF00FF0E22 /* UpTableViewBackgroundView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -514,7 +511,6 @@
 				C3751A422267045A00FF0E22 /* NotificationNameHelper.swift in Sources */,
 				C3751A2C225804DC00FF0E22 /* ProjectType.swift in Sources */,
 				C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */,
-				C3751A44226797CF00FF0E22 /* UpTableViewBackgroundView.swift in Sources */,
 				C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */,
 				C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */,
 				C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */,
