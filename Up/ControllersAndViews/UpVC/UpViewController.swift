@@ -59,11 +59,20 @@ class UpViewController: UIViewController {
         didSet {
             let total = projects.count + timedProjects.count
             if total != 0 {
-                tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100), title: "Today")
-                self.upTableView.tableHeaderView = tableHeaderView
+                
+                
+                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
+                tableHeaderView.frame = tableHeaderFrame
+                UIView.animate(withDuration: 0.5) {
+                    self.view.layoutIfNeeded()
+                }
+                
             } else {
-                tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
-                self.upTableView.tableHeaderView = tableHeaderView
+                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
+                tableHeaderView.frame = tableHeaderFrame
+                UIView.animate(withDuration: 0.5) {
+                    self.view.layoutIfNeeded()
+                }
             }
             delegate.alertHeaderView(total: total)
             
