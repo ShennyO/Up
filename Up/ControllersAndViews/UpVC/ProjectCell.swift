@@ -45,11 +45,16 @@ class ProjectCell: UITableViewCell {
         return label
     }()
     
-    var taskSquareButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "Rectangle"), for: .normal)
-        return button
+    var taskSquareView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.borderWidth = 2
+        view.layer.cornerRadius = 3
+        return view
     }()
+    
+
     
     var deleteButton: UIButton = {
         let button = UIButton()
@@ -66,7 +71,7 @@ class ProjectCell: UITableViewCell {
         self.addSubview(containerView)
         self.addSubview(deleteButton)
         containerView.addSubview(descriptionLabel)
-        containerView.addSubview(taskSquareButton)
+        containerView.addSubview(taskSquareView)
         
     }
     
@@ -85,10 +90,11 @@ class ProjectCell: UITableViewCell {
         }
         
         
-        taskSquareButton.snp.makeConstraints { (make) in
+        
+        taskSquareView.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(20)
+            make.width.height.equalTo(25)
         }
         
         deleteButton.snp.makeConstraints { (make) in
