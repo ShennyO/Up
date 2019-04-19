@@ -35,6 +35,7 @@ class UpViewController: UIViewController {
     var projects: [Project] = [] {
         didSet {
             let total = projects.count + timedProjects.count
+            
             if total != 0 {
                 
                 let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
@@ -44,12 +45,22 @@ class UpViewController: UIViewController {
                 }
                 
                 
-            } else {
+            } else { //when Projects are at zero, edit button is automatically disabled, and add button is
+                     // automatically shown and enabled
                 let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
                 tableHeaderView.frame = tableHeaderFrame
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
+                
+                //show addButton
+                addNewButton.isHidden = false
+                addNewButton.alpha = 0
+                
+                UIView.animate(withDuration: 0.4, animations: {
+                    self.addNewButton.alpha = 1
+                })
+                
             }
             delegate.alertHeaderView(total: total)
             
@@ -73,6 +84,15 @@ class UpViewController: UIViewController {
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
+                
+                //show addButton
+                addNewButton.isHidden = false
+                addNewButton.alpha = 0
+                
+                UIView.animate(withDuration: 0.4, animations: {
+                    self.addNewButton.alpha = 1
+                })
+                
             }
             delegate.alertHeaderView(total: total)
             
@@ -256,7 +276,7 @@ extension UpViewController: HeaderViewToUpVCDelegate {
         //if editMode is on
         if mode == true {
             //hide addButton
-            //hiding the dotDotDots
+            
             UIView.animate(withDuration: 0.3, animations: {
                 self.addNewButton.alpha = 0
             }, completion:  {
