@@ -231,6 +231,10 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
+    
+    //Extension here is for the tableviewcell button to communicate with VC
+    //VC handles which cell and project to delete
+    
     func passTimedCellIndex(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
             timedProjects.remove(at: index.row)
