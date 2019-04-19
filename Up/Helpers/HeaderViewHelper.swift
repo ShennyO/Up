@@ -9,12 +9,18 @@ import Foundation
 import UIKit
 
 
+//need a delegate from HeaderView to upVC to communicate that when edit mode
+//is on, hide the add button on upVC
 
+protocol HeaderViewToUpVCDelegate {
+    func alertUpVCOfEditMode(mode: Bool)
+}
 
 class HeaderView: UIView {
     
     //MARK: VARIABLES
-    var editButtonActive = false
+    var editButtonMode = false
+    var delegate: HeaderViewToUpVCDelegate!
     
     //MARK: OUTLETS
     var titleLabel: UILabel = {
@@ -88,9 +94,10 @@ class HeaderView: UIView {
     @objc private func editButtonTapped() {
         
         //if button is active when tapped
-        if editButtonActive {
+        if editButtonMode {
             
-            editButtonActive = false
+            editButtonMode = false
+            delegate.alertUpVCOfEditMode(mode: editButtonMode)
             
             //move back to original pos
             editButton.snp.updateConstraints { (make) in
@@ -98,7 +105,7 @@ class HeaderView: UIView {
                 make.right.equalToSuperview().offset(-25)
                 make.centerY.equalTo(titleLabel)
             }
-            //hiding the dotDotDots
+            //hiding the dotDotDots and moving editButton back to original pos
             UIView.animate(withDuration: 0.3, animations: {
                 self.dotDotDotLabel.alpha = 0
                 self.layoutIfNeeded()
@@ -112,10 +119,11 @@ class HeaderView: UIView {
             NotificationCenter.default.post(name: .editModeOff, object: nil)
             
         } else { // if edit button is not active when tapped
+            //Using a notification center instead of a delegate because we need to communicate with
+            //all of the tableview cells and not just one
             NotificationCenter.default.post(name: .editModeOn, object: nil)
-
-            
-            editButtonActive = true
+            editButtonMode = true
+            delegate.alertUpVCOfEditMode(mode: editButtonMode)
             editButton.snp.updateConstraints { (make) in
                 make.height.width.equalTo(30)
                 make.right.equalToSuperview().offset(-35)
@@ -126,13 +134,15 @@ class HeaderView: UIView {
             dotDotDotLabel.alpha = 0
             
             UIView.animate(withDuration: 0.4, animations: {
+                self.dotDotDotLabel.alpha = 1
+            })
+            
+            UIView.animate(withDuration: 0.4, animations: {
                 self.layoutIfNeeded()
                 
             })
             
-            UIView.animate(withDuration: 0.4, animations: {
-                self.dotDotDotLabel.alpha = 1
-            })
+            
         }
         
     }
@@ -156,7 +166,7 @@ extension HeaderView: UpVCToUpVCHeaderDelegate {
     func alertHeaderView(total: Int) {
         
         if total == 0 {
-            editButtonActive = false
+            editButtonMode = false
             NotificationCenter.default.post(name: .editModeOff, object: nil)
             //move back to original pos
             editButton.snp.updateConstraints { (make) in
@@ -182,12 +192,6 @@ extension HeaderView: UpVCToUpVCHeaderDelegate {
             
             
         } else {
-            
-            
-            //if it's not empty
-//            NotificationCenter.default.post(name: .editModeOn, object: nil)
-
-            
             
             UIView.animate(withDuration: 0.3) {
                 self.editButton.isEnabled = true

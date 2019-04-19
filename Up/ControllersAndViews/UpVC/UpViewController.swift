@@ -29,7 +29,7 @@ class UpViewController: UIViewController {
     
     
     //MARK: VARIABLES
-    
+    //this is to alert the HeaderView when to enable and disable the edit button
     var delegate: UpVCToUpVCHeaderDelegate!
     
     var projects: [Project] = [] {
@@ -119,7 +119,7 @@ extension UpViewController {
     
     private func setUpTableView() {
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
-        
+        tableHeaderView.delegate = self
         delegate = tableHeaderView
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
@@ -245,6 +245,35 @@ extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
         }
     }
     
+}
+
+extension UpViewController: HeaderViewToUpVCDelegate {
+    func alertUpVCOfEditMode(mode: Bool) {
+        //if editMode is on
+        if mode == true {
+            //hide addButton
+            //hiding the dotDotDots
+            UIView.animate(withDuration: 0.3, animations: {
+                self.addNewButton.alpha = 0
+            }, completion:  {
+                (value: Bool) in
+                self.addNewButton.isHidden = true
+                
+            })
+            
+        } else { //if editMode is off
+            
+            //show addButton
+            addNewButton.isHidden = false
+            addNewButton.alpha = 0
+            
+            UIView.animate(withDuration: 0.4, animations: {
+                self.addNewButton.alpha = 1
+            })
+            
+        }
+        
+    }
     
     
 }
