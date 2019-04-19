@@ -7,7 +7,7 @@
 
 import UIKit
 
-
+// nonTimed Cell to UPVC
 protocol NonTimedCellDelegate {
     func passNonTimedCellIndex(cell: UITableViewCell)
 }
@@ -128,9 +128,22 @@ class ProjectCell: UITableViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
         addOutlets()
         setConstraints()
+        let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tap.minimumPressDuration = 0
+        taskSquareView.addGestureRecognizer(tap)
         descriptionLabel.text = project.description
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
+    }
+    
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            taskSquareView.backgroundColor = UIColor.gray
+        }
+        
+        if gestureRecognizer.state == .ended {
+            taskSquareView.backgroundColor = UIColor.white
+        }
     }
     
     @objc func deleteButtonTapped() {

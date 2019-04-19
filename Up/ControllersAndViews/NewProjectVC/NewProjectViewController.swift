@@ -336,6 +336,8 @@ extension NewProjectViewController: CustomTextViewDelegate {
     
 }
 
+
+//From NewProjectVC back to TimeInputButton
 protocol InputDelegate {
     
     func sendSelectedTime(time: Int)

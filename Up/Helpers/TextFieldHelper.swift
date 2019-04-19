@@ -14,6 +14,7 @@ enum InputType {
     case textView
 }
 
+//from TextViewInputView to NewProjectVC
 protocol CustomTextViewDelegate {
     func sendText(text: String)
 }

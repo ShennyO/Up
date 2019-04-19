@@ -73,7 +73,7 @@ class TimeInputViewButton: UIView {
     
     
 }
-
+// from NewProjectVC to TimeInputView
 extension TimeInputViewButton: InputDelegate {
     func sendSelectedTime(time: Int) {
         timeLabel.text = String(describing: time) + " minutes"
