@@ -71,7 +71,7 @@ class NewProjectViewController: UIViewController {
     
     var addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 30
         button.setTitle("Add", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
@@ -156,8 +156,8 @@ class NewProjectViewController: UIViewController {
         addButton.snp.makeConstraints { (make) in
             make.top.equalTo(timeButton.snp.bottom).offset(-15)
             make.centerX.equalToSuperview()
-            make.width.equalTo(100)
-            make.height.equalTo(45)
+            make.width.equalTo(120)
+            make.height.equalTo(60)
         }
         
         cancelButton.snp.makeConstraints { (make) in
@@ -183,8 +183,8 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(100)
-                make.height.equalTo(45)
+                make.width.equalTo(120)
+                make.height.equalTo(60)
             }
             //hiding timeButton
             UIView.animate(withDuration: 0.3, animations: {
@@ -216,8 +216,8 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(35)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(100)
-                make.height.equalTo(45)
+                make.width.equalTo(120)
+                make.height.equalTo(60)
             }
             //showing timeButton
             UIView.animate(withDuration: 0.4, animations: {
