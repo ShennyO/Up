@@ -39,6 +39,8 @@ class CalendarViewController: UIViewController {
         calendarView.cellSize = self.view.frame.size.width / 7 - 4.0
         calendarView.calendarDelegate = self
         calendarView.calendarDataSource = self
+        calendarView.scrollingMode = .stopAtEachSection
+        calendarView.scrollDirection = .horizontal
         calendarView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
