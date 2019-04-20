@@ -128,6 +128,11 @@ class ProjectCell: UITableViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
         addOutlets()
         setConstraints()
+        if project.completion {
+            taskSquareFillView.isHidden = false
+        } else {
+            taskSquareFillView.isHidden = true
+        }
         let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tap.minimumPressDuration = 0
         taskSquareView.addGestureRecognizer(tap)
@@ -137,11 +142,15 @@ class ProjectCell: UITableViewCell {
     }
     
     @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        
         if gestureRecognizer.state == .began {
             taskSquareView.backgroundColor = UIColor.gray
         }
         
         if gestureRecognizer.state == .ended {
+            
+            //When the gesture ends, we want to change the project property to completed
+            self.project.completion = true
             taskSquareView.backgroundColor = UIColor.white
             //Animate fillView
             //showing the fillView
