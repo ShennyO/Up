@@ -196,13 +196,14 @@ class ProjectCell: UITableViewCell {
             taskSquareFillView.alpha = 0
             checkMarkImage.isHidden = false
             checkMarkImage.alpha = 0
-            
+            self.isUserInteractionEnabled = false
             
             UIView.animate(withDuration: 0.35, animations: {
                 self.taskSquareFillView.alpha = 1
                 self.checkMarkImage.alpha = 1
             }, completion:  {
                 (value: Bool) in
+                self.isUserInteractionEnabled = true
                 self.delegate.passNonTimedCellIndex(cell: self)
             })
             
