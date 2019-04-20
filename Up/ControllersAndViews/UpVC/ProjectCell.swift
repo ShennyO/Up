@@ -111,7 +111,7 @@ class ProjectCell: UITableViewCell {
         taskSquareFillView.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(0)
+            make.width.height.equalTo(25)
         }
         
         deleteButton.snp.makeConstraints { (make) in
@@ -143,6 +143,16 @@ class ProjectCell: UITableViewCell {
         
         if gestureRecognizer.state == .ended {
             taskSquareView.backgroundColor = UIColor.white
+            //Animate fillView
+            //showing the fillView
+            taskSquareFillView.isHidden = false
+            taskSquareFillView.alpha = 0
+            
+            UIView.animate(withDuration: 0.4, animations: {
+                self.taskSquareFillView.alpha = 1
+
+            })
+            
         }
     }
     

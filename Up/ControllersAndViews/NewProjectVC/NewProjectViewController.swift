@@ -235,10 +235,10 @@ class NewProjectViewController: UIViewController {
         }
         
         if sessionButton.isSelected {
-            let newProject = TimedProject(description: text, time: selectedTime)
+            let newProject = TimedProject(description: text, completion: false, time: selectedTime)
             sendSelectedTimedProject!(newProject)
         } else {
-            let newProject = Project(description: text)
+            let newProject = Project(description: text, completion: false)
             sendSelectedProject!(newProject)
         }
 
