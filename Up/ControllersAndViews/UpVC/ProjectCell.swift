@@ -10,6 +10,7 @@ import UIKit
 // nonTimed Cell to UPVC
 protocol NonTimedCellDelegate {
     func passNonTimedCellIndex(cell: UITableViewCell)
+    
 }
 
 class ProjectCell: UITableViewCell {
@@ -64,6 +65,14 @@ class ProjectCell: UITableViewCell {
         
     }()
     
+    var checkMarkImage: UIImageView = {
+        
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "checkMark"))
+        imageView.isHidden = true
+        return imageView
+        
+    }()
+    
 
     
     var deleteButton: UIButton = {
@@ -83,6 +92,7 @@ class ProjectCell: UITableViewCell {
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(taskSquareView)
         containerView.addSubview(taskSquareFillView)
+        taskSquareFillView.addSubview(checkMarkImage)
         
     }
     
@@ -120,6 +130,11 @@ class ProjectCell: UITableViewCell {
             make.height.width.equalTo(30)
         }
         
+        checkMarkImage.snp.makeConstraints { (make) in
+            make.centerY.centerX.equalToSuperview()
+            make.width.height.equalTo(15)
+        }
+        
     }
     
     private func setUpCell() {
@@ -130,8 +145,10 @@ class ProjectCell: UITableViewCell {
         setConstraints()
         if project.completion {
             taskSquareFillView.isHidden = false
+            checkMarkImage.isHidden = false
         } else {
             taskSquareFillView.isHidden = true
+            checkMarkImage.isHidden = true
         }
         let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tap.minimumPressDuration = 0
@@ -156,10 +173,16 @@ class ProjectCell: UITableViewCell {
             //showing the fillView
             taskSquareFillView.isHidden = false
             taskSquareFillView.alpha = 0
+            checkMarkImage.isHidden = false
+            checkMarkImage.alpha = 0
+            
             
             UIView.animate(withDuration: 0.4, animations: {
                 self.taskSquareFillView.alpha = 1
-
+                self.checkMarkImage.alpha = 1
+            }, completion:  {
+                (value: Bool) in
+                self.delegate.passNonTimedCellIndex(cell: self)
             })
             
         }
