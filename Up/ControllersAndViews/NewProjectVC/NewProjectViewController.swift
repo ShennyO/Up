@@ -313,6 +313,7 @@ class NewProjectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        hideKeyboard()
         let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tap.minimumPressDuration = 0
         timeButton.addGestureRecognizer(tap)
@@ -333,8 +334,9 @@ extension NewProjectViewController: CustomTextViewDelegate {
         descriptionText = text
     }
     
-    
 }
+
+
 
 
 //From NewProjectVC back to TimeInputButton
