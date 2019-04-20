@@ -244,6 +244,15 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 && editingMode == false {
             let sessionVC = SessionViewController()
+            let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
+            sessionVC.currentCell = cell
+            sessionVC.dismissedBlock = { (cell) in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.timedProjects.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .left)
+                }
+                
+            }
             sessionVC.timedProject = timedProjects[indexPath.row]
             self.present(sessionVC, animated: true, completion: nil)
         }

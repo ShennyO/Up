@@ -14,9 +14,10 @@ class SessionViewController: UIViewController {
     var currentTime: TimeInterval!
     var endTime: TimeInterval!
     
-    
+    var currentCell: UITableViewCell!
     var timeInSeconds: Int = 0
     
+    var dismissedBlock: ((UITableViewCell) -> ())?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -341,6 +342,7 @@ class SessionViewController: UIViewController {
 
 extension SessionViewController: CongratsViewToSessionViewDelegate {
     func dismissTapped() {
+        dismissedBlock!(currentCell)
         self.dismiss(animated: true, completion: nil)
     }
     
