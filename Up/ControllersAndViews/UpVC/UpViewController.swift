@@ -41,6 +41,8 @@ class UpViewController: UIViewController {
                 
                 let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
                 tableHeaderView.frame = tableHeaderFrame
+                
+                
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
@@ -48,11 +50,18 @@ class UpViewController: UIViewController {
                 
             } else { //when Projects are at zero, edit button is automatically disabled, and add button is
                      // automatically shown and enabled
-                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
-                tableHeaderView.frame = tableHeaderFrame
-                UIView.animate(withDuration: 0.5) {
-                    self.view.layoutIfNeeded()
+                
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+                    // Code you want to be delayed
+                    let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
+                    self.tableHeaderView.frame = tableHeaderFrame
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.view.layoutIfNeeded()
+                    })
                 }
+                
+                
                 
                 //show addButton
                 addNewButton.isHidden = false
@@ -81,12 +90,14 @@ class UpViewController: UIViewController {
                 
             } else { //if total is 0, editing mode is automatically changed back to false
                 editingMode = false
-                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
-                tableHeaderView.frame = tableHeaderFrame
-                UIView.animate(withDuration: 0.5) {
-                    self.view.layoutIfNeeded()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { 
+                    // Code you want to be delayed
+                    let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
+                    self.tableHeaderView.frame = tableHeaderFrame
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.view.layoutIfNeeded()
+                    })
                 }
-                
                 //show addButton
                 addNewButton.isHidden = false
                 addNewButton.alpha = 0
@@ -247,7 +258,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
             sessionVC.currentCell = cell
             sessionVC.dismissedBlock = { (cell) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                     self.timedProjects.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .left)
                 }

@@ -177,7 +177,7 @@ class ProjectCell: UITableViewCell {
             checkMarkImage.alpha = 0
             
             
-            UIView.animate(withDuration: 0.4, animations: {
+            UIView.animate(withDuration: 0.35, animations: {
                 self.taskSquareFillView.alpha = 1
                 self.checkMarkImage.alpha = 1
             }, completion:  {
