@@ -177,7 +177,7 @@ extension UpViewController {
         addNewButton.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-15)
             make.bottom.equalToSuperview().offset(-100)
-            make.width.height.equalTo(50)
+            make.width.height.equalTo(70)
         }
         
     }

@@ -50,6 +50,14 @@ class ProjectCell: UITableViewCell {
         return label
     }()
     
+    let dragView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 5
+        view.backgroundColor = .white
+        view.isHidden = true
+        return view
+    }()
+    
     var taskSquareView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
@@ -96,6 +104,7 @@ class ProjectCell: UITableViewCell {
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(taskSquareView)
         containerView.addSubview(taskSquareFillView)
+        containerView.addSubview(dragView)
         taskSquareFillView.addSubview(checkMarkImage)
         
     }
@@ -137,6 +146,10 @@ class ProjectCell: UITableViewCell {
         checkMarkImage.snp.makeConstraints { (make) in
             make.centerY.centerX.equalToSuperview()
             make.width.height.equalTo(15)
+        }
+        
+        dragView.snp.makeConstraints { (make) in
+            make.left.right.top.bottom.equalToSuperview()
         }
         
     }
@@ -225,14 +238,20 @@ class ProjectCell: UITableViewCell {
         if recognizer.state == .began {
             // when the gesture begins, record the current center location
             originalCenter = center
+            dragView.isHidden = false
         }
         // 2
         if recognizer.state == .changed {
             let translation = recognizer.translation(in: self)
             center = CGPoint(x: originalCenter.x + translation.x, y: originalCenter.y)
             
+            let alphaVal = abs(frame.origin.x) / 275
+            dragView.alpha = alphaVal
+            
             // has the user dragged the item far enough to initiate a delete/complete?
             deleteOnDragRelease = frame.origin.x < -frame.size.width / 2.0
+            
+            
         }
         // 3
         if recognizer.state == .ended {
@@ -242,9 +261,17 @@ class ProjectCell: UITableViewCell {
             if !deleteOnDragRelease {
                 // if the item is not being deleted, snap back to the original location
                 UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
+                
+                self.dragView.isHidden = true
+                
             } else {
                 
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.dragView.isHidden = true
+                }
+                
                 delegate.passNonTimedCellIndex(cell: self)
+                
                 
             }
         }
@@ -255,7 +282,6 @@ class ProjectCell: UITableViewCell {
             let translation = panGestureRecognizer.translation(in: superview!)
             
             if translation.x < translation.y {
-                print("x: \(translation.x), y: \(translation.y)")
                 return true
             }
             return false

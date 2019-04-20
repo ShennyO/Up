@@ -47,6 +47,14 @@ class TimedProjectCell: UITableViewCell {
         return view
     }()
     
+    let dragView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 5
+        view.backgroundColor = .white
+        view.isHidden = true
+        return view
+    }()
+    
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
@@ -87,6 +95,7 @@ class TimedProjectCell: UITableViewCell {
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(timeLabel)
         containerView.addSubview(timeImageView)
+        containerView.addSubview(dragView)
         
     }
     
@@ -129,6 +138,10 @@ class TimedProjectCell: UITableViewCell {
             make.centerY.equalToSuperview().offset(8)
             make.right.equalToSuperview().offset(-10)
             make.height.width.equalTo(30)
+        }
+        
+        dragView.snp.makeConstraints { (make) in
+            make.left.right.top.bottom.equalToSuperview()
         }
         
     }
@@ -189,11 +202,17 @@ class TimedProjectCell: UITableViewCell {
         if recognizer.state == .began {
             // when the gesture begins, record the current center location
             originalCenter = center
+            dragView.isHidden = false
         }
         // 2
         if recognizer.state == .changed {
             let translation = recognizer.translation(in: self)
             center = CGPoint(x: originalCenter.x + translation.x, y: originalCenter.y)
+            
+            //All the way right, alpha is 0, all the way left alpha is 0.7
+            //We're going to do this based off the frame's x position (0 -> -285)
+            let alphaVal = abs(frame.origin.x) / 275
+            dragView.alpha = alphaVal
             
             // has the user dragged the item far enough to initiate a delete/complete?
             deleteOnDragRelease = frame.origin.x < -frame.size.width / 2.0
@@ -206,7 +225,13 @@ class TimedProjectCell: UITableViewCell {
             if !deleteOnDragRelease {
                 // if the item is not being deleted, snap back to the original location
                 UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
+                
+                self.dragView.isHidden = true
+                
             } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.dragView.isHidden = true
+                }
                 
                 delegate.passTimedCellIndex(cell: self)
                 
@@ -219,7 +244,6 @@ class TimedProjectCell: UITableViewCell {
             let translation = panGestureRecognizer.translation(in: superview!)
             
             if translation.x < translation.y {
-                print("x: \(translation.x), y: \(translation.y)")
                 return true
             }
             return false
