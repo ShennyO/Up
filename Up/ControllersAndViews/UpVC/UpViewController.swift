@@ -13,6 +13,10 @@ protocol UpVCToUpVCHeaderDelegate {
     func alertHeaderView(total: Int)
 }
 
+protocol UpVCToTimedProjectCellDelegate {
+    func showBlackCheck()
+}
+
 class UpViewController: UIViewController {
     
     
@@ -30,7 +34,8 @@ class UpViewController: UIViewController {
     
     //MARK: VARIABLES
     //this is to alert the HeaderView when to enable and disable the edit button
-    var delegate: UpVCToUpVCHeaderDelegate!
+    var headerDelegate: UpVCToUpVCHeaderDelegate!
+    var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     var editingMode = false
     
     var projects: [Project] = [] {
@@ -72,7 +77,7 @@ class UpViewController: UIViewController {
                 })
                 
             }
-            delegate.alertHeaderView(total: total)
+            headerDelegate.alertHeaderView(total: total)
             
         }
     }
@@ -107,7 +112,7 @@ class UpViewController: UIViewController {
                 })
                 
             }
-            delegate.alertHeaderView(total: total)
+            headerDelegate.alertHeaderView(total: total)
             
         }
     }
@@ -153,7 +158,7 @@ extension UpViewController {
     private func setUpTableView() {
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
         tableHeaderView.delegate = self
-        delegate = tableHeaderView
+        headerDelegate = tableHeaderView
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
@@ -255,17 +260,18 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 && editingMode == false {
             let sessionVC = SessionViewController()
-            let cell = tableView.dequeueReusableCell(withIdentifier: "timedProjectCell") as! TimedProjectCell
-            sessionVC.currentCell = cell
-            sessionVC.dismissedBlock = { (cell) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    self.timedProjects.remove(at: indexPath.row)
-                    tableView.deleteRows(at: [indexPath], with: .left)
-                }
+            let cell = tableView.cellForRow(at: indexPath)
+            timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
+            sessionVC.dismissedBlock = {
+                self.timedCellDelegate.showBlackCheck()
+                self.timedProjects[indexPath.row].completion = true
                 
+
             }
             sessionVC.timedProject = timedProjects[indexPath.row]
-            self.present(sessionVC, animated: true, completion: nil)
+            if timedProjects[indexPath.row].completion == false {
+                self.present(sessionVC, animated: true, completion: nil)
+            }
         }
     }
     

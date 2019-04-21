@@ -71,8 +71,16 @@ class TimedProjectCell: UITableViewCell {
         return label
     }()
     
+    var timeImageContainerView = UIView()
+    
     var timeImageView: UIImageView = {
         let image = UIImageView(image: #imageLiteral(resourceName: "timeIcon"))
+        return image
+    }()
+    
+    var blackCheckMark: UIImageView = {
+        let image = UIImageView(image: #imageLiteral(resourceName: "blackCheckMark"))
+        image.isHidden = true
         return image
     }()
     
@@ -94,7 +102,9 @@ class TimedProjectCell: UITableViewCell {
         containerView.addSubview(darkView)
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(timeLabel)
-        containerView.addSubview(timeImageView)
+        containerView.addSubview(timeImageContainerView)
+        timeImageContainerView.addSubview(timeImageView)
+        timeImageContainerView.addSubview(blackCheckMark)
         containerView.addSubview(dragView)
         
     }
@@ -128,10 +138,20 @@ class TimedProjectCell: UITableViewCell {
             make.centerY.equalToSuperview().offset(1)
         }
         
-        timeImageView.snp.makeConstraints { (make) in
+        timeImageContainerView.snp.makeConstraints { (make) in
             make.right.equalTo(timeLabel.snp.left).offset(-7)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(25)
+        }
+        
+        timeImageView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(25)
+            make.centerX.centerY.equalToSuperview()
+        }
+        
+        blackCheckMark.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(15)
         }
         
         deleteButton.snp.makeConstraints { (make) in
@@ -153,11 +173,18 @@ class TimedProjectCell: UITableViewCell {
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         addOutlets()
         setConstraints()
-        
         //MARK: GESTURE
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
         recognizer.delegate = self
         addGestureRecognizer(recognizer)
+        
+        if timedProject.completion {
+            blackCheckMark.isHidden = false
+            self.isUserInteractionEnabled = false
+        } else {
+            blackCheckMark.isHidden = true
+            self.isUserInteractionEnabled = true
+        }
         
         descriptionLabel.text = timedProject.description
         timeLabel.text = String(describing: timedProject.time)
@@ -166,6 +193,10 @@ class TimedProjectCell: UITableViewCell {
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        if timedProject.completion {
+            return
+        }
+        
         if highlighted {
             darkView.alpha = 0.55
         } else {
@@ -254,4 +285,20 @@ class TimedProjectCell: UITableViewCell {
     
 }
 
+extension TimedProjectCell: UpVCToTimedProjectCellDelegate{
+    func showBlackCheck() {
+        //showing the dotDotDots
+        blackCheckMark.isHidden = false
+        blackCheckMark.alpha = 0
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            UIView.animate(withDuration: 0.4, animations: {
+                self.blackCheckMark.alpha = 1
+            })
+        }
+        
+    }
+    
+    
+}
 

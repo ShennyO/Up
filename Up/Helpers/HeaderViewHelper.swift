@@ -129,6 +129,11 @@ class HeaderView: UIView {
                 make.right.equalToSuperview().offset(-35)
                 make.centerY.equalTo(titleLabel)
             }
+            
+            UIView.animate(withDuration: 0.4, animations: {
+                self.layoutIfNeeded()
+                
+            })
             //showing the dotDotDots
             dotDotDotLabel.isHidden = false
             dotDotDotLabel.alpha = 0
@@ -137,10 +142,7 @@ class HeaderView: UIView {
                 self.dotDotDotLabel.alpha = 1
             })
             
-            UIView.animate(withDuration: 0.4, animations: {
-                self.layoutIfNeeded()
-                
-            })
+            
             
             
         }

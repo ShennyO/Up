@@ -206,7 +206,7 @@ class ProjectCell: UITableViewCell {
             }, completion:  {
                 (value: Bool) in
                 self.isUserInteractionEnabled = true
-                self.delegate.passNonTimedCellIndex(cell: self)
+//                self.delegate.passNonTimedCellIndex(cell: self)
             })
             
         }
