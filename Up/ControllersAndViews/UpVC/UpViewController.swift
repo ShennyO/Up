@@ -277,7 +277,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
+extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate {
     
     //Extension here is for the tableviewcell button to communicate with VC
     //VC handles which cell and project to delete
