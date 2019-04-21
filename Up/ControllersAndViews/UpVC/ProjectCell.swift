@@ -118,18 +118,20 @@ class ProjectCell: UITableViewCell {
             make.right.equalToSuperview().offset(-25)
         }
         
-        descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(15)
-            make.centerY.equalToSuperview()
-        }
-        
-        
         
         taskSquareView.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-15)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(25)
         }
+        
+        descriptionLabel.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(15)
+            make.right.equalTo(taskSquareView.snp.left).offset(-15)
+            make.centerY.equalToSuperview()
+            
+        }
+        
         
         taskSquareFillView.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-15)
@@ -216,7 +218,10 @@ class ProjectCell: UITableViewCell {
     }
     
     @objc func editModeOff() {
-        UIView.animate(withDuration: 0.3, animations: {
+        
+        taskSquareView.isUserInteractionEnabled = true
+        
+        UIView.animate(withDuration: 0.4, animations: {
             self.deleteButton.alpha = 0
         }, completion:  {
             (value: Bool) in
@@ -225,7 +230,7 @@ class ProjectCell: UITableViewCell {
     }
     
     @objc func editModeOn() {
-        
+        taskSquareView.isUserInteractionEnabled = false
         deleteButton.isHidden = false
         deleteButton.alpha = 0
         UIView.animate(withDuration: 0.4, animations: {
