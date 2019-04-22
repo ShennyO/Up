@@ -97,6 +97,8 @@ class HeaderView: UIView {
         if editButtonMode {
             
             editButtonMode = false
+            
+            //hiding UpVC's Addbutton
             delegate.alertUpVCOfEditMode(mode: editButtonMode)
             
             //move back to original pos
@@ -115,7 +117,7 @@ class HeaderView: UIView {
                 
             })
             
-
+            //Communicating to all the tableview cells to hide their delete button
             NotificationCenter.default.post(name: .editModeOff, object: nil)
             
         } else { // if edit button is not active when tapped
@@ -165,8 +167,10 @@ class HeaderView: UIView {
 
 extension HeaderView: UpVCToUpVCHeaderDelegate {
     
+    //PURPOSE: To configure the header view based off of the count of projects
     func alertHeaderView(total: Int) {
         
+        //If there aren't any projects
         if total == 0 {
             editButtonMode = false
             NotificationCenter.default.post(name: .editModeOff, object: nil)
@@ -193,7 +197,7 @@ extension HeaderView: UpVCToUpVCHeaderDelegate {
             })
             
             
-        } else {
+        } else { //If there are projects
             
             UIView.animate(withDuration: 0.3) {
                 self.editButton.isEnabled = true

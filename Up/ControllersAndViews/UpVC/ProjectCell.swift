@@ -176,6 +176,7 @@ class ProjectCell: UITableViewCell {
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
+        
         recognizer.delegate = self
         addGestureRecognizer(recognizer)
         
