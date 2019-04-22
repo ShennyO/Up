@@ -32,6 +32,7 @@
 		C3BE431F226E76EF00AB8C6F /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BE431E226E76EF00AB8C6F /* CoreDataStack.swift */; };
 		C3BE4321226E772C00AB8C6F /* CoreDataInitializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BE4320226E772C00AB8C6F /* CoreDataInitializable.swift */; };
 		C3BE4323226E774C00AB8C6F /* CoreDataFetchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BE4322226E774C00AB8C6F /* CoreDataFetchHelper.swift */; };
+		C3BE4327226E797A00AB8C6F /* Up.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C3BE4325226E797A00AB8C6F /* Up.xcdatamodeld */; };
 		C3C5C0B82268088E00EA8523 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B72268088E00EA8523 /* CalendarCell.swift */; };
 		C3C5C0BA22684F7E00EA8523 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */; };
 		EA9435B687C0529AF11F85F8 /* Pods_UpTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302688DDD8A6251B5E3A8D14 /* Pods_UpTests.framework */; };
@@ -94,6 +95,7 @@
 		C3BE431E226E76EF00AB8C6F /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		C3BE4320226E772C00AB8C6F /* CoreDataInitializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataInitializable.swift; sourceTree = "<group>"; };
 		C3BE4322226E774C00AB8C6F /* CoreDataFetchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFetchHelper.swift; sourceTree = "<group>"; };
+		C3BE4326226E797A00AB8C6F /* Up.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Up.xcdatamodel; sourceTree = "<group>"; };
 		C3C5C0B72268088E00EA8523 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		F42DC5CA08EDB9F40DBC9907 /* Pods-UpTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UpTests.release.xcconfig"; path = "Target Support Files/Pods-UpTests/Pods-UpTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				C37519E42255114900FF0E22 /* AppDelegate.swift */,
+				C3BE4325226E797A00AB8C6F /* Up.xcdatamodeld */,
 				C3BE4324226E792000AB8C6F /* CoreData */,
 				487E1BC922692F80000F9B09 /* ControllersAndViews */,
 				C3751A212257FF1800FF0E22 /* Models */,
@@ -530,6 +533,7 @@
 				C3751A1722552DFE00FF0E22 /* UpViewController.swift in Sources */,
 				C3C5C0BA22684F7E00EA8523 /* CalendarHeaderView.swift in Sources */,
 				C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */,
+				C3BE4327226E797A00AB8C6F /* Up.xcdatamodeld in Sources */,
 				C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */,
 				C3751A1922552F3D00FF0E22 /* Project.swift in Sources */,
 				C3BE4321226E772C00AB8C6F /* CoreDataInitializable.swift in Sources */,
@@ -868,6 +872,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C3BE4325226E797A00AB8C6F /* Up.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C3BE4326226E797A00AB8C6F /* Up.xcdatamodel */,
+			);
+			currentVersion = C3BE4326226E797A00AB8C6F /* Up.xcdatamodel */;
+			path = Up.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C37519D92255114900FF0E22 /* Project object */;
 }
