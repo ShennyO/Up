@@ -31,6 +31,8 @@
 		C3B36B4E226A39AA007CC38A /* CongratulationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */; };
 		C3C5C0B82268088E00EA8523 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B72268088E00EA8523 /* CalendarCell.swift */; };
 		C3C5C0BA22684F7E00EA8523 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */; };
+		C3C95ACF226E5F670004F1C8 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C95ACE226E5F670004F1C8 /* CoreDataStack.swift */; };
+		C3C95AD2226E61580004F1C8 /* Goals.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C3C95AD0226E61580004F1C8 /* Goals.xcdatamodeld */; };
 		EA9435B687C0529AF11F85F8 /* Pods_UpTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302688DDD8A6251B5E3A8D14 /* Pods_UpTests.framework */; };
 		F19ADCF59C11CE8EF7F54125 /* Pods_Up.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7BAEDF3155CE5AAB0935E5 /* Pods_Up.framework */; };
 /* End PBXBuildFile section */
@@ -90,6 +92,8 @@
 		C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongratulationsView.swift; sourceTree = "<group>"; };
 		C3C5C0B72268088E00EA8523 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		C3C5C0B922684F7E00EA8523 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
+		C3C95ACE226E5F670004F1C8 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		C3C95AD1226E61580004F1C8 /* Goals.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Goals.xcdatamodel; sourceTree = "<group>"; };
 		F42DC5CA08EDB9F40DBC9907 /* Pods-UpTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UpTests.release.xcconfig"; path = "Target Support Files/Pods-UpTests/Pods-UpTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -232,6 +236,8 @@
 				C37519EB2255114C00FF0E22 /* Assets.xcassets */,
 				C37519ED2255114C00FF0E22 /* LaunchScreen.storyboard */,
 				C37519F02255114C00FF0E22 /* Info.plist */,
+				C3C95ACE226E5F670004F1C8 /* CoreDataStack.swift */,
+				C3C95AD0226E61580004F1C8 /* Goals.xcdatamodeld */,
 			);
 			path = Up;
 			sourceTree = "<group>";
@@ -505,6 +511,7 @@
 			files = (
 				C3751A462267FC6400FF0E22 /* CalendarViewController.swift in Sources */,
 				C3C5C0B82268088E00EA8523 /* CalendarCell.swift in Sources */,
+				C3C95AD2226E61580004F1C8 /* Goals.xcdatamodeld in Sources */,
 				C37519E52255114900FF0E22 /* AppDelegate.swift in Sources */,
 				C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */,
 				C3B36B4E226A39AA007CC38A /* CongratulationsView.swift in Sources */,
@@ -518,6 +525,7 @@
 				C3353A4D226B7EFC00FFD25B /* KeyboardHelper.swift in Sources */,
 				C3751A422267045A00FF0E22 /* NotificationNameHelper.swift in Sources */,
 				C3751A2C225804DC00FF0E22 /* ProjectType.swift in Sources */,
+				C3C95ACF226E5F670004F1C8 /* CoreDataStack.swift in Sources */,
 				C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */,
 				C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */,
 				C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */,
@@ -848,6 +856,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C3C95AD0226E61580004F1C8 /* Goals.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C3C95AD1226E61580004F1C8 /* Goals.xcdatamodel */,
+			);
+			currentVersion = C3C95AD1226E61580004F1C8 /* Goals.xcdatamodel */;
+			path = Goals.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C37519D92255114900FF0E22 /* Project object */;
 }

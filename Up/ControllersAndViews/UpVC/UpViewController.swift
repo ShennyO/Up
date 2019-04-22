@@ -33,12 +33,16 @@ class UpViewController: UIViewController {
     
     
     //MARK: VARIABLES
-    //this is to alert the HeaderView when to enable and disable the edit button
+    //PURPOSE: to alert the HeaderView when to enable and disable the edit button
     var headerDelegate: UpVCToUpVCHeaderDelegate!
+    
+    //PURPOSE: communication from this VC to timed Cell
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     var editingMode = false
     
     var projects: [Project] = [] {
+        
+        //PURPOSE: every time projects count is changed, we alter the headerview
         didSet {
             let total = projects.count + timedProjects.count
             
@@ -57,15 +61,15 @@ class UpViewController: UIViewController {
                      // automatically shown and enabled
                 
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
-                    // Code you want to be delayed
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    
                     let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
                     self.tableHeaderView.frame = tableHeaderFrame
                     UIView.animate(withDuration: 0.5, animations: {
                         self.view.layoutIfNeeded()
                     })
+                    
                 }
-                
                 
                 
                 //show addButton
@@ -77,6 +81,7 @@ class UpViewController: UIViewController {
                 })
                 
             }
+            
             headerDelegate.alertHeaderView(total: total)
             
         }
@@ -265,8 +270,6 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             sessionVC.dismissedBlock = {
                 self.timedCellDelegate.showBlackCheck()
                 self.timedProjects[indexPath.row].completion = true
-                
-
             }
             sessionVC.timedProject = timedProjects[indexPath.row]
             if timedProjects[indexPath.row].completion == false {
@@ -275,9 +278,11 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    
+    
 }
 
-extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
+extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate {
     
     //Extension here is for the tableviewcell button to communicate with VC
     //VC handles which cell and project to delete

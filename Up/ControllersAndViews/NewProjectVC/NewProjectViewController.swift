@@ -14,7 +14,7 @@ class NewProjectViewController: UIViewController {
     var blurEffectView: UIVisualEffectView?
     var selectedTime = 20
     var descriptionText: String?
-    var timeInputDelegate: InputDelegate!
+    var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
     var sendSelectedProject: ((Project) -> ())?
     var sendSelectedTimedProject: ((TimedProject) -> ())?
     
@@ -329,7 +329,7 @@ class NewProjectViewController: UIViewController {
     
 }
 
-extension NewProjectViewController: CustomTextViewDelegate {
+extension NewProjectViewController: CustomTextViewToNewProjVCDelegate {
     func sendText(text: String) {
         descriptionText = text
     }
@@ -340,7 +340,7 @@ extension NewProjectViewController: CustomTextViewDelegate {
 
 
 //From NewProjectVC back to TimeInputButton
-protocol InputDelegate {
+protocol NewProjectVCToTimeInputButtonDelegate {
     
     func sendSelectedTime(time: Int)
     

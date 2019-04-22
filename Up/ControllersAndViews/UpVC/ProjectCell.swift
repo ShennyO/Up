@@ -8,7 +8,7 @@
 import UIKit
 
 // nonTimed Cell to UPVC
-protocol NonTimedCellDelegate {
+protocol NonTimedCellToUpVCDelegate {
     func passNonTimedCellIndex(cell: UITableViewCell)
     
 }
@@ -21,7 +21,7 @@ class ProjectCell: UITableViewCell {
         }
     }
     var index: IndexPath!
-    var delegate: NonTimedCellDelegate!
+    var delegate: NonTimedCellToUpVCDelegate!
     
     //PANGESTURE VARIABLES
     var originalCenter = CGPoint()
@@ -176,6 +176,7 @@ class ProjectCell: UITableViewCell {
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
+        
         recognizer.delegate = self
         addGestureRecognizer(recognizer)
         

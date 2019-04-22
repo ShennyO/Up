@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TimedCellDelegate {
+protocol TimedCellToUpVCDelegate {
     func passTimedCellIndex(cell: UITableViewCell)
 }
 
@@ -20,7 +20,7 @@ class TimedProjectCell: UITableViewCell {
         }
     }
     var index: IndexPath!
-    var delegate: TimedCellDelegate!
+    var delegate: TimedCellToUpVCDelegate!
     
     //PANGESTURE VARIABLES
     var originalCenter = CGPoint()
@@ -180,7 +180,7 @@ class TimedProjectCell: UITableViewCell {
         
         if timedProject.completion {
             blackCheckMark.isHidden = false
-            self.isUserInteractionEnabled = false
+            
         } else {
             blackCheckMark.isHidden = true
             self.isUserInteractionEnabled = true
