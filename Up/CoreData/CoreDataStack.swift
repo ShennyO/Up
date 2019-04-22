@@ -16,7 +16,7 @@ public final class CoreDataStack {
         //this is a computed property, the closure is run when we access the var persistentContainer, this closure will run and return this container we set
         
         //create our persistent Container, that contains our coordinator
-        let container = NSPersistentContainer(name: "Inventory")
+        let container = NSPersistentContainer(name: "Up")
         //Set the persistent store to the container
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {

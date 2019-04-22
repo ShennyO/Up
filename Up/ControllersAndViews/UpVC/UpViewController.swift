@@ -40,6 +40,8 @@ class UpViewController: UIViewController {
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     var editingMode = false
     
+    var goals: [Goal] = []
+    
     var projects: [Project] = [] {
         
         //PURPOSE: every time projects count is changed, we alter the headerview
@@ -130,6 +132,20 @@ class UpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        let results = fetchGoalFromCoreData(entityName: "Goal", type: .untimed) as? [Goal]
+        if results?.count != 0 {
+            self.goals = results!
+            for x in self.goals {
+                print(x.completion)
+                print(x.date!)
+                print(x.duration)
+                print(x.goalDescription!)
+            }
+            
+        }
+       
+        
+        
         // Do any additional setup after loading the view.
     }
     
@@ -279,6 +295,10 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     
+    
+}
+
+extension UpViewController {
     
 }
 

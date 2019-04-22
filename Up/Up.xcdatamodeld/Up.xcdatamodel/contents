@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Goal" representedClassName="Goal" syncable="YES" codeGenerationType="class">
+        <attribute name="cleared" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="completion" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="goalDescription" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="TimedGoal" representedClassName="TimedGoal" syncable="YES" codeGenerationType="class">
-        <attribute name="completion" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="duration" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="goalDescription" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Goal" positionX="-63" positionY="-18" width="128" height="90"/>
-        <element name="TimedGoal" positionX="-54" positionY="18" width="128" height="105"/>
+        <element name="Goal" positionX="-63" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

@@ -9,6 +9,8 @@ import UIKit
 
 class NewProjectViewController: UIViewController {
     
+    //COREDATA stack
+    let stack = CoreDataStack.instance
 
     //VARIABLES
     var blurEffectView: UIVisualEffectView?
@@ -234,13 +236,34 @@ class NewProjectViewController: UIViewController {
             return
         }
         
+        let newGoal = Goal(context: stack.downloadContext)
+        newGoal.completion = false
+        newGoal.date = Date()
+        newGoal.goalDescription = text
+        newGoal.cleared = false
+        
         if sessionButton.isSelected {
+            
+            newGoal.duration = Int32(selectedTime)
+            
+            
             let newProject = TimedProject(description: text, completion: false, time: selectedTime)
             sendSelectedTimedProject!(newProject)
         } else {
+            
+            
+            newGoal.duration = Int32(0)
+            
+            
+            stack.saveTo(context: stack.downloadContext)
+            
+            
             let newProject = Project(description: text, completion: false)
             sendSelectedProject!(newProject)
         }
+        
+        stack.saveTo(context: stack.downloadContext)
+        
 
         self.dismiss(animated: true)
     }
