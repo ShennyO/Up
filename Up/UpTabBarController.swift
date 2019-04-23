@@ -13,6 +13,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         self.delegate = self
         self.tabBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        
         self.tabBar.isTranslucent = false
         // Do any additional setup after loading the view.
     }
