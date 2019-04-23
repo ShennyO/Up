@@ -19,7 +19,7 @@ class TimeInputViewButton: UIView {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
         label.textColor = UIColor.white
-        label.text = "20 minutes"
+        label.text = "30 minutes"
         label.isUserInteractionEnabled = true
         return label
     }()
