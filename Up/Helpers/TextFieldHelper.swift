@@ -14,14 +14,15 @@ enum InputType {
     case textView
 }
 
-protocol CustomTextViewDelegate {
+//from TextViewInputView to NewProjectVC
+protocol CustomTextViewToNewProjVCDelegate {
     func sendText(text: String)
 }
 
 class SunnyCustomInputView: UIView {
     
     //MARK: VARIABLES
-    var textDelegate: CustomTextViewDelegate!
+    var textDelegate: CustomTextViewToNewProjVCDelegate!
     
     
     //MARK: OUTLETS

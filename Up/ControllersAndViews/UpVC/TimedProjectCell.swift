@@ -7,20 +7,26 @@
 
 import UIKit
 
-protocol TimedCellDelegate {
+protocol TimedCellToUpVCDelegate {
     func passTimedCellIndex(cell: UITableViewCell)
 }
 
 class TimedProjectCell: UITableViewCell {
 
     //MARK: VARIABLES
-    var timedProject: TimedProject! {
+    let stack = CoreDataStack.instance
+    
+    var timedGoal: Goal! {
         didSet {
             setUpCell()
         }
     }
     var index: IndexPath!
-    var delegate: TimedCellDelegate!
+    var delegate: TimedCellToUpVCDelegate!
+    
+    //PANGESTURE VARIABLES
+    var originalCenter = CGPoint()
+    var deleteOnDragRelease = false
     
     //MARK: OUTLETS
     var containerView: UIView = {
@@ -43,6 +49,14 @@ class TimedProjectCell: UITableViewCell {
         return view
     }()
     
+    let dragView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 5
+        view.backgroundColor = .white
+        view.isHidden = true
+        return view
+    }()
+    
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
@@ -59,8 +73,16 @@ class TimedProjectCell: UITableViewCell {
         return label
     }()
     
+    var timeImageContainerView = UIView()
+    
     var timeImageView: UIImageView = {
         let image = UIImageView(image: #imageLiteral(resourceName: "timeIcon"))
+        return image
+    }()
+    
+    var blackCheckMark: UIImageView = {
+        let image = UIImageView(image: #imageLiteral(resourceName: "blackCheckMark"))
+        image.isHidden = true
         return image
     }()
     
@@ -82,7 +104,10 @@ class TimedProjectCell: UITableViewCell {
         containerView.addSubview(darkView)
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(timeLabel)
-        containerView.addSubview(timeImageView)
+        containerView.addSubview(timeImageContainerView)
+        timeImageContainerView.addSubview(timeImageView)
+        timeImageContainerView.addSubview(blackCheckMark)
+        containerView.addSubview(dragView)
         
     }
     
@@ -115,16 +140,30 @@ class TimedProjectCell: UITableViewCell {
             make.centerY.equalToSuperview().offset(1)
         }
         
-        timeImageView.snp.makeConstraints { (make) in
+        timeImageContainerView.snp.makeConstraints { (make) in
             make.right.equalTo(timeLabel.snp.left).offset(-7)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(25)
+        }
+        
+        timeImageView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(25)
+            make.centerX.centerY.equalToSuperview()
+        }
+        
+        blackCheckMark.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(15)
         }
         
         deleteButton.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview().offset(8)
             make.right.equalToSuperview().offset(-10)
             make.height.width.equalTo(30)
+        }
+        
+        dragView.snp.makeConstraints { (make) in
+            make.left.right.top.bottom.equalToSuperview()
         }
         
     }
@@ -136,13 +175,30 @@ class TimedProjectCell: UITableViewCell {
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         addOutlets()
         setConstraints()
-        descriptionLabel.text = timedProject.description
-        timeLabel.text = String(describing: timedProject.time)
+        //MARK: GESTURE
+        let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
+        recognizer.delegate = self
+        addGestureRecognizer(recognizer)
+        
+        if timedGoal.completion {
+            blackCheckMark.isHidden = false
+            
+        } else {
+            blackCheckMark.isHidden = true
+            self.isUserInteractionEnabled = true
+        }
+        
+        descriptionLabel.text = timedGoal.goalDescription
+        timeLabel.text = String(describing: timedGoal.duration)
         
         
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        if timedGoal.completion {
+            return
+        }
+        
         if highlighted {
             darkView.alpha = 0.55
         } else {
@@ -173,7 +229,78 @@ class TimedProjectCell: UITableViewCell {
         })
     }
     
+    //MARK: - horizontal pan gesture methods
+    @objc func handlePan(recognizer: UIPanGestureRecognizer) {
+        // 1
+        if recognizer.state == .began {
+            // when the gesture begins, record the current center location
+            originalCenter = center
+            dragView.isHidden = false
+        }
+        // 2
+        if recognizer.state == .changed {
+            let translation = recognizer.translation(in: self)
+            center = CGPoint(x: originalCenter.x + translation.x, y: originalCenter.y)
+            
+            //All the way right, alpha is 0, all the way left alpha is 0.7
+            //We're going to do this based off the frame's x position (0 -> -285)
+            let alphaVal = abs(frame.origin.x) / 275
+            dragView.alpha = alphaVal
+            
+            // has the user dragged the item far enough to initiate a delete/complete?
+            deleteOnDragRelease = frame.origin.x < -frame.size.width / 2.0
+        }
+        // 3
+        if recognizer.state == .ended {
+            // the frame this cell had before user dragged it
+            let originalFrame = CGRect(x: 0, y: frame.origin.y,
+                                       width: bounds.size.width, height: bounds.size.height)
+            if !deleteOnDragRelease {
+                // if the item is not being deleted, snap back to the original location
+                UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
+                
+                self.dragView.isHidden = true
+                
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.dragView.isHidden = true
+                }
+                
+                delegate.passTimedCellIndex(cell: self)
+                
+            }
+        }
+    }
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
+            let translation = panGestureRecognizer.translation(in: superview!)
+            
+            if translation.x < translation.y {
+                return true
+            }
+            return false
+        }
+        return false
+    }
+
     
 }
 
+extension TimedProjectCell: UpVCToTimedProjectCellDelegate{
+    func showBlackCheck() {
+        //showing the dotDotDots
+        blackCheckMark.isHidden = false
+        blackCheckMark.alpha = 0
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            UIView.animate(withDuration: 0.4, animations: {
+                self.blackCheckMark.alpha = 1
+            })
+        }
+        
+    }
+    
+    
+}
 

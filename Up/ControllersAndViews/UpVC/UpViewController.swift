@@ -13,8 +13,13 @@ protocol UpVCToUpVCHeaderDelegate {
     func alertHeaderView(total: Int)
 }
 
+protocol UpVCToTimedProjectCellDelegate {
+    func showBlackCheck()
+}
+
 class UpViewController: UIViewController {
     
+    let stack = CoreDataStack.instance
     
     //MARK: OUTLETS
     var upTableView: UITableView!
@@ -29,85 +34,102 @@ class UpViewController: UIViewController {
     
     
     //MARK: VARIABLES
-    //this is to alert the HeaderView when to enable and disable the edit button
-    var delegate: UpVCToUpVCHeaderDelegate!
+    //PURPOSE: to alert the HeaderView when to enable and disable the edit button
+    var headerDelegate: UpVCToUpVCHeaderDelegate!
     
-    var projects: [Project] = [] {
+    //PURPOSE: communication from this VC to timed Cell
+    var timedCellDelegate: UpVCToTimedProjectCellDelegate!
+    var editingMode = false
+    
+    var goals: [Goal] = [] {
         didSet {
-            let total = projects.count + timedProjects.count
+            configureHeaderAndTableView()
+        }
+    }
+    var timedGoals: [Goal] = [] {
+        didSet {
             
-            if total != 0 {
+            configureHeaderAndTableView()
+        }
+    }
+    
+    private func configureHeaderAndTableView() {
+        let total = goals.count + timedGoals.count
+        
+        if total != 0 {
+            
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
+            tableHeaderView.frame = tableHeaderFrame
+            self.view.layoutIfNeeded()
+            
+            
+            
+        } else { //when Projects are at zero, edit button is automatically disabled, and add button is
+            // automatically shown and enabled
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 
-                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
-                tableHeaderView.frame = tableHeaderFrame
-                UIView.animate(withDuration: 0.5) {
-                    self.view.layoutIfNeeded()
-                }
-                
-                
-            } else { //when Projects are at zero, edit button is automatically disabled, and add button is
-                     // automatically shown and enabled
                 let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
-                tableHeaderView.frame = tableHeaderFrame
-                UIView.animate(withDuration: 0.5) {
+                self.tableHeaderView.frame = tableHeaderFrame
+                UIView.animate(withDuration: 0.5, animations: {
                     self.view.layoutIfNeeded()
-                }
-                
-                //show addButton
-                addNewButton.isHidden = false
-                addNewButton.alpha = 0
-                
-                UIView.animate(withDuration: 0.4, animations: {
-                    self.addNewButton.alpha = 1
                 })
                 
             }
-            delegate.alertHeaderView(total: total)
+            
+            
+            //show addButton
+            addNewButton.isHidden = false
+            addNewButton.alpha = 0
+            
+            UIView.animate(withDuration: 0.4, animations: {
+                self.addNewButton.alpha = 1
+            })
             
         }
+        
+        headerDelegate.alertHeaderView(total: total)
     }
-    var timedProjects: [TimedProject] = [] {
-        didSet {
-            let total = projects.count + timedProjects.count
-            if total != 0 {
-                
-                
-                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
-                tableHeaderView.frame = tableHeaderFrame
-                UIView.animate(withDuration: 0.5) {
-                    self.view.layoutIfNeeded()
-                }
-                
-            } else {
-                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
-                tableHeaderView.frame = tableHeaderFrame
-                UIView.animate(withDuration: 0.5) {
-                    self.view.layoutIfNeeded()
-                }
-                
-                //show addButton
-                addNewButton.isHidden = false
-                addNewButton.alpha = 0
-                
-                UIView.animate(withDuration: 0.4, animations: {
-                    self.addNewButton.alpha = 1
-                })
-                
-            }
-            delegate.alertHeaderView(total: total)
-            
-        }
-    }
+    
+
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchGoals() {
+            self.upTableView.reloadData()
+        }
+        
+    }
+    
+    private func fetchGoals(completion: @escaping () -> ()) {
+        let results = fetchGoalFromCoreData(entityName: "Goal", type: .untimed) as? [Goal]
+        if results?.count != 0 {
+            self.goals = results!
+        }
+        let timedResults = fetchGoalFromCoreData(entityName: "Goal", type: .timed) as? [Goal]
+        if timedResults?.count != 0 {
+            self.timedGoals = timedResults!
+        }
+        
+        
+        completion()
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
-        // Do any additional setup after loading the view.
+        fetchGoals() {
+            
+            self.upTableView.reloadData()
+        }
+       
     }
     
 }
@@ -138,9 +160,15 @@ extension UpViewController {
     }
     
     private func setUpTableView() {
+//        let results = fetchGoalFromCoreData(entityName: "Goal", type: .all)
+//        if results?.count == 0 {
+//            tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
+//        } else {
+//            tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100), title: "Today")
+//        }
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
         tableHeaderView.delegate = self
-        delegate = tableHeaderView
+        headerDelegate = tableHeaderView
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
@@ -164,7 +192,7 @@ extension UpViewController {
         addNewButton.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-15)
             make.bottom.equalToSuperview().offset(-100)
-            make.width.height.equalTo(50)
+            make.width.height.equalTo(60)
         }
         
     }
@@ -174,16 +202,7 @@ extension UpViewController {
     
     @objc private func addButtonTapped() {
         let nextVC = NewProjectViewController()
-        nextVC.sendSelectedProject = { (result) in
-            self.projects.append(result)
-            self.upTableView.reloadData()
-        }
-        
-        nextVC.sendSelectedTimedProject = { result in
-            self.timedProjects.append(result)
-            self.upTableView.reloadData()
-        }
-        
+
         self.present(nextVC, animated: true, completion: nil)
     }
     
@@ -209,9 +228,9 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
-            return projects.count
+            return goals.count
         } else {
-            return timedProjects.count
+            return timedGoals.count
         }
         
     }
@@ -226,7 +245,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = .none
             cell.delegate = self
             cell.index = indexPath
-            cell.project = projects[indexPath.row]
+            cell.goal = goals[indexPath.row]
             
             return cell
         } else {
@@ -234,48 +253,70 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = .none
             cell.index = indexPath
             cell.delegate = self
-            cell.timedProject = timedProjects[indexPath.row]
+            cell.timedGoal = timedGoals[indexPath.row]
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        if indexPath.section == 1 && editingMode == false {
             let sessionVC = SessionViewController()
-            sessionVC.timedProject = timedProjects[indexPath.row]
-            self.present(sessionVC, animated: true, completion: nil)
+            let cell = tableView.cellForRow(at: indexPath)
+            timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
+            sessionVC.dismissedBlock = {
+                self.timedCellDelegate.showBlackCheck()
+                self.timedGoals[indexPath.row].completion = true
+                self.stack.saveTo(context: self.stack.viewContext)
+            }
+            sessionVC.timedGoal = timedGoals[indexPath.row]
+            if timedGoals[indexPath.row].completion == false {
+                self.present(sessionVC, animated: true, completion: nil)
+            }
         }
     }
+    
+    
     
 }
 
-extension UpViewController: TimedCellDelegate, NonTimedCellDelegate {
+extension UpViewController {
     
+}
+
+extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate {
+
     //Extension here is for the tableviewcell button to communicate with VC
     //VC handles which cell and project to delete
-    
+
     func passTimedCellIndex(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            timedProjects.remove(at: index.row)
+            stack.viewContext.delete(timedGoals[index.row])
+            stack.saveTo(context: stack.viewContext)
+//            fetchGoals()
+            timedGoals.remove(at: index.row)
+
             upTableView.deleteRows(at: [index], with: .left)
+            
         }
     }
-    
+
     func passNonTimedCellIndex(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            projects.remove(at: index.row)
+            stack.viewContext.delete(goals[index.row])
+            stack.saveTo(context: stack.viewContext)
+            goals.remove(at: index.row)
             upTableView.deleteRows(at: [index], with: .left)
         }
     }
-    
+
 }
 
 extension UpViewController: HeaderViewToUpVCDelegate {
     func alertUpVCOfEditMode(mode: Bool) {
         //if editMode is on
+        editingMode = mode
         if mode == true {
             //hide addButton
-            
             UIView.animate(withDuration: 0.3, animations: {
                 self.addNewButton.alpha = 0
             }, completion:  {
