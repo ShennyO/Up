@@ -52,7 +52,7 @@ class CalendarViewController: UIViewController {
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
         tableView.tag = 0
-        tableView.backgroundColor = .black
+//        tableView.backgroundColor = .black
         tableView.separatorStyle = .none
         
         tableView.allowsSelection = false
@@ -113,7 +113,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width / 7 * 6 + 90
+        return self.view.frame.width / 7 * 6 + 92
     }
     
 }
@@ -181,6 +181,13 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.isHidden = true
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let oldCell = collectionView.cellForItem(at: selectedCVIndexPath)
+//        oldCell?.isSelected = false
+        let cell = collectionView.cellForItem(at: indexPath)
+        
     }
     
 }

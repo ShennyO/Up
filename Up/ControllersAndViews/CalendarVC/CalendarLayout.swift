@@ -29,7 +29,8 @@ class CalendarLayout: UICollectionViewFlowLayout {
         super.prepare()
         guard let collectionView = self.collectionView else { return }
         let width = collectionView.frame.width / 7 - spacing
-        self.itemSize = CGSize(width: width, height: width)
+        let height = collectionView.frame.height / 6 - spacing
+        self.itemSize = CGSize(width: width, height: height)
         for section in 0..<collectionView.numberOfSections {
             createAttributesForSection(section: section)
         }

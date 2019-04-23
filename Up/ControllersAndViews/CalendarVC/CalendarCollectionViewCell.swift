@@ -11,6 +11,16 @@ import UIKit
 // The cell of the outer collection view (container for smallCollectionView)
 class CalendarCollectionViewCell: UICollectionViewCell {
     
+    override var isSelected: Bool{
+        didSet{
+            if isSelected == true {
+                backgroundColor = .gray
+            } else {
+                backgroundColor = .white
+            }
+        }
+    }
+    
     let dayLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black

@@ -115,16 +115,16 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
                 label.snp.makeConstraints { (make) in
                     make.width.equalTo(lastLabel.snp.width)
                     make.bottom.equalToSuperview().inset(4)
-                    make.left.equalTo(lastLabel.snp.right).offset(8)
+                    make.left.equalTo(lastLabel.snp.right)
                     make.top.equalTo(monthLabel.snp.bottom).offset(8)
                     if day == days.last {
-                        make.right.equalToSuperview().inset(8)
+                        make.right.equalToSuperview()
                     }
                 }
             } else {
                 label.snp.makeConstraints { (make) in
                     make.bottom.equalToSuperview().inset(4)
-                    make.left.equalToSuperview().inset(8)
+                    make.left.equalToSuperview()
                     make.top.equalTo(monthLabel.snp.bottom).offset(8)
                 }
             }

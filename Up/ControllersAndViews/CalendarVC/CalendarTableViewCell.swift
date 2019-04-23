@@ -12,7 +12,6 @@ class CalendarTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = .green
         setupCollectionView()
         setupViews()
     }
@@ -39,8 +38,6 @@ class CalendarTableViewCell: UITableViewCell {
     func setupCollectionView() {
         let layout = CalendarLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 8
-        layout.minimumLineSpacing = 8
         
         let frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         let cv = UICollectionView(frame: frame, collectionViewLayout: layout)
@@ -50,6 +47,7 @@ class CalendarTableViewCell: UITableViewCell {
         cv.showsHorizontalScrollIndicator = false
         cv.showsVerticalScrollIndicator = false
         cv.tag = 1
+        cv.allowsSelection = true
         
         cv.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: calendarCollectionViewCellID)
         
