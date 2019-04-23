@@ -60,11 +60,8 @@ class UpViewController: UIViewController {
             
             let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
             tableHeaderView.frame = tableHeaderFrame
+            self.view.layoutIfNeeded()
             
-            
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
             
             
         } else { //when Projects are at zero, edit button is automatically disabled, and add button is
@@ -129,12 +126,10 @@ class UpViewController: UIViewController {
         super.viewDidLoad()
         setUp()
         fetchGoals() {
+            
             self.upTableView.reloadData()
         }
        
-        
-        
-        // Do any additional setup after loading the view.
     }
     
 }
@@ -165,6 +160,12 @@ extension UpViewController {
     }
     
     private func setUpTableView() {
+//        let results = fetchGoalFromCoreData(entityName: "Goal", type: .all)
+//        if results?.count == 0 {
+//            tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
+//        } else {
+//            tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100), title: "Today")
+//        }
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
         tableHeaderView.delegate = self
         headerDelegate = tableHeaderView

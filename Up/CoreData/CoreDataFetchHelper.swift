@@ -12,6 +12,7 @@ import CoreData
 enum goalType {
     case timed
     case untimed
+    case all
 }
 
 func fetchGoalFromCoreData(entityName: String, type: goalType) -> [NSManagedObject]? {
@@ -23,7 +24,7 @@ func fetchGoalFromCoreData(entityName: String, type: goalType) -> [NSManagedObje
     if type == .timed {
         let predicate = NSPredicate(format: "duration > \(0)")
         fetchRequest.predicate = predicate
-    } else {
+    } else if type == .untimed{
         let predicate = NSPredicate(format: "duration == \(0)")
         fetchRequest.predicate = predicate
     }

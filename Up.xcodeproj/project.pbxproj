@@ -236,7 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				C37519E42255114900FF0E22 /* AppDelegate.swift */,
-				C3BE4325226E797A00AB8C6F /* Up.xcdatamodeld */,
 				C3BE4324226E792000AB8C6F /* CoreData */,
 				487E1BC922692F80000F9B09 /* ControllersAndViews */,
 				C3751A212257FF1800FF0E22 /* Models */,
@@ -296,6 +295,7 @@
 				C3BE431E226E76EF00AB8C6F /* CoreDataStack.swift */,
 				C3BE4320226E772C00AB8C6F /* CoreDataInitializable.swift */,
 				C3BE4322226E774C00AB8C6F /* CoreDataFetchHelper.swift */,
+				C3BE4325226E797A00AB8C6F /* Up.xcdatamodeld */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
