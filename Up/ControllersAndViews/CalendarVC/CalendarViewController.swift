@@ -2,116 +2,228 @@
 //  CalendarViewController.swift
 //  Up
 //
-//  Created by Sunny Ouyang on 4/17/19.
+//  Created by Tony Cioara on 4/19/19.
 //
 
+import Foundation
 import UIKit
-import JTAppleCalendar
 
 class CalendarViewController: UIViewController {
     
-    //MARK: VARIABLES
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    let calendarTableViewCellID = "calendarTableViewCellID"
+    let calendarCollectionViewCellID = "calendarCollectionViewCellID"
+    
+    var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
+    
+    var startDate = Date()
+    var endDate = Date()
+    var startOfMonth = Date()
+    var todayIndexPath: IndexPath?
+    var monthInfo = [Int:[Int]]()
+    
+    var delegate: HeaderViewToCalendarVCDelegate?
+    
+    let FIRST_DAY_INDEX = 0
+    let NUMBER_OF_DAYS_INDEX = 1
+    
+    lazy var gregorian : NSCalendar = {
+        let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
+        cal.timeZone = TimeZone(abbreviation: "UTC")!
+        return cal
+    }()
+    
+    let tableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        endDate = formatter.date(from: "01/01/2025")!
+        
+        setupViews()
+        setupTableView()
+        
     }
     
-    //MARK: OUTLETS
-    let calendarView = JTAppleCalendarView()
-    
-    //MARK: PRIVATE FUNCS
-    private func configNavBar() {
-        extendedLayoutIncludesOpaqueBars = true
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.prefersLargeTitles = true
+    func setupTableView() {
+        tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
+        tableView.tag = 0
+//        tableView.backgroundColor = .black
+        tableView.separatorStyle = .none
+        
+        tableView.allowsSelection = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        
     }
     
-    private func setUpCalendar() {
-        self.view.addSubview(calendarView)
-        calendarView.minimumLineSpacing = 2
-        calendarView.minimumInteritemSpacing = 2
-        calendarView.register(CalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "calendarSectionHeader")
-        calendarView.register(CalendarCell.self, forCellWithReuseIdentifier: "calendarCell")
-        calendarView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        calendarView.cellSize = self.view.frame.size.width / 7 - 4.0
-        calendarView.calendarDelegate = self
-        calendarView.calendarDataSource = self
-        calendarView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.top.equalToSuperview()
-            make.height.equalToSuperview()
+    func setupViews() {
+        self.view.addSubview(tableView)
+        
+        tableView.snp.makeConstraints { (make) in
+            make.left.right.top.bottom.equalToSuperview()
             
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configNavBar()
-        self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        setUpCalendar()
-
-        // Do any additional setup after loading the view.
+    func updateHeaderView(offset: Int) {
+        guard let delegate = self.delegate else { return }
+        
+        var monthOffsetComponents = DateComponents()
+        monthOffsetComponents.month = Int(offset)
+        
+        guard let yearDate = self.gregorian.date(byAdding: monthOffsetComponents, to: self.startOfMonth, options: NSCalendar.Options()) else { return }
+        
+        let month = (self.gregorian.component(.month, from: yearDate) - 1) % 12
+        
+        let monthName = DateFormatter().monthSymbols[month] // 0 indexed array
+        
+        let year = String(self.gregorian.component(.year, from: yearDate))
+        
+        delegate.changeLabelText(text: monthName + " " + year)
     }
     
-
-
 }
 
-extension CalendarViewController: JTAppleCalendarViewDelegate, JTAppleCalendarViewDataSource {
+extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
-    
-    func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
-        let cell = cell as! CalendarCell
-        cell.setUpCell()
-        
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
     
-    func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
-        let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "calendarCell", for: indexPath) as! CalendarCell
-        cell.setUpCell()
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 1
+        default:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
+        cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
+        delegate = cell.calendarHeaderView
+        updateHeaderView(offset: 0)
         return cell
     }
     
-    func calendar(_ calendar: JTAppleCalendarView, headerViewForDateRange range: (start: Date, end: Date), at indexPath: IndexPath) -> JTAppleCollectionReusableView {
-        let header = calendar.dequeueReusableJTAppleSupplementaryView(withReuseIdentifier: "calendarSectionHeader", for: indexPath) as! CalendarHeaderView
-        let date = range.start
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM YYYY"
-        header.setUpView(month: formatter.string(from: date))
-        return header
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return self.view.frame.width / 7 * 6 + 92
     }
     
+}
+
+extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
-    
-    
-    func calendar(_ calendar: JTAppleCalendarView, sectionHeaderSizeFor range: (start: Date, end: Date), belongingTo month: Int) -> CGSize {
-        return CGSize(width: 0, height: 200)
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        var firstDayOfStartMonth = self.gregorian.components( [.era, .year, .month], from: startDate)
+        firstDayOfStartMonth.day = 1 // round to first day
+        
+        guard let dateFromDayOneComponents = self.gregorian.date(from: firstDayOfStartMonth) else {
+            return 0
+        }
+        
+        startOfMonth = dateFromDayOneComponents
+        
+        let today = Date()
+        
+        if  startOfMonth.compare(today) == ComparisonResult.orderedAscending &&
+            endDate.compare(today) == ComparisonResult.orderedDescending {
+            
+            let differenceFromTodayComponents = self.gregorian.components([.month, .day], from: startOfMonth, to: today, options: NSCalendar.Options())
+            
+            self.todayIndexPath = IndexPath(item: differenceFromTodayComponents.day!, section: differenceFromTodayComponents.month!)
+            
+        }
+        
+        let differenceComponents = self.gregorian.components(.month, from: startDate, to: endDate, options: NSCalendar.Options())
+        
+        return differenceComponents.month! + 1
     }
     
-    
-    func calendarSizeForMonths(_ calendar: JTAppleCalendarView?) -> MonthSize? {
-        return MonthSize(defaultSize: 40)
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        var monthOffsetComponents = DateComponents()
+        // offset by the number of months
+        monthOffsetComponents.month = section
+        
+        guard let correctMonthForSectionDate = self.gregorian.date(byAdding: monthOffsetComponents, to: startOfMonth, options: NSCalendar.Options()) else { return 0 }
+        
+        let numberOfDaysInMonth = self.gregorian.range(of: .day, in: .month, for: correctMonthForSectionDate).length
+        
+        var firstWeekdayOfMonthIndex = self.gregorian.component(.weekday, from: correctMonthForSectionDate)
+        firstWeekdayOfMonthIndex = firstWeekdayOfMonthIndex - 1 // firstWeekdayOfMonthIndex should be 0-Indexed
+//        firstWeekdayOfMonthIndex = (firstWeekdayOfMonthIndex + 6) % 7 // change the first day of the week
+        
+        monthInfo[section] = [firstWeekdayOfMonthIndex, numberOfDaysInMonth]
+        return 42
     }
     
-    func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: calendarCollectionViewCellID, for: indexPath) as! CalendarCollectionViewCell
+
+        let currentMonthInfo = monthInfo[indexPath.section]! // we are guaranteed an array by the fact that we reached this line (so unwrap)
+
+        let fdIndex = currentMonthInfo[FIRST_DAY_INDEX]
+        let nDays = currentMonthInfo[NUMBER_OF_DAYS_INDEX]
+
+        let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - fdIndex, section: indexPath.section) // if the first is wednesday, add 2
+
+        if indexPath.item >= fdIndex && indexPath.item < fdIndex + nDays {
+            cell.setup(day: String(fromStartOfMonthIndexPath.item + 1))
+            cell.isHidden = false
+        } else {
+            cell.setup(day: "")
+            cell.isHidden = true
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let oldCell = collectionView.cellForItem(at: selectedCVIndexPath)
+//        oldCell?.isSelected = false
+        let cell = collectionView.cellForItem(at: indexPath)
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd"
-        formatter.locale = Calendar.current.locale
-        formatter.timeZone = Calendar.current.timeZone
-//        calendar.scrollDirection = .horizontal
-//        calendar.scrollingMode = .stopAtEachSection
+    }
+    
+}
+
+extension CalendarViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.tag == 1 {
+            let section = Int(round(scrollView.contentOffset.x / self.view.frame.width))
+            updateHeaderView(offset: section)
+        }
+    }
+}
+
+
+extension CalendarViewController: CalendarVCToHeaderViewDelegate {
+    func leftButtonTapped() {
+        scrollCollectionView(sectionOffset: -1)
+    }
+    
+    func rightButtonTapped() {
+        scrollCollectionView(sectionOffset: 1)
+    }
+    
+    func scrollCollectionView(sectionOffset: Int) {
+        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! CalendarTableViewCell
+        guard let cv = cell.calendarCollectionView else { return }
         
+        let layout = cv.collectionViewLayout as! UICollectionViewFlowLayout
         
-        let startDate = formatter.date(from: "2018 01 01")!
-        let endDate = formatter.date(from: "2020 01 01")!
+        let newSection = Int(round(cv.contentOffset.x / cv.frame.width)) + sectionOffset
+        if newSection < 0 || newSection >= cv.numberOfSections { return }
+        guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: newSection)) else { return }
+        cv.setContentOffset(CGPoint(x: attri.frame.origin.x - 8, y: 0), animated: true)
         
-        let parameters = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 6, calendar: Calendar.current, generateInDates: .forAllMonths, generateOutDates: .tillEndOfGrid, firstDayOfWeek: .sunday, hasStrictBoundaries: false)
-        return parameters
+        updateHeaderView(offset: newSection)
     }
     
     
