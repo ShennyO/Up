@@ -36,6 +36,10 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         
     }
     
+    override func prepareForReuse() {
+        self.isHidden = false
+    }
+    
     private func setupViews() {
         
     }

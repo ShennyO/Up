@@ -36,7 +36,7 @@ class CalendarTableViewCell: UITableViewCell {
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 8
         
-        let frame = CGRect.zero
+        let frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         let cv = UICollectionView(frame: frame, collectionViewLayout: layout)
         
         cv.isPagingEnabled = true

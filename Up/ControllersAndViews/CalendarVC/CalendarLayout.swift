@@ -10,36 +10,58 @@ import UIKit
 
 class CalendarLayout: UICollectionViewFlowLayout {
     
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        return super.layoutAttributesForElements(in: rect)?.map {
-            attrs in
-            let attrscp = attrs.copy() as! UICollectionViewLayoutAttributes
-            self.applyLayoutAttributes(attributes: attrscp)
-            return attrscp
-        }
-    }
+    var cachedItemsAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        if let attrs = super.layoutAttributesForItem(at: indexPath) {
-            let attrscp = attrs.copy() as! UICollectionViewLayoutAttributes
-            self.applyLayoutAttributes(attributes: attrscp)
-            return attrscp
-        }
-        return nil
+        guard let attributes = cachedItemsAttributes[indexPath] else { fatalError("No attributes cached") }
+        return attributes
+    }
+
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        return cachedItemsAttributes
+            .map { $0.value }
+            .filter { $0.frame.intersects(rect) }
     }
     
-    func applyLayoutAttributes(attributes : UICollectionViewLayoutAttributes) {
+    override func prepare() {
+        super.prepare()
+        for section in 0...20 {
+            createAttributesForSection(section: section)
+        }
         
-        if attributes.representedElementKind != nil {
-            return
+    }
+
+    func createAttributesForSection(section: Int) {
+        guard let collectionView = self.collectionView else { return }
+        let itemsCount = collectionView.numberOfItems(inSection: section)
+        for item in 0..<itemsCount {
+            let indexPath = IndexPath(item: item, section: section)
+            guard let attribute = createAttributesForItem(at: indexPath) else { return }
+            cachedItemsAttributes[indexPath] = attribute
         }
-        if let collectionView = self.collectionView {
-            
-            let xPageOffset = CGFloat(attributes.indexPath.section) * collectionView.frame.size.width
-            let xCellOffset : CGFloat = xPageOffset + (CGFloat(attributes.indexPath.item % 7) * self.itemSize.width)
-            let yCellOffset : CGFloat = self.headerReferenceSize.height + (CGFloat(attributes.indexPath.item / 7) * self.itemSize.width)
-            attributes.frame = CGRect(x: xCellOffset, y: yCellOffset, width: self.itemSize.width, height: self.itemSize.height)
-            
-        }
+    }
+    
+    private func createAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+        guard let collectionView = collectionView else { return nil }
+        
+        let spacing: CGFloat = 8
+        
+        let xPageOffset = CGFloat(attributes.indexPath.section) * collectionView.frame.size.width
+        let xCellOffset : CGFloat = xPageOffset + (CGFloat(attributes.indexPath.item % 7)  * (self.itemSize.width + spacing)) + spacing
+        let yCellOffset : CGFloat = self.headerReferenceSize.height + (CGFloat(attributes.indexPath.item / 7) * (self.itemSize.width + spacing)) + spacing
+        
+        attributes.frame = CGRect(x: xCellOffset, y: yCellOffset, width: self.itemSize.width, height: self.itemSize.height)
+        return attributes
+    }
+    
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        if newBounds.size != collectionView?.bounds.size { cachedItemsAttributes.removeAll() }
+        return true
+    }
+    
+    override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
+        if context.invalidateDataSourceCounts { cachedItemsAttributes.removeAll() }
+        super.invalidateLayout(with: context)
     }
 }

@@ -87,7 +87,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width
+        return self.view.frame.width / 7 * 6
     }
     
 }
@@ -122,7 +122,6 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var monthOffsetComponents = DateComponents()
-        
         // offset by the number of months
         monthOffsetComponents.month = section
         
@@ -134,7 +133,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         
         var firstWeekdayOfMonthIndex = self.gregorian.component(.weekday, from: correctMonthForSectionDate)
         firstWeekdayOfMonthIndex = firstWeekdayOfMonthIndex - 1 // firstWeekdayOfMonthIndex should be 0-Indexed
-        firstWeekdayOfMonthIndex = (firstWeekdayOfMonthIndex + 6) % 7 // push it modularly so that we take it back one day so that the first day is Monday instead of Sunday which is the default
+//        firstWeekdayOfMonthIndex = (firstWeekdayOfMonthIndex + 6) % 7 // change the first day of the week
         
         monthInfo[section] = [firstWeekdayOfMonthIndex, numberOfDaysInMonth]
         return 42
@@ -142,47 +141,23 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: calendarCollectionViewCellID, for: indexPath) as! CalendarCollectionViewCell
-        
-        let currentMonthInfo : [Int] = monthInfo[indexPath.section]! // we are guaranteed an array by the fact that we reached this line (so unwrap)
-        
+
+        let currentMonthInfo = monthInfo[indexPath.section]! // we are guaranteed an array by the fact that we reached this line (so unwrap)
+
         let fdIndex = currentMonthInfo[FIRST_DAY_INDEX]
         let nDays = currentMonthInfo[NUMBER_OF_DAYS_INDEX]
-        
+
         let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - fdIndex, section: indexPath.section) // if the first is wednesday, add 2
-        
-        if indexPath.item >= fdIndex &&
-            indexPath.item < fdIndex + nDays {
-            
-//            cell.dayLabel.text = String(fromStartOfMonthIndexPath.item + 1)
+
+        if indexPath.item >= fdIndex && indexPath.item < fdIndex + nDays {
             cell.setup(day: String(fromStartOfMonthIndexPath.item + 1))
             cell.isHidden = false
-            
-        }
-        else {
+        } else {
             cell.setup(day: "")
             cell.isHidden = true
+
         }
-        
-//        cell.selected = selectedIndexPaths.contains(indexPath)
-//
-//        if indexPath.section == 0 && indexPath.item == 0 {
-//            self.scrollViewDidEndDecelerating(collectionView)
-//        }
-        
-//        if let idx = todayIndexPath {
-//            cell.isToday = (idx.section == indexPath.section && idx.item + fdIndex == indexPath.item)
-//        }
-//
-//        if let eventsForDay = eventsByIndexPath[fromStartOfMonthIndexPath] {
-//
-//            cell.eventsCount = eventsForDay.count
-//
-//        } else {
-//            cell.eventsCount = 0
-//        }
-//        cell.setup(day: indexPath.row)
-        
-        
+    
         return cell
         
     }
