@@ -10,21 +10,22 @@ import Foundation
 class Project {
     
     var description: String
+    var completion: Bool
     
-    init(description: String) {
-
+    init(description: String, completion: Bool) {
+        self.completion = completion
         self.description = description
     }
     
     
 }
 
-class timedProject: Project {
+class TimedProject: Project {
     
     var time: Int
-    init(description: String, time: Int) {
+    init(description: String, completion: Bool, time: Int) {
         self.time = time
-        super.init(description: description)
+        super.init(description: description, completion: completion)
     }
     
 }
