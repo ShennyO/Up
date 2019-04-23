@@ -12,17 +12,23 @@ class CalendarViewController: UIViewController {
     
     let calendarTableViewCellID = "calendarTableViewCellID"
     let calendarCollectionViewCellID = "calendarCollectionViewCellID"
-    let calendarDayCollectionViewCellID = "calendarDayCollectionViewCellID"
     
     var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
     
-    var numOfDaysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
-    var currentMonthIndex: Int = 0
-    var currentYear: Int = 0
-    var presentMonthIndex = 0
-    var presentYear = 0
-    var todaysDate = 0
-    var firstWeekDayOfMonth = 0
+    var startDate = Date()
+    var endDate = Date()
+    var startOfMonth = Date()
+    var todayIndexPath: IndexPath?
+    var monthInfo = [Int:[Int]]()
+    
+    let FIRST_DAY_INDEX = 0
+    let NUMBER_OF_DAYS_INDEX = 1
+    
+    lazy var gregorian : NSCalendar = {
+        let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
+        cal.timeZone = TimeZone(abbreviation: "UTC")!
+        return cal
+    }()
     
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -31,25 +37,13 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCalendar()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        endDate = formatter.date(from: "01/01/2025")!
+        
         setupViews()
         setupTableView()
         
-    }
-    
-    func setupCalendar() {
-        currentMonthIndex = Calendar.current.component(.month, from: Date()) - 1
-        currentYear = Calendar.current.component(.year, from: Date())
-        todaysDate = Calendar.current.component(.day, from: Date())
-        firstWeekDayOfMonth = Calendar.getFirstWeekDay(monthIndex: currentMonthIndex, year: currentYear)
-        
-        //for leap years, make february month of 29 days
-        if currentMonthIndex == 1 && currentYear % 4 == 0 {
-            numOfDaysInMonth[currentMonthIndex] = 29
-        }
-        
-        presentMonthIndex = currentMonthIndex
-        presentYear = currentYear
     }
     
     func setupTableView() {
@@ -88,9 +82,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
-        cell.configureCollectionView(delegate: self, dataSource: self) { (calendarCollectionView) in
-            self.calendarCollectionView = calendarCollectionView
-        }
+        cell.configureCollectionView(delegate: self, dataSource: self)
         return cell
     }
     
@@ -101,68 +93,111 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch collectionView {
-        case calendarCollectionView:
-            return 999
-        default:
-            let year = currentYear + Int((currentMonthIndex + collectionView.tag) / 12)
-            let monthIndex = (currentMonthIndex + collectionView.tag) % 12
-            print("Month index:", currentMonthIndex)
-            
-            firstWeekDayOfMonth = Calendar.getFirstWeekDay(monthIndex: monthIndex, year: year)
-            var numOfDays = numOfDaysInMonth[currentMonthIndex] + firstWeekDayOfMonth - 1
-            
-            if monthIndex == 1 && year % 4 == 0 {
-                numOfDays += 1
-            }
-            
-            return numOfDays
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        var firstDayOfStartMonth = self.gregorian.components( [.era, .year, .month], from: startDate)
+        firstDayOfStartMonth.day = 1 // round to first day
+        
+        guard let dateFromDayOneComponents = self.gregorian.date(from: firstDayOfStartMonth) else {
+            return 0
         }
+        
+        startOfMonth = dateFromDayOneComponents
+        
+        let today = Date()
+        
+        if  startOfMonth.compare(today) == ComparisonResult.orderedAscending &&
+            endDate.compare(today) == ComparisonResult.orderedDescending {
+            
+            let differenceFromTodayComponents = self.gregorian.components([.month, .day], from: startOfMonth, to: today, options: NSCalendar.Options())
+            
+            self.todayIndexPath = IndexPath(item: differenceFromTodayComponents.day!, section: differenceFromTodayComponents.month!)
+            
+        }
+        
+        let differenceComponents = self.gregorian.components(.month, from: startDate, to: endDate, options: NSCalendar.Options())
+        
+        return differenceComponents.month! + 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        var monthOffsetComponents = DateComponents()
+        
+        // offset by the number of months
+        monthOffsetComponents.month = section
+        
+        guard let correctMonthForSectionDate = self.gregorian.date(byAdding: monthOffsetComponents, to: startOfMonth, options: NSCalendar.Options()) else {
+            return 0
+        }
+        
+        let numberOfDaysInMonth = self.gregorian.range(of: .day, in: .month, for: correctMonthForSectionDate).length
+        
+        var firstWeekdayOfMonthIndex = self.gregorian.component(.weekday, from: correctMonthForSectionDate)
+        firstWeekdayOfMonthIndex = firstWeekdayOfMonthIndex - 1 // firstWeekdayOfMonthIndex should be 0-Indexed
+        firstWeekdayOfMonthIndex = (firstWeekdayOfMonthIndex + 6) % 7 // push it modularly so that we take it back one day so that the first day is Monday instead of Sunday which is the default
+        
+        monthInfo[section] = [firstWeekdayOfMonthIndex, numberOfDaysInMonth]
+        return 42
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch collectionView {
-        case calendarCollectionView:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: calendarCollectionViewCellID, for: indexPath) as! CalendarCollectionViewCell
-            cell.configureCollectionView(delegate: self, dataSource: self, indexPath: indexPath)
-            return cell
-        default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: calendarDayCollectionViewCellID, for: indexPath) as! CalendarDayCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: calendarCollectionViewCellID, for: indexPath) as! CalendarCollectionViewCell
+        
+        let currentMonthInfo : [Int] = monthInfo[indexPath.section]! // we are guaranteed an array by the fact that we reached this line (so unwrap)
+        
+        let fdIndex = currentMonthInfo[FIRST_DAY_INDEX]
+        let nDays = currentMonthInfo[NUMBER_OF_DAYS_INDEX]
+        
+        let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - fdIndex, section: indexPath.section) // if the first is wednesday, add 2
+        
+        if indexPath.item >= fdIndex &&
+            indexPath.item < fdIndex + nDays {
             
-            cell.setup(indexPath: indexPath, firstWeekDayOfMonth: firstWeekDayOfMonth)
-            return cell
+//            cell.dayLabel.text = String(fromStartOfMonthIndexPath.item + 1)
+            cell.setup(day: String(fromStartOfMonthIndexPath.item + 1))
+            cell.isHidden = false
+            
         }
+        else {
+            cell.setup(day: "")
+            cell.isHidden = true
+        }
+        
+//        cell.selected = selectedIndexPaths.contains(indexPath)
+//
+//        if indexPath.section == 0 && indexPath.item == 0 {
+//            self.scrollViewDidEndDecelerating(collectionView)
+//        }
+        
+//        if let idx = todayIndexPath {
+//            cell.isToday = (idx.section == indexPath.section && idx.item + fdIndex == indexPath.item)
+//        }
+//
+//        if let eventsForDay = eventsByIndexPath[fromStartOfMonthIndexPath] {
+//
+//            cell.eventsCount = eventsForDay.count
+//
+//        } else {
+//            cell.eventsCount = 0
+//        }
+//        cell.setup(day: indexPath.row)
+        
+        
+        return cell
         
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch collectionView {
-        case calendarCollectionView:
-            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-        default:
-            let length = collectionView.frame.width/7 - 8
-            return CGSize(width: length, height: length)
-        }
-        
+        return CGSize(width: collectionView.frame.width/7, height: collectionView.frame.height/6)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        switch collectionView {
-        case calendarCollectionView:
-            return 0
-        default:
-            return 8
-        }
+        return 8
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        switch collectionView {
-        case calendarCollectionView:
-            return 0
-        default:
-            return 8
-        }
+        return 8
     }
+    
     
 }

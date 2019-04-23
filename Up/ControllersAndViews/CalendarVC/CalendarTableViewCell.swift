@@ -24,30 +24,36 @@ class CalendarTableViewCell: UITableViewCell {
     
     var calendarCollectionView: UICollectionView!
     
-    func configureCollectionView(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource, closure: (UICollectionView) -> ()) {
+    func configureCollectionView(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource) {
         calendarCollectionView.delegate = delegate
         calendarCollectionView.dataSource = dataSource
-        closure(calendarCollectionView)
     }
     
     private func setupViews() {
         
-        let layout = UICollectionViewFlowLayout()
+        let layout = CalendarLayout()
         layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 8
         
-        let frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+        let frame = CGRect.zero
+        let cv = UICollectionView(frame: frame, collectionViewLayout: layout)
         
-        calendarCollectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
+        cv.isPagingEnabled = true
+        cv.backgroundColor = UIColor.black
+        cv.showsHorizontalScrollIndicator = false
+        cv.showsVerticalScrollIndicator = false
         
-        calendarCollectionView.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: calendarCollectionViewCellID)
+        cv.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: calendarCollectionViewCellID)
         
-        calendarCollectionView.backgroundColor = .blue
-        calendarCollectionView.isPagingEnabled = true
+        self.addSubview(cv)
         
-        self.addSubview(calendarCollectionView)
-        
-        calendarCollectionView.snp.makeConstraints { (make) in
-            make.bottom.left.top.right.equalToSuperview()
+        cv.snp.makeConstraints { (make) in
+            make.bottom.top.left.right.equalToSuperview()
         }
+        
+        self.calendarCollectionView = cv
+        
+        
     }
 }
