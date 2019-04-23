@@ -70,7 +70,7 @@ class HeaderView: UIView {
     private func setConstraints() {
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(50)
+            make.top.equalToSuperview().offset(25)
         }
     
         editButton.snp.makeConstraints { (make) in
@@ -86,7 +86,7 @@ class HeaderView: UIView {
         
         getStartedLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(25)
-            make.top.equalToSuperview().offset(150)
+            make.top.equalToSuperview().offset(125)
         }
         
     }

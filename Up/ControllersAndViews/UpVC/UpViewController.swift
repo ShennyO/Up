@@ -142,7 +142,6 @@ extension UpViewController {
     
     private func setUp() {
         configNavBar()
-        self.title = "Up"
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
         self.view.addSubview(addNewButton)
@@ -156,7 +155,7 @@ extension UpViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     private func setUpTableView() {

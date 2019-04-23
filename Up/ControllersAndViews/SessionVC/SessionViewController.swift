@@ -177,7 +177,6 @@ class SessionViewController: UIViewController {
     
     func runTimer() {
         timer = Timer()
-        timeInSeconds = 5
         endTime = Date.timeIntervalSinceReferenceDate + Double(timeInSeconds)
         currentTime = Date.timeIntervalSinceReferenceDate
         let elapsedTimeDouble = endTime - currentTime
@@ -281,12 +280,7 @@ class SessionViewController: UIViewController {
         
     }
     
-    private func removeAnimations() {
-//        self.hintLabel.layer.removeAllAnimations()
-        self.view.layer.removeAllAnimations()
-        self.view.layoutIfNeeded()
-        
-    }
+  
     
     private func showCongratsView() {
         stopTimer()
@@ -305,7 +299,7 @@ class SessionViewController: UIViewController {
             make.centerY.equalToSuperview().offset(-25)
         }
         UIView.animate(withDuration: 0.3) {
-//            self.view.layoutIfNeeded()
+            self.view.layoutIfNeeded()
         }
     }
     
