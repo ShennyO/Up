@@ -14,14 +14,15 @@ enum InputType {
     case textView
 }
 
-protocol CustomTextViewDelegate {
+//from TextViewInputView to NewProjectVC
+protocol CustomTextViewToNewProjVCDelegate {
     func sendText(text: String)
 }
 
 class SunnyCustomInputView: UIView {
     
     //MARK: VARIABLES
-    var textDelegate: CustomTextViewDelegate!
+    var textDelegate: CustomTextViewToNewProjVCDelegate!
     
     
     //MARK: OUTLETS
@@ -36,15 +37,6 @@ class SunnyCustomInputView: UIView {
         return tv
     }()
     
-    let tf: UITextField = {
-        
-        let tf = UITextField()
-        tf.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
-        tf.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
-        tf.borderStyle = .none
-        return tf
-        
-    }()
     
     let tfOverlayLabel: UILabel = {
         
@@ -69,18 +61,13 @@ class SunnyCustomInputView: UIView {
         setConstraints(type: type)
         self.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
         self.layer.cornerRadius = 5
-        tf.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.tintColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
+        tv.becomeFirstResponder()
         tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        switch type {
-        case .textField:
-            tfOverlayLabel.text = "Title"
-            tf.delegate = self
-        case .textView:
-            tfOverlayLabel.text = "Description"
-            tv.delegate = self
-        }
+        tfOverlayLabel.text = "Description"
+        tv.delegate = self
+        
         
         
     }
@@ -91,15 +78,8 @@ class SunnyCustomInputView: UIView {
     
     private func addOutlets(type: InputType) {
         
-        switch type {
-            case .textField:
-                self.addSubview(tf)
-            case .textView:
-                self.addSubview(tv)
         
-        }
-        
-        [tfOverlayLabel, bottomBorder].forEach { (view) in
+        [tfOverlayLabel, bottomBorder, tv].forEach { (view) in
             self.addSubview(view)
         }
     }
@@ -109,25 +89,17 @@ class SunnyCustomInputView: UIView {
     private func setConstraints(type: InputType) {
         
         
-        switch type {
-        case .textField:
-            tf.snp.makeConstraints { (make) in
-                make.top.equalToSuperview().offset(15)
-                make.left.equalToSuperview().offset(10)
-                make.right.equalToSuperview().offset(-10)
-                make.bottom.equalToSuperview()
-                
-            }
-        case .textView:
+        
+        
             
-            tv.snp.makeConstraints { (make) in
-                make.top.equalToSuperview().offset(20)
-                make.left.equalToSuperview().offset(5)
-                make.right.equalToSuperview().offset(-10)
-                make.bottom.equalToSuperview()
-            }
-            
+        tv.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(5)
+            make.right.equalToSuperview().offset(-10)
+            make.bottom.equalToSuperview().offset(-20)
         }
+        
+        
         
         
         

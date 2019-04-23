@@ -10,13 +10,13 @@ import UIKit
 class SessionViewController: UIViewController {
 
     //MARK: VARIABLES
-    var timedProject: TimedProject?
+    var timedGoal: Goal?
     var currentTime: TimeInterval!
     var endTime: TimeInterval!
     
-    
     var timeInSeconds: Int = 0
     
+    var dismissedBlock: (() -> ())?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -27,6 +27,7 @@ class SessionViewController: UIViewController {
     
     let circleLayer = CAShapeLayer()
     let pulsatingLayer = CAShapeLayer()
+    var blurEffectView: UIVisualEffectView!
     
     
     var goalLabel: UILabel = {
@@ -60,11 +61,23 @@ class SessionViewController: UIViewController {
     var startButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 30
         button.setTitle("Start", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    var doneButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        button.layer.cornerRadius = 30
+        button.setTitle("Done", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
     
@@ -76,6 +89,12 @@ class SessionViewController: UIViewController {
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    var congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+    
+    
+    
+    
     
     private func configNavBar() {
         extendedLayoutIncludesOpaqueBars = true
@@ -147,10 +166,17 @@ class SessionViewController: UIViewController {
     }
     
     //MARK: TIMER
-    var timer = Timer()
+    var timer: Timer!
     
+    func stopTimer() {
+        if timer != nil {
+            timer.invalidate()
+            timer = nil
+        }
+    }
     
     func runTimer() {
+        timer = Timer()
         endTime = Date.timeIntervalSinceReferenceDate + Double(timeInSeconds)
         currentTime = Date.timeIntervalSinceReferenceDate
         let elapsedTimeDouble = endTime - currentTime
@@ -164,6 +190,9 @@ class SessionViewController: UIViewController {
         currentTime = Date.timeIntervalSinceReferenceDate
         let elapsedTimeDouble = endTime - currentTime
         let elapsedtimeInt = Int(elapsedTimeDouble)
+        if elapsedtimeInt == 0 {
+            showCongratsView()
+        }
         minutesLabel.text = "\(timeString(time: elapsedtimeInt))" //This will update the label.
     }
     
@@ -178,11 +207,34 @@ class SessionViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [goalLabel, descriptionLabel, minutesLabel, startButton, cancelButton].forEach { (view) in
+        [goalLabel, descriptionLabel, minutesLabel, startButton, doneButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
+    }
+    
+    
+    private func addCongratsViewAndBlur() {
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.isHidden = true
+        blurEffectView.alpha = 0.7
+        view.addSubview(blurEffectView)
+        
+        self.view.addSubview(congratsView)
+        congratsView.delegate = self
+        
+        congratsView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(30)
+            make.right.equalToSuperview().offset(-30)
+            make.height.equalTo(325)
+            make.centerY.equalToSuperview().offset(550)
+        }
+        
         
     }
+    
     
     private func setConstraints() {
         
@@ -206,9 +258,17 @@ class SessionViewController: UIViewController {
         startButton.snp.makeConstraints { (make) in
             make.top.equalTo(minutesLabel.snp.bottom).offset(150)
             make.centerX.equalToSuperview()
-            make.height.equalTo(50)
-            make.width.equalTo(125)
+            make.height.equalTo(60)
+            make.width.equalTo(150)
         }
+        
+        doneButton.snp.makeConstraints { (make) in
+            make.top.equalTo(minutesLabel.snp.bottom).offset(150)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(60)
+            make.width.equalTo(150)
+        }
+        
         
         cancelButton.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(40)
@@ -216,11 +276,61 @@ class SessionViewController: UIViewController {
             make.height.equalTo(20)
         }
         
+        
+        
+    }
+    
+  
+    
+    private func showCongratsView() {
+        stopTimer()
+        blurEffectView.isHidden = false
+        blurEffectView.alpha = 0
+        
+        UIView.animate(withDuration: 0.4, animations: {
+            self.blurEffectView.alpha = 0.7
+        })
+        
+        //animating the congrats view
+        congratsView.snp.updateConstraints { (make) in
+            make.left.equalToSuperview().offset(30)
+            make.right.equalToSuperview().offset(-30)
+            make.height.equalTo(325)
+            make.centerY.equalToSuperview().offset(-25)
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func doneButtonTapped() {
+        
+        showCongratsView()
+        
+        
     }
     
     @objc func startButtonTapped() {
         runAnimation()
         runTimer()
+        //hiding start button and showing done button
+        doneButton.isHidden = false
+        doneButton.alpha = 0
+        doneButton.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.7, animations: {
+            self.startButton.alpha = 0
+        }, completion:  {
+            (value: Bool) in
+            self.startButton.isHidden = true
+            
+        })
+        
+        UIView.animate(withDuration: 0.85, delay: 1.7, animations: {
+            self.doneButton.alpha = 1
+        }, completion: { (value: Bool) in
+            self.doneButton.isUserInteractionEnabled = true
+        })
+        
     }
     
     @objc func cancelButtonTapped() {
@@ -229,17 +339,31 @@ class SessionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if timedProject != nil {
-            timeInSeconds = timedProject!.time * 60
-            descriptionLabel.text = timedProject!.description
-        }
-        minutesLabel.text = "\(timeString(time: timeInSeconds))"
         configNavBar()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        addOutlets()
         addLayer()
+        addOutlets()
+        addCongratsViewAndBlur()
         setConstraints()
+        
+        
+        if timedGoal != nil {
+            timeInSeconds = Int(timedGoal!.duration) * 60
+            descriptionLabel.text = timedGoal!.goalDescription
+        }
+        minutesLabel.text = "\(timeString(time: timeInSeconds))"
+        
+        
         // Do any additional setup after loading the view.
     }
+    
+}
+
+extension SessionViewController: CongratsViewToSessionViewDelegate {
+    func dismissTapped() {
+        dismissedBlock!()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     
 }

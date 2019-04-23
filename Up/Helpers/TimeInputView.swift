@@ -14,20 +14,12 @@ class TimeInputViewButton: UIView {
     
     
     //MARK: OUTLETS
-    let darkView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 5
-        view.backgroundColor = UIColor.gray
-        view.alpha = 0.5
-        view.isHidden = true
-        return view
-    }()
     
     let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
         label.textColor = UIColor.white
-        label.text = "20 minutes"
+        label.text = "30 minutes"
         label.isUserInteractionEnabled = true
         return label
     }()
@@ -59,15 +51,11 @@ class TimeInputViewButton: UIView {
    
         self.addSubview(timeLabel)
         self.addSubview(arrowImage)
-        self.addSubview(darkView)
+        
         
     }
     
     private func setConstraints() {
-        
-        darkView.snp.makeConstraints { (make) in
-            make.top.bottom.right.left.equalToSuperview()
-        }
         
         timeLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
@@ -85,8 +73,8 @@ class TimeInputViewButton: UIView {
     
     
 }
-
-extension TimeInputViewButton: InputDelegate {
+// from NewProjectVC to TimeInputView
+extension TimeInputViewButton: NewProjectVCToTimeInputButtonDelegate {
     func sendSelectedTime(time: Int) {
         timeLabel.text = String(describing: time) + " minutes"
     }

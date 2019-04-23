@@ -9,12 +9,14 @@ import UIKit
 
 class NewProjectViewController: UIViewController {
     
+    //COREDATA stack
+    let stack = CoreDataStack.instance
 
     //VARIABLES
     var blurEffectView: UIVisualEffectView?
-    var selectedTime = 20
+    var selectedTime = 30
     var descriptionText: String?
-    var timeInputDelegate: InputDelegate!
+    var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
     var sendSelectedProject: ((Project) -> ())?
     var sendSelectedTimedProject: ((TimedProject) -> ())?
     
@@ -71,7 +73,7 @@ class NewProjectViewController: UIViewController {
     
     var addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 30
         button.setTitle("Add", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
@@ -156,12 +158,12 @@ class NewProjectViewController: UIViewController {
         addButton.snp.makeConstraints { (make) in
             make.top.equalTo(timeButton.snp.bottom).offset(-15)
             make.centerX.equalToSuperview()
-            make.width.equalTo(100)
-            make.height.equalTo(45)
+            make.width.equalTo(150)
+            make.height.equalTo(60)
         }
         
         cancelButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(60)
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(20)
         }
@@ -183,8 +185,8 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(100)
-                make.height.equalTo(45)
+                make.width.equalTo(150)
+                make.height.equalTo(60)
             }
             //hiding timeButton
             UIView.animate(withDuration: 0.3, animations: {
@@ -216,8 +218,8 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(35)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(100)
-                make.height.equalTo(45)
+                make.width.equalTo(150)
+                make.height.equalTo(60)
             }
             //showing timeButton
             UIView.animate(withDuration: 0.4, animations: {
@@ -234,13 +236,23 @@ class NewProjectViewController: UIViewController {
             return
         }
         
+        let newGoal = Goal(context: stack.viewContext)
+        newGoal.completion = false
+        newGoal.date = Date()
+        newGoal.goalDescription = text
+        newGoal.cleared = false
+        
         if sessionButton.isSelected {
-            let newProject = TimedProject(description: text, time: selectedTime)
-            sendSelectedTimedProject!(newProject)
+            
+            newGoal.duration = Int32(selectedTime)
+            
         } else {
-            let newProject = Project(description: text)
-            sendSelectedProject!(newProject)
+            
+            newGoal.duration = Int32(0)
         }
+        
+        stack.saveTo(context: stack.viewContext)
+        
 
         self.dismiss(animated: true)
     }
@@ -313,6 +325,7 @@ class NewProjectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        hideKeyboard()
         let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tap.minimumPressDuration = 0
         timeButton.addGestureRecognizer(tap)
@@ -328,15 +341,18 @@ class NewProjectViewController: UIViewController {
     
 }
 
-extension NewProjectViewController: CustomTextViewDelegate {
+extension NewProjectViewController: CustomTextViewToNewProjVCDelegate {
     func sendText(text: String) {
         descriptionText = text
     }
     
-    
 }
 
-protocol InputDelegate {
+
+
+
+//From NewProjectVC back to TimeInputButton
+protocol NewProjectVCToTimeInputButtonDelegate {
     
     func sendSelectedTime(time: Int)
     
