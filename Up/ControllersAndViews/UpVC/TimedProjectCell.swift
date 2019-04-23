@@ -100,7 +100,7 @@ class TimedProjectCell: UITableViewCell {
     private func addOutlets() {
 
         self.addSubview(containerView)
-        self.addSubview(deleteButton)
+        
         containerView.addSubview(darkView)
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(timeLabel)
@@ -108,6 +108,7 @@ class TimedProjectCell: UITableViewCell {
         timeImageContainerView.addSubview(timeImageView)
         timeImageContainerView.addSubview(blackCheckMark)
         containerView.addSubview(dragView)
+        self.addSubview(deleteButton)
         
     }
     
@@ -237,6 +238,7 @@ class TimedProjectCell: UITableViewCell {
             // when the gesture begins, record the current center location
             originalCenter = center
             dragView.isHidden = false
+            deleteButton.isHidden = false
         }
         // 2
         if recognizer.state == .changed {
@@ -247,6 +249,8 @@ class TimedProjectCell: UITableViewCell {
             //We're going to do this based off the frame's x position (0 -> -285)
             let alphaVal = abs(frame.origin.x) / 275
             dragView.alpha = alphaVal
+            deleteButton.alpha = alphaVal
+            
             
             // has the user dragged the item far enough to initiate a delete/complete?
             deleteOnDragRelease = frame.origin.x < -frame.size.width / 2.0
@@ -261,10 +265,12 @@ class TimedProjectCell: UITableViewCell {
                 UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
                 
                 self.dragView.isHidden = true
+                self.deleteButton.isHidden = true
                 
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.dragView.isHidden = true
+                    self.deleteButton.isHidden = true
                 }
                 
                 delegate.passTimedCellIndex(cell: self)
