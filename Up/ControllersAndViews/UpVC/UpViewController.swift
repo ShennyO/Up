@@ -78,14 +78,17 @@ class UpViewController: UIViewController {
                 
             }
             
+            if addNewButton.isHidden {
+                //show addButton
+                addNewButton.isHidden = false
+                addNewButton.alpha = 0
+                
+                UIView.animate(withDuration: 0.4, animations: {
+                    self.addNewButton.alpha = 1
+                })
+            }
             
-            //show addButton
-            addNewButton.isHidden = false
-            addNewButton.alpha = 0
             
-            UIView.animate(withDuration: 0.4, animations: {
-                self.addNewButton.alpha = 1
-            })
             
         }
         
