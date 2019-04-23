@@ -14,7 +14,7 @@ class NewProjectViewController: UIViewController {
 
     //VARIABLES
     var blurEffectView: UIVisualEffectView?
-    var selectedTime = 20
+    var selectedTime = 30
     var descriptionText: String?
     var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
     var sendSelectedProject: ((Project) -> ())?
