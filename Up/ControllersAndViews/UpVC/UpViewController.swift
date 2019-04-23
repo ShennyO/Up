@@ -46,15 +46,9 @@ class UpViewController: UIViewController {
             configureHeaderAndTableView()
         }
     }
-    var timedGoals: [Goal] = [] {
-        didSet {
-            
-            configureHeaderAndTableView()
-        }
-    }
-    
+
     private func configureHeaderAndTableView() {
-        let total = goals.count + timedGoals.count
+        let total = goals.count
         
         if total != 0 {
             
@@ -78,14 +72,17 @@ class UpViewController: UIViewController {
                 
             }
             
+            if addNewButton.isHidden {
+                //show addButton
+                addNewButton.isHidden = false
+                addNewButton.alpha = 0
+                
+                UIView.animate(withDuration: 0.4, animations: {
+                    self.addNewButton.alpha = 1
+                })
+            }
             
-            //show addButton
-            addNewButton.isHidden = false
-            addNewButton.alpha = 0
             
-            UIView.animate(withDuration: 0.4, animations: {
-                self.addNewButton.alpha = 1
-            })
             
         }
         
@@ -108,13 +105,10 @@ class UpViewController: UIViewController {
     }
     
     private func fetchGoals(completion: @escaping () -> ()) {
-        let results = fetchGoalFromCoreData(entityName: "Goal", type: .untimed) as? [Goal]
+
+        let results = fetchGoalFromCoreData(entityName: "Goal", type: .all) as? [Goal]
         if results?.count != 0 {
             self.goals = results!
-        }
-        let timedResults = fetchGoalFromCoreData(entityName: "Goal", type: .timed) as? [Goal]
-        if timedResults?.count != 0 {
-            self.timedGoals = timedResults!
         }
         
         
@@ -142,7 +136,6 @@ extension UpViewController {
     
     private func setUp() {
         configNavBar()
-        self.title = "Up"
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
         self.view.addSubview(addNewButton)
@@ -156,16 +149,11 @@ extension UpViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     private func setUpTableView() {
-//        let results = fetchGoalFromCoreData(entityName: "Goal", type: .all)
-//        if results?.count == 0 {
-//            tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
-//        } else {
-//            tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100), title: "Today")
-//        }
+
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
         tableHeaderView.delegate = self
         headerDelegate = tableHeaderView
@@ -190,8 +178,8 @@ extension UpViewController {
     
     private func setConstraints() {
         addNewButton.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
-            make.bottom.equalToSuperview().offset(-100)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-60)
             make.width.height.equalTo(60)
         }
         
@@ -217,7 +205,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -227,11 +215,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if section == 0 {
-            return goals.count
-        } else {
-            return timedGoals.count
-        }
+        return goals.count
         
     }
     
@@ -239,8 +223,8 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
-        if indexPath.section == 0 {
+        //if duration is 0 we use ProjectCell
+        if goals[indexPath.row].duration == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
             cell.selectionStyle = .none
             cell.delegate = self
@@ -253,26 +237,29 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = .none
             cell.index = indexPath
             cell.delegate = self
-            cell.timedGoal = timedGoals[indexPath.row]
+            cell.timedGoal = goals[indexPath.row]
             return cell
         }
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && editingMode == false {
+        
+        if goals[indexPath.row].duration > 0 && editingMode == false {
             let sessionVC = SessionViewController()
             let cell = tableView.cellForRow(at: indexPath)
             timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
             sessionVC.dismissedBlock = {
                 self.timedCellDelegate.showBlackCheck()
-                self.timedGoals[indexPath.row].completion = true
+                self.goals[indexPath.row].completion = true
                 self.stack.saveTo(context: self.stack.viewContext)
             }
-            sessionVC.timedGoal = timedGoals[indexPath.row]
-            if timedGoals[indexPath.row].completion == false {
+            sessionVC.timedGoal = goals[indexPath.row]
+            if goals[indexPath.row].completion == false {
                 self.present(sessionVC, animated: true, completion: nil)
             }
         }
+        
     }
     
     
@@ -290,10 +277,9 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
 
     func passTimedCellIndex(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            stack.viewContext.delete(timedGoals[index.row])
+            stack.viewContext.delete(goals[index.row])
             stack.saveTo(context: stack.viewContext)
-//            fetchGoals()
-            timedGoals.remove(at: index.row)
+            goals.remove(at: index.row)
 
             upTableView.deleteRows(at: [index], with: .left)
             

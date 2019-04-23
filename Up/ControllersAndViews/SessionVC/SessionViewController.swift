@@ -166,10 +166,17 @@ class SessionViewController: UIViewController {
     }
     
     //MARK: TIMER
-    var timer = Timer()
+    var timer: Timer!
     
+    func stopTimer() {
+        if timer != nil {
+            timer.invalidate()
+            timer = nil
+        }
+    }
     
     func runTimer() {
+        timer = Timer()
         endTime = Date.timeIntervalSinceReferenceDate + Double(timeInSeconds)
         currentTime = Date.timeIntervalSinceReferenceDate
         let elapsedTimeDouble = endTime - currentTime
@@ -183,6 +190,9 @@ class SessionViewController: UIViewController {
         currentTime = Date.timeIntervalSinceReferenceDate
         let elapsedTimeDouble = endTime - currentTime
         let elapsedtimeInt = Int(elapsedTimeDouble)
+        if elapsedtimeInt == 0 {
+            showCongratsView()
+        }
         minutesLabel.text = "\(timeString(time: elapsedtimeInt))" //This will update the label.
     }
     
@@ -270,9 +280,10 @@ class SessionViewController: UIViewController {
         
     }
     
-    @objc func doneButtonTapped() {
-        
-        //animating the blur view
+  
+    
+    private func showCongratsView() {
+        stopTimer()
         blurEffectView.isHidden = false
         blurEffectView.alpha = 0
         
@@ -290,6 +301,12 @@ class SessionViewController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    @objc func doneButtonTapped() {
+        
+        showCongratsView()
+        
         
     }
     
@@ -299,6 +316,7 @@ class SessionViewController: UIViewController {
         //hiding start button and showing done button
         doneButton.isHidden = false
         doneButton.alpha = 0
+        doneButton.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.7, animations: {
             self.startButton.alpha = 0
         }, completion:  {
@@ -309,6 +327,8 @@ class SessionViewController: UIViewController {
         
         UIView.animate(withDuration: 0.85, delay: 1.7, animations: {
             self.doneButton.alpha = 1
+        }, completion: { (value: Bool) in
+            self.doneButton.isUserInteractionEnabled = true
         })
         
     }

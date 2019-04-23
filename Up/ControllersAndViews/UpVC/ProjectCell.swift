@@ -64,7 +64,7 @@ class ProjectCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = UIColor.white
         view.layer.borderColor = UIColor.black.cgColor
-        view.layer.borderWidth = 2
+        view.layer.borderWidth = 1
         view.layer.cornerRadius = 3
         return view
     }()
