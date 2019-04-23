@@ -14,6 +14,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     let dayLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
+        label.textAlignment = .center
         return label
     }()
     
@@ -32,12 +33,6 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         dayLabel.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalToSuperview()
         }
-        
-        
-    }
-    
-    override func prepareForReuse() {
-        self.isHidden = false
     }
     
     private func setupViews() {

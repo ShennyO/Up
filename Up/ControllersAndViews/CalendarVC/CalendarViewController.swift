@@ -21,6 +21,8 @@ class CalendarViewController: UIViewController {
     var todayIndexPath: IndexPath?
     var monthInfo = [Int:[Int]]()
     
+    var delegate: HeaderViewToCalendarVCDelegate?
+    
     let FIRST_DAY_INDEX = 0
     let NUMBER_OF_DAYS_INDEX = 1
     
@@ -48,6 +50,8 @@ class CalendarViewController: UIViewController {
     
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
+        tableView.tag = 0
+//        tableView.allowsSelection = false
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -61,6 +65,23 @@ class CalendarViewController: UIViewController {
             make.left.right.top.bottom.equalToSuperview()
             
         }
+    }
+    
+    func updateHeaderView(offset: Int) {
+        guard let delegate = self.delegate else { return }
+        
+        var monthOffsetComponents = DateComponents()
+        monthOffsetComponents.month = Int(offset)
+        
+        guard let yearDate = self.gregorian.date(byAdding: monthOffsetComponents, to: self.startOfMonth, options: NSCalendar.Options()) else { return }
+        
+        let month = (self.gregorian.component(.month, from: yearDate) - 1) % 12
+        
+        let monthName = DateFormatter().monthSymbols[month] // 0 indexed array
+        
+        let year = String(self.gregorian.component(.year, from: yearDate))
+        
+        delegate.changeLabelText(text: monthName + " " + year)
     }
     
 }
@@ -82,12 +103,14 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
-        cell.configureCollectionView(delegate: self, dataSource: self)
+        cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
+        delegate = cell.calendarHeaderView
+        updateHeaderView(offset: 0)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width / 7 * 6
+        return self.view.frame.width / 7 * 6 + 50
     }
     
 }
@@ -125,9 +148,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         // offset by the number of months
         monthOffsetComponents.month = section
         
-        guard let correctMonthForSectionDate = self.gregorian.date(byAdding: monthOffsetComponents, to: startOfMonth, options: NSCalendar.Options()) else {
-            return 0
-        }
+        guard let correctMonthForSectionDate = self.gregorian.date(byAdding: monthOffsetComponents, to: startOfMonth, options: NSCalendar.Options()) else { return 0 }
         
         let numberOfDaysInMonth = self.gregorian.range(of: .day, in: .month, for: correctMonthForSectionDate).length
         
@@ -172,6 +193,43 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
+    }
+    
+    
+}
+
+extension CalendarViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.tag == 1 {
+            let section = Int(round(scrollView.contentOffset.x / self.view.frame.width))
+            updateHeaderView(offset: section)
+        }
+    }
+}
+
+
+extension CalendarViewController: CalendarVCToHeaderViewDelegate {
+    func leftButtonTapped() {
+        scrollCollectionView(sectionOffset: -1)
+    }
+    
+    func rightButtonTapped() {
+        scrollCollectionView(sectionOffset: 1)
+    }
+    
+    func scrollCollectionView(sectionOffset: Int) {
+        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! CalendarTableViewCell
+        guard let cv = cell.calendarCollectionView else { return }
+        
+        let layout = cv.collectionViewLayout as! UICollectionViewFlowLayout
+        
+        let newSection = Int(round(cv.contentOffset.x / cv.frame.width)) + sectionOffset
+        if newSection < 0 || newSection >= cv.numberOfSections { return }
+        guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: newSection)) else { return }
+        cv.setContentOffset(CGPoint(x: attri.frame.origin.x - 8, y: 0), animated: true)
+        
+        updateHeaderView(offset: newSection)
     }
     
     

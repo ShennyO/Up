@@ -25,7 +25,8 @@ class CalendarLayout: UICollectionViewFlowLayout {
     
     override func prepare() {
         super.prepare()
-        for section in 0...20 {
+        guard let collectionView = self.collectionView else { return }
+        for section in 0..<collectionView.numberOfSections {
             createAttributesForSection(section: section)
         }
         
