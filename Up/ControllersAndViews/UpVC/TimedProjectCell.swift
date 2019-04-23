@@ -277,7 +277,7 @@ class TimedProjectCell: UITableViewCell {
         if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = panGestureRecognizer.translation(in: superview!)
             
-            if translation.x < translation.y {
+            if abs(translation.x) > abs(translation.y) {
                 return true
             }
             return false
