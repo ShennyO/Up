@@ -39,6 +39,7 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"
         endDate = formatter.date(from: "01/01/2025")!
@@ -51,8 +52,10 @@ class CalendarViewController: UIViewController {
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
         tableView.tag = 0
-//        tableView.allowsSelection = false
+        tableView.backgroundColor = .black
+        tableView.separatorStyle = .none
         
+        tableView.allowsSelection = false
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -110,12 +113,12 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width / 7 * 6 + 50
+        return self.view.frame.width / 7 * 6 + 90
     }
     
 }
 
-extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         var firstDayOfStartMonth = self.gregorian.components( [.era, .year, .month], from: startDate)
@@ -176,25 +179,9 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         } else {
             cell.setup(day: "")
             cell.isHidden = true
-
         }
-    
         return cell
-        
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/7, height: collectionView.frame.height/6)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
-    }
-    
     
 }
 

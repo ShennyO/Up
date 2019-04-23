@@ -12,6 +12,8 @@ class CalendarLayout: UICollectionViewFlowLayout {
     
     var cachedItemsAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
     
+    let spacing: CGFloat = 2
+    
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         guard let attributes = cachedItemsAttributes[indexPath] else { fatalError("No attributes cached") }
         return attributes
@@ -26,6 +28,8 @@ class CalendarLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
         guard let collectionView = self.collectionView else { return }
+        let width = collectionView.frame.width / 7 - spacing
+        self.itemSize = CGSize(width: width, height: width)
         for section in 0..<collectionView.numberOfSections {
             createAttributesForSection(section: section)
         }
@@ -45,8 +49,6 @@ class CalendarLayout: UICollectionViewFlowLayout {
     private func createAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
         guard let collectionView = collectionView else { return nil }
-        
-        let spacing: CGFloat = 8
         
         let xPageOffset = CGFloat(attributes.indexPath.section) * collectionView.frame.size.width
         let xCellOffset : CGFloat = xPageOffset + (CGFloat(attributes.indexPath.item % 7)  * (self.itemSize.width + spacing)) + spacing

@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var orientationLock = UIInterfaceOrientationMask.portrait
     
+    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.orientationLock
     }
@@ -23,6 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         let initialVewController = CalendarViewController()
         let navigationController = UINavigationController(rootViewController: initialVewController)
+        
+        initialVewController.extendedLayoutIncludesOpaqueBars = true
+        navigationController.navigationBar.barTintColor = .black
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController.navigationBar.shadowImage = UIImage()
+        navigationController.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
         window!.rootViewController = navigationController
         window!.makeKeyAndVisible()

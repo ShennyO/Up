@@ -15,6 +15,7 @@
 		488E0A19226A81D900ABDB50 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488E0A18226A81D900ABDB50 /* CalendarViewController.swift */; };
 		488E0A1B226A844C00ABDB50 /* CalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488E0A1A226A844C00ABDB50 /* CalendarTableViewCell.swift */; };
 		48CCA55F226F9BDE0034BACB /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCA55E226F9BDE0034BACB /* CalendarHeaderView.swift */; };
+		48CCA561226FC22F0034BACB /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCA560226FC22F0034BACB /* Style.swift */; };
 		A9ED8095A8D2B089BF2FC387 /* Pods_UpUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B6E465FA244D5B61860CDA0 /* Pods_UpUITests.framework */; };
 		C37519E52255114900FF0E22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37519E42255114900FF0E22 /* AppDelegate.swift */; };
 		C37519EC2255114C00FF0E22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C37519EB2255114C00FF0E22 /* Assets.xcassets */; };
@@ -67,6 +68,7 @@
 		488E0A18226A81D900ABDB50 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		488E0A1A226A844C00ABDB50 /* CalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableViewCell.swift; sourceTree = "<group>"; };
 		48CCA55E226F9BDE0034BACB /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
+		48CCA560226FC22F0034BACB /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		5910D3136DCB67DD23DDEA97 /* Pods-UpUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UpUITests.debug.xcconfig"; path = "Target Support Files/Pods-UpUITests/Pods-UpUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5B6E465FA244D5B61860CDA0 /* Pods_UpUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UpUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		810543B6FC8766C63D1762EB /* Pods-Up.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Up.release.xcconfig"; path = "Target Support Files/Pods-Up/Pods-Up.release.xcconfig"; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				C3751A39226178D500FF0E22 /* TimeInputView.swift */,
 				C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */,
 				C3751A43226797CF00FF0E22 /* UpTableViewBackgroundView.swift */,
+				48CCA560226FC22F0034BACB /* Style.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -530,6 +533,7 @@
 				C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */,
 				C3751A1D2256D6A100FF0E22 /* ProjectCell.swift in Sources */,
 				C3751A1722552DFE00FF0E22 /* UpViewController.swift in Sources */,
+				48CCA561226FC22F0034BACB /* Style.swift in Sources */,
 				C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */,
 				488E0A16226A6D4000ABDB50 /* MonthView.swift in Sources */,
 				C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */,

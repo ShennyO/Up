@@ -70,7 +70,7 @@ class CalendarTableViewCell: UITableViewCell {
         calendarHeaderView.snp.makeConstraints { (make) in
             make.top.left.right.equalToSuperview()
             make.bottom.equalTo(calendarCollectionView.snp.top)
-            make.height.equalTo(50)
+            make.height.equalTo(90)
         }
     }
 }

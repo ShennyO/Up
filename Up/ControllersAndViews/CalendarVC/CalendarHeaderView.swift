@@ -24,7 +24,7 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.backgroundColor = .white
+        self.backgroundColor = .black
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,21 +41,24 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
         }
         
         leftButton.snp.makeConstraints { (make) in
-            make.left.top.bottom.equalToSuperview().inset(8)
+            make.left.top.equalToSuperview().inset(8)
             make.width.equalTo(leftButton.snp.height)
+            make.bottom.equalTo(monthLabel.snp.bottom)
         }
         
         rightButton.snp.makeConstraints { (make) in
-            make.right.top.bottom.equalToSuperview().inset(8)
+            make.right.top.equalToSuperview().inset(8)
             make.width.equalTo(leftButton.snp.height)
+            make.bottom.equalTo(monthLabel.snp.bottom)
         }
         
         monthLabel.snp.makeConstraints { (make) in
-            make.top.bottom.equalToSuperview().inset(8)
-            make.right.equalTo(rightButton.snp.left).inset(8)
-            make.left.equalTo(leftButton.snp.right).inset(8)
+            make.top.equalToSuperview().inset(8)
+            make.right.equalTo(rightButton.snp.left).offset(-8)
+            make.left.equalTo(leftButton.snp.right).offset(8)
         }
         
+        makeDayLabels()
     }
     
     @objc private func leftButtonTapped() {
@@ -71,14 +74,17 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     private let monthLabel: UILabel = {
         let label = UILabel()
         label.text = "Month Label"
-        label.textColor = .black
+        label.font = Style.Fonts.bold30
+        label.textColor = .white
+        label.textAlignment = .center
         return label
     }()
     
     private let leftButton: UIButton = {
         let button = UIButton()
         button.setTitle("<", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = Style.Fonts.bold35
         button.addTarget(self, action: #selector(leftButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -86,8 +92,44 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     private let rightButton: UIButton = {
         let button = UIButton()
         button.setTitle(">", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = Style.Fonts.bold35
         button.addTarget(self, action: #selector(rightButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    func makeDayLabels() {
+        let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        
+        var lastLabel: UILabel?
+        for day in days {
+            let label = UILabel()
+            label.text = day
+            label.textColor = .white
+            label.font = Style.Fonts.medium18
+            label.textAlignment = .center
+            
+            self.addSubview(label)
+            
+            if let lastLabel = lastLabel {
+                label.snp.makeConstraints { (make) in
+                    make.width.equalTo(lastLabel.snp.width)
+                    make.bottom.equalToSuperview().inset(4)
+                    make.left.equalTo(lastLabel.snp.right).offset(8)
+                    make.top.equalTo(monthLabel.snp.bottom).offset(8)
+                    if day == days.last {
+                        make.right.equalToSuperview().inset(8)
+                    }
+                }
+            } else {
+                label.snp.makeConstraints { (make) in
+                    make.bottom.equalToSuperview().inset(4)
+                    make.left.equalToSuperview().inset(8)
+                    make.top.equalTo(monthLabel.snp.bottom).offset(8)
+                }
+            }
+            
+            lastLabel = label
+        }
+    }
 }
