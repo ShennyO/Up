@@ -136,14 +136,12 @@ class TimedProjectCell: UITableViewCell {
         
         timeImageContainerView.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-15)
-            //            make.right.equalTo(timeLabel.snp.left).offset(-7)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(25)
         }
         
         timeLabel.snp.makeConstraints { (make) in
             make.right.equalTo(timeImageContainerView.snp.left).offset(-7)
-//            make.right.equalToSuperview().offset(-15)
             make.centerY.equalToSuperview().offset(1)
         }
         
