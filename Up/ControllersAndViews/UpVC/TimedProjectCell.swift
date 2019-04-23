@@ -14,7 +14,9 @@ protocol TimedCellToUpVCDelegate {
 class TimedProjectCell: UITableViewCell {
 
     //MARK: VARIABLES
-    var timedProject: TimedProject! {
+    let stack = CoreDataStack.instance
+    
+    var timedGoal: Goal! {
         didSet {
             setUpCell()
         }
@@ -178,7 +180,7 @@ class TimedProjectCell: UITableViewCell {
         recognizer.delegate = self
         addGestureRecognizer(recognizer)
         
-        if timedProject.completion {
+        if timedGoal.completion {
             blackCheckMark.isHidden = false
             
         } else {
@@ -186,14 +188,14 @@ class TimedProjectCell: UITableViewCell {
             self.isUserInteractionEnabled = true
         }
         
-        descriptionLabel.text = timedProject.description
-        timeLabel.text = String(describing: timedProject.time)
+        descriptionLabel.text = timedGoal.goalDescription
+        timeLabel.text = String(describing: timedGoal.duration)
         
         
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if timedProject.completion {
+        if timedGoal.completion {
             return
         }
         

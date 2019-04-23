@@ -18,8 +18,10 @@ func fetchGoalFromCoreData(entityName: String, type: goalType) -> [NSManagedObje
     let coreData = CoreDataStack.instance
     
     let fetchRequest = NSFetchRequest<Goal>(entityName: entityName)
+    let sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: true)
+    fetchRequest.sortDescriptors = [sort]
     if type == .timed {
-        let predicate = NSPredicate(format: "duration != \(0)")
+        let predicate = NSPredicate(format: "duration > \(0)")
         fetchRequest.predicate = predicate
     } else {
         let predicate = NSPredicate(format: "duration == \(0)")

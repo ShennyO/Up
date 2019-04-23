@@ -10,7 +10,7 @@ import UIKit
 class SessionViewController: UIViewController {
 
     //MARK: VARIABLES
-    var timedProject: TimedProject?
+    var timedGoal: Goal?
     var currentTime: TimeInterval!
     var endTime: TimeInterval!
     
@@ -327,9 +327,9 @@ class SessionViewController: UIViewController {
         setConstraints()
         
         
-        if timedProject != nil {
-            timeInSeconds = timedProject!.time * 60
-            descriptionLabel.text = timedProject!.description
+        if timedGoal != nil {
+            timeInSeconds = Int(timedGoal!.duration) * 60
+            descriptionLabel.text = timedGoal!.goalDescription
         }
         minutesLabel.text = "\(timeString(time: timeInSeconds))"
         

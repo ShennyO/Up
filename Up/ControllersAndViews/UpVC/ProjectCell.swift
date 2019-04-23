@@ -15,7 +15,9 @@ protocol NonTimedCellToUpVCDelegate {
 
 class ProjectCell: UITableViewCell {
 
-    var project: Project! {
+    let stack = CoreDataStack.instance
+    
+    var goal: Goal! {
         didSet {
             setUpCell()
         }
@@ -162,7 +164,7 @@ class ProjectCell: UITableViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
         addOutlets()
         setConstraints()
-        if project.completion {
+        if goal.completion {
             taskSquareFillView.isHidden = false
             checkMarkImage.isHidden = false
         } else {
@@ -172,7 +174,7 @@ class ProjectCell: UITableViewCell {
         let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tap.minimumPressDuration = 0
         taskSquareView.addGestureRecognizer(tap)
-        descriptionLabel.text = project.description
+        descriptionLabel.text = goal.goalDescription
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
@@ -191,7 +193,8 @@ class ProjectCell: UITableViewCell {
         if gestureRecognizer.state == .ended {
             
             //When the gesture ends, we want to change the project property to completed
-            self.project.completion = true
+            self.goal.completion = true
+            stack.saveTo(context: stack.viewContext)
             taskSquareView.backgroundColor = UIColor.white
             //Animate fillView
             //showing the fillView
@@ -207,7 +210,7 @@ class ProjectCell: UITableViewCell {
             }, completion:  {
                 (value: Bool) in
                 self.isUserInteractionEnabled = true
-//                self.delegate.passNonTimedCellIndex(cell: self)
+
             })
             
         }

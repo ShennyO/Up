@@ -236,7 +236,7 @@ class NewProjectViewController: UIViewController {
             return
         }
         
-        let newGoal = Goal(context: stack.downloadContext)
+        let newGoal = Goal(context: stack.viewContext)
         newGoal.completion = false
         newGoal.date = Date()
         newGoal.goalDescription = text
@@ -246,23 +246,12 @@ class NewProjectViewController: UIViewController {
             
             newGoal.duration = Int32(selectedTime)
             
-            
-            let newProject = TimedProject(description: text, completion: false, time: selectedTime)
-            sendSelectedTimedProject!(newProject)
         } else {
             
-            
             newGoal.duration = Int32(0)
-            
-            
-            stack.saveTo(context: stack.downloadContext)
-            
-            
-            let newProject = Project(description: text, completion: false)
-            sendSelectedProject!(newProject)
         }
         
-        stack.saveTo(context: stack.downloadContext)
+        stack.saveTo(context: stack.viewContext)
         
 
         self.dismiss(animated: true)
