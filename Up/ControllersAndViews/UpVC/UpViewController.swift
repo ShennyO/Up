@@ -160,12 +160,7 @@ extension UpViewController {
     }
     
     private func setUpTableView() {
-//        let results = fetchGoalFromCoreData(entityName: "Goal", type: .all)
-//        if results?.count == 0 {
-//            tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
-//        } else {
-//            tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100), title: "Today")
-//        }
+
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
         tableHeaderView.delegate = self
         headerDelegate = tableHeaderView
@@ -190,8 +185,9 @@ extension UpViewController {
     
     private func setConstraints() {
         addNewButton.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
-            make.bottom.equalToSuperview().offset(-100)
+//            make.right.equalToSuperview().offset(-30)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-60)
             make.width.height.equalTo(60)
         }
         
