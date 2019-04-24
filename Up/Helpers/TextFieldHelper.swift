@@ -49,7 +49,7 @@ class SunnyCustomInputView: UIView {
     let bottomBorder: UIView = {
         let view = UIView()
         view.isHidden = true
-        view.backgroundColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0, green: 0.337254902, blue: 0.7647058824, alpha: 1)
         view.alpha = 0
         return view
     }()

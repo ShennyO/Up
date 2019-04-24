@@ -22,17 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        let initialVewController = CalendarViewController()
-        let navigationController = UINavigationController(rootViewController: initialVewController)
+        let initialTabBarController = UpTabBarController()
+        initialTabBarController.tabBar.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        initialTabBarController.tabBar.isTranslucent = false
+//        let initialVewController = UpViewController()
+//        let navigationController = UINavigationController(rootViewController: initialVewController)
         
-        initialVewController.extendedLayoutIncludesOpaqueBars = true
-        navigationController.navigationBar.barTintColor = .black
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController.navigationBar.shadowImage = UIImage()
-        navigationController.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        
-        window!.rootViewController = navigationController
+        window!.rootViewController = initialTabBarController
         window!.makeKeyAndVisible()
         return true
     }
