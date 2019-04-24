@@ -137,6 +137,7 @@ extension UpViewController {
     
     private func setUp() {
         configNavBar()
+        self.navigationItem.title = "Home"
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
         self.view.addSubview(addNewButton)
@@ -149,8 +150,7 @@ extension UpViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-//        navigationController?.navigationBar.prefersLargeTitles = true
+        
     }
     
     private func setUpTableView() {
@@ -252,11 +252,11 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
             sessionVC.dismissedBlock = {
                 self.timedCellDelegate.showBlackCheck()
-                self.goals[indexPath.row].completion = true
+                self.goals[indexPath.row].completionDate = Date()
                 self.stack.saveTo(context: self.stack.viewContext)
             }
             sessionVC.timedGoal = goals[indexPath.row]
-            if goals[indexPath.row].completion == false {
+            if goals[indexPath.row].completionDate == nil {
                 self.present(sessionVC, animated: true, completion: nil)
             }
         }
@@ -300,6 +300,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
 
 extension UpViewController: HeaderViewToUpVCDelegate {
     func alertUpVCOfEditMode(mode: Bool) {
+        
         //if editMode is on
         editingMode = mode
         if mode == true {

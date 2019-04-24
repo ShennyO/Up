@@ -237,7 +237,7 @@ class NewProjectViewController: UIViewController {
         }
         
         let newGoal = Goal(context: stack.viewContext)
-        newGoal.completion = false
+        newGoal.completionDate = nil
         newGoal.date = Date()
         newGoal.goalDescription = text
         newGoal.cleared = false

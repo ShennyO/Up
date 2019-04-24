@@ -164,7 +164,7 @@ class ProjectCell: UITableViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
         addOutlets()
         setConstraints()
-        if goal.completion {
+        if goal.completionDate != nil{
             taskSquareFillView.isHidden = false
             checkMarkImage.isHidden = false
         } else {
@@ -193,7 +193,7 @@ class ProjectCell: UITableViewCell {
         if gestureRecognizer.state == .ended {
             
             //When the gesture ends, we want to change the project property to completed
-            self.goal.completion = true
+            self.goal.completionDate = Date()
             stack.saveTo(context: stack.viewContext)
             taskSquareView.backgroundColor = UIColor.white
             //Animate fillView
