@@ -61,7 +61,7 @@ public final class CoreDataStack {
         }
     }
     
-    func fetchGoalFrom(entityName: String, type: goalType) -> [NSManagedObject]? {
+    func fetchGoal(entityName: String, type: goalType) -> [NSManagedObject]? {
         let coreData = CoreDataStack.instance
         
         let fetchRequest = NSFetchRequest<Goal>(entityName: entityName)

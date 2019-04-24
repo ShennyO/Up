@@ -41,7 +41,7 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        goals = CoreDataStack
+//        goals = CoreDataStack
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"
