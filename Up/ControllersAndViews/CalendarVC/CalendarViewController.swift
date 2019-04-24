@@ -12,6 +12,7 @@ class CalendarViewController: UIViewController {
     
     let calendarTableViewCellID = "calendarTableViewCellID"
     let calendarCollectionViewCellID = "calendarCollectionViewCellID"
+    let calendarGoalTableViewCellID = "calendarGoalTableViewCellID"
     
     var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -21,7 +22,21 @@ class CalendarViewController: UIViewController {
     var todayIndexPath: IndexPath?
     var monthInfo = [Int:[Int]]()
     
+    var selectedDate = Date() {
+        didSet {
+            goalsForSelectedDate = []
+            for goal in goals {
+                if Calendar.current.compare(selectedDate, to: goal.date!, toGranularity: .day) != ComparisonResult.orderedSame {
+                    continue
+                }
+                goalsForSelectedDate.append(goal)
+            }
+            tableView.reloadSections(IndexSet([1]), with: .automatic)
+        }
+    }
+    
     var goals = [Goal]()
+    var goalsForSelectedDate = [Goal]()
     let coreDataStack = CoreDataStack()
     
     var delegate: HeaderViewToCalendarVCDelegate?
@@ -42,7 +57,9 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         goals = coreDataStack.fetchGoal(type: .all) as! [Goal]
+        startDate = goals[0].date!
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"
@@ -55,6 +72,8 @@ class CalendarViewController: UIViewController {
     
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
+        tableView.register(CalendarGoalTableViewCell.self, forCellReuseIdentifier: calendarGoalTableViewCellID)
+        
         tableView.tag = 0
 //        tableView.backgroundColor = .black
         tableView.separatorStyle = .none
@@ -104,20 +123,33 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return 1
         default:
-            return 0
+            return goalsForSelectedDate.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
-        cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
-        delegate = cell.calendarHeaderView
-        updateHeaderView(offset: 0)
-        return cell
+        switch indexPath.section {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
+            cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
+            delegate = cell.calendarHeaderView
+            updateHeaderView(offset: 0)
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
+            cell.setup(goal: goalsForSelectedDate[indexPath.row])
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width / 7 * 6 + 92
+        switch indexPath.section {
+        case 0:
+            return self.view.frame.width / 7 * 6 + 92
+        default:
+            return 60
+        }
+        
     }
     
 }
@@ -188,10 +220,13 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let oldCell = collectionView.cellForItem(at: selectedCVIndexPath)
-//        oldCell?.isSelected = false
-        let cell = collectionView.cellForItem(at: indexPath)
+        var offsetComponents = DateComponents()
+        offsetComponents.month = Int(indexPath.section)
+        offsetComponents.day = Int(indexPath.row) - 1
         
+        guard let selectedDate = self.gregorian.date(byAdding: offsetComponents, to: self.startOfMonth, options: NSCalendar.Options()) else { return }
+        
+        self.selectedDate = selectedDate
     }
     
 }

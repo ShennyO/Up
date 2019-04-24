@@ -31,7 +31,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = 4
+        layer.cornerRadius = 2
         clipsToBounds = true
         backgroundColor = .white
     }
