@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 class CalendarGoalTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

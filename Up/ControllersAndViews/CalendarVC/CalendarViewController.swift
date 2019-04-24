@@ -20,29 +20,32 @@ class CalendarViewController: UIViewController {
     var endDate = Date()
     var startOfMonth = Date()
     var todayIndexPath: IndexPath?
+    
     var monthInfo = [Int:[Int]]()
     
-    var selectedDate = Date() {
+    let firstDayIndex = 0
+    let numberOfDaysIndex = 1
+    let monthIndex = 2
+    let yearIndex = 3
+    
+    var selectedDateString = "" {
         didSet {
-            goalsForSelectedDate = []
-            for goal in goals {
-                if Calendar.current.compare(selectedDate, to: goal.date!, toGranularity: .day) != ComparisonResult.orderedSame {
-                    continue
-                }
-                goalsForSelectedDate.append(goal)
-            }
             tableView.reloadSections(IndexSet([1]), with: .automatic)
         }
     }
     
-    var goals = [Goal]()
-    var goalsForSelectedDate = [Goal]()
+    var goals = [String: [Goal]]()
+    
     let coreDataStack = CoreDataStack()
+    let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .none
+        formatter.dateFormat = "dd/MM/yyyy"
+        return formatter
+    }()
+    
     
     var delegate: HeaderViewToCalendarVCDelegate?
-    
-    let firstDayIndex = 0
-    let numberOfDaysIndex = 1
     
     lazy var gregorian : NSCalendar = {
         let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
@@ -58,15 +61,29 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        goals = coreDataStack.fetchGoal(type: .all) as! [Goal]
-        startDate = goals[0].date!
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy"
+        //        TODO: Update so it only fetches complete goals
+        fetchData()
         endDate = formatter.date(from: "01/01/2025")!
         
         setupViews()
         setupTableView()
+        
+    }
+    
+    func fetchData() {
+        
+        let goalsArr = coreDataStack.fetchGoal(type: .all) as! [Goal]
+        startDate = goalsArr[0].date!
+        
+        for goal in goalsArr {
+            let key = formatter.string(from: goal.date!)
+            if goals[key] != nil {
+                goals[key]!.append(goal)
+            } else {
+                goals[key] = [goal]
+            }
+        }
+        
         
     }
     
@@ -123,7 +140,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return 1
         default:
-            return goalsForSelectedDate.count
+            guard let goalArr = goals[selectedDateString] else { return 0 }
+            return goalArr.count
         }
     }
     
@@ -137,7 +155,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
-            cell.setup(goal: goalsForSelectedDate[indexPath.row])
+            cell.setup(goal: goals[selectedDateString]![indexPath.row])
             return cell
         }
     }
@@ -189,13 +207,16 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         
         guard let correctMonthForSectionDate = self.gregorian.date(byAdding: monthOffsetComponents, to: startOfMonth, options: NSCalendar.Options()) else { return 0 }
         
+        
         let numberOfDaysInMonth = self.gregorian.range(of: .day, in: .month, for: correctMonthForSectionDate).length
         
         var firstWeekdayOfMonthIndex = self.gregorian.component(.weekday, from: correctMonthForSectionDate)
         firstWeekdayOfMonthIndex = firstWeekdayOfMonthIndex - 1 // firstWeekdayOfMonthIndex should be 0-Indexed
+        let month = self.gregorian.component(.month, from: correctMonthForSectionDate)
+        let year = self.gregorian.component(.year, from: correctMonthForSectionDate)
 //        firstWeekdayOfMonthIndex = (firstWeekdayOfMonthIndex + 6) % 7 // change the first day of the week
         
-        monthInfo[section] = [firstWeekdayOfMonthIndex, numberOfDaysInMonth]
+        monthInfo[section] = [firstWeekdayOfMonthIndex, numberOfDaysInMonth, month, year]
         return 42
     }
     
@@ -203,30 +224,32 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: calendarCollectionViewCellID, for: indexPath) as! CalendarCollectionViewCell
 
         let currentMonthInfo = monthInfo[indexPath.section]! // we are guaranteed an array by the fact that we reached this line (so unwrap)
-
-        let fdIndex = currentMonthInfo[firstDayIndex]
-        let nDays = currentMonthInfo[numberOfDaysIndex]
-
+        let fdIndex = Int(currentMonthInfo[firstDayIndex])
+        let nDays = Int(currentMonthInfo[numberOfDaysIndex])
         let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - fdIndex, section: indexPath.section) // if the first is wednesday, add 2
 
+        var month = String(currentMonthInfo[monthIndex])
+        let year = String(currentMonthInfo[yearIndex])
+        if month.count == 1 { month = "0" + month}
+        let dateString = String(indexPath.row) + "/" + month + "/" + year
+        
         if indexPath.item >= fdIndex && indexPath.item < fdIndex + nDays {
-            cell.setup(day: String(fromStartOfMonthIndexPath.item + 1))
+            let goalsForCell = goals[dateString] ?? []
+            cell.setup(day: String(fromStartOfMonthIndexPath.item + 1), goalCount: goalsForCell.count)
             cell.isHidden = false
         } else {
-            cell.setup(day: "")
+            cell.setup(day: "", goalCount: 0)
             cell.isHidden = true
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var offsetComponents = DateComponents()
-        offsetComponents.month = Int(indexPath.section)
-        offsetComponents.day = Int(indexPath.row) - 1
-        
-        guard let selectedDate = self.gregorian.date(byAdding: offsetComponents, to: self.startOfMonth, options: NSCalendar.Options()) else { return }
-        
-        self.selectedDate = selectedDate
+        var month = String(monthInfo[indexPath.section]![monthIndex])
+        let year = String(monthInfo[indexPath.section]![yearIndex])
+        if month.count == 1 { month = "0" + month}
+        selectedDateString = String(indexPath.row) + "/" + month + "/" + year
+    
     }
     
 }

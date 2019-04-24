@@ -16,10 +16,12 @@ class CalendarCollectionViewCell: UICollectionViewCell {
             if isSelected == true {
                 backgroundColor = .gray
             } else {
-                backgroundColor = .white
+                backgroundColor = cellBackgroundColor
             }
         }
     }
+    
+    var cellBackgroundColor = UIColor.white
     
     let dayLabel: UILabel = {
         let label = UILabel()
@@ -40,15 +42,29 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(day: String) {
+    func setup(day: String, goalCount: Int) {
         dayLabel.text = day
         self.addSubview(dayLabel)
         dayLabel.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalToSuperview()
         }
+        adjustBackgroundColor(goalCount: goalCount)
     }
     
-    private func setupViews() {
-        
+    private func adjustBackgroundColor(goalCount: Int) {
+        if goalCount == 0 {
+            cellBackgroundColor = Style.Colors.calendarShade0
+        } else if goalCount < 2 {
+            cellBackgroundColor = Style.Colors.calendarShade1
+        } else if goalCount < 5 {
+            cellBackgroundColor = Style.Colors.calendarShade2
+        } else if goalCount < 10 {
+            cellBackgroundColor = Style.Colors.calendarShade3
+        } else if goalCount < 15 {
+            cellBackgroundColor = Style.Colors.calendarShade4
+        } else {
+            cellBackgroundColor = Style.Colors.calendarShade5
+        }
+        self.backgroundColor = cellBackgroundColor
     }
 }
