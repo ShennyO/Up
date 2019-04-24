@@ -7,15 +7,17 @@
 
 import Foundation
 import UIKit
+import SnapKit
+
 
 class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.delegate = self
-        self.tabBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         
+        self.delegate = self
+        self.tabBar.barTintColor = UIColor.black
         self.tabBar.isTranslucent = false
-        // Do any additional setup after loading the view.
+
     }
     
     private func configNavBar(navController: UINavigationController) {
@@ -28,21 +30,34 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         //        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    
+    private func setUpTabBar() {
         //create tab one
         let goalsVC = UpViewController()
         let goalsNavVC = UINavigationController(rootViewController: goalsVC)
-        configNavBar(navController: goalsNavVC)
-        let tabOneBarItem = UITabBarItem(title: "Goals", image: UIImage(named: "defaultImage.png"), selectedImage: UIImage(named: "selectedImage.png"))
-        goalsNavVC.tabBarItem = tabOneBarItem
+        goalsVC.tabBarItem.image = #imageLiteral(resourceName: "home")
+        goalsVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedHome")
+        
         
         //create tab two
         let calendarVC = CalendarViewController()
         let calendarNavVC = UINavigationController(rootViewController: calendarVC)
-        let tabTwoBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "defaultImage.png"), selectedImage: UIImage(named: "selectedImage.png"))
-        calendarNavVC.tabBarItem = tabTwoBarItem
-        self.viewControllers = [goalsVC, calendarVC]
+        calendarVC.tabBarItem.image = #imageLiteral(resourceName: "calendar")
+        calendarVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedCalendar")
+        
+//        guard let items = tabBar.items else {return}
+//        
+//        for item in items {
+//            item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+//        }
+        
+        self.viewControllers = [goalsNavVC, calendarNavVC]
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setUpTabBar()
+        
     }
     
     
