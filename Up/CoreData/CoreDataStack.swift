@@ -12,6 +12,8 @@ enum goalType {
     case timed
     case untimed
     case all
+    case completed
+    case incomplete
 }
 
 public final class CoreDataStack {
@@ -65,14 +67,21 @@ public final class CoreDataStack {
         let coreData = CoreDataStack.instance
         
         let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
+        let predicate: NSPredicate!
         let sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: false)
         fetchRequest.sortDescriptors = [sort]
         if type == .timed {
-            let predicate = NSPredicate(format: "duration > \(0)")
+            predicate = NSPredicate(format: "duration > \(0)")
             fetchRequest.predicate = predicate
-        } else if type == .untimed{
-            let predicate = NSPredicate(format: "duration == \(0)")
+        } else if type == .untimed {
+            predicate = NSPredicate(format: "duration == \(0)")
             fetchRequest.predicate = predicate
+        } else if type == .incomplete {
+//            let predicate = NSPredicate(format: "completionDate == ''")
+//            fetchRequest.predicate = predicate
+        } else {
+//            let predicate = NSPredicate(format: "completionDate != ''")
+//            fetchRequest.predicate = predicate
         }
         do {
             let result = try coreData.viewContext.fetch(fetchRequest)

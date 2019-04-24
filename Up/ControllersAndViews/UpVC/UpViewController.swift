@@ -252,11 +252,11 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
             sessionVC.dismissedBlock = {
                 self.timedCellDelegate.showBlackCheck()
-                self.goals[indexPath.row].completion = true
+                self.goals[indexPath.row].completionDate = Date()
                 self.stack.saveTo(context: self.stack.viewContext)
             }
             sessionVC.timedGoal = goals[indexPath.row]
-            if goals[indexPath.row].completion == false {
+            if goals[indexPath.row].completionDate == nil {
                 self.present(sessionVC, animated: true, completion: nil)
             }
         }
@@ -300,6 +300,17 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
 
 extension UpViewController: HeaderViewToUpVCDelegate {
     func alertUpVCOfEditMode(mode: Bool) {
+        
+        let results = CoreDataStack.instance.fetchGoal(type: .incomplete)
+        if let r = results {
+            print(r)
+        }
+        
+        let completedResults = CoreDataStack.instance.fetchGoal(type: .completed)
+        if let cr = completedResults{
+            print(cr)
+        }
+        
         //if editMode is on
         editingMode = mode
         if mode == true {

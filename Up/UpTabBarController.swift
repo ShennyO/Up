@@ -15,15 +15,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         setUpTabBar()
         self.delegate = self
-        self.tabBar.barTintColor = UIColor.black
-//        UITabBar.appearance().shadowImage = UIImage()
-//        UITabBar.appearance().backgroundImage = UIImage()
-        
-        //Then, add the custom top line view with custom color. And set the default background color of tabbar
-//        let lineView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 10))
-//        lineView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-//        self.tabBarController?.tabBar.addSubview(lineView)
-//        self.tabBarController?.tabBar.backgroundColor = UIColor.black
+        self.tabBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         
 
     }

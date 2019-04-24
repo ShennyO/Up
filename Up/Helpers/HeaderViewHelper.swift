@@ -203,14 +203,8 @@ extension HeaderView: UpVCToUpVCHeaderDelegate {
                 self.editButton.isEnabled = true
             }
             
+            self.getStartedLabel.isHidden = true
             
-            UIView.animate(withDuration: 0.6, animations: {
-                
-                self.getStartedLabel.alpha = 0
-            }, completion:  {
-                (value: Bool) in
-                self.getStartedLabel.isHidden = true
-            })
             
         }
         
