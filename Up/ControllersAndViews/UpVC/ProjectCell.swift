@@ -230,6 +230,7 @@ class ProjectCell: UITableViewCell {
         }, completion:  {
             (value: Bool) in
             self.deleteButton.isHidden = true
+            
         })
     }
     
@@ -249,6 +250,7 @@ class ProjectCell: UITableViewCell {
             // when the gesture begins, record the current center location
             originalCenter = center
             dragView.isHidden = false
+            deleteButton.isHidden = false
         }
         // 2
         if recognizer.state == .changed {
@@ -257,6 +259,7 @@ class ProjectCell: UITableViewCell {
             
             let alphaVal = abs(frame.origin.x) / 275
             dragView.alpha = alphaVal
+            deleteButton.alpha = alphaVal
             
             // has the user dragged the item far enough to initiate a delete/complete?
             deleteOnDragRelease = frame.origin.x < -frame.size.width / 2.0
@@ -273,11 +276,13 @@ class ProjectCell: UITableViewCell {
                 UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
                 
                 self.dragView.isHidden = true
+                self.deleteButton.isHidden = true
                 
             } else {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.dragView.isHidden = true
+                    self.deleteButton.isHidden = true
                 }
                 
                 delegate.passNonTimedCellIndex(cell: self)

@@ -14,6 +14,8 @@
 		48CCA55F226F9BDE0034BACB /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCA55E226F9BDE0034BACB /* CalendarHeaderView.swift */; };
 		48CCA561226FC22F0034BACB /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCA560226FC22F0034BACB /* Style.swift */; };
 		A9ED8095A8D2B089BF2FC387 /* Pods_UpUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B6E465FA244D5B61860CDA0 /* Pods_UpUITests.framework */; };
+		C310DEAC226FD04500FCD80D /* UpTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C310DEAB226FD04500FCD80D /* UpTabBarController.swift */; };
+		C331B63F227001B700E262D6 /* UIImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C331B63E227001B700E262D6 /* UIImageHelper.swift */; };
 		C3353A4D226B7EFC00FFD25B /* KeyboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */; };
 		C37519E52255114900FF0E22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37519E42255114900FF0E22 /* AppDelegate.swift */; };
 		C37519EC2255114C00FF0E22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C37519EB2255114C00FF0E22 /* Assets.xcassets */; };
@@ -73,6 +75,8 @@
 		898A2BDFBBF97D8B92D7991B /* Pods-UpUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UpUITests.release.xcconfig"; path = "Target Support Files/Pods-UpUITests/Pods-UpUITests.release.xcconfig"; sourceTree = "<group>"; };
 		8B7BAEDF3155CE5AAB0935E5 /* Pods_Up.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Up.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFFD630057ED3721185BE030 /* Pods-Up.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Up.debug.xcconfig"; path = "Target Support Files/Pods-Up/Pods-Up.debug.xcconfig"; sourceTree = "<group>"; };
+		C310DEAB226FD04500FCD80D /* UpTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpTabBarController.swift; sourceTree = "<group>"; };
+		C331B63E227001B700E262D6 /* UIImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageHelper.swift; sourceTree = "<group>"; };
 		C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHelper.swift; sourceTree = "<group>"; };
 		C37519E12255114900FF0E22 /* Up.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Up.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C37519E42255114900FF0E22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -241,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				C37519E42255114900FF0E22 /* AppDelegate.swift */,
+				C310DEAB226FD04500FCD80D /* UpTabBarController.swift */,
 				C3BE4324226E792000AB8C6F /* CoreData */,
 				487E1BC922692F80000F9B09 /* ControllersAndViews */,
 				C3751A212257FF1800FF0E22 /* Models */,
@@ -291,6 +296,7 @@
 				C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */,
 				C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */,
 				48CCA560226FC22F0034BACB /* Style.swift */,
+				C331B63E227001B700E262D6 /* UIImageHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -543,6 +549,7 @@
 				C3BE4327226E797A00AB8C6F /* Up.xcdatamodeld in Sources */,
 				C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */,
 				C3751A1922552F3D00FF0E22 /* Project.swift in Sources */,
+				C331B63F227001B700E262D6 /* UIImageHelper.swift in Sources */,
 				C3BE4321226E772C00AB8C6F /* CoreDataInitializable.swift in Sources */,
 				C3353A4D226B7EFC00FFD25B /* KeyboardHelper.swift in Sources */,
 				488E0A19226A81D900ABDB50 /* CalendarViewController.swift in Sources */,
@@ -552,6 +559,7 @@
 				C3BE431F226E76EF00AB8C6F /* CoreDataStack.swift in Sources */,
 				C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */,
 				488E0A1B226A844C00ABDB50 /* CalendarTableViewCell.swift in Sources */,
+				C310DEAC226FD04500FCD80D /* UpTabBarController.swift in Sources */,
 				C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */,
 				C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */,
 				484D0AFC226E7122007AFACE /* CalendarLayout.swift in Sources */,
@@ -724,7 +732,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JDYWQEVARC;
+				DEVELOPMENT_TEAM = X3T6G6B4MK;
 				INFOPLIST_FILE = Up/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -743,7 +751,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JDYWQEVARC;
+				DEVELOPMENT_TEAM = X3T6G6B4MK;
 				INFOPLIST_FILE = Up/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
