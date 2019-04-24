@@ -34,6 +34,7 @@ class SunnyCustomInputView: UIView {
         tv.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
         tv.textColor = UIColor.gray
         tv.text = "Goal description"
+        tv.returnKeyType = UIReturnKeyType.done
         return tv
     }()
     

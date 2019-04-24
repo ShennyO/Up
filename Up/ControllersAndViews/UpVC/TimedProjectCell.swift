@@ -182,12 +182,12 @@ class TimedProjectCell: UITableViewCell {
         recognizer.delegate = self
         addGestureRecognizer(recognizer)
         
-        if timedGoal.completion {
-            blackCheckMark.isHidden = false
+        if timedGoal.completionDate == nil {
+            blackCheckMark.isHidden = true
+//            self.isUserInteractionEnabled = true
             
         } else {
-            blackCheckMark.isHidden = true
-            self.isUserInteractionEnabled = true
+            blackCheckMark.isHidden = false
         }
         
         descriptionLabel.text = timedGoal.goalDescription
@@ -197,7 +197,7 @@ class TimedProjectCell: UITableViewCell {
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if timedGoal.completion {
+        if timedGoal.completionDate != nil {
             return
         }
         
