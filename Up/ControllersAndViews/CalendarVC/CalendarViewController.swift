@@ -73,6 +73,7 @@ class CalendarViewController: UIViewController {
     func fetchData() {
         
         let goalsArr = coreDataStack.fetchGoal(type: .all) as! [Goal]
+        if goalsArr.count == 0 { return }
         startDate = goalsArr[0].date!
         
         for goal in goalsArr {
