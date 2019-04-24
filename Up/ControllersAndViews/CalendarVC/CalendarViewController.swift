@@ -284,7 +284,7 @@ extension CalendarViewController: CalendarVCToHeaderViewDelegate {
         let newSection = Int(round(cv.contentOffset.x / cv.frame.width)) + sectionOffset
         if newSection < 0 || newSection >= cv.numberOfSections { return }
         guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: newSection)) else { return }
-        cv.setContentOffset(CGPoint(x: attri.frame.origin.x - 8, y: 0), animated: true)
+        cv.setContentOffset(CGPoint(x: attri.frame.origin.x - 2, y: 0), animated: true)
     }
     
     
