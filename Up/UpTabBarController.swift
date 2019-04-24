@@ -74,9 +74,9 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     private func animate(_ imageView: UIImageView) {
         UIView.animate(withDuration: 0.1, animations: {
-            imageView.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+            imageView.transform = CGAffineTransform(scaleX: 1.175, y: 1.175)
         }) { _ in
-            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 2.0, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 2, options: .curveEaseInOut, animations: {
                 imageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             }, completion: nil)
         }
