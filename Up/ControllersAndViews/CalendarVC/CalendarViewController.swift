@@ -21,10 +21,13 @@ class CalendarViewController: UIViewController {
     var todayIndexPath: IndexPath?
     var monthInfo = [Int:[Int]]()
     
+    var goals = [Goal]()
+    let coreDataStack = CoreDataStack()
+    
     var delegate: HeaderViewToCalendarVCDelegate?
     
-    let FIRST_DAY_INDEX = 0
-    let NUMBER_OF_DAYS_INDEX = 1
+    let firstDayIndex = 0
+    let numberOfDaysIndex = 1
     
     lazy var gregorian : NSCalendar = {
         let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
@@ -39,6 +42,7 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        goals = coreDataStack.fetchGoal(type: .all) as! [Goal]
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"
@@ -168,8 +172,8 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 
         let currentMonthInfo = monthInfo[indexPath.section]! // we are guaranteed an array by the fact that we reached this line (so unwrap)
 
-        let fdIndex = currentMonthInfo[FIRST_DAY_INDEX]
-        let nDays = currentMonthInfo[NUMBER_OF_DAYS_INDEX]
+        let fdIndex = currentMonthInfo[firstDayIndex]
+        let nDays = currentMonthInfo[numberOfDaysIndex]
 
         let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - fdIndex, section: indexPath.section) // if the first is wednesday, add 2
 
@@ -222,8 +226,6 @@ extension CalendarViewController: CalendarVCToHeaderViewDelegate {
         if newSection < 0 || newSection >= cv.numberOfSections { return }
         guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: newSection)) else { return }
         cv.setContentOffset(CGPoint(x: attri.frame.origin.x - 8, y: 0), animated: true)
-        
-        updateHeaderView(offset: newSection)
     }
     
     
