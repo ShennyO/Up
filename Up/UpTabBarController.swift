@@ -13,7 +13,7 @@ import SnapKit
 class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setUpTabBar()
         self.delegate = self
         self.tabBar.barTintColor = UIColor.black
         self.tabBar.isTranslucent = false
@@ -35,28 +35,26 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         //create tab one
         let goalsVC = UpViewController()
         let goalsNavVC = UINavigationController(rootViewController: goalsVC)
-        goalsVC.tabBarItem.image = #imageLiteral(resourceName: "home")
-        goalsVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedHome")
+        goalsNavVC.tabBarItem.image = #imageLiteral(resourceName: "home")
+        goalsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedHome")
+        goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        
         
         
         //create tab two
         let calendarVC = CalendarViewController()
         let calendarNavVC = UINavigationController(rootViewController: calendarVC)
-        calendarVC.tabBarItem.image = #imageLiteral(resourceName: "calendar")
-        calendarVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedCalendar")
+        calendarNavVC.tabBarItem.image = #imageLiteral(resourceName: "calendar")
+        calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedCalendar")
+        calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         
-//        guard let items = tabBar.items else {return}
-//        
-//        for item in items {
-//            item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
-//        }
         
         self.viewControllers = [goalsNavVC, calendarNavVC]
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setUpTabBar()
+        
         
     }
     
