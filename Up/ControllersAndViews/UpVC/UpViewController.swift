@@ -301,16 +301,6 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
 extension UpViewController: HeaderViewToUpVCDelegate {
     func alertUpVCOfEditMode(mode: Bool) {
         
-        let results = CoreDataStack.instance.fetchGoal(type: .incomplete)
-        if let r = results {
-            print(r)
-        }
-        
-        let completedResults = CoreDataStack.instance.fetchGoal(type: .completed)
-        if let cr = completedResults{
-            print(cr)
-        }
-        
         //if editMode is on
         editingMode = mode
         if mode == true {

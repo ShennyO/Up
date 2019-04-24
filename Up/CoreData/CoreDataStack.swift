@@ -77,11 +77,11 @@ public final class CoreDataStack {
             predicate = NSPredicate(format: "duration == \(0)")
             fetchRequest.predicate = predicate
         } else if type == .incomplete {
-//            let predicate = NSPredicate(format: "completionDate == ''")
-//            fetchRequest.predicate = predicate
-        } else {
-//            let predicate = NSPredicate(format: "completionDate != ''")
-//            fetchRequest.predicate = predicate
+            let predicate = NSPredicate(format: "completionDate == nil")
+            fetchRequest.predicate = predicate
+        } else if type == .completed {
+            let predicate = NSPredicate(format: "completionDate != nil")
+            fetchRequest.predicate = predicate
         }
         do {
             let result = try coreData.viewContext.fetch(fetchRequest)
