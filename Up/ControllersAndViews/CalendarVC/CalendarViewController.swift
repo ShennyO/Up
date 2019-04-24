@@ -21,6 +21,8 @@ class CalendarViewController: UIViewController {
     var todayIndexPath: IndexPath?
     var monthInfo = [Int:[Int]]()
     
+    var goals = [Goal]()
+    
     var delegate: HeaderViewToCalendarVCDelegate?
     
     let FIRST_DAY_INDEX = 0
@@ -39,6 +41,7 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        goals = CoreDataStack
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"
@@ -222,8 +225,6 @@ extension CalendarViewController: CalendarVCToHeaderViewDelegate {
         if newSection < 0 || newSection >= cv.numberOfSections { return }
         guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: newSection)) else { return }
         cv.setContentOffset(CGPoint(x: attri.frame.origin.x - 8, y: 0), animated: true)
-        
-        updateHeaderView(offset: newSection)
     }
     
     
