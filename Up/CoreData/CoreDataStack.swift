@@ -61,10 +61,10 @@ public final class CoreDataStack {
         }
     }
     
-    func fetchGoal(entityName: String, type: goalType) -> [NSManagedObject]? {
+    func fetchGoal(type: goalType) -> [NSManagedObject]? {
         let coreData = CoreDataStack.instance
         
-        let fetchRequest = NSFetchRequest<Goal>(entityName: entityName)
+        let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
         let sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: false)
         fetchRequest.sortDescriptors = [sort]
         if type == .timed {

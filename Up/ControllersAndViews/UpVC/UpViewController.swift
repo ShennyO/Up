@@ -107,7 +107,7 @@ class UpViewController: UIViewController {
     private func fetchGoals(completion: @escaping () -> ()) {
 
         
-        let results = stack.fetchGoal(entityName: "Goal", type: .all) as? [Goal]
+        let results = stack.fetchGoal(type: .all) as? [Goal]
         if results?.count != 0 {
             self.goals = results!
         }
