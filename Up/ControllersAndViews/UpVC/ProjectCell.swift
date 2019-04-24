@@ -9,7 +9,8 @@ import UIKit
 
 // nonTimed Cell to UPVC
 protocol NonTimedCellToUpVCDelegate {
-    func passNonTimedCellIndex(cell: UITableViewCell)
+    func deleteNonTimedCell(cell: UITableViewCell)
+    func completeNonTimedCell(cell: UITableViewCell)
     
 }
 
@@ -210,14 +211,15 @@ class ProjectCell: UITableViewCell {
             }, completion:  {
                 (value: Bool) in
                 self.isUserInteractionEnabled = true
-
+                self.delegate.completeNonTimedCell(cell: self)
+            
             })
             
         }
     }
     
     @objc func deleteButtonTapped() {
-        delegate.passNonTimedCellIndex(cell: self)
+        delegate.deleteNonTimedCell(cell: self)
         
     }
     
@@ -285,7 +287,7 @@ class ProjectCell: UITableViewCell {
                     self.deleteButton.isHidden = true
                 }
                 
-                delegate.passNonTimedCellIndex(cell: self)
+                delegate.deleteNonTimedCell(cell: self)
                 
                 
             }

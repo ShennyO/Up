@@ -8,7 +8,8 @@
 import UIKit
 
 protocol TimedCellToUpVCDelegate {
-    func passTimedCellIndex(cell: UITableViewCell)
+    func deleteTimedCell(cell: UITableViewCell)
+    func clearTimedCell(cell: UITableViewCell)
 }
 
 class TimedProjectCell: UITableViewCell {
@@ -209,7 +210,7 @@ class TimedProjectCell: UITableViewCell {
     }
     
     @objc func deleteButtonTapped() {
-        delegate.passTimedCellIndex(cell: self)
+        delegate.deleteTimedCell(cell: self)
         
     }
     
@@ -273,7 +274,7 @@ class TimedProjectCell: UITableViewCell {
                     self.deleteButton.isHidden = true
                 }
                 
-                delegate.passTimedCellIndex(cell: self)
+                delegate.deleteTimedCell(cell: self)
                 
             }
         }
@@ -300,9 +301,14 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate{
         blackCheckMark.isHidden = false
         blackCheckMark.alpha = 0
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             UIView.animate(withDuration: 0.4, animations: {
                 self.blackCheckMark.alpha = 1
+            }, completion: { (result) in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                    self.delegate.clearTimedCell(cell: self)
+                })
+                
             })
         }
         

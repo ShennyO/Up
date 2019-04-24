@@ -107,7 +107,7 @@ class UpViewController: UIViewController {
     private func fetchGoals(completion: @escaping () -> ()) {
 
         
-        let results = stack.fetchGoal(type: .all) as? [Goal]
+        let results = stack.fetchGoal(type: .all, completed: .all, cleared: .notCleared) as? [Goal]
         if results?.count != 0 {
             self.goals = results!
         }
@@ -272,29 +272,52 @@ extension UpViewController {
 }
 
 extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate {
+    func deleteTimedCell(cell: UITableViewCell) {
+        if let index = upTableView.indexPath(for: cell) {
+            stack.viewContext.delete(goals[index.row])
+            stack.saveTo(context: stack.viewContext)
+            goals.remove(at: index.row)
+            upTableView.deleteRows(at: [index], with: .left)
+            
+        }
+    }
+    
+    func clearTimedCell(cell: UITableViewCell) {
+        if let index = upTableView.indexPath(for: cell) {
+            goals[index.row].cleared = true
+            stack.saveTo(context: stack.viewContext)
+            goals.remove(at: index.row)
+            upTableView.deleteRows(at: [index], with: .left)
+            
+        }
+    }
+    
+    func deleteNonTimedCell(cell: UITableViewCell) {
+        if let index = upTableView.indexPath(for: cell) {
+            stack.viewContext.delete(goals[index.row])
+            stack.saveTo(context: stack.viewContext)
+            goals.remove(at: index.row)
+            upTableView.deleteRows(at: [index], with: .left)
+        }
+    }
+    
+    func completeNonTimedCell(cell: UITableViewCell) {
+        if let index = upTableView.indexPath(for: cell) {
+            goals[index.row].cleared = true
+            stack.saveTo(context: stack.viewContext)
+            goals.remove(at: index.row)
+            upTableView.deleteRows(at: [index], with: .left)
+        }
+    }
+    
 
     //Extension here is for the tableviewcell button to communicate with VC
     //VC handles which cell and project to delete
 
     func passTimedCellIndex(cell: UITableViewCell) {
-        if let index = upTableView.indexPath(for: cell) {
-            stack.viewContext.delete(goals[index.row])
-            stack.saveTo(context: stack.viewContext)
-            goals.remove(at: index.row)
-
-            upTableView.deleteRows(at: [index], with: .left)
-            
-        }
+        
     }
 
-    func passNonTimedCellIndex(cell: UITableViewCell) {
-        if let index = upTableView.indexPath(for: cell) {
-            stack.viewContext.delete(goals[index.row])
-            stack.saveTo(context: stack.viewContext)
-            goals.remove(at: index.row)
-            upTableView.deleteRows(at: [index], with: .left)
-        }
-    }
 
 }
 
