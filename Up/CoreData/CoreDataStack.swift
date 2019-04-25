@@ -8,13 +8,23 @@
 import Foundation
 import CoreData
 
-enum goalType {
+enum goalTypeEnum {
     case timed
     case untimed
     case all
+}
+
+enum goalCompletionEnum {
     case completed
     case incomplete
+    case all
 }
+
+enum goalClearanceEnum {
+    case notCleared
+    case all
+}
+
 
 public final class CoreDataStack {
     static let instance = CoreDataStack()
@@ -63,26 +73,59 @@ public final class CoreDataStack {
         }
     }
     
-    func fetchGoal(type: goalType) -> [NSManagedObject]? {
+    func fetchGoal(type: goalTypeEnum, completed: goalCompletionEnum, cleared: goalClearanceEnum) -> [NSManagedObject]? {
         let coreData = CoreDataStack.instance
         
         let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
-        let predicate: NSPredicate!
+        let typePredicate: NSPredicate?
+        let completedPredicate: NSPredicate?
+        let clearedPredicate: NSPredicate?
         let sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: false)
         fetchRequest.sortDescriptors = [sort]
-        if type == .timed {
-            predicate = NSPredicate(format: "duration > \(0)")
-            fetchRequest.predicate = predicate
-        } else if type == .untimed {
-            predicate = NSPredicate(format: "duration == \(0)")
-            fetchRequest.predicate = predicate
-        } else if type == .incomplete {
-            let predicate = NSPredicate(format: "completionDate == nil")
-            fetchRequest.predicate = predicate
-        } else if type == .completed {
-            let predicate = NSPredicate(format: "completionDate != nil")
-            fetchRequest.predicate = predicate
+        
+        switch type {
+        case .timed:
+            typePredicate = NSPredicate(format: "duration > \(0)")
+        case .untimed:
+            typePredicate = NSPredicate(format: "duration == \(0)")
+        default:
+            typePredicate = nil
         }
+        
+        switch completed {
+        case .completed:
+            completedPredicate = NSPredicate(format: "completionDate != nil")
+        case .incomplete:
+            completedPredicate = NSPredicate(format: "completionDate == nil")
+        case .all:
+            completedPredicate = nil
+        }
+        
+        switch cleared {
+        case .all:
+            clearedPredicate = nil
+        case .notCleared:
+            clearedPredicate = NSPredicate(format: "cleared == false")
+        }
+        
+        var predicateArray: [NSPredicate] = []
+        
+        if typePredicate != nil {
+            predicateArray.append(typePredicate!)
+        }
+        
+        
+        if clearedPredicate != nil {
+            predicateArray.append(clearedPredicate!)
+        }
+        
+        if completedPredicate != nil {
+            predicateArray.append(completedPredicate!)
+        }
+        
+        let andPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = andPredicate
+        
         do {
             let result = try coreData.viewContext.fetch(fetchRequest)
             return result

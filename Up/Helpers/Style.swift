@@ -22,11 +22,11 @@ struct Style {
     
     struct Colors {
         static let calendarShade0 = UIColor.white
-        static let calendarShade1 = UIColor(displayP3Red: 204 / 255, green: 255 / 255, blue: 152 / 255, alpha: 1)
-        static let calendarShade2 = UIColor(displayP3Red: 185 / 255, green: 255 / 255, blue: 115 / 255, alpha: 1)
-        static let calendarShade3 = UIColor(displayP3Red: 153 / 255, green: 248 / 255, blue: 57 / 255, alpha: 1)
-        static let calendarShade4 = UIColor(displayP3Red: 106 / 255, green: 192 / 255, blue: 20 / 255, alpha: 1)
-        static let calendarShade5 = UIColor(displayP3Red: 88 / 255, green: 154 / 255, blue: 20 / 255, alpha: 1)
+        static let calendarShade1 = #colorLiteral(red: 0.4414245486, green: 0.6745681167, blue: 1, alpha: 1)
+        static let calendarShade2 = #colorLiteral(red: 0, green: 0.4253857136, blue: 0.9523159862, alpha: 1)
+        static let calendarShade3 = #colorLiteral(red: 0.02414408885, green: 0, blue: 0.8553923965, alpha: 1)
+        static let calendarShade4 = #colorLiteral(red: 0.05386144668, green: 0, blue: 0.4385547042, alpha: 1)
+        static let calendarShade5 = #colorLiteral(red: 0.008395363577, green: 0, blue: 0.2998675704, alpha: 1)
         
         struct Palette01 {
             static let skyBlue = UIColor(displayP3Red: 165 / 255, green: 216 / 255, blue: 255 / 255, alpha: 1)
