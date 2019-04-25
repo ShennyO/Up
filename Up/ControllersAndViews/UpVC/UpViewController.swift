@@ -9,9 +9,6 @@ import UIKit
 import SnapKit
 
 
-protocol UpVCToUpVCHeaderDelegate {
-    func alertHeaderView(total: Int)
-}
 
 protocol UpVCToTimedProjectCellDelegate {
     func showBlackCheck()
@@ -23,19 +20,13 @@ class UpViewController: UIViewController {
     
     //MARK: OUTLETS
     var upTableView: UITableView!
-    let addNewButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "AddButton Copy"), for: .normal)
-        button.addTarget(self, action:#selector(addButtonTapped), for: .touchUpInside)
-        return button
-    }()
+    
     
     var tableHeaderView: HeaderView!
     
     
     //MARK: VARIABLES
-    //PURPOSE: to alert the HeaderView when to enable and disable the edit button
-    var headerDelegate: UpVCToUpVCHeaderDelegate!
+    
     
     //PURPOSE: communication from this VC to timed Cell
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
@@ -72,21 +63,8 @@ class UpViewController: UIViewController {
                 
             }
             
-            if addNewButton.isHidden {
-                //show addButton
-                addNewButton.isHidden = false
-                addNewButton.alpha = 0
-                
-                UIView.animate(withDuration: 0.4, animations: {
-                    self.addNewButton.alpha = 1
-                })
-            }
-            
-            
-            
         }
         
-        headerDelegate.alertHeaderView(total: total)
     }
     
 
@@ -140,8 +118,6 @@ extension UpViewController {
         self.navigationItem.title = "Home"
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
-        self.view.addSubview(addNewButton)
-        setConstraints()
     }
     
     private func configNavBar() {
@@ -157,7 +133,6 @@ extension UpViewController {
 
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
         tableHeaderView.delegate = self
-        headerDelegate = tableHeaderView
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
@@ -177,19 +152,13 @@ extension UpViewController {
         
     }
     
-    private func setConstraints() {
-        addNewButton.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-75)
-            make.width.height.equalTo(60)
-        }
-        
-    }
+    
+    
     
     
     //MARK: OBJC FUNCTIONS
     
-    @objc private func addButtonTapped() {
+    @objc func addButtonTapped() {
         let nextVC = NewProjectViewController()
 
         self.present(nextVC, animated: true, completion: nil)
@@ -322,10 +291,6 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     
-    
-    
-    
-    
 }
 
 
@@ -367,32 +332,10 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
 }
 
 extension UpViewController: HeaderViewToUpVCDelegate {
-    func alertUpVCOfEditMode(mode: Bool) {
+    func addTapped() {
+        let nextVC = NewProjectViewController()
         
-        //if editMode is on
-        editingMode = mode
-        if mode == true {
-            //hide addButton
-            UIView.animate(withDuration: 0.3, animations: {
-                self.addNewButton.alpha = 0
-            }, completion:  {
-                (value: Bool) in
-                self.addNewButton.isHidden = true
-                
-            })
-            
-        } else { //if editMode is off
-            
-            //show addButton
-            addNewButton.isHidden = false
-            addNewButton.alpha = 0
-            
-            UIView.animate(withDuration: 0.4, animations: {
-                self.addNewButton.alpha = 1
-            })
-            
-        }
-        
+        self.present(nextVC, animated: true, completion: nil)
     }
     
 }
