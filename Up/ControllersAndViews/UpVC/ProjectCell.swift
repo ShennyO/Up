@@ -179,10 +179,6 @@ class ProjectCell: UITableViewCell {
         descriptionLabel.text = goal.goalDescription
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
-        let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
-        
-        recognizer.delegate = self
-        addGestureRecognizer(recognizer)
         
     }
     
@@ -247,69 +243,7 @@ class ProjectCell: UITableViewCell {
         })
     }
     
-    
-    @objc func handlePan(recognizer: UIPanGestureRecognizer) {
-        // 1
-        if recognizer.state == .began {
-            // when the gesture begins, record the current center location
-            originalCenter = center
-            dragView.isHidden = false
-            deleteButton.isHidden = false
-        }
-        // 2
-        if recognizer.state == .changed {
-            let translation = recognizer.translation(in: self)
-            center = CGPoint(x: originalCenter.x + translation.x, y: originalCenter.y)
-            
-            let alphaVal = abs(frame.origin.x) / 275
-            dragView.alpha = alphaVal
-            if editMode == false {
-                deleteButton.alpha = alphaVal
-            }
-            // has the user dragged the item far enough to initiate a delete/complete?
-            deleteOnDragRelease = frame.origin.x < -frame.size.width / 2.0
-            
-            
-        }
-        // 3
-        if recognizer.state == .ended {
-            // the frame this cell had before user dragged it
-            let originalFrame = CGRect(x: 0, y: frame.origin.y,
-                                       width: bounds.size.width, height: bounds.size.height)
-            if !deleteOnDragRelease {
-                // if the item is not being deleted, snap back to the original location
-                UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
-                
-                self.dragView.isHidden = true
-                if editMode == false {
-                    self.deleteButton.isHidden = true
-                }
-                
-            } else {
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.dragView.isHidden = true
-                    self.deleteButton.isHidden = true
-                }
-                
-                delegate.deleteNonTimedCell(cell: self)
-                
-                
-            }
-        }
-    }
-    
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
-            let translation = panGestureRecognizer.translation(in: superview!)
-            
-            if translation.x < translation.y {
-                return true
-            }
-            return false
-        }
-        return false
-    }
+
 
 
 }
