@@ -36,6 +36,7 @@ class UpViewController: UIViewController {
     //MARK: VARIABLES
     //PURPOSE: to alert the HeaderView when to enable and disable the edit button
     var headerDelegate: UpVCToUpVCHeaderDelegate!
+    var goalCompletionDelegate: GoalCompletionDelegate!
     
     //PURPOSE: communication from this VC to timed Cell
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
@@ -257,6 +258,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
                 self.timedCellDelegate.showBlackCheck()
                 self.goals[indexPath.row].completionDate = Date()
                 self.stack.saveTo(context: self.stack.viewContext)
+                self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[indexPath.row])
             }
             sessionVC.timedGoal = goals[indexPath.row]
             if goals[indexPath.row].completionDate == nil {
@@ -357,6 +359,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
         if let index = upTableView.indexPath(for: cell) {
             goals[index.row].cleared = true
             stack.saveTo(context: stack.viewContext)
+            goalCompletionDelegate.goalWasCompleted(goal: goals[index.row])
             goals.remove(at: index.row)
             upTableView.deleteRows(at: [index], with: .left)
         }

@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 import SnapKit
 
-
+protocol GoalCompletionDelegate {
+    func goalWasCompleted(goal: Goal)
+}
 
 class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     
@@ -34,7 +36,18 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         UITabBar.appearance().backgroundImage = UIImage.colorForNavBar(color: .black)
         UITabBar.appearance().shadowImage = UIImage.colorForNavBar(color: #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))
         
+//        Create tab item two
+        let calendarVC = CalendarViewController()
+        let calendarNavVC = UINavigationController(rootViewController: calendarVC)
+        calendarNavVC.tabBarItem.image = #imageLiteral(resourceName: "calendar")
+        calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedCalendar")
+        calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        calendarNavVC.tabBarItem.tag = 2
+        configNavBar(navController: calendarNavVC)
+        
+//        Create tab item one
         let goalsVC = UpViewController()
+        goalsVC.goalCompletionDelegate = calendarVC
         let goalsNavVC = UINavigationController(rootViewController: goalsVC)
         goalsNavVC.tabBarItem.image = #imageLiteral(resourceName: "home")
         goalsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedHome")
@@ -43,14 +56,9 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         configNavBar(navController: goalsNavVC)
         
         
-        //create tab two
-        let calendarVC = CalendarViewController()
-        let calendarNavVC = UINavigationController(rootViewController: calendarVC)
-        calendarNavVC.tabBarItem.image = #imageLiteral(resourceName: "calendar")
-        calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedCalendar")
-        calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
-        calendarNavVC.tabBarItem.tag = 2
-        configNavBar(navController: calendarNavVC)
+        
+        
+        
         
         self.viewControllers = [goalsNavVC, calendarNavVC]
         
