@@ -15,11 +15,13 @@ class CalendarViewController: UIViewController {
     let calendarGoalTableViewCellID = "calendarGoalTableViewCellID"
     
     var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
-    
+
     var startDate = Date()
     var endDate = Date()
     var startOfMonth = Date()
     var todayIndexPath: IndexPath?
+    
+    var lastSelectedCollectionViewIndexPath: IndexPath?
     
     var monthInfo = [Int:[Int]]()
     
@@ -61,7 +63,6 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        TODO: Update so it only fetches complete goals
         fetchData()
         endDate = formatter.date(from: "01/01/2025")!
         
@@ -251,7 +252,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         let year = String(monthInfo[indexPath.section]![yearIndex])
         if month.count == 1 { month = "0" + month}
         selectedDateString = String(indexPath.row) + "/" + month + "/" + year
-    
+        lastSelectedCollectionViewIndexPath = indexPath
     }
     
 }
@@ -289,4 +290,26 @@ extension CalendarViewController: CalendarVCToHeaderViewDelegate {
     }
     
     
+}
+
+extension CalendarViewController: GoalCompletionDelegate {
+    func goalWasCompleted(goal: Goal) {
+        let today = Date()
+        let dateString = formatter.string(from: today)
+        if var _ = goals[dateString] {
+            goals[dateString]!.insert(goal, at: 0)
+        } else {
+            goals[dateString] = [goal]
+        }
+        
+        let tvCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! CalendarTableViewCell
+        let cv = tvCell.calendarCollectionView
+        
+        let dateDif = self.gregorian.components(.month, from: startDate, to: today, options: NSCalendar.Options())
+        cv?.reloadSections(IndexSet([dateDif.month!]))
+        if let ip = lastSelectedCollectionViewIndexPath {
+            cv?.selectItem(at: ip, animated: false, scrollPosition: .bottom)
+            tableView.reloadSections(IndexSet([1]), with: .none)
+        }
+    }
 }

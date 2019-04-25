@@ -26,6 +26,7 @@ class UpViewController: UIViewController {
     
     
     //MARK: VARIABLES
+    var goalCompletionDelegate: GoalCompletionDelegate!
     
     
     //PURPOSE: communication from this VC to timed Cell
@@ -227,6 +228,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
                 self.timedCellDelegate.showBlackCheck()
                 self.goals[indexPath.row].completionDate = Date()
                 self.stack.saveTo(context: self.stack.viewContext)
+                self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[indexPath.row])
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.1, execute: {
                     self.goals.remove(at: indexPath.row)
@@ -328,6 +330,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
         }
     }
     
+            goalCompletionDelegate.goalWasCompleted(goal: goals[index.row])
     
 }
 
