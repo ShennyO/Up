@@ -72,20 +72,18 @@ class CalendarViewController: UIViewController {
     
     func fetchData() {
         
-        let goalsArr = coreDataStack.fetchGoal(type: .all) as! [Goal]
+        let goalsArr = coreDataStack.fetchGoal(type: .completed) as! [Goal]
         if goalsArr.count == 0 { return }
-        startDate = goalsArr[0].date!
+        startDate = goalsArr[0].completionDate!
         
         for goal in goalsArr {
-            let key = formatter.string(from: goal.date!)
+            let key = formatter.string(from: goal.completionDate!)
             if goals[key] != nil {
                 goals[key]!.append(goal)
             } else {
                 goals[key] = [goal]
             }
         }
-        
-        
     }
     
     func setupTableView() {
@@ -93,7 +91,7 @@ class CalendarViewController: UIViewController {
         tableView.register(CalendarGoalTableViewCell.self, forCellReuseIdentifier: calendarGoalTableViewCellID)
         
         tableView.tag = 0
-//        tableView.backgroundColor = .black
+        tableView.backgroundColor = Style.Colors.Palette01.gunMetal
         tableView.separatorStyle = .none
         
         tableView.allowsSelection = false
@@ -128,6 +126,9 @@ class CalendarViewController: UIViewController {
         delegate.changeLabelText(text: monthName + " " + year)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 }
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {

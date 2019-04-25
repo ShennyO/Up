@@ -24,7 +24,7 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.backgroundColor = .black
+        self.backgroundColor = Style.Colors.Palette01.gunMetal
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -75,7 +75,7 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
         let label = UILabel()
         label.text = "Month Label"
         label.font = Style.Fonts.bold30
-        label.textColor = .white
+        label.textColor = Style.Colors.Palette01.pureWhite
         label.textAlignment = .center
         return label
     }()
@@ -83,7 +83,7 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     private let leftButton: UIButton = {
         let button = UIButton()
         button.setTitle("<", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(Style.Colors.Palette01.pureWhite, for: .normal)
         button.titleLabel?.font = Style.Fonts.bold35
         button.addTarget(self, action: #selector(leftButtonTapped), for: .touchUpInside)
         return button
@@ -92,7 +92,7 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     private let rightButton: UIButton = {
         let button = UIButton()
         button.setTitle(">", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(Style.Colors.Palette01.pureWhite, for: .normal)
         button.titleLabel?.font = Style.Fonts.bold35
         button.addTarget(self, action: #selector(rightButtonTapped), for: .touchUpInside)
         return button
@@ -105,7 +105,7 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
         for day in days {
             let label = UILabel()
             label.text = day
-            label.textColor = .white
+            label.textColor = Style.Colors.Palette01.pureWhite
             label.font = Style.Fonts.medium18
             label.textAlignment = .center
             
