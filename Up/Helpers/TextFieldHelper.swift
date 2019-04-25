@@ -179,27 +179,17 @@ extension SunnyCustomInputView: UITextViewDelegate {
     }
 }
 
-extension SunnyCustomInputView: UITextFieldDelegate {
-    
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if (string == "\n") {
-            textField.resignFirstResponder()
-            return false
-        }
-        return true
+
+extension SunnyCustomInputView: newProjectVCToTextInputViewDelegate {
+    func populateTextView(text: String) {
+        tv.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+        tv.text = text
+        
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        tfOverlayLabel.textColor = #colorLiteral(red: 0.1737573147, green: 0.3813245595, blue: 0.9967152476, alpha: 1)
-        animateBottomBorder()
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        tfOverlayLabel.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
-        dismissBottomBorder()
-    }
     
 }
+
+
 
 

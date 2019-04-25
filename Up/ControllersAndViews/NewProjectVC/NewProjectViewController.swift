@@ -7,10 +7,17 @@
 
 import UIKit
 
+
+protocol newProjectVCToTextInputViewDelegate {
+    func populateTextView(text: String)
+}
+
 class NewProjectViewController: UIViewController {
     
     //COREDATA stack
     let stack = CoreDataStack.instance
+    var selectedGoal: Goal?
+    var textViewDelegate: newProjectVCToTextInputViewDelegate!
 
     //VARIABLES
     var blurEffectView: UIVisualEffectView?
@@ -170,6 +177,42 @@ class NewProjectViewController: UIViewController {
         
     }
     
+    //if task doesn't have a time
+    private func taskButtonModeOn() {
+        
+            taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+            taskButton.isSelected = true
+            sessionButton.backgroundColor = nil
+            sessionButton.isSelected = false
+            self.timeButton.isHidden = true
+            
+            self.addButton.snp.updateConstraints { (make) in
+                make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
+                make.centerX.equalToSuperview()
+                make.width.equalTo(150)
+                make.height.equalTo(60)
+            }
+        
+    }
+    
+    //if task has a time
+    private func sessionButtonModeOn() {
+       
+            sessionButton.isSelected = true
+            sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+            taskButton.backgroundColor = nil
+            taskButton.isSelected = false
+            timeButton.isHidden = false
+            self.timeButton.alpha = 1
+            self.addButton.snp.updateConstraints { (make) in
+                make.top.equalTo(self.timeButton.snp.bottom).offset(35)
+                make.centerX.equalToSuperview()
+                make.width.equalTo(150)
+                make.height.equalTo(60)
+            }
+        
+    }
+    
     
     //MARK: OBJC FUNCTIONS
     
@@ -208,9 +251,9 @@ class NewProjectViewController: UIViewController {
         //switching button mode
         
         if sessionButton.isSelected == false {
+            sessionButton.isSelected = true
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
-            sessionButton.isSelected = true
             taskButton.isSelected = false
             timeButton.isHidden = false
             timeButton.alpha = 0
@@ -236,19 +279,26 @@ class NewProjectViewController: UIViewController {
             return
         }
         
-        let newGoal = Goal(context: stack.viewContext)
-        newGoal.completionDate = nil
-        newGoal.date = Date()
-        newGoal.goalDescription = text
-        newGoal.cleared = false
-        
-        if sessionButton.isSelected {
+        if let goal = selectedGoal {
             
-            newGoal.duration = Int32(selectedTime)
+            goal.goalDescription = text
+            if sessionButton.isSelected {
+                goal.duration = Int32(selectedTime)
+            } else {
+                goal.duration = Int32(0)
+            }
             
         } else {
-            
-            newGoal.duration = Int32(0)
+            let newGoal = Goal(context: stack.viewContext)
+            newGoal.completionDate = nil
+            newGoal.date = Date()
+            newGoal.goalDescription = text
+            newGoal.cleared = false
+            if sessionButton.isSelected {
+                newGoal.duration = Int32(selectedTime)
+            } else {
+                newGoal.duration = Int32(0)
+            }
         }
         
         stack.saveTo(context: stack.viewContext)
@@ -279,9 +329,7 @@ class NewProjectViewController: UIViewController {
             //MARK: CALLBACK
             //CALLBACK IS RUN WHEN timeSelectorVC is dismissed
             nextVC.onDoneBlock = { (result) in
-                // Do something
-                
-                
+    
                 UIView.animate(withDuration: 0.4, animations: {
                     self.blurEffectView?.alpha = 0
                 }, completion:  {
@@ -322,18 +370,41 @@ class NewProjectViewController: UIViewController {
     }
     
     
+    private func configureEdit() {
+        if let goal = selectedGoal {
+            
+            //Set textview text
+            textViewDelegate.populateTextView(text: goal.goalDescription!)
+            
+            if Int(goal.duration) > 0 {
+                sessionButtonModeOn()
+                //setting time of timeInputButton
+                timeInputDelegate.sendSelectedTime(time: Int(goal.duration))
+                
+            } else {
+                taskButtonModeOn()
+            }
+        }
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        hideKeyboard()
         let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tap.minimumPressDuration = 0
         timeButton.addGestureRecognizer(tap)
+        hideKeyboard()
         configNavBar()
         addOutlets()
         addBlur()
         setConstraints()
         timeInputDelegate = timeButton
+        textViewDelegate = descriptionTextView
+        configureEdit()
+        
+        
         // Do any additional setup after loading the view.
     }
     

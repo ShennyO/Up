@@ -296,9 +296,13 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func editAction(index: IndexPath) -> UIContextualAction {
-//        let goal = goals[index.row]
+        let goal = goals[index.row]
         let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
-            print("tapped")
+            
+            let nextVC = NewProjectViewController()
+            nextVC.selectedGoal = goal
+            self.present(nextVC, animated: true, completion: nil)
+            
             completion(true)
         }
         
