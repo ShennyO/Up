@@ -301,6 +301,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             
             let nextVC = NewProjectViewController()
             nextVC.selectedGoal = goal
+            nextVC.selectedTime = Int(goal.duration)
             self.present(nextVC, animated: true, completion: nil)
             
             completion(true)
