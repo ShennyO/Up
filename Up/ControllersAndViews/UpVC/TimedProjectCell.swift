@@ -16,6 +16,7 @@ class TimedProjectCell: UITableViewCell {
 
     //MARK: VARIABLES
     let stack = CoreDataStack.instance
+    var editMode = false
     
     var timedGoal: Goal! {
         didSet {
@@ -215,6 +216,7 @@ class TimedProjectCell: UITableViewCell {
     }
     
     @objc func editModeOff() {
+        self.editMode = false
         UIView.animate(withDuration: 0.3, animations: {
             self.deleteButton.alpha = 0
         }, completion:  {
@@ -224,7 +226,7 @@ class TimedProjectCell: UITableViewCell {
     }
     
     @objc func editModeOn() {
-        
+        self.editMode = true
         deleteButton.isHidden = false
         deleteButton.alpha = 0
         UIView.animate(withDuration: 0.4, animations: {
@@ -250,7 +252,10 @@ class TimedProjectCell: UITableViewCell {
             //We're going to do this based off the frame's x position (0 -> -285)
             let alphaVal = abs(frame.origin.x) / 275
             dragView.alpha = alphaVal
-            deleteButton.alpha = alphaVal
+            
+            if editMode == false {
+                deleteButton.alpha = alphaVal
+            }
             
             
             // has the user dragged the item far enough to initiate a delete/complete?
@@ -266,7 +271,9 @@ class TimedProjectCell: UITableViewCell {
                 UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
                 
                 self.dragView.isHidden = true
-                self.deleteButton.isHidden = true
+                if editMode == false {
+                    self.deleteButton.isHidden = true
+                }
                 
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

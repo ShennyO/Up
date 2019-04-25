@@ -17,6 +17,7 @@ protocol NonTimedCellToUpVCDelegate {
 class ProjectCell: UITableViewCell {
 
     let stack = CoreDataStack.instance
+    var editMode = false
     
     var goal: Goal! {
         didSet {
@@ -224,7 +225,7 @@ class ProjectCell: UITableViewCell {
     }
     
     @objc func editModeOff() {
-        
+        editMode = false
         taskSquareView.isUserInteractionEnabled = true
         
         UIView.animate(withDuration: 0.4, animations: {
@@ -237,6 +238,7 @@ class ProjectCell: UITableViewCell {
     }
     
     @objc func editModeOn() {
+        editMode = true
         taskSquareView.isUserInteractionEnabled = false
         deleteButton.isHidden = false
         deleteButton.alpha = 0
@@ -261,8 +263,9 @@ class ProjectCell: UITableViewCell {
             
             let alphaVal = abs(frame.origin.x) / 275
             dragView.alpha = alphaVal
-            deleteButton.alpha = alphaVal
-            
+            if editMode == false {
+                deleteButton.alpha = alphaVal
+            }
             // has the user dragged the item far enough to initiate a delete/complete?
             deleteOnDragRelease = frame.origin.x < -frame.size.width / 2.0
             
@@ -278,7 +281,9 @@ class ProjectCell: UITableViewCell {
                 UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
                 
                 self.dragView.isHidden = true
-                self.deleteButton.isHidden = true
+                if editMode == false {
+                    self.deleteButton.isHidden = true
+                }
                 
             } else {
                 

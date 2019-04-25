@@ -263,12 +263,6 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    
-    
-}
-
-extension UpViewController {
-    
 }
 
 extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate {
@@ -308,17 +302,9 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
             goals.remove(at: index.row)
             upTableView.deleteRows(at: [index], with: .left)
         }
-    }
-    
-
-    //Extension here is for the tableviewcell button to communicate with VC
-    //VC handles which cell and project to delete
-
-    func passTimedCellIndex(cell: UITableViewCell) {
         
     }
-
-
+    
 }
 
 extension UpViewController: HeaderViewToUpVCDelegate {
@@ -349,7 +335,6 @@ extension UpViewController: HeaderViewToUpVCDelegate {
         }
         
     }
-    
     
 }
 
