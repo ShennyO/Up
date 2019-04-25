@@ -9,6 +9,7 @@ import UIKit
 
 // nonTimed Cell to UPVC
 protocol NonTimedCellToUpVCDelegate {
+    
     func deleteNonTimedCell(cell: UITableViewCell)
     func completeNonTimedCell(cell: UITableViewCell)
     
@@ -116,8 +117,8 @@ class ProjectCell: UITableViewCell {
     private func setConstraints() {
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(15)
-            make.bottom.equalToSuperview()
+            make.top.equalToSuperview().offset(7.5)
+            make.bottom.equalToSuperview().offset(-7.5)
             make.left.equalToSuperview().offset(25)
             make.right.equalToSuperview().offset(-25)
         }

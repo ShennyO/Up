@@ -107,7 +107,7 @@ class UpViewController: UIViewController {
     private func fetchGoals(completion: @escaping () -> ()) {
 
         
-        let results = stack.fetchGoal(type: .all, completed: .all, cleared: .notCleared) as? [Goal]
+        let results = stack.fetchGoal(type: .all, completed: .incomplete) as? [Goal]
         if results?.count != 0 {
             self.goals = results!
         }
@@ -247,6 +247,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     //TABLEVIEW DELEGATE FUNCTIONS
     
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if goals[indexPath.row].duration > 0 && editingMode == false {
@@ -257,6 +258,12 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
                 self.timedCellDelegate.showBlackCheck()
                 self.goals[indexPath.row].completionDate = Date()
                 self.stack.saveTo(context: self.stack.viewContext)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.1, execute: {
+                    self.goals.remove(at: indexPath.row)
+                    self.upTableView.deleteRows(at: [indexPath], with: .left)
+                })
+                
             }
             sessionVC.timedGoal = goals[indexPath.row]
             if goals[indexPath.row].completionDate == nil {
@@ -289,7 +296,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         action.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        action.image = UIGraphicsImageRenderer(size: CGSize(width: 22, height: 22)).image { _ in
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: 23, height: 23)).image { _ in
             #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: 22, height: 22))
         }
         return action
@@ -308,8 +315,8 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         action.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        action.image = UIGraphicsImageRenderer(size: CGSize(width: 22, height: 22)).image { _ in
-            #imageLiteral(resourceName: "editIcon").draw(in: CGRect(x: 0, y: 0, width: 22, height: 22))
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: 23, height: 23)).image { _ in
+            #imageLiteral(resourceName: "editIcon").draw(in: CGRect(x: 0, y: 0, width: 23, height: 23))
         }
         return action
     }
@@ -325,6 +332,8 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
 
 
 extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate {
+    
+    
     func deleteTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
             stack.viewContext.delete(goals[index.row])
@@ -335,13 +344,13 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
         }
     }
     
-    func clearTimedCell(cell: UITableViewCell) {
+    
+    func completeNonTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            goals[index.row].cleared = true
+            goals[index.row].completionDate = Date()
             stack.saveTo(context: stack.viewContext)
             goals.remove(at: index.row)
             upTableView.deleteRows(at: [index], with: .left)
-            
         }
     }
     
@@ -354,15 +363,6 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
         }
     }
     
-    func completeNonTimedCell(cell: UITableViewCell) {
-        if let index = upTableView.indexPath(for: cell) {
-            goals[index.row].cleared = true
-            stack.saveTo(context: stack.viewContext)
-            goals.remove(at: index.row)
-            upTableView.deleteRows(at: [index], with: .left)
-        }
-        
-    }
     
 }
 

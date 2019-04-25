@@ -293,7 +293,6 @@ class NewProjectViewController: UIViewController {
             newGoal.completionDate = nil
             newGoal.date = Date()
             newGoal.goalDescription = text
-            newGoal.cleared = false
             if sessionButton.isSelected {
                 newGoal.duration = Int32(selectedTime)
             } else {

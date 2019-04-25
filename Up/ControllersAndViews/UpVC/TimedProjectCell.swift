@@ -9,7 +9,6 @@ import UIKit
 
 protocol TimedCellToUpVCDelegate {
     func deleteTimedCell(cell: UITableViewCell)
-    func clearTimedCell(cell: UITableViewCell)
 }
 
 class TimedProjectCell: UITableViewCell {
@@ -124,8 +123,8 @@ class TimedProjectCell: UITableViewCell {
         }
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(15)
-            make.bottom.equalToSuperview()
+            make.top.equalToSuperview().offset(7.5)
+            make.bottom.equalToSuperview().offset(-7.5)
             make.left.equalToSuperview().offset(25)
             make.right.equalToSuperview().offset(-25)
         }
@@ -239,19 +238,15 @@ class TimedProjectCell: UITableViewCell {
 
 extension TimedProjectCell: UpVCToTimedProjectCellDelegate{
     func showBlackCheck() {
-        //showing the dotDotDots
+        
         blackCheckMark.isHidden = false
         blackCheckMark.alpha = 0
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            UIView.animate(withDuration: 0.4, animations: {
+            UIView.animate(withDuration: 0.5, animations: {
                 self.blackCheckMark.alpha = 1
-            }, completion: { (result) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
-                    self.delegate.clearTimedCell(cell: self)
-                })
-                
             })
+            
         }
         
     }
