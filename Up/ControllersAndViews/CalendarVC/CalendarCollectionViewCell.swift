@@ -25,7 +25,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     let dayLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = Style.Colors.Palette01.gunMetal
         label.font = Style.Fonts.medium18
         label.textAlignment = .center
         return label
@@ -35,7 +35,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         layer.cornerRadius = 2
         clipsToBounds = true
-        backgroundColor = .white
+        backgroundColor = Style.Colors.Palette01.pureWhite
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,7 +53,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     private func adjustBackgroundColor(goalCount: Int) {
         if goalCount == 0 {
-            cellBackgroundColor = Style.Colors.calendarShade0
+            cellBackgroundColor = Style.Colors.Palette01.pureWhite
         } else if goalCount < 2 {
             cellBackgroundColor = Style.Colors.calendarShade1
         } else if goalCount < 5 {

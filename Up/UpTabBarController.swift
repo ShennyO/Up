@@ -26,15 +26,8 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     private func configNavBar(navController: UINavigationController) {
-        extendedLayoutIncludesOpaqueBars = true
-        navController.navigationBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        navController.navigationBar.isTranslucent = false
-        navController.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navController.navigationBar.shadowImage = UIImage()
-        navController.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        //        navigationController?.navigationBar.prefersLargeTitles = true
+        navController.isNavigationBarHidden = true
     }
-    
     
     private func setUpTabBar() {
         //create tab one
@@ -47,8 +40,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         goalsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedHome")
         goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         goalsNavVC.tabBarItem.tag = 1
-        
-        
+        configNavBar(navController: goalsNavVC)
         
         
         //create tab two
@@ -58,6 +50,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedCalendar")
         calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         calendarNavVC.tabBarItem.tag = 2
+        configNavBar(navController: calendarNavVC)
         
         self.viewControllers = [goalsNavVC, calendarNavVC]
         

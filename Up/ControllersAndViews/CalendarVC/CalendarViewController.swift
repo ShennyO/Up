@@ -74,18 +74,16 @@ class CalendarViewController: UIViewController {
         
         let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, cleared: .all) as! [Goal]
         if goalsArr.count == 0 { return }
-        startDate = goalsArr[0].date!
+        startDate = goalsArr[0].completionDate!
         
         for goal in goalsArr {
-            let key = formatter.string(from: goal.date!)
+            let key = formatter.string(from: goal.completionDate!)
             if goals[key] != nil {
                 goals[key]!.append(goal)
             } else {
                 goals[key] = [goal]
             }
         }
-        
-        
     }
     
     func setupTableView() {
@@ -93,7 +91,7 @@ class CalendarViewController: UIViewController {
         tableView.register(CalendarGoalTableViewCell.self, forCellReuseIdentifier: calendarGoalTableViewCellID)
         
         tableView.tag = 0
-//        tableView.backgroundColor = .black
+        tableView.backgroundColor = Style.Colors.Palette01.gunMetal
         tableView.separatorStyle = .none
         
         tableView.allowsSelection = false
@@ -128,6 +126,9 @@ class CalendarViewController: UIViewController {
         delegate.changeLabelText(text: monthName + " " + year)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 }
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
@@ -284,7 +285,7 @@ extension CalendarViewController: CalendarVCToHeaderViewDelegate {
         let newSection = Int(round(cv.contentOffset.x / cv.frame.width)) + sectionOffset
         if newSection < 0 || newSection >= cv.numberOfSections { return }
         guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: newSection)) else { return }
-        cv.setContentOffset(CGPoint(x: attri.frame.origin.x - 8, y: 0), animated: true)
+        cv.setContentOffset(CGPoint(x: attri.frame.origin.x - 2, y: 0), animated: true)
     }
     
     

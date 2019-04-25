@@ -28,5 +28,12 @@ struct Style {
         static let calendarShade4 = #colorLiteral(red: 0.05386144668, green: 0, blue: 0.4385547042, alpha: 1)
         static let calendarShade5 = #colorLiteral(red: 0.008395363577, green: 0, blue: 0.2998675704, alpha: 1)
         
+        struct Palette01 {
+            static let skyBlue = UIColor(displayP3Red: 165 / 255, green: 216 / 255, blue: 255 / 255, alpha: 1)
+            static let charcoal = UIColor(displayP3Red: 44 / 255, green: 66 / 255, blue: 81 / 255, alpha: 1)
+            static let lightCyan = UIColor(displayP3Red: 222 / 255, green: 255 / 255, blue: 252 / 255, alpha: 1)
+            static let pureWhite = UIColor(displayP3Red: 255 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1)
+            static let gunMetal = UIColor(displayP3Red: 14 / 255, green: 15 / 255, blue: 19 / 255, alpha: 1)
+        }
     }
 }

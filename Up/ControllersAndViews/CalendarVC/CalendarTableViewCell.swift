@@ -43,7 +43,7 @@ class CalendarTableViewCell: UITableViewCell {
         let cv = UICollectionView(frame: frame, collectionViewLayout: layout)
         
         cv.isPagingEnabled = true
-        cv.backgroundColor = UIColor.black
+        cv.backgroundColor = Style.Colors.Palette01.gunMetal
         cv.showsHorizontalScrollIndicator = false
         cv.showsVerticalScrollIndicator = false
         cv.tag = 1
