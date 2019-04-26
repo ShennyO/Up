@@ -297,7 +297,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
         
         if let index = upTableView.indexPath(for: cell) {
             goals.remove(at: index.row)
-            upTableView.deleteRows(at: [index], with: .left)
+            upTableView.deleteRows(at: [index], with: .right)
         }
     }
     
@@ -320,7 +320,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
             stack.saveTo(context: stack.viewContext)
             goalCompletionDelegate.goalWasCompleted(goal: goals[index.row])
             goals.remove(at: index.row)
-            upTableView.deleteRows(at: [index], with: .left)
+            upTableView.deleteRows(at: [index], with: .right)
         }
     }
     

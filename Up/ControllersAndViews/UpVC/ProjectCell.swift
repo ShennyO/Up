@@ -97,20 +97,9 @@ class ProjectCell: UITableViewCell {
     
 
     
-    var deleteButton: UIButton = {
-        let button = UIButton()
-        button.setBackgroundImage(#imageLiteral(resourceName: "deleteButton"), for: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        button.isHidden = true
-        return button
-    }()
-    
-    
-    
     //MARK: FUNCTIONS
     private func addOutlets() {
         self.addSubview(containerView)
-        self.addSubview(deleteButton)
         
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(taskSquareView)
@@ -139,29 +128,21 @@ class ProjectCell: UITableViewCell {
         }
         
         taskSquareView.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
+            make.left.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(25)
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(15)
-            make.right.equalTo(taskSquareView.snp.left).offset(-15)
-            make.centerY.equalToSuperview()
-            
-        }
-        
-        
-        taskSquareFillView.snp.makeConstraints { (make) in
+            make.left.equalTo(taskSquareView.snp.right).offset(15)
             make.right.equalToSuperview().offset(-15)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(25)
         }
         
-        deleteButton.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview().offset(8)
-            make.right.equalToSuperview().offset(-10)
-            make.height.width.equalTo(30)
+        taskSquareFillView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(15)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(25)
         }
         
         checkMarkImage.snp.makeConstraints { (make) in
@@ -195,9 +176,6 @@ class ProjectCell: UITableViewCell {
         }
         
         descriptionLabel.text = goal.goalDescription
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        
-        
     }
     
     //THIS FUNCTION IS CALLED FROM OUTSIDE WHEN USER TAPPED ON THE CELL
@@ -224,15 +202,7 @@ class ProjectCell: UITableViewCell {
             self.delegate.completeNonTimedCell(cell: self)
             
         })
-        
     }
     
-    
-    @objc func deleteButtonTapped() {
-        delegate.deleteNonTimedCell(cell: self)
-        
-    }
-    
-
 }
 

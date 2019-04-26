@@ -62,11 +62,18 @@ class TimedProjectCell: UITableViewCell {
         return label
     }()
     
+    var timeLabelView: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.3366830349, green: 0.334687084, blue: 0.3382208347, alpha: 1)
+        view.layer.cornerRadius = 10
+        return view
+    }()
+    
     var timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 10)
         label.numberOfLines = 0
-        label.textColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        label.textColor = UIColor.white
         return label
     }()
     
@@ -98,8 +105,9 @@ class TimedProjectCell: UITableViewCell {
 
         self.addSubview(containerView)
         containerView.addSubview(descriptionLabel)
-        containerView.addSubview(timeLabel)
         containerView.addSubview(timeImageContainerView)
+        containerView.addSubview(timeLabelView)
+        timeLabelView.addSubview(timeLabel)
         containerView.addSubview(darkView)
         timeImageContainerView.addSubview(timeImageView)
         timeImageContainerView.addSubview(blackCheckMark)
@@ -125,26 +133,30 @@ class TimedProjectCell: UITableViewCell {
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(15)
-            make.right.equalToSuperview().offset(-85)
+            make.left.equalTo(timeImageContainerView.snp.right).offset(15)
+            make.right.equalToSuperview().offset(-15)
             make.centerY.equalToSuperview()
         }
         
         timeImageContainerView.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(25)
+            make.left.equalToSuperview().offset(12)
+            make.centerY.equalToSuperview().offset(-3)
+            make.width.height.equalTo(27)
+        }
+        
+        timeLabelView.snp.makeConstraints { (make) in
+            make.left.equalTo(timeImageContainerView.snp.right).offset(-15)
+            make.top.equalTo(timeImageContainerView.snp.bottom).offset(-12)
+            make.width.height.equalTo(20)
         }
         
         timeLabel.snp.makeConstraints { (make) in
-            make.right.equalTo(timeImageContainerView.snp.left).offset(-7)
+            make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(1)
         }
         
-       
-        
         timeImageView.snp.makeConstraints { (make) in
-            make.width.height.equalTo(25)
+            make.width.height.equalTo(27)
             make.centerX.centerY.equalToSuperview()
         }
         
