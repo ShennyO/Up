@@ -259,7 +259,10 @@ class NewProjectViewController: UIViewController {
         //switching button mode
         
         if sessionButton.isSelected == false {
-            selectedTime = 30
+            if selectedTime == 0 {
+                selectedTime = 30
+            }
+            
             sessionButton.isSelected = true
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
