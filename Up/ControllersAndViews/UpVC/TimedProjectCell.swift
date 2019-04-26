@@ -90,16 +90,6 @@ class TimedProjectCell: UITableViewCell {
         return image
     }()
     
-    var deleteButton: UIButton = {
-        let button = UIButton()
-        button.setBackgroundImage(#imageLiteral(resourceName: "deleteButton"), for: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        button.isHidden = true
-        return button
-    }()
-    
-
-    
     //MARK: FUNCTIONS
     private func addOutlets() {
 
@@ -111,8 +101,6 @@ class TimedProjectCell: UITableViewCell {
         containerView.addSubview(darkView)
         timeImageContainerView.addSubview(timeImageView)
         timeImageContainerView.addSubview(blackCheckMark)
-        
-        self.addSubview(deleteButton)
         
     }
     
@@ -165,20 +153,11 @@ class TimedProjectCell: UITableViewCell {
             make.width.height.equalTo(15)
         }
         
-        deleteButton.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview().offset(8)
-            make.right.equalToSuperview().offset(-10)
-            make.height.width.equalTo(30)
-        }
-        
-        
-        
     }
     
     private func setUpCell() {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         addOutlets()
         setConstraints()
         //MARK: GESTURE
@@ -199,20 +178,12 @@ class TimedProjectCell: UITableViewCell {
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        
-        
         if highlighted {
             darkView.alpha = 0.55
         } else {
             darkView.alpha = 0
         }
     }
-    
-    @objc func deleteButtonTapped() {
-        delegate.deleteTimedCell(cell: self)
-        
-    }
-    
     
 }
 

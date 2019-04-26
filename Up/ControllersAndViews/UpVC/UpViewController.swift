@@ -25,6 +25,14 @@ class UpViewController: UIViewController {
     //MARK: OUTLETS
     var upTableView: UITableView!
     
+    let addButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "AddButton"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     
     var tableHeaderView: HeaderView!
     
@@ -47,27 +55,20 @@ class UpViewController: UIViewController {
         let total = goals.count
         
         if total != 0 {
-            
+    
             let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
             tableHeaderView.frame = tableHeaderFrame
             self.view.layoutIfNeeded()
-            
-            
-            
-        } else { //when Projects are at zero, edit button is automatically disabled, and add button is
-            // automatically shown and enabled
-            
-            
+        
+        } else {
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                
                 let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
                 self.tableHeaderView.frame = tableHeaderFrame
                 UIView.animate(withDuration: 0.5, animations: {
                     self.view.layoutIfNeeded()
                 })
-                
             }
-            
         }
         
         headerDelegate.alertHeaderView(total: total)
@@ -83,46 +84,59 @@ class UpViewController: UIViewController {
     
     
     private func fetchGoals(completion: @escaping () -> ()) {
-
-        
         let results = stack.fetchGoal(type: .all, completed: .incomplete) as? [Goal]
         if results?.count != 0 {
             self.goals = results!
         }
-        
-        
         completion()
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
         fetchGoals() {
-            
             self.upTableView.reloadData()
         }
-       
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         upTableView.reloadData()
     }
     
+    
 }
 
 
 extension UpViewController {
+    //MARK: OBJ FUNCTIONS
+    @objc private func addButtonTapped() {
+        let nextVC = NewProjectViewController()
+        nextVC.goalDelegate = self
+        self.present(nextVC, animated: true, completion: nil)
+    }
+    
+    
     //MARK: PRIVATE FUNCTIONS
     
+    private func addOutlets() {
+        self.view.addSubview(addButton)
+    }
     
+    private func setConstraints() {
+        
+        addButton.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(-25)
+            make.bottom.equalToSuperview().offset(-125)
+            make.height.width.equalTo(60)
+        }
+    }
     
     private func setUp() {
         configNavBar()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
+        
     }
     
     private func configNavBar() {
@@ -131,11 +145,9 @@ extension UpViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        
     }
     
     private func setUpTableView() {
-
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
         tableHeaderView.delegate = self
         self.upTableView = UITableView()
@@ -168,24 +180,19 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
         return 85
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return goals.count
-        
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         //if duration is 0 we use ProjectCell
         if goals[indexPath.row].duration == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
@@ -201,19 +208,14 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             cell.index = indexPath
             cell.delegate = self
             cell.timedGoal = goals[indexPath.row]
+            
             return cell
         }
-        
     }
     
     
     //TABLEVIEW DELEGATE FUNCTIONS
-    
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        
         if goals[indexPath.row].duration > 0 {
             let cell = tableView.cellForRow(at: indexPath)
             let sessionVC = SessionViewController()
@@ -223,12 +225,13 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
                 self.timedCellDelegate.showBlackCheck()
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[indexPath.row])
                 self.stack.saveTo(context: self.stack.viewContext)
-                
             }
+            
             sessionVC.timedGoal = goals[indexPath.row]
-            if goals[indexPath.row].completionDate == nil {
+            DispatchQueue.main.async(execute: {
                 self.present(sessionVC, animated: true, completion: nil)
-            }
+            })
+            
         } else {
             let cell = tableView.cellForRow(at: indexPath) as! ProjectCell
             cell.complete()
@@ -236,9 +239,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    
-    
-    
+
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = deleteAction(index: indexPath)
         let edit = editAction(index: indexPath)
@@ -253,7 +254,6 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             self.stack.saveTo(context: self.stack.viewContext)
             self.goals.remove(at: index.row)
             self.upTableView.deleteRows(at: [index], with: .left)
-            
             
             completion(true)
         }
@@ -290,18 +290,15 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 
-
-
 extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate {
+    
     func completeTimedCell(cell: UITableViewCell) {
-        
         if let index = upTableView.indexPath(for: cell) {
             goals.remove(at: index.row)
             upTableView.deleteRows(at: [index], with: .right)
         }
     }
-    
-    
+
     
     func deleteTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
@@ -309,7 +306,6 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
             stack.saveTo(context: stack.viewContext)
             goals.remove(at: index.row)
             upTableView.deleteRows(at: [index], with: .left)
-            
         }
     }
     
@@ -324,15 +320,16 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
         }
     }
     
+    
     func deleteNonTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
             stack.viewContext.delete(goals[index.row])
             stack.saveTo(context: stack.viewContext)
-            
             goals.remove(at: index.row)
             upTableView.deleteRows(at: [index], with: .left)
         }
     }
+    
     
 }
 
@@ -350,6 +347,7 @@ extension UpViewController: newProjectVCToUpVCDelegate {
         self.goals.insert(goal, at: 0)
         upTableView.reloadData()
     }
+    
     
     func editGoalToUpVC(goal: Goal, index: Int) {
         self.goals[index] = goal
