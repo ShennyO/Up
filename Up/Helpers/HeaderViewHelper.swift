@@ -35,7 +35,7 @@ class HeaderView: UIView {
     let addButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("+", for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 60)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 65)
         button.setTitleColor(UIColor.white, for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
@@ -78,9 +78,20 @@ class HeaderView: UIView {
         
     }
     
+    private func animate(_ button: UIButton) {
+        UIView.animate(withDuration: 0.1, animations: {
+            button.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        }) { _ in
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 2, options: .curveEaseInOut, animations: {
+                button.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            }, completion: nil)
+        }
+    }
     
     @objc private func addButtonTapped() {
+        animate(addButton)
         delegate.addTapped()
+        
     }
     
 

@@ -50,7 +50,7 @@ class TimeInputViewButton: UIView {
     private func addOutlets() {
    
         self.addSubview(timeLabel)
-        self.addSubview(arrowImage)
+//        self.addSubview(arrowImage)
         
         
     }
@@ -62,12 +62,12 @@ class TimeInputViewButton: UIView {
             make.centerY.equalToSuperview().offset(2)
         }
         
-        arrowImage.snp.makeConstraints { (make) in
-            make.height.equalTo(15)
-            make.width.equalTo(20)
-            make.left.equalTo(timeLabel.snp.right).offset(15)
-            make.centerY.equalToSuperview()
-        }
+//        arrowImage.snp.makeConstraints { (make) in
+//            make.height.equalTo(15)
+//            make.width.equalTo(20)
+//            make.left.equalTo(timeLabel.snp.right).offset(15)
+//            make.centerY.equalToSuperview()
+//        }
 
     }
     
@@ -76,17 +76,17 @@ class TimeInputViewButton: UIView {
 // from NewProjectVC to TimeInputView
 extension TimeInputViewButton: NewProjectVCToTimeInputButtonDelegate {
     func sendSelectedTime(time: Int) {
-        timeLabel.text = String(describing: time) + " minutes"
+        timeLabel.text = String(describing: time) + " minutes "
     }
     
     
     func tapStarted() {
         timeLabel.textColor = UIColor.gray
-        arrowImage.image = #imageLiteral(resourceName: "grayArrow")
+//        arrowImage.image = #imageLiteral(resourceName: "grayArrow")
     }
     
     func tapEnded() {
         timeLabel.textColor = UIColor.white
-        arrowImage.image = #imageLiteral(resourceName: "upArrow")
+//        arrowImage.image = #imageLiteral(resourceName: "upArrow")
     }
 }

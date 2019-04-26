@@ -36,7 +36,6 @@ class UpViewController: UIViewController {
     
     //PURPOSE: communication from this VC to timed Cell
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
-    var editingMode = false
     
     var goals: [Goal] = [] {
         didSet {
@@ -154,7 +153,7 @@ extension UpViewController {
             make.top.equalToSuperview()
             make.right.equalToSuperview()
             make.left.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-49)
         }
         
     }
@@ -214,9 +213,10 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if goals[indexPath.row].duration > 0 && editingMode == false {
-            let sessionVC = SessionViewController()
+        
+        if goals[indexPath.row].duration > 0 {
             let cell = tableView.cellForRow(at: indexPath)
+            let sessionVC = SessionViewController()
             timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
             sessionVC.dismissedBlock = {
                 self.goals[indexPath.row].completionDate = Date()
@@ -229,6 +229,9 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             if goals[indexPath.row].completionDate == nil {
                 self.present(sessionVC, animated: true, completion: nil)
             }
+        } else {
+            let cell = tableView.cellForRow(at: indexPath) as! ProjectCell
+            cell.complete()
         }
         
     }
@@ -344,7 +347,7 @@ extension UpViewController: HeaderViewToUpVCDelegate {
 
 extension UpViewController: newProjectVCToUpVCDelegate {
     func addGoalToUpVC(goal: Goal) {
-        self.goals.append(goal)
+        self.goals.insert(goal, at: 0)
         upTableView.reloadData()
     }
     

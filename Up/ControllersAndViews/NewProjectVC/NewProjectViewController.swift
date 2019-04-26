@@ -44,7 +44,7 @@ class NewProjectViewController: UIViewController {
     
     var newProjectLabel: UILabel = {
         let label = UILabel()
-        label.text = "New Goal"
+        label.text = "New Task"
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 35)
         return label
@@ -173,7 +173,7 @@ class NewProjectViewController: UIViewController {
         addButton.snp.makeConstraints { (make) in
             make.top.equalTo(timeButton.snp.bottom).offset(-15)
             make.centerX.equalToSuperview()
-            make.width.equalTo(150)
+            make.width.equalTo(170)
             make.height.equalTo(60)
         }
         
