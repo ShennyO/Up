@@ -294,6 +294,10 @@ extension CalendarViewController: CalendarVCToHeaderViewDelegate {
 
 extension CalendarViewController: GoalCompletionDelegate {
     func goalWasCompleted(goal: Goal) {
+        if self.isViewLoaded == false {
+            return
+        }
+        
         let today = Date()
         let dateString = formatter.string(from: today)
         if var _ = goals[dateString] {

@@ -33,8 +33,10 @@ class HeaderView: UIView {
     
     
     let addButton: UIButton = {
-        let button = UIButton()
-        button.setBackgroundImage(#imageLiteral(resourceName: "AddButton Copy"), for: .normal)
+        let button = UIButton(type: .system)
+        button.setTitle("+", for: .normal)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 60)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
@@ -63,7 +65,7 @@ class HeaderView: UIView {
         }
     
         addButton.snp.makeConstraints { (make) in
-            make.height.width.equalTo(30)
+//            make.height.width.equalTo(30)
             make.right.equalToSuperview().offset(-25)
             make.centerY.equalTo(titleLabel)
         }
@@ -94,6 +96,30 @@ class HeaderView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+}
+
+extension HeaderView: UpVCToUpVCHeaderDelegate{
+    func alertHeaderView(total: Int) {
+        if total == 0 {
+            
+            
+            getStartedLabel.isHidden = false
+            getStartedLabel.alpha = 0
+            UIView.animate(withDuration: 0.7, animations: {
+                self.getStartedLabel.alpha = 1
+            })
+            
+            
+        } else { //If there are projects
+            
+            
+            self.getStartedLabel.isHidden = true
+            
+            
+        }
     }
     
     

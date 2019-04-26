@@ -53,7 +53,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         goalsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedHome")
         goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         goalsNavVC.tabBarItem.tag = 1
-        configNavBar(navController: goalsNavVC)
+//        configNavBar(navController: goalsNavVC)
         
         
         

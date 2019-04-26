@@ -12,18 +12,26 @@ protocol newProjectVCToTextInputViewDelegate {
     func populateTextView(text: String)
 }
 
+protocol newProjectVCToUpVCDelegate {
+    func addGoalToUpVC(goal: Goal)
+    func editGoalToUpVC(goal: Goal, index: Int)
+}
+
 class NewProjectViewController: UIViewController {
     
     //COREDATA stack
     let stack = CoreDataStack.instance
     var selectedGoal: Goal?
-    var textViewDelegate: newProjectVCToTextInputViewDelegate!
+    
 
     //VARIABLES
+    var selectedIndex: Int?
     var blurEffectView: UIVisualEffectView?
     var selectedTime = 30
     var descriptionText: String?
+    var textViewDelegate: newProjectVCToTextInputViewDelegate!
     var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
+    var goalDelegate: newProjectVCToUpVCDelegate!
     var sendSelectedProject: ((Project) -> ())?
     var sendSelectedTimedProject: ((TimedProject) -> ())?
     
@@ -197,7 +205,7 @@ class NewProjectViewController: UIViewController {
     
     //if task has a time
     private func sessionButtonModeOn() {
-       
+        
             sessionButton.isSelected = true
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
@@ -251,6 +259,7 @@ class NewProjectViewController: UIViewController {
         //switching button mode
         
         if sessionButton.isSelected == false {
+            selectedTime = 30
             sessionButton.isSelected = true
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
@@ -288,6 +297,8 @@ class NewProjectViewController: UIViewController {
                 goal.duration = Int32(0)
             }
             
+            goalDelegate.editGoalToUpVC(goal: goal, index: selectedIndex!)
+            
         } else {
             let newGoal = Goal(context: stack.viewContext)
             newGoal.completionDate = nil
@@ -298,9 +309,13 @@ class NewProjectViewController: UIViewController {
             } else {
                 newGoal.duration = Int32(0)
             }
+            
+            goalDelegate.addGoalToUpVC(goal: newGoal)
+            
         }
         
         stack.saveTo(context: stack.viewContext)
+        
         
 
         self.dismiss(animated: true)
@@ -323,7 +338,7 @@ class NewProjectViewController: UIViewController {
             timeInputDelegate.tapEnded()
             
             let nextVC = TimeSelectorViewController()
-           
+           nextVC.selectedTime = selectedTime
             
             //MARK: CALLBACK
             //CALLBACK IS RUN WHEN timeSelectorVC is dismissed

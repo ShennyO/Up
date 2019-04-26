@@ -9,7 +9,6 @@ import UIKit
 
 // nonTimed Cell to UPVC
 protocol NonTimedCellToUpVCDelegate {
-    
     func deleteNonTimedCell(cell: UITableViewCell)
     func completeNonTimedCell(cell: UITableViewCell)
     

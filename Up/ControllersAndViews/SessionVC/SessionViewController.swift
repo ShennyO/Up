@@ -271,7 +271,7 @@ class SessionViewController: UIViewController {
         
         
         cancelButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(50)
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(20)
         }

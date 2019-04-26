@@ -9,6 +9,7 @@ import UIKit
 
 protocol TimedCellToUpVCDelegate {
     func deleteTimedCell(cell: UITableViewCell)
+    func completeTimedCell(cell: UITableViewCell)
 }
 
 class TimedProjectCell: UITableViewCell {
@@ -179,9 +180,7 @@ class TimedProjectCell: UITableViewCell {
         addOutlets()
         setConstraints()
         //MARK: GESTURE
-//        let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
-//        recognizer.delegate = self
-//        addGestureRecognizer(recognizer)
+
         
         if timedGoal.completionDate == nil {
             blackCheckMark.isHidden = true
@@ -245,6 +244,11 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate{
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             UIView.animate(withDuration: 0.5, animations: {
                 self.blackCheckMark.alpha = 1
+            }, completion: { (res) in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                     self.delegate.completeTimedCell(cell: self)
+                })
+                
             })
             
         }
