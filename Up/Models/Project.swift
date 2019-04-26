@@ -17,7 +17,7 @@ class Project {
         self.description = description
     }
     
-    
+
 }
 
 class TimedProject: Project {

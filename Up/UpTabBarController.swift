@@ -15,6 +15,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     var firstTabbarItemImageView: UIImageView!
     var secondTabbarItemImageView: UIImageView!
+    var thirdTabbarItemImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +60,14 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         calendarNavVC.tabBarItem.tag = 2
         
-        self.viewControllers = [goalsNavVC, calendarNavVC]
+        //create tab three
+        let statsVC = StatsViewController()
+        let statsNavVC = UINavigationController(rootViewController: statsVC)
+        statsNavVC.tabBarItem.image = #imageLiteral(resourceName: "calendar")
+        statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedCalendar")
+        statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        statsNavVC.tabBarItem.tag = 3
+        self.viewControllers = [goalsNavVC, calendarNavVC, statsNavVC]
         
         let firstItemView = tabBar.subviews.first!
         firstTabbarItemImageView = firstItemView.subviews.first as? UIImageView
@@ -68,7 +76,11 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         let secondItemView = self.tabBar.subviews[1]
         self.secondTabbarItemImageView = secondItemView.subviews.first as? UIImageView
         self.secondTabbarItemImageView.contentMode = .center
-
+        
+        let thirdItemView = self.tabBar.subviews[2]
+        print(self.tabBar.subviews)
+        self.thirdTabbarItemImageView = thirdItemView.subviews.first as? UIImageView
+        self.thirdTabbarItemImageView.contentMode = .center
         
     }
     
@@ -89,6 +101,8 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
             animate(firstTabbarItemImageView)
         case 2:
             animate(secondTabbarItemImageView)
+        case 3:
+            animate(thirdTabbarItemImageView)
         default:
             return
         }
