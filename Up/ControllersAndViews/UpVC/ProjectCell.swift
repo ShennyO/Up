@@ -130,7 +130,7 @@ class ProjectCell: UITableViewCell {
         taskSquareView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(25)
+            make.width.height.equalTo(22)
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
@@ -142,12 +142,12 @@ class ProjectCell: UITableViewCell {
         taskSquareFillView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(25)
+            make.width.height.equalTo(22)
         }
         
         checkMarkImage.snp.makeConstraints { (make) in
             make.centerY.centerX.equalToSuperview()
-            make.width.height.equalTo(15)
+            make.width.height.equalTo(12)
         }
         
         

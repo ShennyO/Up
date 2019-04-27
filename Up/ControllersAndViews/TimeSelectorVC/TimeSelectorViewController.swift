@@ -61,7 +61,7 @@ class TimeSelectorViewController: UIViewController {
     private func setConstraints() {
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(215)
+            make.top.equalToSuperview().offset(200)
             make.left.equalToSuperview().offset(85)
             make.right.equalToSuperview().offset(-85)
             make.height.equalTo(350)

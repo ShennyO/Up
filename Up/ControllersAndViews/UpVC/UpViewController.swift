@@ -27,10 +27,10 @@ class UpViewController: UIViewController {
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "AddButton"), for: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        button.setImage(#imageLiteral(resourceName: "addButton"), for: .normal)
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
+        
     }()
     
     
@@ -56,14 +56,14 @@ class UpViewController: UIViewController {
         
         if total != 0 {
     
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75)
             tableHeaderView.frame = tableHeaderFrame
             self.view.layoutIfNeeded()
         
         } else {
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
+                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 130)
                 self.tableHeaderView.frame = tableHeaderFrame
                 UIView.animate(withDuration: 0.5, animations: {
                     self.view.layoutIfNeeded()
@@ -75,20 +75,8 @@ class UpViewController: UIViewController {
         
     }
     
-
-    
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    }
-    
-    
-    private func fetchGoals(completion: @escaping () -> ()) {
-        let results = stack.fetchGoal(type: .all, completed: .incomplete) as? [Goal]
-        if results?.count != 0 {
-            self.goals = results!
-        }
-        completion()
     }
     
     override func viewDidLoad() {
@@ -110,25 +98,32 @@ class UpViewController: UIViewController {
 
 extension UpViewController {
     //MARK: OBJ FUNCTIONS
-    @objc private func addButtonTapped() {
+    
+    @objc func addButtonTapped() {
         let nextVC = NewProjectViewController()
         nextVC.goalDelegate = self
         self.present(nextVC, animated: true, completion: nil)
     }
     
-    
     //MARK: PRIVATE FUNCTIONS
+    
+    private func fetchGoals(completion: @escaping () -> ()) {
+        let results = stack.fetchGoal(type: .all, completed: .incomplete) as? [Goal]
+        if results?.count != 0 {
+            self.goals = results!
+        }
+        completion()
+    }
     
     private func addOutlets() {
         self.view.addSubview(addButton)
     }
     
     private func setConstraints() {
-        
         addButton.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-25)
-            make.bottom.equalToSuperview().offset(-125)
-            make.height.width.equalTo(60)
+            make.right.equalToSuperview().offset(-10)
+            make.bottom.equalToSuperview().offset(-80)
+            make.height.width.equalTo(65)
         }
     }
     
@@ -136,7 +131,8 @@ extension UpViewController {
         configNavBar()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
-        
+        addOutlets()
+        setConstraints()
     }
     
     private func configNavBar() {
@@ -149,7 +145,6 @@ extension UpViewController {
     
     private func setUpTableView() {
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
-        tableHeaderView.delegate = self
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
@@ -193,7 +188,6 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //if duration is 0 we use ProjectCell
         if goals[indexPath.row].duration == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell") as! ProjectCell
             cell.selectionStyle = .none
@@ -212,7 +206,6 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
     }
-    
     
     //TABLEVIEW DELEGATE FUNCTIONS
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -238,14 +231,12 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
     }
-    
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = deleteAction(index: indexPath)
         let edit = editAction(index: indexPath)
         return UISwipeActionsConfiguration(actions: [delete, edit])
     }
-    
     
     func deleteAction(index: IndexPath) -> UIContextualAction {
         let goal = goals[index.row]
@@ -298,7 +289,6 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
             upTableView.deleteRows(at: [index], with: .right)
         }
     }
-
     
     func deleteTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
@@ -309,7 +299,6 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
         }
     }
     
-    
     func completeNonTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
             goals[index.row].completionDate = Date()
@@ -319,7 +308,6 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
             upTableView.deleteRows(at: [index], with: .right)
         }
     }
-    
     
     func deleteNonTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
@@ -333,21 +321,13 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
     
 }
 
-extension UpViewController: HeaderViewToUpVCDelegate {
-    func addTapped() {
-        let nextVC = NewProjectViewController()
-        nextVC.goalDelegate = self
-        self.present(nextVC, animated: true, completion: nil)
-    }
-    
-}
 
 extension UpViewController: newProjectVCToUpVCDelegate {
+    
     func addGoalToUpVC(goal: Goal) {
         self.goals.insert(goal, at: 0)
         upTableView.reloadData()
     }
-    
     
     func editGoalToUpVC(goal: Goal, index: Int) {
         self.goals[index] = goal

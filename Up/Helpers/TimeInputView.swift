@@ -24,6 +24,8 @@ class TimeInputViewButton: UIView {
         return label
     }()
     
+    let upArrow = UIImageView(image: #imageLiteral(resourceName: "up-arrow"))
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.isHidden = true
@@ -40,15 +42,21 @@ class TimeInputViewButton: UIView {
     
     private func addOutlets() {
         self.addSubview(timeLabel)
+        self.addSubview(upArrow)
     }
     
     private func setConstraints() {
         
         timeLabel.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(18)
             make.centerY.equalToSuperview().offset(2)
         }
 
+        upArrow.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview().offset(2)
+            make.right.equalToSuperview().offset(-18)
+            make.height.width.equalTo(12)
+        }
     }
     
     
@@ -61,10 +69,12 @@ extension TimeInputViewButton: NewProjectVCToTimeInputButtonDelegate {
     
     
     func tapStarted() {
+        upArrow.image = #imageLiteral(resourceName: "gray-Up-Arrow")
         timeLabel.textColor = UIColor.gray
     }
     
     func tapEnded() {
+        upArrow.image = #imageLiteral(resourceName: "up-arrow")
         timeLabel.textColor = UIColor.white
     }
 }

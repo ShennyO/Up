@@ -173,7 +173,7 @@ class NewProjectViewController: UIViewController {
         addButton.snp.makeConstraints { (make) in
             make.top.equalTo(timeButton.snp.bottom).offset(-15)
             make.centerX.equalToSuperview()
-            make.width.equalTo(170)
+            make.width.equalTo(125)
             make.height.equalTo(60)
         }
         
@@ -197,7 +197,7 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(150)
+                make.width.equalTo(125)
                 make.height.equalTo(60)
             }
         
@@ -215,7 +215,7 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(35)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(150)
+                make.width.equalTo(125)
                 make.height.equalTo(60)
             }
         
@@ -236,7 +236,7 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(150)
+                make.width.equalTo(125)
                 make.height.equalTo(60)
             }
             //hiding timeButton
@@ -273,7 +273,7 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(35)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(150)
+                make.width.equalTo(125)
                 make.height.equalTo(60)
             }
             //showing timeButton
