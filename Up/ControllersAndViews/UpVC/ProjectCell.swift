@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 // nonTimed Cell to UPVC
 protocol NonTimedCellToUpVCDelegate {
@@ -27,9 +28,13 @@ class ProjectCell: UITableViewCell {
     var index: IndexPath!
     var delegate: NonTimedCellToUpVCDelegate!
     
-    //PANGESTURE VARIABLES
-    var originalCenter = CGPoint()
-    var deleteOnDragRelease = false
+    let generator = UIImpactFeedbackGenerator(style: .medium)
+    
+ 
+    
+    //MARK: LAYERS
+    weak var lineShapeLayer: CAShapeLayer?
+
     
     //MARK: OUTLETS
     
@@ -46,6 +51,14 @@ class ProjectCell: UITableViewCell {
     }()
     
 
+    let darkView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 5
+        view.backgroundColor = .black
+        view.alpha = 0
+        return view
+    }()
+    
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
@@ -54,13 +67,6 @@ class ProjectCell: UITableViewCell {
         return label
     }()
     
-    let dragView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 5
-        view.backgroundColor = .white
-        view.isHidden = true
-        return view
-    }()
     
     var taskSquareView: UIView = {
         let view = UIView()
@@ -91,79 +97,74 @@ class ProjectCell: UITableViewCell {
     
 
     
-    var deleteButton: UIButton = {
-        let button = UIButton()
-        button.setBackgroundImage(#imageLiteral(resourceName: "deleteButton"), for: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        button.isHidden = true
-        return button
-    }()
-    
-    
-    
     //MARK: FUNCTIONS
     private func addOutlets() {
         self.addSubview(containerView)
-        self.addSubview(deleteButton)
+        
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(taskSquareView)
         containerView.addSubview(taskSquareFillView)
-        containerView.addSubview(dragView)
+        containerView.addSubview(darkView)
         taskSquareFillView.addSubview(checkMarkImage)
         
     }
     
     private func setConstraints() {
         
+        
+        
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(15)
-            make.bottom.equalToSuperview()
+            make.top.equalToSuperview().offset(7.5)
+            make.bottom.equalToSuperview().offset(-7.5)
             make.left.equalToSuperview().offset(25)
             make.right.equalToSuperview().offset(-25)
         }
         
+        darkView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.right.equalToSuperview()
+            make.left.equalToSuperview()
+        }
         
         taskSquareView.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
+            make.left.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(25)
+            make.width.height.equalTo(22)
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(15)
-            make.right.equalTo(taskSquareView.snp.left).offset(-15)
-            make.centerY.equalToSuperview()
-            
-        }
-        
-        
-        taskSquareFillView.snp.makeConstraints { (make) in
+            make.left.equalTo(taskSquareView.snp.right).offset(15)
             make.right.equalToSuperview().offset(-15)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(25)
         }
         
-        deleteButton.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview().offset(8)
-            make.right.equalToSuperview().offset(-10)
-            make.height.width.equalTo(30)
+        taskSquareFillView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(15)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(22)
         }
         
         checkMarkImage.snp.makeConstraints { (make) in
             make.centerY.centerX.equalToSuperview()
-            make.width.height.equalTo(15)
+            make.width.height.equalTo(12)
         }
         
-        dragView.snp.makeConstraints { (make) in
-            make.left.right.top.bottom.equalToSuperview()
-        }
         
+    }
+    
+    
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        
+        if highlighted {
+            darkView.alpha = 0.55
+        } else {
+            darkView.alpha = 0
+        }
     }
     
     private func setUpCell() {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        NotificationCenter.default.addObserver(self, selector: #selector(editModeOn), name: .editModeOn, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
         addOutlets()
         setConstraints()
         if goal.completionDate != nil{
@@ -173,78 +174,35 @@ class ProjectCell: UITableViewCell {
             taskSquareFillView.isHidden = true
             checkMarkImage.isHidden = true
         }
-        let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        tap.minimumPressDuration = 0
-        taskSquareView.addGestureRecognizer(tap)
+        
         descriptionLabel.text = goal.goalDescription
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        
-        
     }
     
-    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        
-        if gestureRecognizer.state == .began {
-            taskSquareView.backgroundColor = UIColor.gray
-        }
-        
-        if gestureRecognizer.state == .ended {
-            
-            //When the gesture ends, we want to change the project property to completed
-            self.goal.completionDate = Date()
-            stack.saveTo(context: stack.viewContext)
-            taskSquareView.backgroundColor = UIColor.white
-            //Animate fillView
-            //showing the fillView
-            taskSquareFillView.isHidden = false
-            taskSquareFillView.alpha = 0
-            checkMarkImage.isHidden = false
-            checkMarkImage.alpha = 0
-            self.isUserInteractionEnabled = false
-            
-            UIView.animate(withDuration: 0.35, animations: {
-                self.taskSquareFillView.alpha = 1
-                self.checkMarkImage.alpha = 1
-            }, completion:  {
-                (value: Bool) in
-                self.isUserInteractionEnabled = true
-                self.delegate.completeNonTimedCell(cell: self)
-            
-            })
-            
-        }
-    }
+    //THIS FUNCTION IS CALLED FROM OUTSIDE WHEN USER TAPPED ON THE CELL
     
-    @objc func deleteButtonTapped() {
-        delegate.deleteNonTimedCell(cell: self)
-        
-    }
-    
-    @objc func editModeOff() {
-        editMode = false
-        taskSquareView.isUserInteractionEnabled = true
-        
-        UIView.animate(withDuration: 0.4, animations: {
-            self.deleteButton.alpha = 0
+    func complete() {
+        self.goal.completionDate = Date()
+        stack.saveTo(context: stack.viewContext)
+        taskSquareView.backgroundColor = UIColor.white
+        //Animate fillView
+        //showing the fillView
+        taskSquareFillView.isHidden = false
+        taskSquareFillView.alpha = 0
+        checkMarkImage.isHidden = false
+        checkMarkImage.alpha = 0
+        self.isUserInteractionEnabled = false
+        generator.impactOccurred()
+        UIView.animate(withDuration: 0.35, animations: {
+            self.taskSquareFillView.alpha = 1
+            self.checkMarkImage.alpha = 1
         }, completion:  {
             (value: Bool) in
-            self.deleteButton.isHidden = true
+            
+            self.isUserInteractionEnabled = true
+            self.delegate.completeNonTimedCell(cell: self)
             
         })
     }
     
-    @objc func editModeOn() {
-        editMode = true
-        taskSquareView.isUserInteractionEnabled = false
-        deleteButton.isHidden = false
-        deleteButton.alpha = 0
-        UIView.animate(withDuration: 0.4, animations: {
-            self.deleteButton.alpha = 1
-        })
-    }
-    
-
-
-
 }
 

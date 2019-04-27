@@ -9,7 +9,7 @@ import UIKit
 
 protocol TimedCellToUpVCDelegate {
     func deleteTimedCell(cell: UITableViewCell)
-    func clearTimedCell(cell: UITableViewCell)
+    func completeTimedCell(cell: UITableViewCell)
 }
 
 class TimedProjectCell: UITableViewCell {
@@ -17,6 +17,9 @@ class TimedProjectCell: UITableViewCell {
     //MARK: VARIABLES
     let stack = CoreDataStack.instance
     var editMode = false
+    
+    //MARK: VIBRATION
+    let generator = UIImpactFeedbackGenerator(style: .medium)
     
     var timedGoal: Goal! {
         didSet {
@@ -26,9 +29,7 @@ class TimedProjectCell: UITableViewCell {
     var index: IndexPath!
     var delegate: TimedCellToUpVCDelegate!
     
-    //PANGESTURE VARIABLES
-    var originalCenter = CGPoint()
-    var deleteOnDragRelease = false
+    
     
     //MARK: OUTLETS
     var containerView: UIView = {
@@ -51,13 +52,7 @@ class TimedProjectCell: UITableViewCell {
         return view
     }()
     
-    let dragView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 5
-        view.backgroundColor = .white
-        view.isHidden = true
-        return view
-    }()
+    
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
@@ -67,11 +62,18 @@ class TimedProjectCell: UITableViewCell {
         return label
     }()
     
+    var timeLabelView: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.3366830349, green: 0.334687084, blue: 0.3382208347, alpha: 1)
+        view.layer.cornerRadius = 10
+        return view
+    }()
+    
     var timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 10)
         label.numberOfLines = 0
-        label.textColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        label.textColor = UIColor.white
         return label
     }()
     
@@ -88,33 +90,28 @@ class TimedProjectCell: UITableViewCell {
         return image
     }()
     
-    var deleteButton: UIButton = {
-        let button = UIButton()
-        button.setBackgroundImage(#imageLiteral(resourceName: "deleteButton"), for: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        button.isHidden = true
-        return button
-    }()
-    
-
-    
     //MARK: FUNCTIONS
     private func addOutlets() {
 
         self.addSubview(containerView)
-        
-        containerView.addSubview(darkView)
         containerView.addSubview(descriptionLabel)
-        containerView.addSubview(timeLabel)
         containerView.addSubview(timeImageContainerView)
+        containerView.addSubview(timeLabelView)
+        timeLabelView.addSubview(timeLabel)
+        containerView.addSubview(darkView)
         timeImageContainerView.addSubview(timeImageView)
         timeImageContainerView.addSubview(blackCheckMark)
-        containerView.addSubview(dragView)
-        self.addSubview(deleteButton)
         
     }
     
     private func setConstraints() {
+        
+        containerView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(7.5)
+            make.bottom.equalToSuperview().offset(-7.5)
+            make.left.equalToSuperview().offset(25)
+            make.right.equalToSuperview().offset(-25)
+        }
         
         darkView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
@@ -123,35 +120,31 @@ class TimedProjectCell: UITableViewCell {
             make.left.equalToSuperview()
         }
         
-        containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(15)
-            make.bottom.equalToSuperview()
-            make.left.equalToSuperview().offset(25)
-            make.right.equalToSuperview().offset(-25)
-        }
-        
-        
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(15)
-            make.right.equalToSuperview().offset(-85)
+            make.left.equalTo(timeImageContainerView.snp.right).offset(15)
+            make.right.equalToSuperview().offset(-15)
             make.centerY.equalToSuperview()
         }
         
         timeImageContainerView.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(25)
+            make.left.equalToSuperview().offset(12)
+            make.centerY.equalToSuperview().offset(-3)
+            make.width.height.equalTo(27)
+        }
+        
+        timeLabelView.snp.makeConstraints { (make) in
+            make.left.equalTo(timeImageContainerView.snp.right).offset(-15)
+            make.top.equalTo(timeImageContainerView.snp.bottom).offset(-12)
+            make.width.height.equalTo(20)
         }
         
         timeLabel.snp.makeConstraints { (make) in
-            make.right.equalTo(timeImageContainerView.snp.left).offset(-7)
+            make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(1)
         }
         
-       
-        
         timeImageView.snp.makeConstraints { (make) in
-            make.width.height.equalTo(25)
+            make.width.height.equalTo(27)
             make.centerX.centerY.equalToSuperview()
         }
         
@@ -160,33 +153,19 @@ class TimedProjectCell: UITableViewCell {
             make.width.height.equalTo(15)
         }
         
-        deleteButton.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview().offset(8)
-            make.right.equalToSuperview().offset(-10)
-            make.height.width.equalTo(30)
-        }
-        
-        dragView.snp.makeConstraints { (make) in
-            make.left.right.top.bottom.equalToSuperview()
-        }
-        
     }
     
     private func setUpCell() {
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        NotificationCenter.default.addObserver(self, selector: #selector(editModeOn), name: .editModeOn, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(editModeOff), name: .editModeOff, object: nil)
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        
         addOutlets()
         setConstraints()
         //MARK: GESTURE
-//        let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
-//        recognizer.delegate = self
-//        addGestureRecognizer(recognizer)
+
         
         if timedGoal.completionDate == nil {
             blackCheckMark.isHidden = true
-//            self.isUserInteractionEnabled = true
+
             
         } else {
             blackCheckMark.isHidden = false
@@ -199,10 +178,6 @@ class TimedProjectCell: UITableViewCell {
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if timedGoal.completionDate != nil {
-            return
-        }
-        
         if highlighted {
             darkView.alpha = 0.55
         } else {
@@ -210,48 +185,25 @@ class TimedProjectCell: UITableViewCell {
         }
     }
     
-    @objc func deleteButtonTapped() {
-        delegate.deleteTimedCell(cell: self)
-        
-    }
-    
-    @objc func editModeOff() {
-        self.editMode = false
-        UIView.animate(withDuration: 0.3, animations: {
-            self.deleteButton.alpha = 0
-        }, completion:  {
-            (value: Bool) in
-            self.deleteButton.isHidden = true
-        })
-    }
-    
-    @objc func editModeOn() {
-        self.editMode = true
-        deleteButton.isHidden = false
-        deleteButton.alpha = 0
-        UIView.animate(withDuration: 0.4, animations: {
-            self.deleteButton.alpha = 1
-        })
-    }
-    
-    
 }
 
 extension TimedProjectCell: UpVCToTimedProjectCellDelegate{
     func showBlackCheck() {
-        //showing the dotDotDots
+        
         blackCheckMark.isHidden = false
         blackCheckMark.alpha = 0
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            UIView.animate(withDuration: 0.4, animations: {
+            self.generator.impactOccurred()
+            UIView.animate(withDuration: 0.5, animations: {
                 self.blackCheckMark.alpha = 1
-            }, completion: { (result) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
-                    self.delegate.clearTimedCell(cell: self)
+            }, completion: { (res) in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                     self.delegate.completeTimedCell(cell: self)
                 })
                 
             })
+            
         }
         
     }

@@ -73,7 +73,7 @@ class CalendarViewController: UIViewController {
     
     func fetchData() {
         
-        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, cleared: .all) as! [Goal]
+        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed) as! [Goal]
         if goalsArr.count == 0 { return }
         startDate = goalsArr[0].completionDate!
         
@@ -294,6 +294,10 @@ extension CalendarViewController: CalendarVCToHeaderViewDelegate {
 
 extension CalendarViewController: GoalCompletionDelegate {
     func goalWasCompleted(goal: Goal) {
+        if self.isViewLoaded == false {
+            return
+        }
+        
         let today = Date()
         let dateString = formatter.string(from: today)
         if var _ = goals[dateString] {

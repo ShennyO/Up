@@ -73,13 +73,12 @@ public final class CoreDataStack {
         }
     }
     
-    func fetchGoal(type: goalTypeEnum, completed: goalCompletionEnum, cleared: goalClearanceEnum) -> [NSManagedObject]? {
+    func fetchGoal(type: goalTypeEnum, completed: goalCompletionEnum) -> [NSManagedObject]? {
         let coreData = CoreDataStack.instance
         
         let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
         let typePredicate: NSPredicate?
         let completedPredicate: NSPredicate?
-        let clearedPredicate: NSPredicate?
         let sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: false)
         fetchRequest.sortDescriptors = [sort]
         
@@ -101,22 +100,12 @@ public final class CoreDataStack {
             completedPredicate = nil
         }
         
-        switch cleared {
-        case .all:
-            clearedPredicate = nil
-        case .notCleared:
-            clearedPredicate = NSPredicate(format: "cleared == false")
-        }
+       
         
         var predicateArray: [NSPredicate] = []
         
         if typePredicate != nil {
             predicateArray.append(typePredicate!)
-        }
-        
-        
-        if clearedPredicate != nil {
-            predicateArray.append(clearedPredicate!)
         }
         
         if completedPredicate != nil {
