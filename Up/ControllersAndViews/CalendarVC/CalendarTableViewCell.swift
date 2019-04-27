@@ -12,6 +12,7 @@ class CalendarTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.backgroundColor = Style.Colors.Palette01.gunMetal
         setupCollectionView()
         setupViews()
     }
@@ -29,6 +30,14 @@ class CalendarTableViewCell: UITableViewCell {
         return headerView
     }()
     
+    let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Style.Colors.Palette01.pureWhite
+        view.layer.cornerRadius = 15
+        view.clipsToBounds = true
+        return view
+    }()
+    
     func configureProtocols(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource, headerViewDelegate: CalendarVCToHeaderViewDelegate) {
         calendarCollectionView.delegate = delegate
         calendarCollectionView.dataSource = dataSource
@@ -39,7 +48,8 @@ class CalendarTableViewCell: UITableViewCell {
         let layout = CalendarLayout()
         layout.scrollDirection = .horizontal
         
-        let frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+//        var frame = CGRect(x: 16, y: 116, width: self.frame.width - 32, height: (self.frame.width - 32)/7 * 6)
+        let frame  = CGRect.zero
         let cv = UICollectionView(frame: frame, collectionViewLayout: layout)
         
         cv.isPagingEnabled = true
@@ -56,13 +66,18 @@ class CalendarTableViewCell: UITableViewCell {
     
     private func setupViews() {
         
+        self.addSubview(containerView)
+        
         [calendarHeaderView, calendarCollectionView].forEach { (view) in
-            self.addSubview(view)
+            containerView.addSubview(view)
+        }
+        
+        containerView.snp.makeConstraints { (make) in
+            make.left.right.bottom.top.equalToSuperview().inset(16)
         }
         
         calendarCollectionView.snp.makeConstraints { (make) in
             make.bottom.left.right.equalToSuperview()
-//            make.height.equalTo(calendarCollectionView.snp.width).multipliedBy(6 / 7)
         }
         
         calendarHeaderView.snp.makeConstraints { (make) in

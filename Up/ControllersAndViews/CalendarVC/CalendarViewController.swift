@@ -166,7 +166,10 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
-            return self.view.frame.width / 7 * 6 + 92
+            let cvHeight: CGFloat = (tableView.frame.width - 32) / 7 * 6
+            let headerHeight: CGFloat = 90
+            let containerInsets: CGFloat = 32
+            return cvHeight + headerHeight + containerInsets
         default:
             return 60
         }
