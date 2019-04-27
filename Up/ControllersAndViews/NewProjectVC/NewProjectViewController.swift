@@ -44,9 +44,9 @@ class NewProjectViewController: UIViewController {
     
     var newProjectLabel: UILabel = {
         let label = UILabel()
-        label.text = "New Task"
+        label.text = "What's the next task?"
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 35)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         return label
     }()
     
