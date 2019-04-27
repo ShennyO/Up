@@ -24,14 +24,7 @@ class TimeInputViewButton: UIView {
         return label
     }()
     
-    let arrowImage: UIImageView = {
-        
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 15))
-        imageView.image = #imageLiteral(resourceName: "upArrow")
-        imageView.isUserInteractionEnabled = true
-        return imageView
-    }()
-    
+    let upArrow = UIImageView(image: #imageLiteral(resourceName: "up-arrow"))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,27 +41,22 @@ class TimeInputViewButton: UIView {
     }
     
     private func addOutlets() {
-   
         self.addSubview(timeLabel)
-        self.addSubview(arrowImage)
-        
-        
+        self.addSubview(upArrow)
     }
     
     private func setConstraints() {
         
         timeLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(15)
+            make.left.equalToSuperview().offset(18)
             make.centerY.equalToSuperview().offset(2)
         }
-        
-        arrowImage.snp.makeConstraints { (make) in
-            make.height.equalTo(15)
-            make.width.equalTo(20)
-            make.left.equalTo(timeLabel.snp.right).offset(15)
-            make.centerY.equalToSuperview()
-        }
 
+        upArrow.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview().offset(2)
+            make.right.equalToSuperview().offset(-18)
+            make.height.width.equalTo(12)
+        }
     }
     
     
@@ -76,17 +64,17 @@ class TimeInputViewButton: UIView {
 // from NewProjectVC to TimeInputView
 extension TimeInputViewButton: NewProjectVCToTimeInputButtonDelegate {
     func sendSelectedTime(time: Int) {
-        timeLabel.text = String(describing: time) + " minutes"
+        timeLabel.text = String(describing: time) + " minutes "
     }
     
     
     func tapStarted() {
+        upArrow.image = #imageLiteral(resourceName: "gray-Up-Arrow")
         timeLabel.textColor = UIColor.gray
-        arrowImage.image = #imageLiteral(resourceName: "grayArrow")
     }
     
     func tapEnded() {
+        upArrow.image = #imageLiteral(resourceName: "up-arrow")
         timeLabel.textColor = UIColor.white
-        arrowImage.image = #imageLiteral(resourceName: "upArrow")
     }
 }

@@ -169,7 +169,7 @@ extension SunnyCustomInputView: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "Goal description"
+            textView.text = "Let's get started"
             textView.textColor = UIColor.gray
         } else {
             textDelegate.sendText(text: textView.text)

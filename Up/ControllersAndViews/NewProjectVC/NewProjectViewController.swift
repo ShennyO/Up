@@ -12,18 +12,26 @@ protocol newProjectVCToTextInputViewDelegate {
     func populateTextView(text: String)
 }
 
+protocol newProjectVCToUpVCDelegate {
+    func addGoalToUpVC(goal: Goal)
+    func editGoalToUpVC(goal: Goal, index: Int)
+}
+
 class NewProjectViewController: UIViewController {
     
     //COREDATA stack
     let stack = CoreDataStack.instance
     var selectedGoal: Goal?
-    var textViewDelegate: newProjectVCToTextInputViewDelegate!
+    
 
     //VARIABLES
+    var selectedIndex: Int?
     var blurEffectView: UIVisualEffectView?
     var selectedTime = 30
     var descriptionText: String?
+    var textViewDelegate: newProjectVCToTextInputViewDelegate!
     var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
+    var goalDelegate: newProjectVCToUpVCDelegate!
     var sendSelectedProject: ((Project) -> ())?
     var sendSelectedTimedProject: ((TimedProject) -> ())?
     
@@ -36,9 +44,9 @@ class NewProjectViewController: UIViewController {
     
     var newProjectLabel: UILabel = {
         let label = UILabel()
-        label.text = "New Goal"
+        label.text = "What's the next task?"
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 35)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         return label
     }()
     
@@ -165,7 +173,7 @@ class NewProjectViewController: UIViewController {
         addButton.snp.makeConstraints { (make) in
             make.top.equalTo(timeButton.snp.bottom).offset(-15)
             make.centerX.equalToSuperview()
-            make.width.equalTo(150)
+            make.width.equalTo(125)
             make.height.equalTo(60)
         }
         
@@ -189,7 +197,7 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(150)
+                make.width.equalTo(125)
                 make.height.equalTo(60)
             }
         
@@ -197,7 +205,7 @@ class NewProjectViewController: UIViewController {
     
     //if task has a time
     private func sessionButtonModeOn() {
-       
+        
             sessionButton.isSelected = true
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
@@ -207,7 +215,7 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(35)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(150)
+                make.width.equalTo(125)
                 make.height.equalTo(60)
             }
         
@@ -228,7 +236,7 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(150)
+                make.width.equalTo(125)
                 make.height.equalTo(60)
             }
             //hiding timeButton
@@ -251,6 +259,10 @@ class NewProjectViewController: UIViewController {
         //switching button mode
         
         if sessionButton.isSelected == false {
+            if selectedTime == 0 {
+                selectedTime = 30
+            }
+            
             sessionButton.isSelected = true
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
@@ -261,7 +273,7 @@ class NewProjectViewController: UIViewController {
             self.addButton.snp.updateConstraints { (make) in
                 make.top.equalTo(self.timeButton.snp.bottom).offset(35)
                 make.centerX.equalToSuperview()
-                make.width.equalTo(150)
+                make.width.equalTo(125)
                 make.height.equalTo(60)
             }
             //showing timeButton
@@ -288,20 +300,25 @@ class NewProjectViewController: UIViewController {
                 goal.duration = Int32(0)
             }
             
+            goalDelegate.editGoalToUpVC(goal: goal, index: selectedIndex!)
+            
         } else {
             let newGoal = Goal(context: stack.viewContext)
             newGoal.completionDate = nil
             newGoal.date = Date()
             newGoal.goalDescription = text
-            newGoal.cleared = false
             if sessionButton.isSelected {
                 newGoal.duration = Int32(selectedTime)
             } else {
                 newGoal.duration = Int32(0)
             }
+            
+            goalDelegate.addGoalToUpVC(goal: newGoal)
+            
         }
         
         stack.saveTo(context: stack.viewContext)
+        
         
 
         self.dismiss(animated: true)
@@ -324,7 +341,7 @@ class NewProjectViewController: UIViewController {
             timeInputDelegate.tapEnded()
             
             let nextVC = TimeSelectorViewController()
-           
+           nextVC.selectedTime = selectedTime
             
             //MARK: CALLBACK
             //CALLBACK IS RUN WHEN timeSelectorVC is dismissed

@@ -10,7 +10,7 @@ import UIKit
 class TimeSelectorViewController: UIViewController {
 
     //MARK: VARIABLES
-    var times = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 59, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+    var times: [Int] = []
     var selectedTime = 30
     var onDoneBlock: ((Int) -> ())?
     
@@ -61,7 +61,7 @@ class TimeSelectorViewController: UIViewController {
     private func setConstraints() {
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(215)
+            make.top.equalToSuperview().offset(200)
             make.left.equalToSuperview().offset(85)
             make.right.equalToSuperview().offset(-85)
             make.height.equalTo(350)
@@ -105,7 +105,9 @@ class TimeSelectorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        for x in 1...60 {
+            times.append(x)
+        }
         configNavBar()
         self.view.backgroundColor = UIColor.clear
         self.view.isOpaque = false
@@ -113,7 +115,7 @@ class TimeSelectorViewController: UIViewController {
         timePickerView.layer.cornerRadius = 4
         timePickerView.delegate = self
         timePickerView.dataSource = self
-        timePickerView.selectRow(29, inComponent: 0, animated: false)
+        timePickerView.selectRow(selectedTime - 1, inComponent: 0, animated: false)
         addOutlets()
         setConstraints()
         // Do any additional setup after loading the view.

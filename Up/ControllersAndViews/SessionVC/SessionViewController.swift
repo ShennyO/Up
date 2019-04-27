@@ -30,19 +30,11 @@ class SessionViewController: UIViewController {
     var blurEffectView: UIVisualEffectView!
     
     
-    var goalLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Goal:"
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
-        label.textAlignment = .center
-        return label
-    }()
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = #colorLiteral(red: 0.6745760441, green: 0.6705681682, blue: 0.6776582003, alpha: 1)
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        label.textColor = UIColor.white
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -109,7 +101,7 @@ class SessionViewController: UIViewController {
     
     private func addLayer() {
 
-        let point = CGPoint(x: view.center.x, y: view.center.y + 15)
+        let point = CGPoint(x: view.center.x, y: view.center.y)
         let circularPath = UIBezierPath(arcCenter: point, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         
         let backgroundLayer = CAShapeLayer()
@@ -207,7 +199,7 @@ class SessionViewController: UIViewController {
     }
     
     private func addOutlets() {
-        [goalLabel, descriptionLabel, minutesLabel, startButton, doneButton, cancelButton].forEach { (view) in
+        [descriptionLabel, minutesLabel, startButton, doneButton, cancelButton].forEach { (view) in
             self.view.addSubview(view)
         }
     }
@@ -238,19 +230,15 @@ class SessionViewController: UIViewController {
     
     private func setConstraints() {
         
-        goalLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(100)
-            make.centerX.equalToSuperview()
-        }
-        
+
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(goalLabel.snp.bottom).offset(40)
+            make.top.equalToSuperview().offset(125)
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
         }
         
         minutesLabel.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview().offset(15)
+            make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
         }
         
@@ -271,7 +259,7 @@ class SessionViewController: UIViewController {
         
         
         cancelButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(50)
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(20)
         }
