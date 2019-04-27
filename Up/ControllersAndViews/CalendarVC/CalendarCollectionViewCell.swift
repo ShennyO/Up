@@ -26,14 +26,14 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     let dayLabel: UILabel = {
         let label = UILabel()
         label.textColor = Style.Colors.Palette01.gunMetal
-        label.font = Style.Fonts.medium18
+        label.font = Style.Fonts.semibold18
         label.textAlignment = .center
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = 2
+        layer.cornerRadius = self.frame.height / 2
         clipsToBounds = true
         backgroundColor = Style.Colors.Palette01.pureWhite
     }
