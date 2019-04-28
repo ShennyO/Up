@@ -356,9 +356,7 @@ class NewProjectViewController: UIViewController {
                 //THIS IS SENDING THE SELECTED TIME BACK TO THE TIMEINPUTBUTTONVIEW
                 self.timeInputDelegate.sendSelectedTime(time: result)
                 self.selectedTime = result
-                
             }
-            
             
             blurEffectView?.isHidden = false
             blurEffectView?.alpha = 0
