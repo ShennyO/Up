@@ -12,7 +12,7 @@ class CalendarLayout: UICollectionViewFlowLayout {
     
     var cachedItemsAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
     
-    let spacing: CGFloat = 2
+    let spacing: CGFloat = 8
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         guard let attributes = cachedItemsAttributes[indexPath] else { fatalError("No attributes cached") }
