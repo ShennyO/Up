@@ -96,7 +96,7 @@ class SessionViewController: UIViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
     
-    private func addLayer() {
+    private func addLayers() {
 
         let point = CGPoint(x: view.center.x, y: view.center.y)
         let circularPath = UIBezierPath(arcCenter: point, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
@@ -127,7 +127,7 @@ class SessionViewController: UIViewController {
         self.view.layer.addSublayer(circleLayer)
     }
     
-    private func runAnimation() {
+    private func runAnimations() {
         //MARK: STROKE ANIMATION
         let circleBorderAnimation = CABasicAnimation(keyPath: "strokeEnd")
         circleBorderAnimation.toValue = 0
@@ -179,6 +179,7 @@ class SessionViewController: UIViewController {
         currentTime = Date.timeIntervalSinceReferenceDate
         let elapsedTimeDouble = endTime - currentTime
         let elapsedtimeInt = Int(elapsedTimeDouble)
+        self.timeInSeconds = elapsedtimeInt
         if elapsedtimeInt == 0 {
             showCongratsView()
         }
@@ -260,9 +261,13 @@ class SessionViewController: UIViewController {
         
     }
     
-  
-    
     private func showCongratsView() {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            [self.circleLayer, self.pulsatingLayer].forEach { (layer) in
+                layer.removeAllAnimations()
+            }
+        }
         
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         stopTimer()
@@ -291,7 +296,7 @@ class SessionViewController: UIViewController {
     
     @objc func startButtonTapped() {
         sessionActive = true
-        runAnimation()
+        runAnimations()
         runTimer()
         //hiding start button and showing done button
         doneButton.isHidden = false
@@ -319,6 +324,10 @@ class SessionViewController: UIViewController {
             
             let alert = UIAlertController(title: "Are you sure you want to exit?", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { action in
+                self.stopTimer()
+                [self.circleLayer, self.pulsatingLayer].forEach({ (layer) in
+                    layer.removeAllAnimations()
+                })
                 self.dismiss(animated: true)
             }))
             
@@ -330,6 +339,10 @@ class SessionViewController: UIViewController {
             
         } else {
             
+            stopTimer()
+            [self.circleLayer, self.pulsatingLayer].forEach({ (layer) in
+                layer.removeAllAnimations()
+            })
             self.dismiss(animated: true, completion: nil)
             
         }
@@ -339,11 +352,10 @@ class SessionViewController: UIViewController {
         super.viewDidLoad()
         configNavBar()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        addLayer()
+        addLayers()
         addOutlets()
         addCongratsViewAndBlur()
         setConstraints()
-        
         
         if timedGoal != nil {
             timeInSeconds = Int(timedGoal!.duration) * 60
@@ -358,7 +370,31 @@ class SessionViewController: UIViewController {
 }
 
 extension SessionViewController: CongratsViewToSessionViewDelegate {
+    func addButtonTapped(time: Int) {
+        
+        timeInSeconds += (time * 60)
+        runAnimations()
+        runTimer()
+        
+        congratsView.snp.updateConstraints { (make) in
+            make.left.equalToSuperview().offset(30)
+            make.right.equalToSuperview().offset(-30)
+            make.height.equalTo(325)
+            make.centerY.equalToSuperview().offset(550)
+        }
+        
+        UIView.animate(withDuration: 0.4, animations: {
+            self.blurEffectView?.alpha = 0
+            self.view.layoutIfNeeded()
+        }, completion:  {
+            (value: Bool) in
+            self.blurEffectView?.isHidden = true
+        })
+        
+    }
+    
     func dismissTapped() {
+        self.view.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         dismissedBlock!()
         self.dismiss(animated: true, completion: nil)
     }
