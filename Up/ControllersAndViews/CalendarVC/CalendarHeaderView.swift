@@ -24,7 +24,7 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.backgroundColor = Style.Colors.Palette01.gunMetal
+        self.backgroundColor = Style.Colors.Palette01.pureWhite
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -74,8 +74,8 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     private let monthLabel: UILabel = {
         let label = UILabel()
         label.text = "Month Label"
-        label.font = Style.Fonts.bold30
-        label.textColor = Style.Colors.Palette01.pureWhite
+        label.font = Style.Fonts.bold18
+        label.textColor = Style.Colors.Palette01.gunMetal
         label.textAlignment = .center
         return label
     }()
@@ -83,8 +83,8 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     private let leftButton: UIButton = {
         let button = UIButton()
         button.setTitle("<", for: .normal)
-        button.setTitleColor(Style.Colors.Palette01.pureWhite, for: .normal)
-        button.titleLabel?.font = Style.Fonts.bold35
+        button.setTitleColor(Style.Colors.Palette01.gunMetal, for: .normal)
+        button.titleLabel?.font = Style.Fonts.bold25
         button.addTarget(self, action: #selector(leftButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -92,21 +92,22 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     private let rightButton: UIButton = {
         let button = UIButton()
         button.setTitle(">", for: .normal)
-        button.setTitleColor(Style.Colors.Palette01.pureWhite, for: .normal)
-        button.titleLabel?.font = Style.Fonts.bold35
+        button.setTitleColor(Style.Colors.Palette01.gunMetal, for: .normal)
+        button.titleLabel?.font = Style.Fonts.bold25
         button.addTarget(self, action: #selector(rightButtonTapped), for: .touchUpInside)
         return button
     }()
     
     func makeDayLabels() {
-        let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+//        let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        let days = ["S", "M", "T", "W", "T", "F", "S"]
         
         var lastLabel: UILabel?
         for day in days {
             let label = UILabel()
             label.text = day
-            label.textColor = Style.Colors.Palette01.pureWhite
-            label.font = Style.Fonts.medium18
+            label.textColor = .gray
+            label.font = Style.Fonts.semibold18
             label.textAlignment = .center
             
             self.addSubview(label)
@@ -123,7 +124,7 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
                 }
             } else {
                 label.snp.makeConstraints { (make) in
-                    make.bottom.equalToSuperview().inset(4)
+                    make.bottom.equalToSuperview().inset(8)
                     make.left.equalToSuperview()
                     make.top.equalTo(monthLabel.snp.bottom).offset(8)
                 }
