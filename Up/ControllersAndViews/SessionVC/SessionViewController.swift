@@ -14,6 +14,7 @@ class SessionViewController: UIViewController {
     var timedGoal: Goal?
     var currentTime: TimeInterval!
     var endTime: TimeInterval!
+    var sessionActive = false
     
     var timeInSeconds: Int = 0
     
@@ -84,9 +85,7 @@ class SessionViewController: UIViewController {
     
     var congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
     
-    
-    
-    
+    //MARK: FUNCTIONS
     
     private func configNavBar() {
         extendedLayoutIncludesOpaqueBars = true
@@ -96,8 +95,6 @@ class SessionViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
-    
-   
     
     private func addLayer() {
 
@@ -229,8 +226,7 @@ class SessionViewController: UIViewController {
     
     
     private func setConstraints() {
-        
-
+    
         descriptionLabel.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(125)
             make.left.equalToSuperview().offset(30)
@@ -241,7 +237,6 @@ class SessionViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
         }
-        
         
         startButton.snp.makeConstraints { (make) in
             make.top.equalTo(minutesLabel.snp.bottom).offset(150)
@@ -257,20 +252,18 @@ class SessionViewController: UIViewController {
             make.width.equalTo(150)
         }
         
-        
         cancelButton.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(50)
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(20)
         }
         
-        
-        
     }
     
   
     
     private func showCongratsView() {
+        
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         stopTimer()
         blurEffectView.isHidden = false
@@ -293,13 +286,11 @@ class SessionViewController: UIViewController {
     }
     
     @objc func doneButtonTapped() {
-        
         showCongratsView()
-        
-        
     }
     
     @objc func startButtonTapped() {
+        sessionActive = true
         runAnimation()
         runTimer()
         //hiding start button and showing done button
@@ -323,7 +314,25 @@ class SessionViewController: UIViewController {
     }
     
     @objc func cancelButtonTapped() {
-        self.dismiss(animated: true)
+        
+        if sessionActive {
+            
+            let alert = UIAlertController(title: "Are you sure you want to exit?", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { action in
+                self.dismiss(animated: true)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            
+            self.present(alert, animated: true)
+            
+        } else {
+            
+            self.dismiss(animated: true, completion: nil)
+            
+        }
     }
     
     override func viewDidLoad() {
@@ -353,6 +362,4 @@ extension SessionViewController: CongratsViewToSessionViewDelegate {
         dismissedBlock!()
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
 }
