@@ -13,6 +13,7 @@ class CalendarViewController: UIViewController {
     let calendarTableViewCellID = "calendarTableViewCellID"
     let calendarCollectionViewCellID = "calendarCollectionViewCellID"
     let calendarGoalTableViewCellID = "calendarGoalTableViewCellID"
+    let calendarGoalCountTableViewCellID = "calendarGoalCountTableViewCellID"
     
     var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
 
@@ -32,7 +33,7 @@ class CalendarViewController: UIViewController {
     
     var selectedDateString = "" {
         didSet {
-            tableView.reloadSections(IndexSet([1]), with: .automatic)
+            tableView.reloadSections(IndexSet([1, 2]), with: .automatic)
         }
     }
     
@@ -73,7 +74,7 @@ class CalendarViewController: UIViewController {
     
     func fetchData() {
         
-        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed) as! [Goal]
+        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, sorting: .completionDate) as! [Goal]
         if goalsArr.count == 0 { return }
         startDate = goalsArr[0].completionDate!
         
@@ -90,6 +91,7 @@ class CalendarViewController: UIViewController {
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
         tableView.register(CalendarGoalTableViewCell.self, forCellReuseIdentifier: calendarGoalTableViewCellID)
+        tableView.register(CalendarGoalCountTableViewCell.self, forCellReuseIdentifier: calendarGoalCountTableViewCellID)
         
         tableView.tag = 0
         tableView.backgroundColor = Style.Colors.Palette01.gunMetal
@@ -127,55 +129,6 @@ class CalendarViewController: UIViewController {
         delegate.changeLabelText(text: monthName + " " + year)
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-}
-
-extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        default:
-            guard let goalArr = goals[selectedDateString] else { return 0 }
-            return goalArr.count
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
-            cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
-            delegate = cell.calendarHeaderView
-            updateHeaderView(offset: 0)
-            return cell
-        default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
-            cell.setup(goal: goals[selectedDateString]![indexPath.row])
-            return cell
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 0:
-            let cvHeight: CGFloat = (tableView.frame.width - 32) / 7 * 6
-            let headerHeight: CGFloat = 90
-            let containerInsets: CGFloat = 32
-            return cvHeight + headerHeight + containerInsets
-        default:
-            return 60
-        }
-        
-    }
-    
     func generateMonthComponenents(forSection section: Int) {
         var monthOffsetComponents = DateComponents()
         // offset by the number of months
@@ -192,6 +145,64 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         let year = self.gregorian.component(.year, from: correctMonthForSectionDate)
         
         monthInfo[section] = [firstWeekdayOfMonthIndex, numberOfDaysInMonth, month, year]
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+}
+
+extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            guard let _ = goals[selectedDateString] else { return 0 }
+            return 1
+        default:
+            guard let goalArr = goals[selectedDateString] else { return 0 }
+            return goalArr.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
+            cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
+            delegate = cell.calendarHeaderView
+            updateHeaderView(offset: 0)
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalCountTableViewCellID, for: indexPath) as! CalendarGoalCountTableViewCell
+            cell.setup(dateString: selectedDateString, goalCount: goals[selectedDateString]!.count)
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
+            cell.setup(goal: goals[selectedDateString]![indexPath.row])
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0:
+            let cvHeight: CGFloat = (tableView.frame.width - 32) / 7 * 6
+            let headerHeight: CGFloat = 90
+            let containerInsets: CGFloat = 32
+            return cvHeight + headerHeight + containerInsets
+        case 1:
+            return 40
+        default:
+            return 60
+        }
+        
     }
     
 }
@@ -329,7 +340,7 @@ extension CalendarViewController: GoalCompletionDelegate {
         cv?.reloadSections(IndexSet([dateDif.month!]))
         if let ip = lastSelectedCollectionViewIndexPath {
             cv?.selectItem(at: ip, animated: false, scrollPosition: .bottom)
-            tableView.reloadSections(IndexSet([1]), with: .none)
+            tableView.reloadSections(IndexSet([1, 2]), with: .none)
         }
     }
 }

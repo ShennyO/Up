@@ -8,21 +8,26 @@
 import Foundation
 import CoreData
 
-enum goalTypeEnum {
+enum GoalTypeEnum {
     case timed
     case untimed
     case all
 }
 
-enum goalCompletionEnum {
+enum GoalCompletionEnum {
     case completed
     case incomplete
     case all
 }
 
-enum goalClearanceEnum {
+enum GoalClearanceEnum {
     case notCleared
     case all
+}
+
+enum GoalSortingEnum {
+    case date
+    case completionDate
 }
 
 
@@ -73,14 +78,20 @@ public final class CoreDataStack {
         }
     }
     
-    func fetchGoal(type: goalTypeEnum, completed: goalCompletionEnum) -> [NSManagedObject]? {
+    func fetchGoal(type: GoalTypeEnum, completed: GoalCompletionEnum, sorting: GoalSortingEnum) -> [NSManagedObject]? {
         let coreData = CoreDataStack.instance
         
         let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
         let typePredicate: NSPredicate?
         let completedPredicate: NSPredicate?
-        let sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: false)
-        fetchRequest.sortDescriptors = [sort]
+        var sort: NSSortDescriptor?
+        switch sorting {
+        case .completionDate:
+            sort = NSSortDescriptor(key: #keyPath(Goal.completionDate), ascending: false)
+        default:
+            sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: false)
+        }
+        fetchRequest.sortDescriptors = [sort!]
         
         switch type {
         case .timed:
