@@ -254,7 +254,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
             if indexPath.item < fdIndex {
                 let prevMonthInfo = monthInfo[indexPath.section - 1]!
                 let prevMonthDayCount = Int(prevMonthInfo[numberOfDaysIndex])
-                dayForCell = String(prevMonthDayCount - fdIndex + indexPath.item)
+                dayForCell = String(prevMonthDayCount - fdIndex + indexPath.item + 1)
             } else {
                 dayForCell = String(indexPath.item - fdIndex - nDays + 1)
             }

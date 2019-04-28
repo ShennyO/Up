@@ -54,7 +54,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
             self.dayLabel.textColor = Style.Colors.Palette01.gunMetal
         } else {
             self.isUserInteractionEnabled = false
-            self.dayLabel.textColor = .gray
+            self.dayLabel.textColor = .lightGray
         }
     }
     
