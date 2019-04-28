@@ -187,7 +187,15 @@ class ProjectCell: UITableViewCell {
         let path2 = UIBezierPath()
         let numberOfLines = descriptionLabel.calculateMaxLines()
         let rowOneWidth = descriptionLabel.intrinsicContentSize.width
-        let rowTwoWidth = descriptionLabel.lastLineWidth
+        var rowTwoWidth: CGFloat = 0
+        if descriptionLabel.text!.count > 70  {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width
+        } else if descriptionLabel.text!.count < 60 {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width / 3
+        } else {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width / 2
+        }
+        
         
         if numberOfLines == 1 {
             path.move(to: CGPoint(x: 76, y: self.bounds.height / 2))
@@ -208,11 +216,8 @@ class ProjectCell: UITableViewCell {
             animation.duration = 0.2
             shapeLayer.add(animation, forKey: "MyAnimation")
             
-//            self.lineShapeLayer = shapeLayer
-            
         } else {
             
-            //I want to try getting the height of the intrinsic content / 2 and then have middle - (instrinsicHeight/2)
             let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + 10
             path.move(to: CGPoint(x: 76, y: yPos))
             path.addLine(to: CGPoint(x: 76 + CGFloat(rowOneWidth), y: yPos))

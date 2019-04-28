@@ -39,12 +39,12 @@ class HeaderView: UIView {
     private func setConstraints() {
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(15)
+            make.top.equalToSuperview().offset(10)
         }
     
         getStartedLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(25)
-            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview().offset(95)
         }
         
     }

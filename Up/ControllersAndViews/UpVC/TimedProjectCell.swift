@@ -196,6 +196,14 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
         let path = UIBezierPath()
         let path2 = UIBezierPath()
         let numberOfLines = descriptionLabel.calculateMaxLines()
+        var rowTwoWidth: CGFloat = 0
+        if descriptionLabel.text!.count > 70  {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width
+        } else if descriptionLabel.text!.count < 60 {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width / 3
+        } else {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width / 2
+        }
         if numberOfLines == 1 {
             path.move(to: CGPoint(x: 80, y: self.bounds.height / 2))
             path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
@@ -217,14 +225,13 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
             
         } else {
             
-            //I want to try getting the height of the intrinsic content / 2 and then have middle - (instrinsicHeight/2)
             let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + 10
             path.move(to: CGPoint(x: 80, y: yPos))
             path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: yPos))
             
             let yPos2 = (self.bounds.height / 2) + (descriptionLabel.bounds.height / 2) - 9
             path.move(to: CGPoint(x: 80, y: yPos2))
-            path.addLine(to: CGPoint(x: 80 + descriptionLabel.lastLineWidth, y: yPos2))
+            path.addLine(to: CGPoint(x: 80 + rowTwoWidth, y: yPos2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
