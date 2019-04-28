@@ -36,6 +36,7 @@
 		C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */; };
 		C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */; };
 		C3751A422267045A00FF0E22 /* NotificationNameHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */; };
+		C39B2C34227539EA0039A7BF /* LabelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39B2C33227539EA0039A7BF /* LabelHelper.swift */; };
 		C3B36B4E226A39AA007CC38A /* CongratulationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */; };
 		C3BE431F226E76EF00AB8C6F /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BE431E226E76EF00AB8C6F /* CoreDataStack.swift */; };
 		C3BE4321226E772C00AB8C6F /* CoreDataInitializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BE4320226E772C00AB8C6F /* CoreDataInitializable.swift */; };
@@ -104,6 +105,7 @@
 		C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
 		C3751A412267045A00FF0E22 /* NotificationNameHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNameHelper.swift; sourceTree = "<group>"; };
+		C39B2C33227539EA0039A7BF /* LabelHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelHelper.swift; sourceTree = "<group>"; };
 		C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongratulationsView.swift; sourceTree = "<group>"; };
 		C3BE431E226E76EF00AB8C6F /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		C3BE4320226E772C00AB8C6F /* CoreDataInitializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataInitializable.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */,
 				48CCA560226FC22F0034BACB /* Style.swift */,
 				C331B63E227001B700E262D6 /* UIImageHelper.swift */,
+				C39B2C33227539EA0039A7BF /* LabelHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -563,6 +566,7 @@
 				C3BE431F226E76EF00AB8C6F /* CoreDataStack.swift in Sources */,
 				C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */,
 				488E0A1B226A844C00ABDB50 /* CalendarTableViewCell.swift in Sources */,
+				C39B2C34227539EA0039A7BF /* LabelHelper.swift in Sources */,
 				C310DEAC226FD04500FCD80D /* UpTabBarController.swift in Sources */,
 				C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */,
 				C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */,
@@ -736,7 +740,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JDYWQEVARC;
+				DEVELOPMENT_TEAM = X3T6G6B4MK;
 				INFOPLIST_FILE = Up/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -755,7 +759,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JDYWQEVARC;
+				DEVELOPMENT_TEAM = X3T6G6B4MK;
 				INFOPLIST_FILE = Up/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

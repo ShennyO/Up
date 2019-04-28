@@ -122,7 +122,7 @@ extension UpViewController {
     private func setConstraints() {
         addButton.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-80)
+            make.bottom.equalToSuperview().offset(-60)
             make.height.width.equalTo(65)
         }
     }
@@ -301,11 +301,14 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
     
     func completeNonTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            goals[index.row].completionDate = Date()
-            stack.saveTo(context: stack.viewContext)
-            goalCompletionDelegate.goalWasCompleted(goal: goals[index.row])
-            goals.remove(at: index.row)
-            upTableView.deleteRows(at: [index], with: .right)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                self.goals[index.row].completionDate = Date()
+                self.stack.saveTo(context: self.stack.viewContext)
+                self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[index.row])
+                self.goals.remove(at: index.row)
+                self.upTableView.deleteRows(at: [index], with: .right)
+            }
+            
         }
     }
     
