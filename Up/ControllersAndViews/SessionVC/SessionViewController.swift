@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class SessionViewController: UIViewController {
 
@@ -28,7 +29,7 @@ class SessionViewController: UIViewController {
     let circleLayer = CAShapeLayer()
     let pulsatingLayer = CAShapeLayer()
     var blurEffectView: UIVisualEffectView!
-    
+    let generator = UIImpactFeedbackGenerator(style: .heavy)
     
     
     var descriptionLabel: UILabel = {
@@ -271,6 +272,7 @@ class SessionViewController: UIViewController {
   
     
     private func showCongratsView() {
+        AudioServicesPlaySystemSound(1520)
         stopTimer()
         blurEffectView.isHidden = false
         blurEffectView.alpha = 0
