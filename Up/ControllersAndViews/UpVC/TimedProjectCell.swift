@@ -197,8 +197,8 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
         let path2 = UIBezierPath()
         let numberOfLines = descriptionLabel.calculateMaxLines()
         if numberOfLines == 1 {
-            path.move(to: CGPoint(x: 75, y: self.bounds.height / 2))
-            path.addLine(to: CGPoint(x: 75 + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
+            path.move(to: CGPoint(x: 80, y: self.bounds.height / 2))
+            path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -215,18 +215,16 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
             animation.duration = 0.2
             shapeLayer.add(animation, forKey: "MyAnimation")
             
-            //            self.lineShapeLayer = shapeLayer
-            
         } else {
             
             //I want to try getting the height of the intrinsic content / 2 and then have middle - (instrinsicHeight/2)
             let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + 10
-            path.move(to: CGPoint(x: 77, y: yPos))
-            path.addLine(to: CGPoint(x: 77 + descriptionLabel.intrinsicContentSize.width, y: yPos))
+            path.move(to: CGPoint(x: 80, y: yPos))
+            path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: yPos))
             
             let yPos2 = (self.bounds.height / 2) + (descriptionLabel.bounds.height / 2) - 9
-            path.move(to: CGPoint(x: 77, y: yPos2))
-            path.addLine(to: CGPoint(x: 77 + descriptionLabel.intrinsicContentSize.width, y: yPos2))
+            path.move(to: CGPoint(x: 80, y: yPos2))
+            path.addLine(to: CGPoint(x: 80 + descriptionLabel.lastLineWidth, y: yPos2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -268,15 +266,15 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
         blackCheckMark.isHidden = false
         blackCheckMark.alpha = 0
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.generator.impactOccurred()
-            UIView.animate(withDuration: 0.5, animations: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                self.strikeThrough()
+            })
+            UIView.animate(withDuration: 0.35, animations: {
                 self.blackCheckMark.alpha = 1
             }, completion: { (res) in
-                
-                self.strikeThrough()
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: {
                      self.delegate.completeTimedCell(cell: self)
                 })
                 

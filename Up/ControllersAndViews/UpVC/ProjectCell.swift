@@ -179,15 +179,19 @@ class ProjectCell: UITableViewCell {
     }
     
     
+    
     private func strikeThrough() {
         // Here we will draw the lines through the text
         // crafting the path of the line
         let path = UIBezierPath()
         let path2 = UIBezierPath()
         let numberOfLines = descriptionLabel.calculateMaxLines()
+        let rowOneWidth = descriptionLabel.intrinsicContentSize.width
+        let rowTwoWidth = descriptionLabel.lastLineWidth
+        
         if numberOfLines == 1 {
-            path.move(to: CGPoint(x: 75, y: self.bounds.height / 2))
-            path.addLine(to: CGPoint(x: 75 + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
+            path.move(to: CGPoint(x: 76, y: self.bounds.height / 2))
+            path.addLine(to: CGPoint(x: 76 + rowOneWidth, y: self.bounds.height / 2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -210,12 +214,12 @@ class ProjectCell: UITableViewCell {
             
             //I want to try getting the height of the intrinsic content / 2 and then have middle - (instrinsicHeight/2)
             let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + 10
-            path.move(to: CGPoint(x: 75, y: yPos))
-            path.addLine(to: CGPoint(x: 75 + descriptionLabel.intrinsicContentSize.width, y: yPos))
+            path.move(to: CGPoint(x: 76, y: yPos))
+            path.addLine(to: CGPoint(x: 76 + CGFloat(rowOneWidth), y: yPos))
             
             let yPos2 = (self.bounds.height / 2) + (descriptionLabel.bounds.height / 2) - 9
-            path.move(to: CGPoint(x: 75, y: yPos2))
-            path.addLine(to: CGPoint(x: 75 + descriptionLabel.intrinsicContentSize.width, y: yPos2))
+            path.move(to: CGPoint(x: 76, y: yPos2))
+            path.addLine(to: CGPoint(x: 76 + CGFloat(rowTwoWidth), y: yPos2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -271,6 +275,9 @@ class ProjectCell: UITableViewCell {
         checkMarkImage.alpha = 0
         self.isUserInteractionEnabled = false
         generator.impactOccurred()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.strikeThrough()
+        }
         UIView.animate(withDuration: 0.35, animations: {
             self.taskSquareFillView.alpha = 1
             self.checkMarkImage.alpha = 1
@@ -278,7 +285,7 @@ class ProjectCell: UITableViewCell {
             (value: Bool) in
             //There should be another animation for the lines here, and then in the completion of that
             // we run the delegate function
-            self.strikeThrough()
+            
             self.isUserInteractionEnabled = true
             self.delegate.completeNonTimedCell(cell: self)
             
