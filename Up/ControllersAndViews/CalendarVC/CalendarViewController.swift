@@ -166,11 +166,32 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
-            return self.view.frame.width / 7 * 6 + 92
+            let cvHeight: CGFloat = (tableView.frame.width - 32) / 7 * 6
+            let headerHeight: CGFloat = 90
+            let containerInsets: CGFloat = 32
+            return cvHeight + headerHeight + containerInsets
         default:
             return 60
         }
         
+    }
+    
+    func generateMonthComponenents(forSection section: Int) {
+        var monthOffsetComponents = DateComponents()
+        // offset by the number of months
+        monthOffsetComponents.month = section
+        
+        guard let correctMonthForSectionDate = self.gregorian.date(byAdding: monthOffsetComponents, to: startOfMonth, options: NSCalendar.Options()) else { return }
+        
+        
+        let numberOfDaysInMonth = self.gregorian.range(of: .day, in: .month, for: correctMonthForSectionDate).length
+        
+        var firstWeekdayOfMonthIndex = self.gregorian.component(.weekday, from: correctMonthForSectionDate)
+        firstWeekdayOfMonthIndex = firstWeekdayOfMonthIndex - 1 // firstWeekdayOfMonthIndex should be 0-Indexed
+        let month = self.gregorian.component(.month, from: correctMonthForSectionDate)
+        let year = self.gregorian.component(.year, from: correctMonthForSectionDate)
+        
+        monthInfo[section] = [firstWeekdayOfMonthIndex, numberOfDaysInMonth, month, year]
     }
     
 }
@@ -189,7 +210,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         
         let today = Date()
         
-        if  startOfMonth.compare(today) == ComparisonResult.orderedAscending &&
+        if startOfMonth.compare(today) == ComparisonResult.orderedAscending &&
             endDate.compare(today) == ComparisonResult.orderedDescending {
             
             let differenceFromTodayComponents = self.gregorian.components([.month, .day], from: startOfMonth, to: today, options: NSCalendar.Options())
@@ -204,22 +225,10 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var monthOffsetComponents = DateComponents()
-        // offset by the number of months
-        monthOffsetComponents.month = section
-        
-        guard let correctMonthForSectionDate = self.gregorian.date(byAdding: monthOffsetComponents, to: startOfMonth, options: NSCalendar.Options()) else { return 0 }
-        
-        
-        let numberOfDaysInMonth = self.gregorian.range(of: .day, in: .month, for: correctMonthForSectionDate).length
-        
-        var firstWeekdayOfMonthIndex = self.gregorian.component(.weekday, from: correctMonthForSectionDate)
-        firstWeekdayOfMonthIndex = firstWeekdayOfMonthIndex - 1 // firstWeekdayOfMonthIndex should be 0-Indexed
-        let month = self.gregorian.component(.month, from: correctMonthForSectionDate)
-        let year = self.gregorian.component(.year, from: correctMonthForSectionDate)
-//        firstWeekdayOfMonthIndex = (firstWeekdayOfMonthIndex + 6) % 7 // change the first day of the week
-        
-        monthInfo[section] = [firstWeekdayOfMonthIndex, numberOfDaysInMonth, month, year]
+        generateMonthComponenents(forSection: section)
+        if section == 0 {
+            generateMonthComponenents(forSection: section - 1)
+        }
         return 42
     }
     
@@ -238,11 +247,18 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         
         if indexPath.item >= fdIndex && indexPath.item < fdIndex + nDays {
             let goalsForCell = goals[dateString] ?? []
-            cell.setup(day: String(fromStartOfMonthIndexPath.item + 1), goalCount: goalsForCell.count)
-            cell.isHidden = false
+            cell.setup(day: String(fromStartOfMonthIndexPath.item + 1), goalCount: goalsForCell.count, isEnabled: true)
+            cell.isUserInteractionEnabled = true
         } else {
-            cell.setup(day: "", goalCount: 0)
-            cell.isHidden = true
+            var dayForCell = ""
+            if indexPath.item < fdIndex {
+                let prevMonthInfo = monthInfo[indexPath.section - 1]!
+                let prevMonthDayCount = Int(prevMonthInfo[numberOfDaysIndex])
+                dayForCell = String(prevMonthDayCount - fdIndex + indexPath.item)
+            } else {
+                dayForCell = String(indexPath.item - fdIndex - nDays + 1)
+            }
+            cell.setup(day: dayForCell, goalCount: 0, isEnabled: false)
         }
         return cell
     }

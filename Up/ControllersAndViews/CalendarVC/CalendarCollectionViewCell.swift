@@ -26,14 +26,14 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     let dayLabel: UILabel = {
         let label = UILabel()
         label.textColor = Style.Colors.Palette01.gunMetal
-        label.font = Style.Fonts.medium18
+        label.font = Style.Fonts.bold18
         label.textAlignment = .center
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = 2
+        layer.cornerRadius = self.frame.height / 2
         clipsToBounds = true
         backgroundColor = Style.Colors.Palette01.pureWhite
     }
@@ -42,13 +42,20 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(day: String, goalCount: Int) {
+    func setup(day: String, goalCount: Int, isEnabled: Bool) {
         dayLabel.text = day
         self.addSubview(dayLabel)
         dayLabel.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalToSuperview()
         }
         adjustBackgroundColor(goalCount: goalCount)
+        if isEnabled == true {
+            self.isUserInteractionEnabled = true
+            self.dayLabel.textColor = Style.Colors.Palette01.gunMetal
+        } else {
+            self.isUserInteractionEnabled = false
+            self.dayLabel.textColor = .gray
+        }
     }
     
     private func adjustBackgroundColor(goalCount: Int) {
