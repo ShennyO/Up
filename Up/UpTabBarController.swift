@@ -49,9 +49,6 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         goalsNavVC.tabBarItem.tag = 1
         
-        
-        
-        
         //create tab two
         let calendarVC = CalendarViewController()
         let calendarNavVC = UINavigationController(rootViewController: calendarVC)
@@ -63,8 +60,8 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         //create tab three
         let statsVC = StatsViewController()
         let statsNavVC = UINavigationController(rootViewController: statsVC)
-        statsNavVC.tabBarItem.image = #imageLiteral(resourceName: "calendar")
-        statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedCalendar")
+        statsNavVC.tabBarItem.image = #imageLiteral(resourceName: "chart")
+        statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedChart")
         statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         statsNavVC.tabBarItem.tag = 3
         self.viewControllers = [goalsNavVC, calendarNavVC, statsNavVC]
