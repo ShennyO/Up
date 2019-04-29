@@ -8,6 +8,7 @@ target 'Up' do
   # Pods for Up
     pod 'SnapKit', '~> 4.0.0'
     pod 'JTAppleCalendar', '~> 7.1'
+    pod 'SwiftChart'
 
   target 'UpTests' do
     inherit! :search_paths
