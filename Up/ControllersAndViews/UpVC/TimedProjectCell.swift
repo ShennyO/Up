@@ -152,13 +152,6 @@ class TimedProjectCell: UITableViewCell {
             make.centerX.centerY.equalToSuperview()
             make.width.height.equalTo(15)
         }
-        
-//        focusedIcon.snp.makeConstraints { (make) in
-//            make.height.width.equalTo(30)
-//            make.top.equalToSuperview()
-//            make.right.equalToSuperview().offset(-15)
-//        }
-        
     }
     
     private func setUpCell() {
