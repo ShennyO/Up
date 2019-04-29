@@ -194,7 +194,7 @@ class CongratulationsView: UIView {
             
             UIView.animate(withDuration: 0.3, animations: {
                 view.alpha = 0
-                self.backgroundColor = #colorLiteral(red: 0.07120416313, green: 0.07078877836, blue: 0.07152850181, alpha: 1)
+                self.backgroundColor = #colorLiteral(red: 0.1105717048, green: 0.1099219099, blue: 0.1110760495, alpha: 1)
             }, completion:  {
                 (value: Bool) in
                 view.isHidden = true
