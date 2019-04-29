@@ -32,13 +32,11 @@ class NewProjectViewController: UIViewController {
     var textViewDelegate: newProjectVCToTextInputViewDelegate!
     var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
     var goalDelegate: newProjectVCToUpVCDelegate!
-    var sendSelectedProject: ((Project) -> ())?
-    var sendSelectedTimedProject: ((TimedProject) -> ())?
+
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
 
     //MARK: OUTLETS
     
@@ -52,8 +50,7 @@ class NewProjectViewController: UIViewController {
     
     
     
-    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 85), fontSize: 18, type: .textView)
-    
+    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 75), fontSize: 18, type: .textView)
     
     
     var taskButton: UIButton = {

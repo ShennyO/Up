@@ -264,8 +264,17 @@ class ProjectCell: UITableViewCell {
         
     }
     
-    //THIS FUNCTION IS CALLED FROM OUTSIDE WHEN USER TAPPED ON THE CELL
+   
+    private func strikethroughAndComplete(completion: @escaping () -> ()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.strikeThrough()
+            self.isUserInteractionEnabled = true
+            completion()
+        }
+        
+    }
     
+     //THIS FUNCTION IS CALLED FROM OUTSIDE WHEN USER TAPPED ON THE CELL
     func complete() {
         //in here, after the checkbox animates, I need to run the line through the words.
         //I should create a function for this
@@ -280,8 +289,11 @@ class ProjectCell: UITableViewCell {
         checkMarkImage.alpha = 0
         self.isUserInteractionEnabled = false
         generator.impactOccurred()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.strikeThrough()
+        
+        strikethroughAndComplete {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                self.delegate.completeNonTimedCell(cell: self)
+            })
         }
         UIView.animate(withDuration: 0.35, animations: {
             self.taskSquareFillView.alpha = 1
@@ -291,8 +303,7 @@ class ProjectCell: UITableViewCell {
             //There should be another animation for the lines here, and then in the completion of that
             // we run the delegate function
             
-            self.isUserInteractionEnabled = true
-            self.delegate.completeNonTimedCell(cell: self)
+            
             
         })
     }

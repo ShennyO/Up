@@ -232,6 +232,7 @@ class SessionViewController: UIViewController {
             make.top.equalToSuperview().offset(125)
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
+            make.height.equalTo(80)
         }
         
         minutesLabel.snp.makeConstraints { (make) in
@@ -302,12 +303,12 @@ class SessionViewController: UIViewController {
         doneButton.isHidden = false
         doneButton.alpha = 0
         doneButton.isUserInteractionEnabled = false
+        
         UIView.animate(withDuration: 0.7, animations: {
             self.startButton.alpha = 0
         }, completion:  {
             (value: Bool) in
             self.startButton.isHidden = true
-            
         })
         
         UIView.animate(withDuration: 0.85, delay: 1.7, animations: {
@@ -334,7 +335,6 @@ class SessionViewController: UIViewController {
                 })
                 self.dismiss(animated: true)
             }))
-            
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
                 self.runTimer()
                 self.runAnimations()
@@ -358,10 +358,10 @@ class SessionViewController: UIViewController {
         super.viewDidLoad()
         configNavBar()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        addLayers()
         addOutlets()
-        addCongratsViewAndBlur()
         setConstraints()
+        addCongratsViewAndBlur()
+        addLayers()
         
         if timedGoal != nil {
             timeInSeconds = Int(timedGoal!.duration) * 60

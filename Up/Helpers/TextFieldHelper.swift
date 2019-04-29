@@ -35,6 +35,7 @@ class SunnyCustomInputView: UIView {
         tv.textColor = UIColor.gray
         tv.text = "Goal description"
         tv.returnKeyType = UIReturnKeyType.done
+//        tv.isScrollEnabled = false
         return tv
     }()
     
@@ -65,7 +66,7 @@ class SunnyCustomInputView: UIView {
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.tintColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         tv.becomeFirstResponder()
-        tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13)
         tfOverlayLabel.text = "Description"
         tv.delegate = self
         
@@ -89,20 +90,12 @@ class SunnyCustomInputView: UIView {
     
     private func setConstraints(type: InputType) {
         
-        
-        
-        
-            
         tv.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(20)
             make.left.equalToSuperview().offset(5)
             make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-10)
         }
-        
-        
-        
-        
         
         tfOverlayLabel.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(5)
@@ -153,7 +146,7 @@ extension SunnyCustomInputView: UITextViewDelegate {
         
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         let numberOfChars = newText.count
-        return numberOfChars < 75
+        return numberOfChars < 80
         
     }
     
