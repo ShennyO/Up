@@ -26,8 +26,10 @@ enum GoalClearanceEnum {
 }
 
 enum GoalSortingEnum {
-    case date
-    case completionDate
+    case dateAscending
+    case completionDateAscending
+    case dateDescending
+    case completionDateDescending
 }
 
 
@@ -86,7 +88,11 @@ public final class CoreDataStack {
         let completedPredicate: NSPredicate?
         var sort: NSSortDescriptor?
         switch sorting {
-        case .completionDate:
+        case .completionDateAscending:
+            sort = NSSortDescriptor(key: #keyPath(Goal.completionDate), ascending: true)
+        case .dateAscending:
+            sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: true)
+        case .completionDateDescending:
             sort = NSSortDescriptor(key: #keyPath(Goal.completionDate), ascending: false)
         default:
             sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: false)

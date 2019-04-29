@@ -108,7 +108,7 @@ extension UpViewController {
     //MARK: PRIVATE FUNCTIONS
     
     private func fetchGoals(completion: @escaping () -> ()) {
-        let results = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .date) as? [Goal]
+        let results = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .dateDescending) as? [Goal]
         if results?.count != 0 {
             self.goals = results!
         }

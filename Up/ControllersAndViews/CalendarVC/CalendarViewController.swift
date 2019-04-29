@@ -52,7 +52,7 @@ class CalendarViewController: UIViewController {
     
     lazy var gregorian : NSCalendar = {
         let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
-        cal.timeZone = TimeZone(abbreviation: "UTC")!
+        cal.timeZone = TimeZone(abbreviation: TimeZone.current.abbreviation()!)!
         return cal
     }()
     
@@ -74,7 +74,7 @@ class CalendarViewController: UIViewController {
     
     func fetchData() {
         
-        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, sorting: .completionDate) as! [Goal]
+        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, sorting: .completionDateAscending) as! [Goal]
         if goalsArr.count == 0 { return }
         startDate = goalsArr[0].completionDate!
         
@@ -184,8 +184,23 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setup(dateString: selectedDateString, goalCount: goals[selectedDateString]!.count)
             return cell
         default:
+            var timeForCell: Int? = nil
+            
+            let goal = goals[selectedDateString]![indexPath.row]
+            let hour = gregorian.component(.hour, from: goal.completionDate!)
+            
+            if indexPath.row != 0 {
+                let prevGoal = goals[selectedDateString]![indexPath.row - 1]
+                let prevGoalHour = gregorian.component(.hour, from: prevGoal.completionDate!)
+                if hour != prevGoalHour {
+                    timeForCell = hour
+                }
+            } else {
+                timeForCell = hour
+            }
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
-            cell.setup(goal: goals[selectedDateString]![indexPath.row])
+            cell.setup(goal: goal, withTime: timeForCell)
             return cell
         }
     }
@@ -200,6 +215,18 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             return 40
         default:
+            let goal = goals[selectedDateString]![indexPath.row]
+            let hour = gregorian.component(.hour, from: goal.completionDate!)
+            
+            if indexPath.row != 0 {
+                let prevGoal = goals[selectedDateString]![indexPath.row - 1]
+                let prevGoalHour = gregorian.component(.hour, from: prevGoal.completionDate!)
+                if hour != prevGoalHour {
+                    return 120
+                }
+            } else {
+                return 120
+            }
             return 60
         }
         
