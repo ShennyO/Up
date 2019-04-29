@@ -322,9 +322,13 @@ class SessionViewController: UIViewController {
         
         if sessionActive {
             
+            stopTimer()
+            [circleLayer, pulsatingLayer].forEach { (layer) in
+                layer.removeAllAnimations()
+            }
+            
             let alert = UIAlertController(title: "Are you sure you want to exit?", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { action in
-                self.stopTimer()
                 [self.circleLayer, self.pulsatingLayer].forEach({ (layer) in
                     layer.removeAllAnimations()
                 })
@@ -332,6 +336,8 @@ class SessionViewController: UIViewController {
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                self.runTimer()
+                self.runAnimations()
                 alert.dismiss(animated: true, completion: nil)
             }))
             

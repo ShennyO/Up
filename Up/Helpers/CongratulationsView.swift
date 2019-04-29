@@ -232,7 +232,7 @@ class CongratulationsView: UIView {
             
             view.isHidden = false
             view.alpha = 0
-            UIView.animate(withDuration: 0.4, animations: {
+            UIView.animate(withDuration: 0.5, animations: {
                 view.alpha = 1
             })
         }
