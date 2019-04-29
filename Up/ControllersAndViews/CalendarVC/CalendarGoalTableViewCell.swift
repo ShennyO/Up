@@ -28,9 +28,11 @@ class CalendarGoalTableViewCell: UITableViewCell {
         descriptionLabel.text = goal.goalDescription
         
         if goal.duration == 0 {
-            iconView.image = #imageLiteral(resourceName: "whiteRectangle")
+            clockIconView.isHidden = true
+            boxView.isHidden = false
         } else {
-            iconView.image = #imageLiteral(resourceName: "whiteTimeIcon")
+            clockIconView.isHidden = false
+            boxView.isHidden = true
         }
         
         if let wt = withTime {
@@ -73,16 +75,18 @@ class CalendarGoalTableViewCell: UITableViewCell {
         }
         
         timeLabel.snp.makeConstraints { (make) in
-            make.centerX.equalTo(lineView.snp.centerX)
+            make.left.equalToSuperview().inset(20)
+            make.width.equalTo(60)
+            make.height.equalTo(40)
             make.centerY.equalToSuperview()
         }
         
-        topLineView.snp.makeConstraints { (make) in
-            make.centerY.equalTo(timeLabel.snp.centerY)
-            make.left.equalTo(timeLabel.snp.right).offset(16)
-            make.right.equalToSuperview().inset(24)
-            make.height.equalTo(0.5)
-        }
+//        topLineView.snp.makeConstraints { (make) in
+//            make.centerY.equalTo(timeLabel.snp.centerY)
+//            make.left.equalTo(timeLabel.snp.right).offset(16)
+//            make.right.equalToSuperview().inset(24)
+//            make.height.equalTo(0.5)
+//        }
     }
     
     private func setupViews() {
@@ -91,7 +95,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
             self.addSubview(view)
         }
         
-        [descriptionLabel, iconView, checkmarkView].forEach { (view) in
+        [descriptionLabel, clockIconView, boxView, checkmarkView].forEach { (view) in
             bottomContainerView.addSubview(view)
         }
         
@@ -102,26 +106,33 @@ class CalendarGoalTableViewCell: UITableViewCell {
         
         lineView.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
-            make.left.equalToSuperview().offset(24)
+            make.left.equalToSuperview().offset(50)
             make.width.equalTo(0.5)
         }
         
-        iconView.snp.makeConstraints { (make) in
+        clockIconView.snp.makeConstraints { (make) in
             make.left.equalTo(lineView.snp.right).offset(16)
             make.top.bottom.equalToSuperview().inset(16)
-            make.width.equalTo(iconView.snp.height)
+            make.width.equalTo(clockIconView.snp.height)
+        }
+        
+        boxView.snp.makeConstraints { (make) in
+            make.left.equalTo(clockIconView.snp.left).inset(1)
+            make.right.equalTo(clockIconView.snp.right).inset(1)
+            make.top.equalTo(clockIconView.snp.top).inset(1)
+            make.bottom.equalTo(clockIconView.snp.bottom).inset(1)
         }
         
         checkmarkView.snp.makeConstraints { (make) in
-            make.left.equalTo(iconView.snp.left).inset(6)
-            make.right.equalTo(iconView.snp.right).inset(6)
-            make.top.equalTo(iconView.snp.top).inset(6)
-            make.bottom.equalTo(iconView.snp.bottom).inset(6)
+            make.left.equalTo(clockIconView.snp.left).inset(8)
+            make.right.equalTo(clockIconView.snp.right).inset(8)
+            make.top.equalTo(clockIconView.snp.top).inset(8)
+            make.bottom.equalTo(clockIconView.snp.bottom).inset(8)
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
             make.right.equalToSuperview().inset(16)
-            make.left.equalTo(iconView.snp.right).offset(16)
+            make.left.equalTo(clockIconView.snp.right).offset(16)
             make.top.bottom.equalToSuperview()
         }
     }
@@ -138,10 +149,20 @@ class CalendarGoalTableViewCell: UITableViewCell {
         return view
     }()
     
-    let iconView: UIImageView = {
+    let clockIconView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = Style.Colors.Palette01.gunMetal
+        imageView.image = #imageLiteral(resourceName: "whiteTimeIcon")
         return imageView
+    }()
+    
+    let boxView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Style.Colors.Palette01.gunMetal
+        view.layer.borderWidth = 1
+        view.layer.borderColor = Style.Colors.Palette01.pureWhite.cgColor
+        view.layer.cornerRadius = 3
+        return view
     }()
     
     let lineView: UIView = {
@@ -168,7 +189,12 @@ class CalendarGoalTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = Style.Fonts.bold15
         label.textColor = Style.Colors.Palette01.pureWhite
-        label.backgroundColor = Style.Colors.Palette01.gunMetal
+        label.textAlignment = .center
+        label.backgroundColor = #colorLiteral(red: 0, green: 0.4352941176, blue: 1, alpha: 1)
+        label.layer.borderColor = Style.Colors.Palette01.pureWhite.cgColor
+        label.layer.cornerRadius = 3
+        label.clipsToBounds = true
+//        label.layer.borderWidth = 1
         return label
     }()
     

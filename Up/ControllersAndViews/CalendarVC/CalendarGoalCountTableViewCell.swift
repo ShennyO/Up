@@ -38,7 +38,7 @@ class CalendarGoalCountTableViewCell: UITableViewCell {
         self.addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview().inset(24)
+            make.left.right.equalToSuperview().inset(20)
             make.bottom.top.equalToSuperview().inset(8)
         }
     }
