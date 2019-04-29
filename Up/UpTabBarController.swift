@@ -39,9 +39,9 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         //  Create tab item three
         let statsVC = StatsViewController()
         let statsNavVC = UINavigationController(rootViewController: statsVC)
-        statsNavVC.tabBarItem.image = #imageLiteral(resourceName: "chart")
-        statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedChart")
-        statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        statsNavVC.tabBarItem.image = #imageLiteral(resourceName: "whiteChart")
+        statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueChart")
+        statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         statsNavVC.tabBarItem.tag = 3
         
 //        Create tab item two
