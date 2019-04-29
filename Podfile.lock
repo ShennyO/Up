@@ -1,20 +1,24 @@
 PODS:
   - JTAppleCalendar (7.1.7)
   - SnapKit (4.0.1)
+  - SwiftChart (1.0.1)
 
 DEPENDENCIES:
   - JTAppleCalendar (~> 7.1)
   - SnapKit (~> 4.0.0)
+  - SwiftChart
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - JTAppleCalendar
     - SnapKit
+    - SwiftChart
 
 SPEC CHECKSUMS:
   JTAppleCalendar: 96da4d8388fa6dc82d6a60d41ef36a015e167e2f
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  SwiftChart: ba767a678d568a5ee22d419e146a0582865e1aff
 
-PODFILE CHECKSUM: 0267453436908b3eb3978ffb2b332670b61e33b0
+PODFILE CHECKSUM: df87b90e8a592cdac04f556af443bd3ec704102f
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.5.3
