@@ -53,9 +53,9 @@ class TimeInputViewButton: UIView {
         }
 
         upArrow.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview().offset(2)
-            make.right.equalToSuperview().offset(-18)
-            make.height.width.equalTo(12)
+            make.centerY.equalToSuperview().offset(1)
+            make.right.equalToSuperview().offset(-20)
+            make.height.width.equalTo(15)
         }
     }
     

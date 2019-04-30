@@ -32,13 +32,11 @@ class NewProjectViewController: UIViewController {
     var textViewDelegate: newProjectVCToTextInputViewDelegate!
     var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
     var goalDelegate: newProjectVCToUpVCDelegate!
-    var sendSelectedProject: ((Project) -> ())?
-    var sendSelectedTimedProject: ((TimedProject) -> ())?
+
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
 
     //MARK: OUTLETS
     
@@ -52,8 +50,7 @@ class NewProjectViewController: UIViewController {
     
     
     
-    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 85), fontSize: 18, type: .textView)
-    
+    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 75), fontSize: 18, type: .textView)
     
     
     var taskButton: UIButton = {
@@ -61,7 +58,7 @@ class NewProjectViewController: UIViewController {
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 4
         button.setImage(#imageLiteral(resourceName: "whiteRectangle"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 17, left: 17, bottom: 17, right: 17)
+        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = true
@@ -73,7 +70,7 @@ class NewProjectViewController: UIViewController {
         let button = UIButton()
         button.layer.cornerRadius = 4
         button.setImage(#imageLiteral(resourceName: "whiteTimeIcon"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        button.imageEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = false
@@ -147,13 +144,13 @@ class NewProjectViewController: UIViewController {
         
         
         taskButton.snp.makeConstraints { (make) in
-            make.height.equalTo(65)
-            make.width.equalTo(65)
+            make.height.equalTo(66)
+            make.width.equalTo(66)
         }
         
         sessionButton.snp.makeConstraints { (make) in
-            make.height.equalTo(65)
-            make.width.equalTo(65)
+            make.height.equalTo(66)
+            make.width.equalTo(66)
         }
         
         
@@ -356,9 +353,7 @@ class NewProjectViewController: UIViewController {
                 //THIS IS SENDING THE SELECTED TIME BACK TO THE TIMEINPUTBUTTONVIEW
                 self.timeInputDelegate.sendSelectedTime(time: result)
                 self.selectedTime = result
-                
             }
-            
             
             blurEffectView?.isHidden = false
             blurEffectView?.alpha = 0

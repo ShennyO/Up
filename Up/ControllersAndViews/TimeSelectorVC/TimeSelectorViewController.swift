@@ -13,6 +13,7 @@ class TimeSelectorViewController: UIViewController {
     var times: [Int] = []
     var selectedTime = 30
     var onDoneBlock: ((Int) -> ())?
+    var canceledBlock: (() -> ())?
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -98,6 +99,20 @@ class TimeSelectorViewController: UIViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
     
+    func dismissVCGesture() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissVC))
+        
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissVC() {
+        onDoneBlock!(selectedTime)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @objc func doneButtonTapped() {
         onDoneBlock!(selectedTime)
         dismiss(animated: true)
@@ -109,6 +124,7 @@ class TimeSelectorViewController: UIViewController {
             times.append(x)
         }
         configNavBar()
+        dismissVCGesture()
         self.view.backgroundColor = UIColor.clear
         self.view.isOpaque = false
         timePickerView.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)

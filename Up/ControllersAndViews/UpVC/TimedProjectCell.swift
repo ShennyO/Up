@@ -152,7 +152,6 @@ class TimedProjectCell: UITableViewCell {
             make.centerX.centerY.equalToSuperview()
             make.width.height.equalTo(15)
         }
-        
     }
     
     private func setUpCell() {
@@ -187,18 +186,101 @@ class TimedProjectCell: UITableViewCell {
     
 }
 
-extension TimedProjectCell: UpVCToTimedProjectCellDelegate{
+extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
+    
+    
+    private func strikeThrough() {
+        // Here we will draw the lines through the text
+        // crafting the path of the line
+        let path = UIBezierPath()
+        let path2 = UIBezierPath()
+        let numberOfLines = descriptionLabel.calculateMaxLines()
+        var rowTwoWidth: CGFloat = 0
+        if descriptionLabel.text!.count > 70  {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width
+        } else if descriptionLabel.text!.count < 60 {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width / 3
+        } else {
+            rowTwoWidth = descriptionLabel.intrinsicContentSize.width / 2
+        }
+        if numberOfLines == 1 {
+            path.move(to: CGPoint(x: 80, y: self.bounds.height / 2))
+            path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
+            
+            let shapeLayer: CAShapeLayer = {
+                let layer = CAShapeLayer()
+                layer.fillColor = #colorLiteral(red: 0.1101594344, green: 0.1095120981, blue: 0.1106618419, alpha: 1)
+                layer.strokeColor = #colorLiteral(red: 0.1101594344, green: 0.1095120981, blue: 0.1106618419, alpha: 1)
+                layer.lineWidth = 1
+                layer.path = path.cgPath
+                return layer
+            }()
+            
+            self.layer.addSublayer(shapeLayer)
+            let animation = CABasicAnimation(keyPath: "strokeEnd")
+            animation.fromValue = 0
+            animation.duration = 0.2
+            shapeLayer.add(animation, forKey: "MyAnimation")
+            
+        } else {
+            
+            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + 10
+            path.move(to: CGPoint(x: 80, y: yPos))
+            path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: yPos))
+            
+            let yPos2 = (self.bounds.height / 2) + (descriptionLabel.bounds.height / 2) - 9
+            path.move(to: CGPoint(x: 80, y: yPos2))
+            path.addLine(to: CGPoint(x: 80 + rowTwoWidth, y: yPos2))
+            
+            let shapeLayer: CAShapeLayer = {
+                let layer = CAShapeLayer()
+                layer.fillColor = #colorLiteral(red: 0.1101594344, green: 0.1095120981, blue: 0.1106618419, alpha: 1)
+                layer.strokeColor = #colorLiteral(red: 0.1101594344, green: 0.1095120981, blue: 0.1106618419, alpha: 1)
+                layer.lineWidth = 1
+                layer.path = path.cgPath
+                return layer
+            }()
+            
+            
+            self.layer.addSublayer(shapeLayer)
+            let animation = CABasicAnimation(keyPath: "strokeEnd")
+            animation.fromValue = 0
+            animation.duration = 0.2
+            shapeLayer.add(animation, forKey: "MyAnimation")
+            
+            let shapeLayer2: CAShapeLayer = {
+                let layer = CAShapeLayer()
+                layer.fillColor = #colorLiteral(red: 0.1101594344, green: 0.1095120981, blue: 0.1106618419, alpha: 1)
+                layer.strokeColor = #colorLiteral(red: 0.1101594344, green: 0.1095120981, blue: 0.1106618419, alpha: 1)
+                layer.lineWidth = 1
+                layer.path = path2.cgPath
+                return layer
+            }()
+            
+            self.layer.addSublayer(shapeLayer2)
+            let animation2 = CABasicAnimation(keyPath: "strokeEnd")
+            animation2.fromValue = 0
+            animation2.duration = 0.2
+            shapeLayer.add(animation, forKey: "MyAnimation2")
+
+        }
+    }
+    
+    
     func showBlackCheck() {
         
         blackCheckMark.isHidden = false
         blackCheckMark.alpha = 0
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.generator.impactOccurred()
-            UIView.animate(withDuration: 0.5, animations: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                self.strikeThrough()
+            })
+            UIView.animate(withDuration: 0.35, animations: {
                 self.blackCheckMark.alpha = 1
             }, completion: { (res) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
                      self.delegate.completeTimedCell(cell: self)
                 })
                 

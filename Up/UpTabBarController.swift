@@ -39,9 +39,9 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         //  Create tab item three
         let statsVC = StatsViewController()
         let statsNavVC = UINavigationController(rootViewController: statsVC)
-        statsNavVC.tabBarItem.image = #imageLiteral(resourceName: "chart")
-        statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "selectedChart")
-        statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        statsNavVC.tabBarItem.image = #imageLiteral(resourceName: "whiteChart")
+        statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueChart")
+        statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         statsNavVC.tabBarItem.tag = 3
         
 //        Create tab item two
@@ -49,7 +49,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         let calendarNavVC = UINavigationController(rootViewController: calendarVC)
         calendarNavVC.tabBarItem.image = #imageLiteral(resourceName: "whiteCal")
         calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueCal")
-        calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         calendarNavVC.tabBarItem.tag = 2
         configNavBar(navController: calendarNavVC)
         
@@ -59,7 +59,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         let goalsNavVC = UINavigationController(rootViewController: goalsVC)
         goalsNavVC.tabBarItem.image = #imageLiteral(resourceName: "whiteList")
         goalsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueList")
-        goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         goalsNavVC.tabBarItem.tag = 1
 //        configNavBar(navController: goalsNavVC)
         

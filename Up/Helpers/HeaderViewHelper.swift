@@ -25,7 +25,7 @@ class HeaderView: UIView {
     let getStartedLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
-        label.text = "Add a goal to get started"
+        label.text = "Add a task to get started"
         label.textColor = UIColor.white
         label.isHidden = false
         return label
@@ -39,12 +39,12 @@ class HeaderView: UIView {
     private func setConstraints() {
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(15)
+            make.top.equalToSuperview().offset(10)
         }
     
         getStartedLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(25)
-            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview().offset(95)
         }
         
     }
