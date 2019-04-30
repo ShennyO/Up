@@ -28,11 +28,22 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     private func configNavBar(navController: UINavigationController) {
-        navController.isNavigationBarHidden = true
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor:Style.Colors.Palette01.pureWhite]
+        navController.navigationBar.titleTextAttributes = textAttributes
+        navController.navigationBar.largeTitleTextAttributes = textAttributes
+        navController.navigationItem.title = title
+        
+        extendedLayoutIncludesOpaqueBars = true
+        navController.navigationBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        navController.navigationBar.isTranslucent = false
+        navController.navigationBar.shadowImage = UIImage()
+        navController.navigationBar.prefersLargeTitles = true
+        
+        
     }
     
     private func setUpTabBar() {
-        //create tab one
         UITabBar.appearance().backgroundImage = UIImage.colorForNavBar(color: .black)
         UITabBar.appearance().shadowImage = UIImage.colorForNavBar(color: #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))
         
@@ -43,7 +54,9 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueCal")
         calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         calendarNavVC.tabBarItem.tag = 2
+        calendarNavVC.navigationBar.barTintColor = Style.Colors.Palette01.gunMetal
         configNavBar(navController: calendarNavVC)
+        calendarNavVC.navigationBar.barTintColor = Style.Colors.Palette01.gunMetal
         
 //        Create tab item one
         let goalsVC = UpViewController()
@@ -53,12 +66,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         goalsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueList")
         goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         goalsNavVC.tabBarItem.tag = 1
-//        configNavBar(navController: goalsNavVC)
-        
-        
-        
-        
-        
+        configNavBar(navController: goalsNavVC)
         
         self.viewControllers = [goalsNavVC, calendarNavVC]
         

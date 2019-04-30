@@ -13,7 +13,6 @@ class CalendarViewController: UIViewController {
     let calendarTableViewCellID = "calendarTableViewCellID"
     let calendarCollectionViewCellID = "calendarCollectionViewCellID"
     let calendarGoalTableViewCellID = "calendarGoalTableViewCellID"
-    let calendarGoalCountTableViewCellID = "calendarGoalCountTableViewCellID"
     
     var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
 
@@ -33,7 +32,7 @@ class CalendarViewController: UIViewController {
     
     var selectedDateString = "" {
         didSet {
-            tableView.reloadSections(IndexSet([1, 2]), with: .automatic)
+            tableView.reloadSections(IndexSet([1]), with: .automatic)
         }
     }
     
@@ -57,12 +56,15 @@ class CalendarViewController: UIViewController {
     }()
     
     let tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: CGRect.zero, style: .grouped)
         return tableView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.navigationItem.title = "Calendar"
+        
         
         fetchData()
         endDate = formatter.date(from: "01/01/2025")!
@@ -91,7 +93,6 @@ class CalendarViewController: UIViewController {
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
         tableView.register(CalendarGoalTableViewCell.self, forCellReuseIdentifier: calendarGoalTableViewCellID)
-        tableView.register(CalendarGoalCountTableViewCell.self, forCellReuseIdentifier: calendarGoalCountTableViewCellID)
         
         tableView.tag = 0
         tableView.backgroundColor = Style.Colors.Palette01.gunMetal
@@ -155,15 +156,12 @@ class CalendarViewController: UIViewController {
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 1
-        case 1:
-            guard let _ = goals[selectedDateString] else { return 0 }
             return 1
         default:
             guard let goalArr = goals[selectedDateString] else { return 0 }
@@ -178,10 +176,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
             delegate = cell.calendarHeaderView
             updateHeaderView(offset: 0)
-            return cell
-        case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalCountTableViewCellID, for: indexPath) as! CalendarGoalCountTableViewCell
-            cell.setup(dateString: selectedDateString, goalCount: goals[selectedDateString]!.count)
             return cell
         default:
             var timeForCell: Int? = nil
@@ -212,8 +206,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             let headerHeight: CGFloat = 90
             let containerInsets: CGFloat = 32
             return cvHeight + headerHeight + containerInsets
-        case 1:
-            return 40
         default:
             let goal = goals[selectedDateString]![indexPath.row]
             let hour = gregorian.component(.hour, from: goal.completionDate!)
@@ -229,9 +221,26 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             }
             return 60
         }
-        
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section != 1 { return 0 }
+        guard let _ = goals[selectedDateString] else { return 0 }
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section != 1 { return nil }
+        guard let _ = goals[selectedDateString] else { return nil }
+        let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
+        
+        headerView.setup(dateString: selectedDateString, goalCount: goals[selectedDateString]!.count)
+        return headerView
+    }
 }
 
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -301,12 +310,21 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         var month = String(monthInfo[indexPath.section]![monthIndex])
         let year = String(monthInfo[indexPath.section]![yearIndex])
         if month.count == 1 { month = "0" + month}
-        selectedDateString = String(indexPath.row) + "/" + month + "/" + year
-        lastSelectedCollectionViewIndexPath = indexPath
+        let sds = String(indexPath.row) + "/" + month + "/" + year
+        if selectedDateString == sds {
+            selectedDateString = ""
+            lastSelectedCollectionViewIndexPath = nil
+            collectionView.deselectItem(at: indexPath, animated: false)
+            return false
+        } else {
+            selectedDateString = sds
+            lastSelectedCollectionViewIndexPath = indexPath
+            return true
+        }
     }
     
 }
@@ -367,7 +385,7 @@ extension CalendarViewController: GoalCompletionDelegate {
         cv?.reloadSections(IndexSet([dateDif.month!]))
         if let ip = lastSelectedCollectionViewIndexPath {
             cv?.selectItem(at: ip, animated: false, scrollPosition: .bottom)
-            tableView.reloadSections(IndexSet([1, 2]), with: .none)
+            tableView.reloadSections(IndexSet([1]), with: .none)
         }
     }
 }

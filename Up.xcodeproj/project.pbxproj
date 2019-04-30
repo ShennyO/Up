@@ -12,7 +12,7 @@
 		488438D0226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488438CF226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift */; };
 		488E0A19226A81D900ABDB50 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488E0A18226A81D900ABDB50 /* CalendarViewController.swift */; };
 		488E0A1B226A844C00ABDB50 /* CalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488E0A1A226A844C00ABDB50 /* CalendarTableViewCell.swift */; };
-		48B38DFA2276437C00F0EA85 /* CalendarGoalCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B38DF92276437C00F0EA85 /* CalendarGoalCountTableViewCell.swift */; };
+		48B38DFA2276437C00F0EA85 /* CalendarGoalCountHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B38DF92276437C00F0EA85 /* CalendarGoalCountHeaderView.swift */; };
 		48CCA55F226F9BDE0034BACB /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCA55E226F9BDE0034BACB /* CalendarHeaderView.swift */; };
 		48CCA561226FC22F0034BACB /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCA560226FC22F0034BACB /* Style.swift */; };
 		A9ED8095A8D2B089BF2FC387 /* Pods_UpUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B6E465FA244D5B61860CDA0 /* Pods_UpUITests.framework */; };
@@ -70,7 +70,7 @@
 		488438CF226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGoalTableViewCell.swift; sourceTree = "<group>"; };
 		488E0A18226A81D900ABDB50 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		488E0A1A226A844C00ABDB50 /* CalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableViewCell.swift; sourceTree = "<group>"; };
-		48B38DF92276437C00F0EA85 /* CalendarGoalCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGoalCountTableViewCell.swift; sourceTree = "<group>"; };
+		48B38DF92276437C00F0EA85 /* CalendarGoalCountHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGoalCountHeaderView.swift; sourceTree = "<group>"; };
 		48CCA55E226F9BDE0034BACB /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		48CCA560226FC22F0034BACB /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		5910D3136DCB67DD23DDEA97 /* Pods-UpUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UpUITests.debug.xcconfig"; path = "Target Support Files/Pods-UpUITests/Pods-UpUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 				484D0AFB226E7122007AFACE /* CalendarLayout.swift */,
 				48CCA55E226F9BDE0034BACB /* CalendarHeaderView.swift */,
 				488438CF226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift */,
-				48B38DF92276437C00F0EA85 /* CalendarGoalCountTableViewCell.swift */,
+				48B38DF92276437C00F0EA85 /* CalendarGoalCountHeaderView.swift */,
 			);
 			path = CalendarVC;
 			sourceTree = "<group>";
@@ -563,7 +563,7 @@
 				C3751A422267045A00FF0E22 /* NotificationNameHelper.swift in Sources */,
 				4859196D226A8C4F00A7634C /* CalendarCollectionViewCell.swift in Sources */,
 				C3751A2C225804DC00FF0E22 /* ProjectType.swift in Sources */,
-				48B38DFA2276437C00F0EA85 /* CalendarGoalCountTableViewCell.swift in Sources */,
+				48B38DFA2276437C00F0EA85 /* CalendarGoalCountHeaderView.swift in Sources */,
 				C3BE431F226E76EF00AB8C6F /* CoreDataStack.swift in Sources */,
 				C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */,
 				488E0A1B226A844C00ABDB50 /* CalendarTableViewCell.swift in Sources */,

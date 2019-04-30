@@ -58,16 +58,12 @@ class CalendarGoalTableViewCell: UITableViewCell {
     }
     
     private func removeTimeViews() {
-        [topLineView, timeLabel].forEach { (view) in
-            view.removeFromSuperview()
-        }
+        timeLabel.removeFromSuperview()
     }
     
     private func setupTimeViews() {
         self.addSubview(topContainerView)
-        [topLineView, timeLabel].forEach { (view) in
-            topContainerView.addSubview(view)
-        }
+        topContainerView.addSubview(timeLabel)
         
         topContainerView.snp.makeConstraints { (make) in
             make.left.right.top.equalToSuperview()
@@ -80,13 +76,6 @@ class CalendarGoalTableViewCell: UITableViewCell {
             make.height.equalTo(40)
             make.centerY.equalToSuperview()
         }
-        
-//        topLineView.snp.makeConstraints { (make) in
-//            make.centerY.equalTo(timeLabel.snp.centerY)
-//            make.left.equalTo(timeLabel.snp.right).offset(16)
-//            make.right.equalToSuperview().inset(24)
-//            make.height.equalTo(0.5)
-//        }
     }
     
     private func setupViews() {
@@ -152,7 +141,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
     let clockIconView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = Style.Colors.Palette01.gunMetal
-        imageView.image = #imageLiteral(resourceName: "whiteTimeIcon")
+        imageView.image = #imageLiteral(resourceName: "whiteEmptyTimeIcon")
         return imageView
     }()
     
@@ -190,19 +179,10 @@ class CalendarGoalTableViewCell: UITableViewCell {
         label.font = Style.Fonts.bold15
         label.textColor = Style.Colors.Palette01.pureWhite
         label.textAlignment = .center
-        label.backgroundColor = #colorLiteral(red: 0, green: 0.4352941176, blue: 1, alpha: 1)
+        label.backgroundColor = Style.Colors.Palette01.mainBlue
         label.layer.borderColor = Style.Colors.Palette01.pureWhite.cgColor
         label.layer.cornerRadius = 3
         label.clipsToBounds = true
-//        label.layer.borderWidth = 1
         return label
     }()
-    
-    let topLineView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Style.Colors.Palette01.pureWhite
-        return view
-    }()
-    
-    
 }

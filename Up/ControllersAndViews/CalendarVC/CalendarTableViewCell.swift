@@ -47,8 +47,6 @@ class CalendarTableViewCell: UITableViewCell {
     func setupCollectionView() {
         let layout = CalendarLayout()
         layout.scrollDirection = .horizontal
-        
-//        var frame = CGRect(x: 16, y: 116, width: self.frame.width - 32, height: (self.frame.width - 32)/7 * 6)
         let frame  = CGRect.zero
         let cv = UICollectionView(frame: frame, collectionViewLayout: layout)
         
