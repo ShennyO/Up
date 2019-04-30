@@ -13,14 +13,6 @@ import UIKit
 class HeaderView: UIView {
     
     //MARK: OUTLETS
-    var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
-        label.textAlignment = .left
-        return label
-    }()
-    
     
     let getStartedLabel: UILabel = {
         let label = UILabel()
@@ -32,26 +24,20 @@ class HeaderView: UIView {
     }()
     
     private func addOutlets() {
-        self.addSubview(titleLabel)
         self.addSubview(getStartedLabel)
     }
     
     private func setConstraints() {
-        titleLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(15)
-        }
     
         getStartedLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(25)
-            make.top.equalToSuperview().offset(100)
+            make.centerY.equalToSuperview()
         }
         
     }
     
-    init(frame: CGRect, title: String) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        titleLabel.text = title
         addOutlets()
         setConstraints()
         

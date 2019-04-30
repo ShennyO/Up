@@ -56,19 +56,16 @@ class UpViewController: UIViewController {
         
         if total != 0 {
     
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75)
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 25)
             tableHeaderView.frame = tableHeaderFrame
             self.view.layoutIfNeeded()
         
         } else {
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 130)
-                self.tableHeaderView.frame = tableHeaderFrame
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.view.layoutIfNeeded()
-                })
-            }
+            
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
+            self.tableHeaderView.frame = tableHeaderFrame
+            
+            
         }
         
         headerDelegate.alertHeaderView(total: total)
@@ -81,6 +78,7 @@ class UpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Tasks"
         setUp()
         fetchGoals() {
             self.upTableView.reloadData()
@@ -135,7 +133,7 @@ extension UpViewController {
     }
     
     private func setUpTableView() {
-        tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200), title: "Today")
+        tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
         self.upTableView = UITableView()
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none

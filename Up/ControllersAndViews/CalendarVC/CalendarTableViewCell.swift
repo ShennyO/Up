@@ -47,6 +47,8 @@ class CalendarTableViewCell: UITableViewCell {
     func setupCollectionView() {
         let layout = CalendarLayout()
         layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 8
         let frame  = CGRect.zero
         let cv = UICollectionView(frame: frame, collectionViewLayout: layout)
         
@@ -56,6 +58,7 @@ class CalendarTableViewCell: UITableViewCell {
         cv.showsVerticalScrollIndicator = false
         cv.tag = 1
         cv.allowsSelection = true
+        cv.alwaysBounceHorizontal = true
         
         cv.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: calendarCollectionViewCellID)
         

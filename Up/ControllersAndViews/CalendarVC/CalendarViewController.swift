@@ -22,7 +22,11 @@ class CalendarViewController: UIViewController {
     var todayIndexPath: IndexPath?
     
     var lastSelectedCollectionViewIndexPath: IndexPath?
+    var numberOfSectionsInCollectionView = 0
+    var didScrollCollectionViewToToday = false
     
+    var lastScrollViewOffset: CGFloat = 0
+
     var monthInfo = [Int:[Int]]()
     
     let firstDayIndex = 0
@@ -65,9 +69,7 @@ class CalendarViewController: UIViewController {
 
         self.navigationItem.title = "Calendar"
         
-        
         fetchData()
-        endDate = formatter.date(from: "01/01/2025")!
         
         setupViews()
         setupTableView()
@@ -78,7 +80,8 @@ class CalendarViewController: UIViewController {
         
         let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, sorting: .completionDateAscending) as! [Goal]
         if goalsArr.count == 0 { return }
-        startDate = goalsArr[0].completionDate!
+        startDate = gregorian.date(byAdding: .year, value: -1, to: goalsArr[0].completionDate!, options: NSCalendar.Options())!
+        endDate = gregorian.date(byAdding: .year, value: 1, to: goalsArr.last!.completionDate!, options: NSCalendar.Options())!
         
         for goal in goalsArr {
             let key = formatter.string(from: goal.completionDate!)
@@ -268,7 +271,8 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         
         let differenceComponents = self.gregorian.components(.month, from: startDate, to: endDate, options: NSCalendar.Options())
         
-        return differenceComponents.month! + 1
+        numberOfSectionsInCollectionView = differenceComponents.month! + 1
+        return numberOfSectionsInCollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -327,13 +331,24 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if didScrollCollectionViewToToday {
+            return
+        }
+        let initalSection = numberOfSectionsInCollectionView - 13
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        
+        guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: initalSection)) else { return }
+        collectionView.setContentOffset(CGPoint(x: attri.frame.origin.x - 2, y: 0), animated: false)
+        didScrollCollectionViewToToday = true
+    }
 }
 
 extension CalendarViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.tag == 1 {
-            let section = Int(round(scrollView.contentOffset.x / self.view.frame.width))
+            let section = Int(round(scrollView.contentOffset.x / scrollView.bounds.width))
             updateHeaderView(offset: section)
         }
     }
@@ -378,6 +393,7 @@ extension CalendarViewController: GoalCompletionDelegate {
             goals[dateString] = [goal]
         }
         
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         let tvCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! CalendarTableViewCell
         let cv = tvCell.calendarCollectionView
         
