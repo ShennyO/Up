@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "rocket-ship.png",
+      "filename" : "selectedChart@1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "selectedChart@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "selectedChart@3x.png",
       "scale" : "3x"
     }
   ],

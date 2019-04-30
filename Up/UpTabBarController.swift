@@ -17,6 +17,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     var firstTabbarItemImageView: UIImageView!
     var secondTabbarItemImageView: UIImageView!
+    var thirdTabbarItemImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,6 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         self.tabBar.barTintColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         
-
     }
     
     private func configNavBar(navController: UINavigationController) {
@@ -47,12 +47,20 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         UITabBar.appearance().backgroundImage = UIImage.colorForNavBar(color: .black)
         UITabBar.appearance().shadowImage = UIImage.colorForNavBar(color: #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))
         
+        //  Create tab item three
+        let statsVC = StatsViewController()
+        let statsNavVC = UINavigationController(rootViewController: statsVC)
+        statsNavVC.tabBarItem.image = #imageLiteral(resourceName: "whiteChart")
+        statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueChart")
+        statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        statsNavVC.tabBarItem.tag = 3
+        
 //        Create tab item two
         let calendarVC = CalendarViewController()
         let calendarNavVC = UINavigationController(rootViewController: calendarVC)
         calendarNavVC.tabBarItem.image = #imageLiteral(resourceName: "whiteCal")
         calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueCal")
-        calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         calendarNavVC.tabBarItem.tag = 2
         calendarNavVC.navigationBar.barTintColor = Style.Colors.Palette01.gunMetal
         configNavBar(navController: calendarNavVC)
@@ -64,11 +72,11 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         let goalsNavVC = UINavigationController(rootViewController: goalsVC)
         goalsNavVC.tabBarItem.image = #imageLiteral(resourceName: "whiteList")
         goalsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueList")
-        goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        goalsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         goalsNavVC.tabBarItem.tag = 1
         configNavBar(navController: goalsNavVC)
         
-        self.viewControllers = [goalsNavVC, calendarNavVC]
+        self.viewControllers = [goalsNavVC, calendarNavVC, statsNavVC]
         
         let firstItemView = tabBar.subviews.first!
         firstTabbarItemImageView = firstItemView.subviews.first as? UIImageView
@@ -77,7 +85,10 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         let secondItemView = self.tabBar.subviews[1]
         self.secondTabbarItemImageView = secondItemView.subviews.first as? UIImageView
         self.secondTabbarItemImageView.contentMode = .center
-
+        
+        let thirdItemView = self.tabBar.subviews[2]
+        self.thirdTabbarItemImageView = thirdItemView.subviews.first as? UIImageView
+        self.thirdTabbarItemImageView.contentMode = .center
         
     }
     
@@ -98,6 +109,8 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
             animate(firstTabbarItemImageView)
         case 2:
             animate(secondTabbarItemImageView)
+        case 3:
+            animate(thirdTabbarItemImageView)
         default:
             return
         }

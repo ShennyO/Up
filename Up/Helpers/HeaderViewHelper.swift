@@ -17,7 +17,7 @@ class HeaderView: UIView {
     let getStartedLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
-        label.text = "Add a goal to get started"
+        label.text = "Add a task to get started"
         label.textColor = UIColor.white
         label.isHidden = false
         return label
