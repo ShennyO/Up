@@ -14,14 +14,17 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     override var isSelected: Bool{
         didSet{
             if isSelected == true {
-                backgroundColor = .gray
+                backgroundColor = Style.Colors.Palette01.darkBlue
+                dayLabel.textColor = Style.Colors.Palette01.pureWhite
             } else {
                 backgroundColor = cellBackgroundColor
+                dayLabel.textColor = cellTextColor
             }
         }
     }
     
-    var cellBackgroundColor = UIColor.white
+    var cellBackgroundColor = Style.Colors.Palette01.pureWhite
+    var cellTextColor = Style.Colors.Palette01.gunMetal
     
     let dayLabel: UILabel = {
         let label = UILabel()
@@ -48,30 +51,36 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         dayLabel.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalToSuperview()
         }
-        adjustBackgroundColor(goalCount: goalCount)
         if isEnabled == true {
             self.isUserInteractionEnabled = true
-            self.dayLabel.textColor = Style.Colors.Palette01.gunMetal
+            adjustBackgroundColor(goalCount: goalCount)
         } else {
             self.isUserInteractionEnabled = false
-            self.dayLabel.textColor = .gray
+            self.backgroundColor = Style.Colors.Palette01.pureWhite
+            self.dayLabel.textColor = .lightGray
         }
     }
     
     private func adjustBackgroundColor(goalCount: Int) {
+        cellTextColor = Style.Colors.Palette01.pureWhite
         if goalCount == 0 {
             cellBackgroundColor = Style.Colors.Palette01.pureWhite
-        } else if goalCount < 2 {
+            cellTextColor = Style.Colors.Palette01.gunMetal
+        } else if goalCount <= 2 {
             cellBackgroundColor = Style.Colors.calendarShade1
-        } else if goalCount < 5 {
+        } else if goalCount <= 5 {
             cellBackgroundColor = Style.Colors.calendarShade2
-        } else if goalCount < 10 {
+        } else if goalCount <= 10 {
             cellBackgroundColor = Style.Colors.calendarShade3
-        } else if goalCount < 15 {
+        } else if goalCount <= 15 {
             cellBackgroundColor = Style.Colors.calendarShade4
-        } else {
+        } else if goalCount <= 25 {
             cellBackgroundColor = Style.Colors.calendarShade5
+        } else {
+            cellBackgroundColor = Style.Colors.calendarShade6
         }
         self.backgroundColor = cellBackgroundColor
+        dayLabel.textColor = cellTextColor
     }
+    
 }
