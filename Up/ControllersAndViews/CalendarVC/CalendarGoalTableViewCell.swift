@@ -73,8 +73,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
         timeLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().inset(20)
             make.width.equalTo(60)
-            make.height.equalTo(40)
-            make.centerY.equalToSuperview()
+            make.bottom.top.equalToSuperview().inset(16)
         }
     }
     

@@ -217,10 +217,10 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
                 let prevGoal = goals[selectedDateString]![indexPath.row - 1]
                 let prevGoalHour = gregorian.component(.hour, from: prevGoal.completionDate!)
                 if hour != prevGoalHour {
-                    return 132
+                    return 128
                 }
             } else {
-                return 132
+                return 128
             }
             return 60
         }
