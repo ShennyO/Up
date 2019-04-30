@@ -153,7 +153,6 @@ class ProjectCell: UITableViewCell {
         
     }
     
-    
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         
         if highlighted {

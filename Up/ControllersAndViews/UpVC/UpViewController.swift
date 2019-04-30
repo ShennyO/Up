@@ -20,15 +20,21 @@ protocol UpVCToUpVCHeaderDelegate {
 
 class UpViewController: UIViewController {
     
+    var originalCenter: CGPoint!
+    var center: CGPoint!
+    
+    
     let stack = CoreDataStack.instance
+    var initialCenter: CGPoint?
+
     
     //MARK: OUTLETS
     var upTableView: UITableView!
+    var tap: UILongPressGestureRecognizer!
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "lightBlueAdd"), for: .normal)
-        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
         
     }()
@@ -95,15 +101,14 @@ class UpViewController: UIViewController {
 
 
 extension UpViewController {
-    //MARK: OBJ FUNCTIONS
     
-    @objc func addButtonTapped() {
+    
+    //MARK: PRIVATE FUNCTIONS
+    func addButtonTapped() {
         let nextVC = NewProjectViewController()
         nextVC.goalDelegate = self
         self.present(nextVC, animated: true, completion: nil)
     }
-    
-    //MARK: PRIVATE FUNCTIONS
     
     private func fetchGoals(completion: @escaping () -> ()) {
         let results = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .dateDescending) as? [Goal]
@@ -124,16 +129,76 @@ extension UpViewController {
         }
     }
     
+    private func addLongTapGesture() {
+        tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tap.minimumPressDuration = 0
+        self.addButton.addGestureRecognizer(tap)
+    }
+    
+    
+    
+    @objc private func handleTap(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        
+        if gestureRecognizer.state == .began {
+            //in here we want to animate size of our view, so we want to manipulate the height/width
+            
+            originalCenter = gestureRecognizer.location(in: self.view)
+            
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+                self.addButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            })
+            
+        } else if gestureRecognizer.state == .ended {
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.addButtonTapped()
+            }
+            
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                self.addButton.transform = CGAffineTransform.identity
+                
+            })
+            
+        } else if gestureRecognizer.state == .changed {
+            
+            center = gestureRecognizer.location(in: self.view)
+            print("Center: ", center)
+            let width: CGFloat = 50
+            let height: CGFloat = 50
+            let box = CGRect(x: center!.x - width / 2, y: center!.y - height / 2, width: width, height: height)
+            if box.contains(originalCenter) {
+                print("In the button")
+            } else {
+                //if it's outside the button
+                self.tap.isEnabled = false
+                UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                    
+                    self.addButton.transform = CGAffineTransform.identity
+                }, completion: { (res) in
+                    self.tap.isEnabled = true
+                })
+                
+                return
+            }
+        }
+        
+    }
+    
     private func setUp() {
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         setUpTableView()
         addOutlets()
         setConstraints()
+        addLongTapGesture()
     }
     
     private func setUpTableView() {
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
         self.upTableView = UITableView()
+        self.upTableView.estimatedRowHeight = 0
+        self.upTableView.estimatedSectionHeaderHeight = 0
+        self.upTableView.estimatedSectionFooterHeight = 0
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
         self.upTableView.delegate = self
