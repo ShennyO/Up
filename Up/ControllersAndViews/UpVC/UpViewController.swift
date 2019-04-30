@@ -148,7 +148,7 @@ extension UpViewController {
             make.top.equalToSuperview()
             make.right.equalToSuperview()
             make.left.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-49)
+            make.bottom.equalToSuperview()
         }
         
     }

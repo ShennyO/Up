@@ -63,7 +63,7 @@ class ProjectCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.numberOfLines = 0
-        label.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        label.textColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         return label
     }()
     
@@ -71,7 +71,7 @@ class ProjectCell: UITableViewCell {
     var taskSquareView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
-        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.borderColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         view.layer.borderWidth = 1
         view.layer.cornerRadius = 3
         return view
@@ -80,7 +80,7 @@ class ProjectCell: UITableViewCell {
     var taskSquareFillView: UIView = {
         
         let view = UIView()
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         view.layer.cornerRadius = 3
         view.isHidden = true
         return view
