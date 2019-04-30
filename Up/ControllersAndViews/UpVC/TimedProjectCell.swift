@@ -57,7 +57,7 @@ class TimedProjectCell: UITableViewCell {
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         return label
     }()

@@ -27,7 +27,7 @@ class UpViewController: UIViewController {
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "addButton"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "lightBlueAdd"), for: .normal)
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
         
