@@ -119,8 +119,7 @@ extension UpViewController {
     
     private func setConstraints() {
         addButton.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-60)
+            make.right.bottom.equalToSuperview().inset(10)
             make.height.width.equalTo(65)
         }
     }
