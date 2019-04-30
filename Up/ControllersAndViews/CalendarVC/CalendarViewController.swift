@@ -37,6 +37,7 @@ class CalendarViewController: UIViewController {
     var selectedDateString = "" {
         didSet {
             tableView.reloadSections(IndexSet([1]), with: .automatic)
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
     }
     
