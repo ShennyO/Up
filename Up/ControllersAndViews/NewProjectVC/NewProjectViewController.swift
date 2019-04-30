@@ -58,7 +58,7 @@ class NewProjectViewController: UIViewController {
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 4
         button.setImage(#imageLiteral(resourceName: "whiteRectangle"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 17, left: 17, bottom: 17, right: 17)
+        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = true
@@ -70,7 +70,7 @@ class NewProjectViewController: UIViewController {
         let button = UIButton()
         button.layer.cornerRadius = 4
         button.setImage(#imageLiteral(resourceName: "whiteTimeIcon"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        button.imageEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = false
@@ -144,13 +144,13 @@ class NewProjectViewController: UIViewController {
         
         
         taskButton.snp.makeConstraints { (make) in
-            make.height.equalTo(65)
-            make.width.equalTo(65)
+            make.height.equalTo(66)
+            make.width.equalTo(66)
         }
         
         sessionButton.snp.makeConstraints { (make) in
-            make.height.equalTo(65)
-            make.width.equalTo(65)
+            make.height.equalTo(66)
+            make.width.equalTo(66)
         }
         
         

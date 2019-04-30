@@ -360,8 +360,9 @@ class SessionViewController: UIViewController {
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         addOutlets()
         setConstraints()
-        addCongratsViewAndBlur()
         addLayers()
+        addCongratsViewAndBlur()
+        
         
         if timedGoal != nil {
             timeInSeconds = Int(timedGoal!.duration) * 60
