@@ -125,7 +125,7 @@ extension UpViewController {
     private func setConstraints() {
         addButton.snp.makeConstraints { (make) in
             make.right.bottom.equalToSuperview().inset(10)
-            make.height.width.equalTo(65)
+            make.height.width.equalTo(58)
         }
     }
     
@@ -145,17 +145,17 @@ extension UpViewController {
             originalCenter = gestureRecognizer.location(in: self.view)
             
             UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
-                self.addButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                self.addButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
             })
             
         } else if gestureRecognizer.state == .ended {
             
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
                 self.addButtonTapped()
             }
             
-            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 self.addButton.transform = CGAffineTransform.identity
                 
             })
@@ -172,7 +172,7 @@ extension UpViewController {
             } else {
                 //if it's outside the button
                 self.tap.isEnabled = false
-                UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                     
                     self.addButton.transform = CGAffineTransform.identity
                 }, completion: { (res) in
