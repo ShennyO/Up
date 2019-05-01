@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 
-
 protocol UpVCToTimedProjectCellDelegate {
     func showBlackCheck()
 }
@@ -23,11 +22,8 @@ class UpViewController: UIViewController {
     var originalCenter: CGPoint!
     var center: CGPoint!
     
-    
     let stack = CoreDataStack.instance
-    var initialCenter: CGPoint?
 
-    
     //MARK: OUTLETS
     var upTableView: UITableView!
     var tap: UILongPressGestureRecognizer!
@@ -36,18 +32,15 @@ class UpViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "lightBlueAdd"), for: .normal)
         return button
-        
     }()
-    
     
     var tableHeaderView: HeaderView!
     
     
-    //MARK: VARIABLES
+    //MARK: DELEGATES
     var headerDelegate: UpVCToUpVCHeaderDelegate!
     var goalCompletionDelegate: GoalCompletionDelegate!
-    
-    
+
     //PURPOSE: communication from this VC to timed Cell
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     
@@ -61,20 +54,25 @@ class UpViewController: UIViewController {
         let total = goals.count
         
         if total != 0 {
-    
+            
             let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 25)
             tableHeaderView.frame = tableHeaderFrame
-            self.view.layoutIfNeeded()
-        
+            self.headerDelegate.alertHeaderView(total: total)
+            
         } else {
-            
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
-            self.tableHeaderView.frame = tableHeaderFrame
-            
+        
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
+                self.tableHeaderView.frame = tableHeaderFrame
+                UIView.animate(withDuration: 0.6, animations: {
+                    self.view.layoutIfNeeded()
+                })
+                self.headerDelegate.alertHeaderView(total: total)
+            }
             
         }
         
-        headerDelegate.alertHeaderView(total: total)
+        
         
     }
     
@@ -125,7 +123,7 @@ extension UpViewController {
     private func setConstraints() {
         addButton.snp.makeConstraints { (make) in
             make.right.bottom.equalToSuperview().inset(10)
-            make.height.width.equalTo(58)
+            make.height.width.equalTo(60)
         }
     }
     

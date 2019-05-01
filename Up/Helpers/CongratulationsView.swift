@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CongratsViewToSessionViewDelegate {
+protocol CongratsViewToSessionVCDelegate: class {
     func dismissTapped()
     func addButtonTapped(time: Int)
 }
@@ -15,7 +15,7 @@ protocol CongratsViewToSessionViewDelegate {
 class CongratulationsView: UIView {
     
     //MARK: VARIABLES
-    var delegate: CongratsViewToSessionViewDelegate!
+    weak var delegate: CongratsViewToSessionVCDelegate!
     var times: [Int] = []
     var selectedTime = 5
     
@@ -268,6 +268,10 @@ class CongratulationsView: UIView {
         addOutlets()
         setConstraints()
         
+    }
+    
+    deinit {
+        print("Congrats View Deinitialized!")
     }
     
     required init?(coder aDecoder: NSCoder) {

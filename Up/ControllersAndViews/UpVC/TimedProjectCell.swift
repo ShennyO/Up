@@ -272,15 +272,15 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
         blackCheckMark.isHidden = false
         blackCheckMark.alpha = 0
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             self.generator.impactOccurred()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
                 self.strikeThrough()
             })
             UIView.animate(withDuration: 0.35, animations: {
                 self.blackCheckMark.alpha = 1
             }, completion: { (res) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.27, execute: {
                      self.delegate.completeTimedCell(cell: self)
                 })
                 
