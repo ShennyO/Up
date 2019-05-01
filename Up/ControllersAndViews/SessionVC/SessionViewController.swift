@@ -374,6 +374,10 @@ class SessionViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    deinit{
+        print("Object is deinitialized")
+    }
+    
 }
 
 extension SessionViewController: CongratsViewToSessionViewDelegate {
@@ -401,6 +405,7 @@ extension SessionViewController: CongratsViewToSessionViewDelegate {
     }
     
     func dismissTapped() {
+        print(self.view.layer.sublayers)
         self.view.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         dismissedBlock!()
         self.dismiss(animated: true, completion: nil)

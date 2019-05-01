@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TimedCellToUpVCDelegate {
+protocol TimedCellToUpVCDelegate: class {
     func deleteTimedCell(cell: UITableViewCell)
     func completeTimedCell(cell: UITableViewCell)
 }
@@ -27,7 +27,7 @@ class TimedProjectCell: UITableViewCell {
         }
     }
     var index: IndexPath!
-    var delegate: TimedCellToUpVCDelegate!
+    weak var delegate: TimedCellToUpVCDelegate!
     
     
     

@@ -8,11 +8,11 @@
 import UIKit
 
 
-protocol newProjectVCToTextInputViewDelegate {
+protocol newProjectVCToTextInputViewDelegate: class {
     func populateTextView(text: String)
 }
 
-protocol newProjectVCToUpVCDelegate {
+protocol newProjectVCToUpVCDelegate: class {
     func addGoalToUpVC(goal: Goal)
     func editGoalToUpVC(goal: Goal, index: Int)
 }
@@ -29,9 +29,9 @@ class NewProjectViewController: UIViewController {
     var blurEffectView: UIVisualEffectView?
     var selectedTime = 30
     var descriptionText: String?
-    var textViewDelegate: newProjectVCToTextInputViewDelegate!
-    var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
-    var goalDelegate: newProjectVCToUpVCDelegate!
+    weak var textViewDelegate: newProjectVCToTextInputViewDelegate!
+    weak var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
+    weak var goalDelegate: newProjectVCToUpVCDelegate!
 
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -420,8 +420,6 @@ class NewProjectViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
-    
 }
 
 extension NewProjectViewController: CustomTextViewToNewProjVCDelegate {
@@ -433,9 +431,8 @@ extension NewProjectViewController: CustomTextViewToNewProjVCDelegate {
 
 
 
-
 //From NewProjectVC back to TimeInputButton
-protocol NewProjectVCToTimeInputButtonDelegate {
+protocol NewProjectVCToTimeInputButtonDelegate: class {
     
     func sendSelectedTime(time: Int)
     

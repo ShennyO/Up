@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol GoalCompletionDelegate {
+protocol GoalCompletionDelegate: class {
     func goalWasCompleted(goal: Goal)
 }
 

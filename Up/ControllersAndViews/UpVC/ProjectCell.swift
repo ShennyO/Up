@@ -9,7 +9,7 @@ import UIKit
 import AudioToolbox
 
 // nonTimed Cell to UPVC
-protocol NonTimedCellToUpVCDelegate {
+protocol NonTimedCellToUpVCDelegate: class {
     func deleteNonTimedCell(cell: UITableViewCell)
     func completeNonTimedCell(cell: UITableViewCell)
     
@@ -26,7 +26,7 @@ class ProjectCell: UITableViewCell {
         }
     }
     var index: IndexPath!
-    var delegate: NonTimedCellToUpVCDelegate!
+    weak var delegate: NonTimedCellToUpVCDelegate!
     
     let generator = UIImpactFeedbackGenerator(style: .medium)
     

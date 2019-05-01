@@ -10,11 +10,11 @@ import SnapKit
 
 
 
-protocol UpVCToTimedProjectCellDelegate {
+protocol UpVCToTimedProjectCellDelegate: class {
     func showBlackCheck()
 }
 
-protocol UpVCToUpVCHeaderDelegate {
+protocol UpVCToUpVCHeaderDelegate: class {
     func alertHeaderView(total: Int)
 }
 
@@ -38,12 +38,12 @@ class UpViewController: UIViewController {
     
     
     //MARK: VARIABLES
-    var headerDelegate: UpVCToUpVCHeaderDelegate!
-    var goalCompletionDelegate: GoalCompletionDelegate!
+    weak var headerDelegate: UpVCToUpVCHeaderDelegate!
+    weak var goalCompletionDelegate: GoalCompletionDelegate!
     
     
     //PURPOSE: communication from this VC to timed Cell
-    var timedCellDelegate: UpVCToTimedProjectCellDelegate!
+    weak var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     
     var goals: [Goal] = [] {
         didSet {
@@ -89,6 +89,7 @@ class UpViewController: UIViewController {
         super.viewWillAppear(animated)
         upTableView.reloadData()
     }
+    
     
     
 }
