@@ -85,6 +85,7 @@ class CalendarViewController: UIViewController {
         endDate = gregorian.date(byAdding: .year, value: 1, to: goalsArr.last!.completionDate!, options: NSCalendar.Options())!
         
         for goal in goalsArr {
+            
             let key = formatter.string(from: goal.completionDate!)
             if goals[key] != nil {
                 goals[key]!.append(goal)
@@ -102,7 +103,7 @@ class CalendarViewController: UIViewController {
         tableView.backgroundColor = Style.Colors.Palette01.gunMetal
         tableView.separatorStyle = .none
         
-        tableView.allowsSelection = false
+//        tableView.allowsSelection = false
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -211,6 +212,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             let containerInsets: CGFloat = 32
             return cvHeight + headerHeight + containerInsets
         default:
+            var height: CGFloat = 60
+            
             let goal = goals[selectedDateString]![indexPath.row]
             let hour = gregorian.component(.hour, from: goal.completionDate!)
             
@@ -218,12 +221,19 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
                 let prevGoal = goals[selectedDateString]![indexPath.row - 1]
                 let prevGoalHour = gregorian.component(.hour, from: prevGoal.completionDate!)
                 if hour != prevGoalHour {
-                    return 128
+                    height += 68
                 }
             } else {
-                return 128
+                height += 68
             }
-            return 60
+            
+            if let selectedIP = tableView.indexPathForSelectedRow {
+                if selectedIP == indexPath {
+                    height += 60
+                }
+            }
+            
+            return height
         }
     }
     
@@ -244,6 +254,27 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         
         headerView.setup(dateString: selectedDateString, goalCount: goals[selectedDateString]!.count)
         return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? CalendarGoalTableViewCell else { return }
+        tableView.beginUpdates()
+        
+        cell.animateSelection(expanding: true) { (_) in
+            tableView.endUpdates()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        
+        if let indexPathForSelectedRow = tableView.indexPathForSelectedRow,
+            indexPathForSelectedRow == indexPath {
+            tableView.deselectRow(at: indexPath, animated: true)
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            return nil
+        }
+        return indexPath
     }
 }
 
@@ -295,7 +326,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         var month = String(currentMonthInfo[monthIndex])
         let year = String(currentMonthInfo[yearIndex])
         if month.count == 1 { month = "0" + month}
-        let dateString = String(indexPath.row) + "/" + month + "/" + year
+        let dateString = String(indexPath.row + 1) + "/" + month + "/" + year
         
         if indexPath.item >= fdIndex && indexPath.item < fdIndex + nDays {
             let goalsForCell = goals[dateString] ?? []
@@ -319,7 +350,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         var month = String(monthInfo[indexPath.section]![monthIndex])
         let year = String(monthInfo[indexPath.section]![yearIndex])
         if month.count == 1 { month = "0" + month}
-        let sds = String(indexPath.row) + "/" + month + "/" + year
+        let sds = String(indexPath.row + 1) + "/" + month + "/" + year
         if selectedDateString == sds {
             selectedDateString = ""
             lastSelectedCollectionViewIndexPath = nil

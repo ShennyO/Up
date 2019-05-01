@@ -12,6 +12,7 @@ struct Style {
     
     struct Fonts {
         static let bold12 = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
+        static let semibold12 = UIFont(name: "AppleSDGothicNeo-Semibold", size: 12)
         static let bold15 = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         static let medium18 = UIFont(name: "AppleSDGothicNeo-Medium", size: 18)
         static let semibold18 = UIFont(name: "AppleSDGothicNeo-Semibold", size: 18)

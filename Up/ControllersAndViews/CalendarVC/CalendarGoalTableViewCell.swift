@@ -13,6 +13,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none
         setupViews()
     }
     
@@ -20,13 +21,16 @@ class CalendarGoalTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(goal: Goal, withTime: Int?) {
+    func setup(goal: Goal, withTime time: Int?) {
+//        Create formatter for date-string conversion
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .short
+        
         self.backgroundColor = Style.Colors.Palette01.gunMetal
         descriptionLabel.text = goal.goalDescription
         
+//        Display the right icon based on the goal type
         if goal.duration == 0 {
             clockIconView.isHidden = true
             boxView.isHidden = false
@@ -35,18 +39,21 @@ class CalendarGoalTableViewCell: UITableViewCell {
             boxView.isHidden = true
         }
         
-        if let wt = withTime {
+        exactTimeLabel.text = formatter.string(from: goal.completionDate!)
+        
+//      Format time for display
+        if let t = time {
             setupTimeViews()
             var labelText = ""
-            if wt == 0 {
-                labelText = String(wt + 12)
-            } else if wt >= 13 {
-                labelText = String(wt - 12)
+            if t == 0 {
+                labelText = String(t + 12)
+            } else if t >= 13 {
+                labelText = String(t - 12)
             } else {
-                labelText = String(wt)
+                labelText = String(t)
             }
 
-            if wt < 12 {
+            if t < 12 {
                 labelText += " AM "
             } else {
                 labelText += " PM "
@@ -57,19 +64,26 @@ class CalendarGoalTableViewCell: UITableViewCell {
         }
     }
     
+//          Remove the top container from the cell
     private func removeTimeViews() {
-        timeLabel.removeFromSuperview()
+        topContainerView.removeFromSuperview()
     }
     
     private func setupTimeViews() {
+        
+//        Add views into proper superviews
         self.addSubview(topContainerView)
         topContainerView.addSubview(timeLabel)
         
+//        Set constraints for views
+//         * Self
         topContainerView.snp.makeConstraints { (make) in
             make.left.right.top.equalToSuperview()
             make.bottom.equalTo(bottomContainerView.snp.top)
+            make.height.equalTo(68)
         }
         
+//         * topContainerView
         timeLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().inset(20)
             make.width.equalTo(60)
@@ -79,7 +93,8 @@ class CalendarGoalTableViewCell: UITableViewCell {
     
     private func setupViews() {
         
-        [bottomContainerView, lineView].forEach { (view) in
+//        Add views into proper superviews
+        [detailContainerView, bottomContainerView, lineView].forEach { (view) in
             self.addSubview(view)
         }
         
@@ -87,11 +102,22 @@ class CalendarGoalTableViewCell: UITableViewCell {
             bottomContainerView.addSubview(view)
         }
         
+        detailContainerView.addSubview(exactTimeLabel)
+        
+//        Set constraints for views
+//         * Self
         bottomContainerView.snp.makeConstraints { (make) in
-            make.bottom.left.right.equalToSuperview()
+            make.left.right.equalToSuperview()
+            make.top.equalToSuperview().priority(1)
+            make.bottom.equalTo(detailContainerView.snp.top)
             make.height.equalTo(60)
         }
         
+        detailContainerView.snp.makeConstraints { (make) in
+            make.bottom.left.right.equalToSuperview()
+        }
+        
+//         * bottomContainerView
         lineView.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(50)
@@ -123,17 +149,49 @@ class CalendarGoalTableViewCell: UITableViewCell {
             make.left.equalTo(clockIconView.snp.right).offset(16)
             make.top.bottom.equalToSuperview()
         }
+
+//         * detailContainerView
+        exactTimeLabel.snp.makeConstraints { (make) in
+            make.height.width.centerY.centerX.equalToSuperview()
+        }
+    }
+    
+    func animateSelection(expanding: Bool, closure: ((Bool) -> Void)?) {
+//        if expanding {
+//            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
+//                self.bottomContainerView.alpha = 1
+//            }) { (done) in
+//                if let closure = closure {
+//                    closure(done)
+//                }
+//            }
+//        } else {
+//            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
+//                self.bottomContainerView.alpha = 0
+//            }) { (done) in
+//                if let closure = closure {
+                    closure!(true)
+//                }
+//            }
+//        }
     }
     
     let bottomContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Style.Colors.Palette01.gunMetal
+        view.backgroundColor = .clear
         return view
     }()
     
     let topContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = Style.Colors.Palette01.gunMetal
+        return view
+    }()
+    
+    let detailContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Style.Colors.Palette01.gunMetal
+        view.alpha = 0
         return view
     }()
     
@@ -168,7 +226,14 @@ class CalendarGoalTableViewCell: UITableViewCell {
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Style.Fonts.bold15
-        label.numberOfLines = 0
+        label.numberOfLines = 2
+        label.textColor = Style.Colors.Palette01.pureWhite
+        return label
+    }()
+    
+    let exactTimeLabel: UILabel = {
+        let label = UILabel()
+        label.font = Style.Fonts.bold12
         label.textColor = Style.Colors.Palette01.pureWhite
         return label
     }()
@@ -184,4 +249,5 @@ class CalendarGoalTableViewCell: UITableViewCell {
         label.clipsToBounds = true
         return label
     }()
+    
 }

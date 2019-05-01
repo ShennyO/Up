@@ -13,6 +13,7 @@ class CalendarTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = Style.Colors.Palette01.gunMetal
+        self.selectionStyle = .none
         setupCollectionView()
         setupViews()
     }
