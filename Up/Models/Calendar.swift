@@ -9,22 +9,34 @@ import Foundation
 
 class UpCalendar {
     
-    private let formatter: DateFormatter = {
+    let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.timeStyle = .none
         formatter.dateFormat = "dd/MM/yyyy"
         return formatter
     }()
     
-    private var dayDict = [String: UpCalendarDay]()
+    var dayDict = [String: UpCalendarDay]()
     
-    func findGoals(completion year: String, month: String, day: String) -> UpCalendarDay? {
-        let key = day + "/" + month + "/" + year
+    func findDay(completionYear year: Int, month: Int, day: Int) -> UpCalendarDay? {
+        let y = String(year)
+        
+        var d = String(day)
+        if d.count == 1 { d = "0" + d }
+    
+        var m = String(month)
+        if m.count == 1 { m = "0" + m}
+        
+        let key = d + "/" + m + "/" + y
         return dayDict[key]
     }
     
-    func findGoals(completionDate: Date) -> UpCalendarDay? {
+    func findDay(completionDate: Date) -> UpCalendarDay? {
         let key = formatter.string(from: completionDate)
+        return dayDict[key]
+    }
+    
+    func findDay(key: String) -> UpCalendarDay? {
         return dayDict[key]
     }
     
@@ -37,6 +49,24 @@ class UpCalendar {
         }
     }
     
+    func generateKey(date: Date) -> String {
+        let key = formatter.string(from: date)
+        return key
+    }
+    
+    func generateKey(year: Int, month: Int, day: Int) -> String {
+        let y = String(year)
+        
+        var d = String(day)
+        if d.count == 1 { d = "0" + d }
+        
+        var m = String(month)
+        if m.count == 1 { m = "0" + m}
+        
+        let key = d + "/" + m + "/" + y
+        return key
+    }
+    
 }
 
 class UpCalendarDay {
@@ -47,20 +77,24 @@ class UpCalendarDay {
         }
     }
     
-    private var count = 0
-    private var goals = [[Goal]]()
+    private(set) var itemCount = 0
+    private(set) var goals = [[Goal]]()
+    
+    func sectionCount() -> Int {
+        return goals.count
+    }
     
     func appendGoal(goal: Goal) {
         
-        if count == 0 {
+        if itemCount == 0 {
             goals.append([goal])
-            count += 1
+            itemCount += 1
             return
         }
         
         guard let last = goals.last?.last else {
             goals.append([goal])
-            count += 1
+            itemCount += 1
             return
         }
         
@@ -69,10 +103,10 @@ class UpCalendarDay {
         switch comparison {
         case ComparisonResult.orderedSame:
             goals[goals.count - 1].append(goal)
-            count += 1
+            itemCount += 1
         default:
             goals.append([goal])
-            count += 1
+            itemCount += 1
         }
     }
     

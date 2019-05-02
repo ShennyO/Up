@@ -25,6 +25,8 @@ class CalendarViewController: UIViewController {
     var numberOfSectionsInCollectionView = 0
     var didScrollCollectionViewToToday = false
     
+    var lastNumberOfSectionsOfTableView = 0
+    
     var lastScrollViewOffset: CGFloat = 0
 
     var monthInfo = [Int:[Int]]()
@@ -34,14 +36,30 @@ class CalendarViewController: UIViewController {
     let monthIndex = 2
     let yearIndex = 3
     
-    var selectedDateString = "" {
+    var selectedDateKey = "" {
         didSet {
-            tableView.reloadSections(IndexSet([1]), with: .automatic)
-            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            let lns = lastNumberOfSectionsOfTableView
+            let numOfSec = numberOfSections(in: tableView)
+            let sectionsToAdd = numOfSec - lns
+            if sectionsToAdd > 0 {
+                var sections = [Int]()
+                for i in lns..<numOfSec {
+                    sections.append(i)
+                }
+                tableView.insertSections(IndexSet(sections), with: .bottom)
+            } else if sectionsToAdd < 0 {
+                var sections = [Int]()
+                for i in numOfSec..<lns {
+                    sections.append(i)
+                }
+                tableView.deleteSections(IndexSet(sections), with: .top)
+            }
+            print(sectionsToAdd)
+//            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
     }
     
-    var goals = [String: [Goal]]()
+    var upCalendar = UpCalendar()
     
     let coreDataStack = CoreDataStack()
     let formatter: DateFormatter = {
@@ -85,13 +103,7 @@ class CalendarViewController: UIViewController {
         endDate = gregorian.date(byAdding: .year, value: 1, to: goalsArr.last!.completionDate!, options: NSCalendar.Options())!
         
         for goal in goalsArr {
-            
-            let key = formatter.string(from: goal.completionDate!)
-            if goals[key] != nil {
-                goals[key]!.append(goal)
-            } else {
-                goals[key] = [goal]
-            }
+            upCalendar.appendGoal(goal: goal)
         }
     }
     
@@ -103,7 +115,6 @@ class CalendarViewController: UIViewController {
         tableView.backgroundColor = Style.Colors.Palette01.gunMetal
         tableView.separatorStyle = .none
         
-//        tableView.allowsSelection = false
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -161,7 +172,13 @@ class CalendarViewController: UIViewController {
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        guard let day = upCalendar.findDay(key: selectedDateKey) else {
+            lastNumberOfSectionsOfTableView = 1
+            return 1
+        }
+//        Change to 2 after adding section for current header view
+        lastNumberOfSectionsOfTableView = 1 + day.sectionCount()
+        return lastNumberOfSectionsOfTableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -169,37 +186,28 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return 1
         default:
-            guard let goalArr = goals[selectedDateString] else { return 0 }
-            return goalArr.count
+            guard let day = upCalendar.findDay(key: selectedDateKey) else { return 0 }
+            return day.goals[section - 1].count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
+//            This cell contains the CalendarCollectionView
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
             cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
             delegate = cell.calendarHeaderView
             updateHeaderView(offset: 0)
             return cell
         default:
-            var timeForCell: Int? = nil
+//            This cell displays one goal at a time
+            guard let day = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
             
-            let goal = goals[selectedDateString]![indexPath.row]
-            let hour = gregorian.component(.hour, from: goal.completionDate!)
-            
-            if indexPath.row != 0 {
-                let prevGoal = goals[selectedDateString]![indexPath.row - 1]
-                let prevGoalHour = gregorian.component(.hour, from: prevGoal.completionDate!)
-                if hour != prevGoalHour {
-                    timeForCell = hour
-                }
-            } else {
-                timeForCell = hour
-            }
-            
+            let goal = day.goals[indexPath.section - 1][indexPath.row]
+        
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
-            cell.setup(goal: goal, withTime: timeForCell)
+            cell.setup(goal: goal, withTime: nil)
             return cell
         }
     }
@@ -207,33 +215,17 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
+//            This cell contains the CalendarCollectionView
             let cvHeight: CGFloat = (tableView.frame.width - 32) / 7 * 6
             let headerHeight: CGFloat = 90
             let containerInsets: CGFloat = 32
             return cvHeight + headerHeight + containerInsets
         default:
-            var height: CGFloat = 60
-            
-            let goal = goals[selectedDateString]![indexPath.row]
-            let hour = gregorian.component(.hour, from: goal.completionDate!)
-            
-            if indexPath.row != 0 {
-                let prevGoal = goals[selectedDateString]![indexPath.row - 1]
-                let prevGoalHour = gregorian.component(.hour, from: prevGoal.completionDate!)
-                if hour != prevGoalHour {
-                    height += 68
-                }
-            } else {
-                height += 68
+//            This cell displays one goal at a time
+            guard let _ = tableView.indexPathForSelectedRow else {
+                return 60
             }
-            
-            if let selectedIP = tableView.indexPathForSelectedRow {
-                if selectedIP == indexPath {
-                    height += 60
-                }
-            }
-            
-            return height
+            return 120
         }
     }
     
@@ -242,40 +234,40 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section != 1 { return 0 }
-        guard let _ = goals[selectedDateString] else { return 0 }
+        if section <= 0 { return 0 }
+        guard let _ = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
         return 40
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section != 1 { return nil }
-        guard let _ = goals[selectedDateString] else { return nil }
-        let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
-        
-        headerView.setup(dateString: selectedDateString, goalCount: goals[selectedDateString]!.count)
-        return headerView
-    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        if section <= 0 { return nil }
+//        guard let _ = goals[selectedDateKey] else { return nil }
+//        let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
+//
+//        headerView.setup(dateString: selectedDateKey, goalCount: goals[selectedDateKey]!.count)
+//        return headerView
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? CalendarGoalTableViewCell else { return }
-        tableView.beginUpdates()
-        
-        cell.animateSelection(expanding: true) { (_) in
-            tableView.endUpdates()
-        }
+//        guard let cell = tableView.cellForRow(at: indexPath) as? CalendarGoalTableViewCell else { return }
+//        tableView.beginUpdates()
+//
+//        cell.animateSelection(expanding: true) { (_) in
+//            tableView.endUpdates()
+//        }
     }
     
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        
-        if let indexPathForSelectedRow = tableView.indexPathForSelectedRow,
-            indexPathForSelectedRow == indexPath {
-            tableView.deselectRow(at: indexPath, animated: true)
-            tableView.beginUpdates()
-            tableView.endUpdates()
-            return nil
-        }
-        return indexPath
-    }
+//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+//        if indexPath.section == 0 { return nil }
+//        if let indexPathForSelectedRow = tableView.indexPathForSelectedRow,
+//            indexPathForSelectedRow == indexPath {
+//            tableView.deselectRow(at: indexPath, animated: true)
+//            tableView.beginUpdates()
+//            tableView.endUpdates()
+//            return nil
+//        }
+//        return indexPath
+//    }
 }
 
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -320,17 +312,19 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 
         let currentMonthInfo = monthInfo[indexPath.section]! // we are guaranteed an array by the fact that we reached this line (so unwrap)
         let fdIndex = Int(currentMonthInfo[firstDayIndex])
+        let month = currentMonthInfo[monthIndex]
+        let year = currentMonthInfo[yearIndex]
         let nDays = Int(currentMonthInfo[numberOfDaysIndex])
+        
         let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - fdIndex, section: indexPath.section) // if the first is wednesday, add 2
-
-        var month = String(currentMonthInfo[monthIndex])
-        let year = String(currentMonthInfo[yearIndex])
-        if month.count == 1 { month = "0" + month}
-        let dateString = String(indexPath.row + 1) + "/" + month + "/" + year
         
         if indexPath.item >= fdIndex && indexPath.item < fdIndex + nDays {
-            let goalsForCell = goals[dateString] ?? []
-            cell.setup(day: String(fromStartOfMonthIndexPath.item + 1), goalCount: goalsForCell.count, isEnabled: true)
+            let key = upCalendar.generateKey(year: year, month: month, day: indexPath.row - fdIndex + 1)
+            var goalCount = 0
+            if let day = upCalendar.findDay(key: key) {
+                goalCount = day.itemCount
+            }
+            cell.setup(day: String(fromStartOfMonthIndexPath.item + 1), goalCount: goalCount, isEnabled: true)
             cell.isUserInteractionEnabled = true
         } else {
             var dayForCell = ""
@@ -347,17 +341,21 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        var month = String(monthInfo[indexPath.section]![monthIndex])
-        let year = String(monthInfo[indexPath.section]![yearIndex])
-        if month.count == 1 { month = "0" + month}
-        let sds = String(indexPath.row + 1) + "/" + month + "/" + year
-        if selectedDateString == sds {
-            selectedDateString = ""
+        
+        let currentMonthInfo = monthInfo[indexPath.section]!
+        
+        let fdIndex = Int(currentMonthInfo[firstDayIndex])
+        let month = currentMonthInfo[monthIndex]
+        let year = currentMonthInfo[yearIndex]
+        
+        let key = upCalendar.generateKey(year: year, month: month, day: indexPath.row - fdIndex + 1)
+        if selectedDateKey == key {
+            selectedDateKey = ""
             lastSelectedCollectionViewIndexPath = nil
             collectionView.deselectItem(at: indexPath, animated: false)
             return false
         } else {
-            selectedDateString = sds
+            selectedDateKey = key
             lastSelectedCollectionViewIndexPath = indexPath
             return true
         }
@@ -417,23 +415,28 @@ extension CalendarViewController: GoalCompletionDelegate {
             return
         }
         
-        let today = Date()
-        let dateString = formatter.string(from: today)
-        if var _ = goals[dateString] {
-            goals[dateString]!.append(goal)
-        } else {
-            goals[dateString] = [goal]
-        }
+        upCalendar.appendGoal(goal: goal)
         
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         let tvCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! CalendarTableViewCell
         let cv = tvCell.calendarCollectionView
         
-        let dateDif = self.gregorian.components(.month, from: startDate, to: today, options: NSCalendar.Options())
+        let dateDif = self.gregorian.components(.month, from: startDate, to: Date(), options: NSCalendar.Options())
         cv?.reloadSections(IndexSet([dateDif.month!]))
         if let ip = lastSelectedCollectionViewIndexPath {
             cv?.selectItem(at: ip, animated: false, scrollPosition: .bottom)
             tableView.reloadSections(IndexSet([1]), with: .none)
+            
+//            Refactor this into a function with all the possible edge cases
+            //            Edge case: what if the task they just added is a different hour from previous tasks
+            //            Edge case: what happens if they selected a day and they just switch to another day
+            let numOfSections = numberOfSections(in: tableView)
+            if numOfSections == 1 { return }
+            var sections = [Int]()
+            for i in 1..<numOfSections {
+                sections.append(i)
+            }
+            tableView.reloadSections(IndexSet(sections), with: .automatic)
         }
     }
 }
