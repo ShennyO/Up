@@ -54,19 +54,15 @@ extension HeaderView: UpVCToUpVCHeaderDelegate{
     func alertHeaderView(total: Int) {
         if total == 0 {
             
-            
-            getStartedLabel.isHidden = false
-            getStartedLabel.alpha = 0
+            self.getStartedLabel.isHidden = false
+            self.getStartedLabel.alpha = 0
             UIView.animate(withDuration: 0.7, animations: {
                 self.getStartedLabel.alpha = 1
             })
-            
-            
+                
         } else { //If there are projects
             
-            
             self.getStartedLabel.isHidden = true
-            
             
         }
     }

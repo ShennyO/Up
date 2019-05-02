@@ -15,14 +15,14 @@ enum InputType {
 }
 
 //from TextViewInputView to NewProjectVC
-protocol CustomTextViewToNewProjVCDelegate {
+protocol CustomTextViewToNewProjVCDelegate: class {
     func sendText(text: String)
 }
 
 class SunnyCustomInputView: UIView {
     
     //MARK: VARIABLES
-    var textDelegate: CustomTextViewToNewProjVCDelegate!
+    weak var textDelegate: CustomTextViewToNewProjVCDelegate!
     
     
     //MARK: OUTLETS

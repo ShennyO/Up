@@ -336,7 +336,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         if didScrollCollectionViewToToday {
             return
         }
-        let initalSection = numberOfSectionsInCollectionView - 13
+        let initalSection = numberOfSectionsInCollectionView - 12
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         
         guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: initalSection)) else { return }
@@ -356,7 +356,7 @@ extension CalendarViewController: UIScrollViewDelegate {
 }
 
 
-extension CalendarViewController: CalendarVCToHeaderViewDelegate {
+extension CalendarViewController: CalendarViewToHeaderViewDelegate {
     func leftButtonTapped() {
         scrollCollectionView(sectionOffset: -1)
     }

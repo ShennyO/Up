@@ -12,14 +12,14 @@ protocol HeaderViewToCalendarVCDelegate {
     func changeLabelText(text: String)
 }
 
-protocol CalendarVCToHeaderViewDelegate {
+protocol CalendarViewToHeaderViewDelegate {
     func leftButtonTapped()
     func rightButtonTapped()
 }
 
 class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
     
-    var delegate: CalendarVCToHeaderViewDelegate?
+    var delegate: CalendarViewToHeaderViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
