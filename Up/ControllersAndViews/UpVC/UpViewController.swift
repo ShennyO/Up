@@ -55,7 +55,7 @@ class UpViewController: UIViewController {
         
         if total != 0 {
             
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 25)
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 15)
             tableHeaderView.frame = tableHeaderFrame
             self.headerDelegate.alertHeaderView(total: total)
             
