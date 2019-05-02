@@ -22,6 +22,12 @@ class CalendarGoalCountHeaderView: UIView {
     }
     
     func setup(dateString: String, goalCount: Int) {
+        
+        dateLabel.isHidden = false
+        bubbleView.isHidden = false
+        goalLabel.isHidden = false
+        infoLabel.isHidden = true
+        
         let components = dateString.split(separator: "/")
         let month = months[Int(String(components[1]))! - 1]
         let day = String(Int(String(components[0]))!)
@@ -35,16 +41,23 @@ class CalendarGoalCountHeaderView: UIView {
        goalLabel.text = goalStr
     }
     
+    func setup(text: String) {
+        dateLabel.isHidden = true
+        bubbleView.isHidden = true
+        goalLabel.isHidden = true
+        infoLabel.isHidden = false
+        infoLabel.text = text
+    }
+    
     private func setupViews() {
         
-        [dateLabel, goalLabel, bubbleView].forEach { (view) in
+        [dateLabel, goalLabel, bubbleView, infoLabel].forEach { (view) in
             self.addSubview(view)
         }
         
         dateLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().inset(20)
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
         }
         
         bubbleView.snp.makeConstraints { (make) in
@@ -59,6 +72,11 @@ class CalendarGoalCountHeaderView: UIView {
             make.right.lessThanOrEqualToSuperview().inset(20)
             make.top.equalTo(dateLabel.snp.top)
         }
+        
+        infoLabel.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview().inset(20)
+            make.centerY.equalToSuperview()
+        }
     }
     
     
@@ -66,6 +84,13 @@ class CalendarGoalCountHeaderView: UIView {
         let label = UILabel()
         label.textColor = Style.Colors.Palette01.pureWhite
         label.font = Style.Fonts.bold20
+        return label
+    }()
+    
+    let infoLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Style.Colors.Palette01.pureWhite
+        label.font = Style.Fonts.bold18
         return label
     }()
     

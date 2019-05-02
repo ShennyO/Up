@@ -13,6 +13,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none
         setupViews()
     }
     
@@ -20,13 +21,18 @@ class CalendarGoalTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(goal: Goal, withTime: Int?) {
+    var goal: Goal!
+    func setup(goal: Goal, withTime time: Int?) {
+        self.goal = goal
+//        Create formatter for date-string conversion
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .short
+        
         self.backgroundColor = Style.Colors.Palette01.gunMetal
         descriptionLabel.text = goal.goalDescription
         
+//        Display the right icon based on the goal type
         if goal.duration == 0 {
             clockIconView.isHidden = true
             boxView.isHidden = false
@@ -35,63 +41,37 @@ class CalendarGoalTableViewCell: UITableViewCell {
             boxView.isHidden = true
         }
         
-        if let wt = withTime {
-            setupTimeViews()
-            var labelText = ""
-            if wt == 0 {
-                labelText = String(wt + 12)
-            } else if wt >= 13 {
-                labelText = String(wt - 12)
-            } else {
-                labelText = String(wt)
-            }
-
-            if wt < 12 {
-                labelText += " AM "
-            } else {
-                labelText += " PM "
-            }
-            timeLabel.text = labelText
-        } else {
-            removeTimeViews()
-        }
+        exactTimeLabel.text = formatter.string(from: goal.completionDate!)
+        
     }
     
-    private func removeTimeViews() {
-        timeLabel.removeFromSuperview()
-    }
-    
-    private func setupTimeViews() {
-        self.addSubview(topContainerView)
-        topContainerView.addSubview(timeLabel)
-        
-        topContainerView.snp.makeConstraints { (make) in
-            make.left.right.top.equalToSuperview()
-            make.bottom.equalTo(bottomContainerView.snp.top)
-        }
-        
-        timeLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().inset(20)
-            make.width.equalTo(60)
-            make.bottom.top.equalToSuperview().inset(16)
-        }
-    }
     
     private func setupViews() {
         
-        [bottomContainerView, lineView].forEach { (view) in
+//        Add views into proper superviews
+        [detailContainerView, mainContainerView, lineView].forEach { (view) in
             self.addSubview(view)
         }
         
         [descriptionLabel, clockIconView, boxView, checkmarkView].forEach { (view) in
-            bottomContainerView.addSubview(view)
+            mainContainerView.addSubview(view)
         }
         
-        bottomContainerView.snp.makeConstraints { (make) in
-            make.bottom.left.right.equalToSuperview()
+        detailContainerView.addSubview(exactTimeLabel)
+        
+//        Set constraints for views
+//         * Self
+        mainContainerView.snp.makeConstraints { (make) in
+            make.left.top.right.equalToSuperview()
+            make.bottom.equalTo(detailContainerView.snp.top)
             make.height.equalTo(60)
         }
         
+        detailContainerView.snp.makeConstraints { (make) in
+            make.bottom.left.right.equalToSuperview()
+        }
+        
+//         * mainContainerView
         lineView.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(50)
@@ -123,17 +103,43 @@ class CalendarGoalTableViewCell: UITableViewCell {
             make.left.equalTo(clockIconView.snp.right).offset(16)
             make.top.bottom.equalToSuperview()
         }
+
+//         * detailContainerView
+        exactTimeLabel.snp.makeConstraints { (make) in
+            make.height.width.centerY.centerX.equalToSuperview()
+        }
     }
     
-    let bottomContainerView: UIView = {
+    func animateSelection(expanding: Bool, closure: ((Bool) -> Void)?) {
+//        if expanding {
+//            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
+//                self.mainContainerView.alpha = 1
+//            }) { (done) in
+//                if let closure = closure {
+//                    closure(done)
+//                }
+//            }
+//        } else {
+//            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
+//                self.mainContainerView.alpha = 0
+//            }) { (done) in
+//                if let closure = closure {
+                    closure!(true)
+//                }
+//            }
+//        }
+    }
+    
+    let mainContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = Style.Colors.Palette01.gunMetal
         return view
     }()
     
-    let topContainerView: UIView = {
+    let detailContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = Style.Colors.Palette01.gunMetal
+        view.alpha = 0
         return view
     }()
     
@@ -168,20 +174,16 @@ class CalendarGoalTableViewCell: UITableViewCell {
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Style.Fonts.bold15
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textColor = Style.Colors.Palette01.pureWhite
         return label
     }()
     
-    let timeLabel: UILabel = {
+    let exactTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = Style.Fonts.bold15
+        label.font = Style.Fonts.bold12
         label.textColor = Style.Colors.Palette01.pureWhite
-        label.textAlignment = .center
-        label.backgroundColor = Style.Colors.Palette01.mainBlue
-        label.layer.borderColor = Style.Colors.Palette01.pureWhite.cgColor
-        label.layer.cornerRadius = 3
-        label.clipsToBounds = true
         return label
     }()
+    
 }
