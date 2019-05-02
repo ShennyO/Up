@@ -26,6 +26,7 @@ class CalendarViewController: UIViewController {
     var didScrollCollectionViewToToday = false
     
     var lastNumberOfSectionsOfTableView = 0
+    let extraSectionsInTableView = 1
     
     var lastScrollViewOffset: CGFloat = 0
 
@@ -38,24 +39,7 @@ class CalendarViewController: UIViewController {
     
     var selectedDateKey = "" {
         didSet {
-            let lns = lastNumberOfSectionsOfTableView
-            let numOfSec = numberOfSections(in: tableView)
-            let sectionsToAdd = numOfSec - lns
-            if sectionsToAdd > 0 {
-                var sections = [Int]()
-                for i in lns..<numOfSec {
-                    sections.append(i)
-                }
-                tableView.insertSections(IndexSet(sections), with: .bottom)
-            } else if sectionsToAdd < 0 {
-                var sections = [Int]()
-                for i in numOfSec..<lns {
-                    sections.append(i)
-                }
-                tableView.deleteSections(IndexSet(sections), with: .top)
-            }
-            print(sectionsToAdd)
-//            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            reloadTableViewGoals()
         }
     }
     
@@ -268,6 +252,49 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 //        }
 //        return indexPath
 //    }
+    
+    func reloadTableViewGoals() {
+        
+        let lastNumOfSections = lastNumberOfSectionsOfTableView
+        let numOfSections = numberOfSections(in: tableView)
+        let sectionsToAdd = numOfSections - lastNumOfSections
+        
+        tableView.beginUpdates()
+        
+        if sectionsToAdd == 0 && lastNumOfSections > extraSectionsInTableView {
+            var sectionsToReload = [Int]()
+            for i in extraSectionsInTableView..<lastNumOfSections {
+                sectionsToReload.append(i)
+            }
+            tableView.reloadSections(IndexSet(sectionsToReload), with: .automatic)
+        } else if sectionsToAdd > 0 {
+            var sectionsToReload = [Int]()
+            for i in extraSectionsInTableView..<lastNumOfSections {
+                sectionsToReload.append(i)
+            }
+            tableView.reloadSections(IndexSet(sectionsToReload), with: .automatic)
+            
+            var sectionsToInsert = [Int]()
+            for i in lastNumOfSections..<numOfSections {
+                sectionsToInsert.append(i)
+            }
+            tableView.insertSections(IndexSet(sectionsToInsert), with: .bottom)
+        } else if sectionsToAdd < 0 {
+            var sectionsToReload = [Int]()
+            for i in extraSectionsInTableView..<numOfSections {
+                sectionsToReload.append(i)
+            }
+            tableView.reloadSections(IndexSet(sectionsToReload), with: .automatic)
+            var sectionsToDelete = [Int]()
+            for i in numOfSections..<lastNumOfSections {
+                sectionsToDelete.append(i)
+            }
+            tableView.deleteSections(IndexSet(sectionsToDelete), with: .top)
+        }
+        tableView.endUpdates()
+        
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
 }
 
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -326,6 +353,12 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
             }
             cell.setup(day: String(fromStartOfMonthIndexPath.item + 1), goalCount: goalCount, isEnabled: true)
             cell.isUserInteractionEnabled = true
+            
+            if let selected = lastSelectedCollectionViewIndexPath {
+                if selected == indexPath {
+                    cell.isSelected = true
+                }
+            }
         } else {
             var dayForCell = ""
             if indexPath.item < fdIndex {
@@ -336,6 +369,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
                 dayForCell = String(indexPath.item - fdIndex - nDays + 1)
             }
             cell.setup(day: dayForCell, goalCount: 0, isEnabled: false)
+            
         }
         return cell
     }
@@ -365,7 +399,9 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         if didScrollCollectionViewToToday {
             return
         }
-        let initalSection = numberOfSectionsInCollectionView - 13
+        
+        guard let initalSection = gregorian.components(.month, from: startDate, to: Date(), options: NSCalendar.Options()).month
+            else { return }
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         
         guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: initalSection)) else { return }
@@ -425,18 +461,18 @@ extension CalendarViewController: GoalCompletionDelegate {
         cv?.reloadSections(IndexSet([dateDif.month!]))
         if let ip = lastSelectedCollectionViewIndexPath {
             cv?.selectItem(at: ip, animated: false, scrollPosition: .bottom)
-            tableView.reloadSections(IndexSet([1]), with: .none)
             
 //            Refactor this into a function with all the possible edge cases
             //            Edge case: what if the task they just added is a different hour from previous tasks
             //            Edge case: what happens if they selected a day and they just switch to another day
+            let lastNumOfSections = lastNumberOfSectionsOfTableView
             let numOfSections = numberOfSections(in: tableView)
-            if numOfSections == 1 { return }
-            var sections = [Int]()
-            for i in 1..<numOfSections {
-                sections.append(i)
+            if lastNumOfSections < numOfSections {
+                tableView.insertSections(IndexSet([lastNumOfSections]), with: .none)
+            } else {
+                tableView.reloadSections(IndexSet([lastNumOfSections - 1]), with: .none)
             }
-            tableView.reloadSections(IndexSet(sections), with: .automatic)
+            
         }
     }
 }
