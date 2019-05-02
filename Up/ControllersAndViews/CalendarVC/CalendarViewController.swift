@@ -208,10 +208,10 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             return cvHeight + headerHeight + containerInsets
         default:
 //            This cell displays one goal at a time
-            guard let _ = tableView.indexPathForSelectedRow else {
-                return 60
-            }
-            return 120
+//            guard let _ = tableView.indexPathForSelectedRow else {
+            return 60
+//            }
+//            return 120
         }
     }
     
