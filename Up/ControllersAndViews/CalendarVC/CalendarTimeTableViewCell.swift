@@ -8,10 +8,11 @@
 import Foundation
 import UIKit
 
-class CalendarTimeTableViewCell: UITableViewCell {
+class CalendarTimeHeaderView: UIView {
     
     func setup(time: Int) {
         setupViews()
+        
 //        Create formatter for date-string conversion
         let formatter = DateFormatter()
         formatter.dateStyle = .none

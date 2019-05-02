@@ -26,7 +26,7 @@ class CalendarViewController: UIViewController {
     var didScrollCollectionViewToToday = false
     
     var lastNumberOfSectionsOfTableView = 0
-    let extraSectionsInTableView = 1
+    let extraSectionsInTableView = 2
     
     var lastScrollViewOffset: CGFloat = 0
 
@@ -157,11 +157,11 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         guard let day = upCalendar.findDay(key: selectedDateKey) else {
-            lastNumberOfSectionsOfTableView = 1
-            return 1
+            lastNumberOfSectionsOfTableView = extraSectionsInTableView
+            return extraSectionsInTableView
         }
-//        Change to 2 after adding section for current header view
-        lastNumberOfSectionsOfTableView = 1 + day.sectionCount()
+        
+        lastNumberOfSectionsOfTableView = extraSectionsInTableView + day.sectionCount()
         return lastNumberOfSectionsOfTableView
     }
     
@@ -169,9 +169,11 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case 0:
             return 1
+        case 1:
+            return 0
         default:
             guard let day = upCalendar.findDay(key: selectedDateKey) else { return 0 }
-            return day.goals[section - 1].count
+            return day.goals[section - extraSectionsInTableView].count
         }
     }
     
@@ -188,7 +190,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 //            This cell displays one goal at a time
             guard let day = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
             
-            let goal = day.goals[indexPath.section - 1][indexPath.row]
+            let goal = day.goals[indexPath.section - extraSectionsInTableView][indexPath.row]
         
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
             cell.setup(goal: goal, withTime: nil)
@@ -214,23 +216,56 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 16
+        }
+        if section == 1 {
+            return 8
+        }
+        if section == lastNumberOfSectionsOfTableView - 1 {
+            return 32
+        }
         return 0
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section <= 0 { return 0 }
-        guard let _ = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
-        return 40
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView(frame: CGRect.zero)
     }
     
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        if section <= 0 { return nil }
-//        guard let _ = goals[selectedDateKey] else { return nil }
-//        let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
-//
-//        headerView.setup(dateString: selectedDateKey, goalCount: goals[selectedDateKey]!.count)
-//        return headerView
-//    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0:
+            return 0
+        case 1:
+            return 40
+        default:
+            return 68
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch section {
+        case 0:
+            return nil
+        case 1:
+            let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
+            if let day = upCalendar.findDay(key: selectedDateKey) {
+                headerView.setup(dateString: selectedDateKey, goalCount: day.itemCount)
+            } else if selectedDateKey != ""  {
+                headerView.setup(text: "No tasks were completed on that day.")
+            } else {
+                headerView.setup(text: "Select a date to view acomplishments.")
+            }
+            return headerView
+        default:
+            guard let day = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
+            let headerView = CalendarTimeHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
+            let goal = day.goals[section - extraSectionsInTableView][0]
+            let hour = gregorian.component(.hour, from: goal.completionDate!)
+            headerView.setup(time: hour)
+            return headerView
+        }
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        guard let cell = tableView.cellForRow(at: indexPath) as? CalendarGoalTableViewCell else { return }
@@ -266,31 +301,32 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             for i in extraSectionsInTableView..<lastNumOfSections {
                 sectionsToReload.append(i)
             }
-            tableView.reloadSections(IndexSet(sectionsToReload), with: .automatic)
+            tableView.reloadSections(IndexSet(sectionsToReload), with: .fade)
         } else if sectionsToAdd > 0 {
             var sectionsToReload = [Int]()
             for i in extraSectionsInTableView..<lastNumOfSections {
                 sectionsToReload.append(i)
             }
-            tableView.reloadSections(IndexSet(sectionsToReload), with: .automatic)
+            tableView.reloadSections(IndexSet(sectionsToReload), with: .fade)
             
             var sectionsToInsert = [Int]()
             for i in lastNumOfSections..<numOfSections {
                 sectionsToInsert.append(i)
             }
-            tableView.insertSections(IndexSet(sectionsToInsert), with: .bottom)
+            tableView.insertSections(IndexSet(sectionsToInsert), with: .fade)
         } else if sectionsToAdd < 0 {
             var sectionsToReload = [Int]()
             for i in extraSectionsInTableView..<numOfSections {
                 sectionsToReload.append(i)
             }
-            tableView.reloadSections(IndexSet(sectionsToReload), with: .automatic)
+            tableView.reloadSections(IndexSet(sectionsToReload), with: .fade)
             var sectionsToDelete = [Int]()
             for i in numOfSections..<lastNumOfSections {
                 sectionsToDelete.append(i)
             }
-            tableView.deleteSections(IndexSet(sectionsToDelete), with: .top)
+            tableView.deleteSections(IndexSet(sectionsToDelete), with: .fade)
         }
+        tableView.reloadSections(IndexSet([1]), with: .fade)
         tableView.endUpdates()
         
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)

@@ -21,7 +21,9 @@ class CalendarGoalTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var goal: Goal!
     func setup(goal: Goal, withTime time: Int?) {
+        self.goal = goal
 //        Create formatter for date-string conversion
         let formatter = DateFormatter()
         formatter.dateStyle = .none
@@ -41,74 +43,26 @@ class CalendarGoalTableViewCell: UITableViewCell {
         
         exactTimeLabel.text = formatter.string(from: goal.completionDate!)
         
-//      Format time for display
-        if let t = time {
-            setupTimeViews()
-            var labelText = ""
-            if t == 0 {
-                labelText = String(t + 12)
-            } else if t >= 13 {
-                labelText = String(t - 12)
-            } else {
-                labelText = String(t)
-            }
-
-            if t < 12 {
-                labelText += " AM "
-            } else {
-                labelText += " PM "
-            }
-            timeLabel.text = labelText
-        } else {
-            removeTimeViews()
-        }
     }
     
-//          Remove the top container from the cell
-    private func removeTimeViews() {
-        topContainerView.removeFromSuperview()
-    }
-    
-    private func setupTimeViews() {
-        
-//        Add views into proper superviews
-        self.addSubview(topContainerView)
-        topContainerView.addSubview(timeLabel)
-        
-//        Set constraints for views
-//         * Self
-        topContainerView.snp.makeConstraints { (make) in
-            make.left.right.top.equalToSuperview()
-            make.bottom.equalTo(bottomContainerView.snp.top)
-            make.height.equalTo(68)
-        }
-        
-//         * topContainerView
-        timeLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().inset(20)
-            make.width.equalTo(60)
-            make.bottom.top.equalToSuperview().inset(16)
-        }
-    }
     
     private func setupViews() {
         
 //        Add views into proper superviews
-        [detailContainerView, bottomContainerView, lineView].forEach { (view) in
+        [detailContainerView, mainContainerView, lineView].forEach { (view) in
             self.addSubview(view)
         }
         
         [descriptionLabel, clockIconView, boxView, checkmarkView].forEach { (view) in
-            bottomContainerView.addSubview(view)
+            mainContainerView.addSubview(view)
         }
         
         detailContainerView.addSubview(exactTimeLabel)
         
 //        Set constraints for views
 //         * Self
-        bottomContainerView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalToSuperview().priority(1)
+        mainContainerView.snp.makeConstraints { (make) in
+            make.left.top.right.equalToSuperview()
             make.bottom.equalTo(detailContainerView.snp.top)
             make.height.equalTo(60)
         }
@@ -117,7 +71,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
             make.bottom.left.right.equalToSuperview()
         }
         
-//         * bottomContainerView
+//         * mainContainerView
         lineView.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(50)
@@ -159,7 +113,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
     func animateSelection(expanding: Bool, closure: ((Bool) -> Void)?) {
 //        if expanding {
 //            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
-//                self.bottomContainerView.alpha = 1
+//                self.mainContainerView.alpha = 1
 //            }) { (done) in
 //                if let closure = closure {
 //                    closure(done)
@@ -167,7 +121,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
 //            }
 //        } else {
 //            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
-//                self.bottomContainerView.alpha = 0
+//                self.mainContainerView.alpha = 0
 //            }) { (done) in
 //                if let closure = closure {
                     closure!(true)
@@ -176,13 +130,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
 //        }
     }
     
-    let bottomContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
-    }()
-    
-    let topContainerView: UIView = {
+    let mainContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = Style.Colors.Palette01.gunMetal
         return view
@@ -235,18 +183,6 @@ class CalendarGoalTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = Style.Fonts.bold12
         label.textColor = Style.Colors.Palette01.pureWhite
-        return label
-    }()
-    
-    let timeLabel: UILabel = {
-        let label = UILabel()
-        label.font = Style.Fonts.bold15
-        label.textColor = Style.Colors.Palette01.pureWhite
-        label.textAlignment = .center
-        label.backgroundColor = Style.Colors.Palette01.mainBlue
-        label.layer.borderColor = Style.Colors.Palette01.pureWhite.cgColor
-        label.layer.cornerRadius = 3
-        label.clipsToBounds = true
         return label
     }()
     
