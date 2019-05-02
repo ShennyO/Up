@@ -21,6 +21,8 @@ class UpViewController: UIViewController {
     
     var originalCenter: CGPoint!
     var center: CGPoint!
+    var selectedReorderingIndexPath: IndexPath!
+    
     
     let stack = CoreDataStack.instance
 
@@ -28,6 +30,7 @@ class UpViewController: UIViewController {
     var upTableView: UITableView!
     var tap: UILongPressGestureRecognizer!
     var reorderPress: UILongPressGestureRecognizer!
+    let generator = UIImpactFeedbackGenerator(style: .light)
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -144,7 +147,7 @@ extension UpViewController {
             originalCenter = gestureRecognizer.location(in: self.view)
             
             UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
-                self.addButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+                self.addButton.transform = CGAffineTransform(scaleX: 0.82, y: 0.82)
             })
             
         } else if gestureRecognizer.state == .ended {
@@ -405,17 +408,23 @@ extension UpViewController {
     
     @objc func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer) {
         
+        
         let longpress = gestureRecognizer as! UILongPressGestureRecognizer
         let state = longpress.state
         let locationInView = longpress.location(in: self.upTableView)
         var indexPath = self.upTableView.indexPathForRow(at: locationInView)
+        
+        
+        if self.upTableView.indexPathForRow(at: locationInView) != nil {
+           selectedReorderingIndexPath = self.upTableView.indexPathForRow(at: locationInView)
+        }
         let upTableRect = self.upTableView.contentSize
         
         switch state {
         case .began:
             if indexPath != nil {
                 
-                
+                generator.impactOccurred()
                 let cell: UITableViewCell!
                 Path.initialIndexPath = indexPath
                 if goals[(indexPath!.row)].duration == 0 {
@@ -447,59 +456,52 @@ extension UpViewController {
         //if moved
         case .changed:
             
-            
             var center = My.cellSnapShot?.center
             // this is setting our center to where our finger moves
-            if center!.y >= CGFloat(40) && center!.y <= (upTableRect.height - 20){
+            if locationInView.y >= CGFloat(40) && locationInView.y <= (upTableRect.height - 20){
                 center?.y = locationInView.y
                 My.cellSnapShot?.center = center!
                 
+                //if the indexPath we're moving to isn't nil and it's not our original index path
+                if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
+                    
+                    generator.impactOccurred()
+                    //swapping the goals
+                    self.goals.swapAt((indexPath?.row)!, (Path.initialIndexPath?.row)!)
+                    //swapping the cells themselves
+                    self.upTableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
+                    Path.initialIndexPath = indexPath
+                }
                 
-            } else {
-                print("Moving too far")
-                // here we want to:
-                // 1) disable the gesture
-                // 2) remove the screenshot
-                longpress.isEnabled = false
-                longpress.isEnabled = true
-                
-            }
-            
-            //if the indexPath we're moving to isn't nil and it's not our original index path
-            if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
-                //however we still want to limit where they can move the snapshot to
-                //how can we limit the movement space?
-                
-                //swapping the goals
-                self.goals.swapAt((indexPath?.row)!, (Path.initialIndexPath?.row)!)
-                //swapping the cells themselves
-                self.upTableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
-                Path.initialIndexPath = indexPath
             }
             
         default:
+            
             let cell: UITableViewCell!
-            guard let index = indexPath else {return}
+            guard let index = selectedReorderingIndexPath else {return}
+            print("reorderingPath: ", selectedReorderingIndexPath)
             if goals[index.row].duration == 0 {
-                cell = self.upTableView.cellForRow(at: indexPath!) as! ProjectCell
+                cell = self.upTableView.cellForRow(at: index) as! ProjectCell
             } else {
-                cell = self.upTableView.cellForRow(at: indexPath!) as! TimedProjectCell
+                cell = self.upTableView.cellForRow(at: index) as! TimedProjectCell
             }
-            longpress.isEnabled = false
-            cell.isHidden = false
-            cell.alpha = 0.0
+           
+            cell.alpha = 1.0
+            
             UIView.animate(withDuration: 0.25, animations: {
                 My.cellSnapShot?.center = cell.center
                 My.cellSnapShot?.alpha = 0.0
-                cell.alpha = 1.0
+                
             }, completion: { (finished) -> Void in
                 if finished {
-                    longpress.isEnabled = true
                     Path.initialIndexPath = nil
                     My.cellSnapShot?.removeFromSuperview()
                     My.cellSnapShot = nil
+                    cell.isHidden = false
+                    print("cell hidden?: ", cell.isHidden)
                 }
             })
+    
         }
     }
     
@@ -512,9 +514,6 @@ extension UpViewController {
         let cellSnapshot : UIView = UIImageView(image: image)
         cellSnapshot.layer.masksToBounds = false
         cellSnapshot.layer.cornerRadius = 0.0
-        //        cellSnapshot.layer.shadowOffset = CGSize(width: -2.0, height: 0.0)
-        //        cellSnapshot.layer.shadowRadius = 2.0
-        //        cellSnapshot.layer.shadowOpacity = 0.3
         return cellSnapshot
     }
     
