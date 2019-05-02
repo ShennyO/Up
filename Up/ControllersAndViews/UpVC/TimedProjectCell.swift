@@ -155,7 +155,7 @@ class TimedProjectCell: UITableViewCell {
     }
     
     private func setUpCell() {
-        self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        self.backgroundColor = UIColor.clear
         
         addOutlets()
         setConstraints()

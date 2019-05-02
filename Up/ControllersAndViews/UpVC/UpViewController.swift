@@ -27,6 +27,7 @@ class UpViewController: UIViewController {
     //MARK: OUTLETS
     var upTableView: UITableView!
     var tap: UILongPressGestureRecognizer!
+    var reorderPress: UILongPressGestureRecognizer!
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -189,6 +190,7 @@ extension UpViewController {
         addOutlets()
         setConstraints()
         addLongTapGesture()
+        addReorderPressGesture()
     }
     
     private func setUpTableView() {
@@ -391,3 +393,136 @@ extension UpViewController: newProjectVCToUpVCDelegate {
     
 }
 
+//REORDERING
+extension UpViewController {
+    
+    func addReorderPressGesture() {
+        reorderPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureRecognized(gestureRecognizer:)))
+        self.view.addGestureRecognizer(reorderPress)
+    }
+    
+    
+    
+    @objc func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer) {
+        
+        let longpress = gestureRecognizer as! UILongPressGestureRecognizer
+        let state = longpress.state
+        let locationInView = longpress.location(in: self.upTableView)
+        var indexPath = self.upTableView.indexPathForRow(at: locationInView)
+        let upTableRect = self.upTableView.contentSize
+        
+        switch state {
+        case .began:
+            if indexPath != nil {
+                
+                
+                let cell: UITableViewCell!
+                Path.initialIndexPath = indexPath
+                if goals[(indexPath!.row)].duration == 0 {
+                    cell = self.upTableView.cellForRow(at: indexPath!) as! ProjectCell
+                    cell.isHighlighted = false
+                } else {
+                    cell = self.upTableView.cellForRow(at: indexPath!) as! TimedProjectCell
+                    cell.isHighlighted = false
+                }
+                
+                My.cellSnapShot = snapshopOfCell(inputView: cell)
+                var center = cell.center
+                My.cellSnapShot?.center = center
+                My.cellSnapShot?.alpha = 0.0
+                self.upTableView.addSubview(My.cellSnapShot!)
+                
+                UIView.animate(withDuration: 0.25, animations: {
+                    center.y = locationInView.y
+                    My.cellSnapShot?.center = center
+                    My.cellSnapShot?.alpha = 0.98
+                    cell.alpha = 0.0
+                }, completion: { (finished) -> Void in
+                    if finished {
+                        cell.isHidden = true
+                    }
+                })
+            }
+            
+        //if moved
+        case .changed:
+            
+            
+            var center = My.cellSnapShot?.center
+            // this is setting our center to where our finger moves
+            if center!.y >= CGFloat(40) && center!.y <= (upTableRect.height - 20){
+                center?.y = locationInView.y
+                My.cellSnapShot?.center = center!
+                
+                
+            } else {
+                print("Moving too far")
+                // here we want to:
+                // 1) disable the gesture
+                // 2) remove the screenshot
+                longpress.isEnabled = false
+                longpress.isEnabled = true
+                
+            }
+            
+            //if the indexPath we're moving to isn't nil and it's not our original index path
+            if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
+                //however we still want to limit where they can move the snapshot to
+                //how can we limit the movement space?
+                
+                //swapping the goals
+                self.goals.swapAt((indexPath?.row)!, (Path.initialIndexPath?.row)!)
+                //swapping the cells themselves
+                self.upTableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
+                Path.initialIndexPath = indexPath
+            }
+            
+        default:
+            let cell: UITableViewCell!
+            guard let index = indexPath else {return}
+            if goals[index.row].duration == 0 {
+                cell = self.upTableView.cellForRow(at: indexPath!) as! ProjectCell
+            } else {
+                cell = self.upTableView.cellForRow(at: indexPath!) as! TimedProjectCell
+            }
+            longpress.isEnabled = false
+            cell.isHidden = false
+            cell.alpha = 0.0
+            UIView.animate(withDuration: 0.25, animations: {
+                My.cellSnapShot?.center = cell.center
+                My.cellSnapShot?.alpha = 0.0
+                cell.alpha = 1.0
+            }, completion: { (finished) -> Void in
+                if finished {
+                    longpress.isEnabled = true
+                    Path.initialIndexPath = nil
+                    My.cellSnapShot?.removeFromSuperview()
+                    My.cellSnapShot = nil
+                }
+            })
+        }
+    }
+    
+    func snapshopOfCell(inputView: UIView) -> UIView {
+        
+        UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
+        inputView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        let cellSnapshot : UIView = UIImageView(image: image)
+        cellSnapshot.layer.masksToBounds = false
+        cellSnapshot.layer.cornerRadius = 0.0
+        //        cellSnapshot.layer.shadowOffset = CGSize(width: -2.0, height: 0.0)
+        //        cellSnapshot.layer.shadowRadius = 2.0
+        //        cellSnapshot.layer.shadowOpacity = 0.3
+        return cellSnapshot
+    }
+    
+    struct My {
+        static var cellSnapShot: UIView? = nil
+    }
+    
+    struct Path {
+        static var initialIndexPath: IndexPath? = nil
+    }
+}
