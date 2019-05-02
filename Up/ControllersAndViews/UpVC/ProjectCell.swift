@@ -62,8 +62,8 @@ class ProjectCell: UITableViewCell {
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        label.numberOfLines = 0
-        label.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        label.numberOfLines = 2
+        label.textColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         return label
     }()
     
@@ -71,7 +71,7 @@ class ProjectCell: UITableViewCell {
     var taskSquareView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
-        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.borderColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         view.layer.borderWidth = 1
         view.layer.cornerRadius = 3
         return view
@@ -80,7 +80,7 @@ class ProjectCell: UITableViewCell {
     var taskSquareFillView: UIView = {
         
         let view = UIView()
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         view.layer.cornerRadius = 3
         view.isHidden = true
         return view
@@ -153,7 +153,6 @@ class ProjectCell: UITableViewCell {
         
     }
     
-    
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         
         if highlighted {
@@ -164,7 +163,7 @@ class ProjectCell: UITableViewCell {
     }
     
     private func setUpCell() {
-        self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        self.backgroundColor = UIColor.clear
         addOutlets()
         setConstraints()
         if goal.completionDate != nil{

@@ -39,7 +39,7 @@ class CalendarTableViewCell: UITableViewCell {
         return view
     }()
     
-    func configureProtocols(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource, headerViewDelegate: CalendarVCToHeaderViewDelegate) {
+    func configureProtocols(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource, headerViewDelegate: CalendarViewToHeaderViewDelegate) {
         calendarCollectionView.delegate = delegate
         calendarCollectionView.dataSource = dataSource
         calendarHeaderView.delegate = headerViewDelegate

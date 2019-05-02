@@ -369,14 +369,15 @@ class SessionViewController: UIViewController {
             descriptionLabel.text = timedGoal!.goalDescription
         }
         minutesLabel.text = "\(timeString(time: timeInSeconds))"
-        
-        
-        // Do any additional setup after loading the view.
+    }
+    
+    deinit {
+        print("Session VC Deinitialized!")
     }
     
 }
 
-extension SessionViewController: CongratsViewToSessionViewDelegate {
+extension SessionViewController: CongratsViewToSessionVCDelegate {
     func addButtonTapped(time: Int) {
         
         timeInSeconds += (time * 60)
@@ -401,7 +402,6 @@ extension SessionViewController: CongratsViewToSessionViewDelegate {
     }
     
     func dismissTapped() {
-        self.view.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         dismissedBlock!()
         self.dismiss(animated: true, completion: nil)
     }

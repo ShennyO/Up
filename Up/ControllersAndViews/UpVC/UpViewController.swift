@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 
-
 protocol UpVCToTimedProjectCellDelegate {
     func showBlackCheck()
 }
@@ -20,28 +19,29 @@ protocol UpVCToUpVCHeaderDelegate {
 
 class UpViewController: UIViewController {
     
-    let stack = CoreDataStack.instance
+    var originalCenter: CGPoint!
+    var center: CGPoint!
     
+    let stack = CoreDataStack.instance
+
     //MARK: OUTLETS
     var upTableView: UITableView!
+    var tap: UILongPressGestureRecognizer!
+    var reorderPress: UILongPressGestureRecognizer!
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "addButton"), for: .normal)
-        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        button.setImage(#imageLiteral(resourceName: "lightBlueAdd"), for: .normal)
         return button
-        
     }()
-    
     
     var tableHeaderView: HeaderView!
     
     
-    //MARK: VARIABLES
+    //MARK: DELEGATES
     var headerDelegate: UpVCToUpVCHeaderDelegate!
     var goalCompletionDelegate: GoalCompletionDelegate!
-    
-    
+
     //PURPOSE: communication from this VC to timed Cell
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     
@@ -55,20 +55,25 @@ class UpViewController: UIViewController {
         let total = goals.count
         
         if total != 0 {
-    
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 25)
+            
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 15)
             tableHeaderView.frame = tableHeaderFrame
-            self.view.layoutIfNeeded()
-        
+            self.headerDelegate.alertHeaderView(total: total)
+            
         } else {
-            
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
-            self.tableHeaderView.frame = tableHeaderFrame
-            
+        
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
+                self.tableHeaderView.frame = tableHeaderFrame
+                UIView.animate(withDuration: 0.6, animations: {
+                    self.view.layoutIfNeeded()
+                })
+                self.headerDelegate.alertHeaderView(total: total)
+            }
             
         }
         
-        headerDelegate.alertHeaderView(total: total)
+        
         
     }
     
@@ -95,15 +100,14 @@ class UpViewController: UIViewController {
 
 
 extension UpViewController {
-    //MARK: OBJ FUNCTIONS
     
-    @objc func addButtonTapped() {
+    
+    //MARK: PRIVATE FUNCTIONS
+    func addButtonTapped() {
         let nextVC = NewProjectViewController()
         nextVC.goalDelegate = self
         self.present(nextVC, animated: true, completion: nil)
     }
-    
-    //MARK: PRIVATE FUNCTIONS
     
     private func fetchGoals(completion: @escaping () -> ()) {
         let results = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .dateDescending) as? [Goal]
@@ -120,8 +124,64 @@ extension UpViewController {
     private func setConstraints() {
         addButton.snp.makeConstraints { (make) in
             make.right.bottom.equalToSuperview().inset(10)
-            make.height.width.equalTo(65)
+            make.height.width.equalTo(60)
         }
+    }
+    
+    private func addLongTapGesture() {
+        tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tap.minimumPressDuration = 0
+        self.addButton.addGestureRecognizer(tap)
+    }
+    
+    
+    
+    @objc private func handleTap(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        
+        if gestureRecognizer.state == .began {
+            //in here we want to animate size of our view, so we want to manipulate the height/width
+            
+            originalCenter = gestureRecognizer.location(in: self.view)
+            
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+                self.addButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+            })
+            
+        } else if gestureRecognizer.state == .ended {
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
+                self.addButtonTapped()
+            }
+            
+            UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                self.addButton.transform = CGAffineTransform.identity
+                
+            })
+            
+        } else if gestureRecognizer.state == .changed {
+            
+            center = gestureRecognizer.location(in: self.view)
+            print("Center: ", center)
+            let width: CGFloat = 50
+            let height: CGFloat = 50
+            let box = CGRect(x: center!.x - width / 2, y: center!.y - height / 2, width: width, height: height)
+            if box.contains(originalCenter) {
+                print("In the button")
+            } else {
+                //if it's outside the button
+                self.tap.isEnabled = false
+                UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                    
+                    self.addButton.transform = CGAffineTransform.identity
+                }, completion: { (res) in
+                    self.tap.isEnabled = true
+                })
+                
+                return
+            }
+        }
+        
     }
     
     private func setUp() {
@@ -129,11 +189,16 @@ extension UpViewController {
         setUpTableView()
         addOutlets()
         setConstraints()
+        addLongTapGesture()
+        addReorderPressGesture()
     }
     
     private func setUpTableView() {
         tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
         self.upTableView = UITableView()
+        self.upTableView.estimatedRowHeight = 0
+        self.upTableView.estimatedSectionHeaderHeight = 0
+        self.upTableView.estimatedSectionFooterHeight = 0
         self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.upTableView.separatorStyle = .none
         self.upTableView.delegate = self
@@ -148,7 +213,7 @@ extension UpViewController {
             make.top.equalToSuperview()
             make.right.equalToSuperview()
             make.left.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-49)
+            make.bottom.equalToSuperview()
         }
         
     }
@@ -328,3 +393,136 @@ extension UpViewController: newProjectVCToUpVCDelegate {
     
 }
 
+//REORDERING
+extension UpViewController {
+    
+    func addReorderPressGesture() {
+        reorderPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureRecognized(gestureRecognizer:)))
+        self.view.addGestureRecognizer(reorderPress)
+    }
+    
+    
+    
+    @objc func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer) {
+        
+        let longpress = gestureRecognizer as! UILongPressGestureRecognizer
+        let state = longpress.state
+        let locationInView = longpress.location(in: self.upTableView)
+        var indexPath = self.upTableView.indexPathForRow(at: locationInView)
+        let upTableRect = self.upTableView.contentSize
+        
+        switch state {
+        case .began:
+            if indexPath != nil {
+                
+                
+                let cell: UITableViewCell!
+                Path.initialIndexPath = indexPath
+                if goals[(indexPath!.row)].duration == 0 {
+                    cell = self.upTableView.cellForRow(at: indexPath!) as! ProjectCell
+                    cell.isHighlighted = false
+                } else {
+                    cell = self.upTableView.cellForRow(at: indexPath!) as! TimedProjectCell
+                    cell.isHighlighted = false
+                }
+                
+                My.cellSnapShot = snapshopOfCell(inputView: cell)
+                var center = cell.center
+                My.cellSnapShot?.center = center
+                My.cellSnapShot?.alpha = 0.0
+                self.upTableView.addSubview(My.cellSnapShot!)
+                
+                UIView.animate(withDuration: 0.25, animations: {
+                    center.y = locationInView.y
+                    My.cellSnapShot?.center = center
+                    My.cellSnapShot?.alpha = 0.98
+                    cell.alpha = 0.0
+                }, completion: { (finished) -> Void in
+                    if finished {
+                        cell.isHidden = true
+                    }
+                })
+            }
+            
+        //if moved
+        case .changed:
+            
+            
+            var center = My.cellSnapShot?.center
+            // this is setting our center to where our finger moves
+            if center!.y >= CGFloat(40) && center!.y <= (upTableRect.height - 20){
+                center?.y = locationInView.y
+                My.cellSnapShot?.center = center!
+                
+                
+            } else {
+                print("Moving too far")
+                // here we want to:
+                // 1) disable the gesture
+                // 2) remove the screenshot
+                longpress.isEnabled = false
+                longpress.isEnabled = true
+                
+            }
+            
+            //if the indexPath we're moving to isn't nil and it's not our original index path
+            if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
+                //however we still want to limit where they can move the snapshot to
+                //how can we limit the movement space?
+                
+                //swapping the goals
+                self.goals.swapAt((indexPath?.row)!, (Path.initialIndexPath?.row)!)
+                //swapping the cells themselves
+                self.upTableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
+                Path.initialIndexPath = indexPath
+            }
+            
+        default:
+            let cell: UITableViewCell!
+            guard let index = indexPath else {return}
+            if goals[index.row].duration == 0 {
+                cell = self.upTableView.cellForRow(at: indexPath!) as! ProjectCell
+            } else {
+                cell = self.upTableView.cellForRow(at: indexPath!) as! TimedProjectCell
+            }
+            longpress.isEnabled = false
+            cell.isHidden = false
+            cell.alpha = 0.0
+            UIView.animate(withDuration: 0.25, animations: {
+                My.cellSnapShot?.center = cell.center
+                My.cellSnapShot?.alpha = 0.0
+                cell.alpha = 1.0
+            }, completion: { (finished) -> Void in
+                if finished {
+                    longpress.isEnabled = true
+                    Path.initialIndexPath = nil
+                    My.cellSnapShot?.removeFromSuperview()
+                    My.cellSnapShot = nil
+                }
+            })
+        }
+    }
+    
+    func snapshopOfCell(inputView: UIView) -> UIView {
+        
+        UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
+        inputView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        let cellSnapshot : UIView = UIImageView(image: image)
+        cellSnapshot.layer.masksToBounds = false
+        cellSnapshot.layer.cornerRadius = 0.0
+        //        cellSnapshot.layer.shadowOffset = CGSize(width: -2.0, height: 0.0)
+        //        cellSnapshot.layer.shadowRadius = 2.0
+        //        cellSnapshot.layer.shadowOpacity = 0.3
+        return cellSnapshot
+    }
+    
+    struct My {
+        static var cellSnapShot: UIView? = nil
+    }
+    
+    struct Path {
+        static var initialIndexPath: IndexPath? = nil
+    }
+}

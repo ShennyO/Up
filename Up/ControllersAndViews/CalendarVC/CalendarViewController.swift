@@ -457,7 +457,7 @@ extension CalendarViewController: UIScrollViewDelegate {
 }
 
 
-extension CalendarViewController: CalendarVCToHeaderViewDelegate {
+extension CalendarViewController: CalendarViewToHeaderViewDelegate {
     func leftButtonTapped() {
         scrollCollectionView(sectionOffset: -1)
     }

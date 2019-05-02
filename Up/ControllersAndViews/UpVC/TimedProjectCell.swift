@@ -57,14 +57,14 @@ class TimedProjectCell: UITableViewCell {
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        label.numberOfLines = 0
-        label.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        label.numberOfLines = 2
+        label.textColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         return label
     }()
     
     var timeLabelView: UIView = {
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.3366830349, green: 0.334687084, blue: 0.3382208347, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.0862745098, blue: 0.09411764706, alpha: 1)
         view.layer.cornerRadius = 10
         return view
     }()
@@ -155,7 +155,7 @@ class TimedProjectCell: UITableViewCell {
     }
     
     private func setUpCell() {
-        self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        self.backgroundColor = UIColor.clear
         
         addOutlets()
         setConstraints()
@@ -272,15 +272,15 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
         blackCheckMark.isHidden = false
         blackCheckMark.alpha = 0
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             self.generator.impactOccurred()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
                 self.strikeThrough()
             })
             UIView.animate(withDuration: 0.35, animations: {
                 self.blackCheckMark.alpha = 1
             }, completion: { (res) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.27, execute: {
                      self.delegate.completeTimedCell(cell: self)
                 })
                 
