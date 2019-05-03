@@ -22,6 +22,7 @@ class UpViewController: UIViewController {
     var originalCenter: CGPoint!
     var center: CGPoint!
     var selectedReorderingIndexPath: IndexPath!
+    var hasSelectedCellBeenUnhidden =  false
     
     
     let stack = CoreDataStack.instance
@@ -421,37 +422,44 @@ extension UpViewController {
         let upTableRect = self.upTableView.contentSize
         
         switch state {
+            
         case .began:
-            if indexPath != nil {
+            if indexPath == nil {
+                return
+            }
                 
-                generator.impactOccurred()
-                let cell: UITableViewCell!
-                Path.initialIndexPath = indexPath
-                if goals[(indexPath!.row)].duration == 0 {
-                    cell = self.upTableView.cellForRow(at: indexPath!) as! ProjectCell
-                    cell.isHighlighted = false
-                } else {
-                    cell = self.upTableView.cellForRow(at: indexPath!) as! TimedProjectCell
-                    cell.isHighlighted = false
-                }
-                
-                My.cellSnapShot = snapshopOfCell(inputView: cell)
-                var center = cell.center
+            generator.impactOccurred()
+            let cell: UITableViewCell!
+            Path.initialIndexPath = indexPath
+            if goals[(indexPath!.row)].duration == 0 {
+                cell = self.upTableView.cellForRow(at: indexPath!) as! ProjectCell
+                cell.isHighlighted = false
+            } else {
+                cell = self.upTableView.cellForRow(at: indexPath!) as! TimedProjectCell
+                cell.isHighlighted = false
+            }
+            
+            My.cellSnapShot = snapshopOfCell(inputView: cell)
+            var center = cell.center
+            My.cellSnapShot?.center = center
+            My.cellSnapShot?.alpha = 0.0
+            self.upTableView.addSubview(My.cellSnapShot!)
+            
+            self.hasSelectedCellBeenUnhidden = false
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                center.y = locationInView.y
                 My.cellSnapShot?.center = center
-                My.cellSnapShot?.alpha = 0.0
-                self.upTableView.addSubview(My.cellSnapShot!)
-                
-                UIView.animate(withDuration: 0.25, animations: {
-                    center.y = locationInView.y
-                    My.cellSnapShot?.center = center
-                    My.cellSnapShot?.alpha = 0.98
-                    cell.alpha = 0.0
-                }, completion: { (finished) -> Void in
-                    if finished {
+                My.cellSnapShot?.alpha = 1.0
+                cell.alpha = 0.0
+            }, completion: { (finished) -> Void in
+                if finished {
+                    print("resetted")
+                    if self.hasSelectedCellBeenUnhidden == false {
                         cell.isHidden = true
                     }
-                })
-            }
+                }
+            })
             
         //if moved
         case .changed:
@@ -476,7 +484,8 @@ extension UpViewController {
             }
             
         default:
-            
+            print("POINT !")
+            upTableView.beginUpdates()
             let cell: UITableViewCell!
             guard let index = selectedReorderingIndexPath else {return}
             print("reorderingPath: ", selectedReorderingIndexPath)
@@ -485,8 +494,13 @@ extension UpViewController {
             } else {
                 cell = self.upTableView.cellForRow(at: index) as! TimedProjectCell
             }
-           
+            
             cell.alpha = 1.0
+            cell.isHidden = false
+            
+            self.hasSelectedCellBeenUnhidden = true
+            
+            print("GOT HERE:", cell.isHidden)
             
             UIView.animate(withDuration: 0.25, animations: {
                 My.cellSnapShot?.center = cell.center
@@ -497,10 +511,12 @@ extension UpViewController {
                     Path.initialIndexPath = nil
                     My.cellSnapShot?.removeFromSuperview()
                     My.cellSnapShot = nil
-                    cell.isHidden = false
+                    
+                    print("alpha: ", cell.alpha)
                     print("cell hidden?: ", cell.isHidden)
                 }
             })
+            upTableView.endUpdates()
     
         }
     }
