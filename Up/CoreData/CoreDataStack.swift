@@ -30,6 +30,7 @@ enum GoalSortingEnum {
     case completionDateAscending
     case dateDescending
     case completionDateDescending
+    case listOrderDescending
 }
 
 
@@ -94,6 +95,8 @@ public final class CoreDataStack {
             sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: true)
         case .completionDateDescending:
             sort = NSSortDescriptor(key: #keyPath(Goal.completionDate), ascending: false)
+        case .listOrderDescending:
+            sort = NSSortDescriptor(key: #keyPath(Goal.listOrder), ascending: false)
         default:
             sort = NSSortDescriptor(key: #keyPath(Goal.date), ascending: false)
         }

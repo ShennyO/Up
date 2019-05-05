@@ -49,10 +49,26 @@ class UpViewController: UIViewController {
     //PURPOSE: communication from this VC to timed Cell
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     
+    // Anytime goals is set (adding new tasks, deleting) we need to configure ordering
+    // Also need to configure after reordering, and maybe after editing?
     var goals: [Goal] = [] {
         didSet {
             configureHeaderAndTableView()
+            configureOrdering()
         }
+    }
+    
+    private func configureOrdering() {
+        //in here we have to set incomplete tasks order
+        //we can loop through the goals, and with the count, set the index of those tasks
+        
+        // we're only fetching the incomplete goals
+        for (idx, x) in goals.enumerated() {
+            x.listOrder = Int32(idx)
+        }
+        
+        stack.saveTo(context: stack.viewContext)
+        
     }
 
     private func configureHeaderAndTableView() {
@@ -114,7 +130,7 @@ extension UpViewController {
     }
     
     private func fetchGoals(completion: @escaping () -> ()) {
-        let results = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .dateDescending) as? [Goal]
+        let results = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .listOrderDescending) as? [Goal]
         if results?.count != 0 {
             self.goals = results!
         }
@@ -474,8 +490,11 @@ extension UpViewController {
                 if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
                     
                     generator.impactOccurred()
+                    
                     //swapping the goals
                     self.goals.swapAt((indexPath?.row)!, (Path.initialIndexPath?.row)!)
+                    
+                    
                     //swapping the cells themselves
                     self.upTableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
                     Path.initialIndexPath = indexPath
@@ -484,11 +503,10 @@ extension UpViewController {
             }
             
         default:
-            print("POINT !")
-            upTableView.beginUpdates()
+            
             let cell: UITableViewCell!
             guard let index = selectedReorderingIndexPath else {return}
-            print("reorderingPath: ", selectedReorderingIndexPath)
+            
             if goals[index.row].duration == 0 {
                 cell = self.upTableView.cellForRow(at: index) as! ProjectCell
             } else {
@@ -500,7 +518,6 @@ extension UpViewController {
             
             self.hasSelectedCellBeenUnhidden = true
             
-            print("GOT HERE:", cell.isHidden)
             
             UIView.animate(withDuration: 0.25, animations: {
                 My.cellSnapShot?.center = cell.center
@@ -511,12 +528,10 @@ extension UpViewController {
                     Path.initialIndexPath = nil
                     My.cellSnapShot?.removeFromSuperview()
                     My.cellSnapShot = nil
+                    self.configureOrdering()
                     
-                    print("alpha: ", cell.alpha)
-                    print("cell hidden?: ", cell.isHidden)
                 }
             })
-            upTableView.endUpdates()
     
         }
     }
