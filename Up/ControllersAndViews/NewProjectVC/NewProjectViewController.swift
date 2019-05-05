@@ -313,11 +313,11 @@ class NewProjectViewController: UIViewController {
             
         } else {
             
-            let goals = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .listOrderDescending) ?? []
+            let goals = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .listOrderNumberAscending) ?? []
             
             let newGoal = Goal(context: stack.viewContext)
             newGoal.completionDate = nil
-            newGoal.listOrder = Int32(goals.count)
+            newGoal.listOrderNumber = Int32(goals.count)
             newGoal.date = Date()
             newGoal.goalDescription = text
             if sessionButton.isSelected {

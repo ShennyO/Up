@@ -54,7 +54,6 @@ class UpViewController: UIViewController {
     var goals: [Goal] = [] {
         didSet {
             configureHeaderAndTableView()
-            configureOrdering()
         }
     }
     
@@ -64,7 +63,7 @@ class UpViewController: UIViewController {
         
         // we're only fetching the incomplete goals
         for (idx, x) in goals.enumerated() {
-            x.listOrder = Int32(idx)
+            x.listOrderNumber = Int32(idx)
         }
         
         stack.saveTo(context: stack.viewContext)
@@ -130,7 +129,7 @@ extension UpViewController {
     }
     
     private func fetchGoals(completion: @escaping () -> ()) {
-        let results = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .listOrderDescending) as? [Goal]
+        let results = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .listOrderNumberAscending) as? [Goal]
         if results?.count != 0 {
             self.goals = results!
         }
