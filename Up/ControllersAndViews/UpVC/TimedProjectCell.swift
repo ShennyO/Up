@@ -280,7 +280,7 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
             UIView.animate(withDuration: 0.35, animations: {
                 self.blackCheckMark.alpha = 1
             }, completion: { (res) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.27, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.32, execute: {
                      self.delegate.completeTimedCell(cell: self)
                 })
                 

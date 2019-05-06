@@ -312,8 +312,15 @@ class NewProjectViewController: UIViewController {
             goalDelegate.editGoalToUpVC(goal: goal, index: selectedIndex!)
             
         } else {
+            
+            let goals = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .listOrderNumberAscending) as? [Goal] ?? []
+            
             let newGoal = Goal(context: stack.viewContext)
             newGoal.completionDate = nil
+            newGoal.listOrderNumber = 0
+            for x in goals {
+                x.listOrderNumber += 1
+            }
             newGoal.date = Date()
             newGoal.goalDescription = text
             if sessionButton.isSelected {
