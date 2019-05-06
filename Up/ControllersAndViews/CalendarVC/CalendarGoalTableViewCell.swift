@@ -49,7 +49,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
     private func setupViews() {
         
 //        Add views into proper superviews
-        [detailContainerView, mainContainerView, lineView].forEach { (view) in
+        [/*detailContainerView, */mainContainerView, lineView].forEach { (view) in
             self.addSubview(view)
         }
         
@@ -57,7 +57,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
             mainContainerView.addSubview(view)
         }
         
-        detailContainerView.addSubview(exactTimeLabel)
+//        detailContainerView.addSubview(exactTimeLabel)
         
 //        Set constraints for views
 //         * Self
@@ -67,9 +67,9 @@ class CalendarGoalTableViewCell: UITableViewCell {
             make.height.equalTo(60)
         }
         
-        detailContainerView.snp.makeConstraints { (make) in
-            make.bottom.left.right.equalToSuperview()
-        }
+//        detailContainerView.snp.makeConstraints { (make) in
+//            make.bottom.left.right.equalToSuperview()
+//        }
         
 //         * mainContainerView
         lineView.snp.makeConstraints { (make) in
@@ -105,9 +105,9 @@ class CalendarGoalTableViewCell: UITableViewCell {
         }
 
 //         * detailContainerView
-        exactTimeLabel.snp.makeConstraints { (make) in
-            make.height.width.centerY.centerX.equalToSuperview()
-        }
+//        exactTimeLabel.snp.makeConstraints { (make) in
+//            make.height.width.centerY.centerX.equalToSuperview()
+//        }
     }
     
     func animateSelection(expanding: Bool, closure: ((Bool) -> Void)?) {
