@@ -267,7 +267,7 @@ class ProjectCell: UITableViewCell {
     private func strikethroughAndComplete(completion: @escaping () -> ()) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.strikeThrough()
-            self.isUserInteractionEnabled = true
+            
             completion()
         }
         
@@ -286,7 +286,7 @@ class ProjectCell: UITableViewCell {
         taskSquareFillView.alpha = 0
         checkMarkImage.isHidden = false
         checkMarkImage.alpha = 0
-        self.isUserInteractionEnabled = false
+//        self.isUserInteractionEnabled = false
         generator.impactOccurred()
         
         strikethroughAndComplete {
@@ -297,13 +297,6 @@ class ProjectCell: UITableViewCell {
         UIView.animate(withDuration: 0.35, animations: {
             self.taskSquareFillView.alpha = 1
             self.checkMarkImage.alpha = 1
-        }, completion:  {
-            (value: Bool) in
-            //There should be another animation for the lines here, and then in the completion of that
-            // we run the delegate function
-            
-            
-            
         })
     }
     

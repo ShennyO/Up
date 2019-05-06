@@ -287,6 +287,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
             sessionVC.dismissedBlock = {
                 self.goals[indexPath.row].completionDate = Date()
+                cell?.isUserInteractionEnabled = false
                 self.timedCellDelegate.showBlackCheck()
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[indexPath.row])
                 self.stack.saveTo(context: self.stack.viewContext)
@@ -299,6 +300,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             
         } else {
             let cell = tableView.cellForRow(at: indexPath) as! ProjectCell
+            cell.isUserInteractionEnabled = false
             cell.complete()
         }
         
@@ -357,6 +359,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
     
     func completeTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
+            cell.isUserInteractionEnabled = true
             goals.remove(at: index.row)
             upTableView.deleteRows(at: [index], with: .right)
         }
@@ -378,6 +381,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
                 self.stack.saveTo(context: self.stack.viewContext)
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[index.row])
                 self.goals.remove(at: index.row)
+                cell.isUserInteractionEnabled = true
                 self.upTableView.deleteRows(at: [index], with: .right)
             }
             
