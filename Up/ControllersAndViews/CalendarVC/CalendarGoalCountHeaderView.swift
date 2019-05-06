@@ -83,6 +83,7 @@ class CalendarGoalCountHeaderView: UIView {
     let dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = Style.Colors.Palette01.pureWhite
+        label.numberOfLines = 2
         label.font = Style.Fonts.bold20
         return label
     }()
@@ -91,6 +92,7 @@ class CalendarGoalCountHeaderView: UIView {
         let label = UILabel()
         label.textColor = Style.Colors.Palette01.pureWhite
         label.font = Style.Fonts.bold18
+        label.numberOfLines = 2
         return label
     }()
     
@@ -98,6 +100,7 @@ class CalendarGoalCountHeaderView: UIView {
         let label = UILabel()
         label.textColor = Style.Colors.Palette01.pureWhite
         label.font = Style.Fonts.bold20
+        label.numberOfLines = 2
         return label
     }()
     
