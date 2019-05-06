@@ -32,7 +32,7 @@ struct Style {
         static let calendarShade3 = UIColor(displayP3Red: 46 / 255, green: 146 / 255, blue: 255 / 255, alpha: 1)
         static let calendarShade4 = UIColor(displayP3Red: 00 / 255, green: 122 / 255, blue: 255 / 255, alpha: 1)
         static let calendarShade5 = UIColor(displayP3Red: 25 / 255, green: 115 / 255, blue: 213 / 255, alpha: 1)
-        static let calendarShade6 = UIColor(displayP3Red: 0 / 255, green: 51 / 255, blue: 109 / 255, alpha: 1)
+        static let calendarShade6 = UIColor(displayP3Red: 16 / 255, green: 74 / 255, blue: 136 / 255, alpha: 1)
         
         struct Palette01 {
             static let mainBlue = UIColor(displayP3Red: 00 / 255, green: 109 / 255, blue: 229 / 255, alpha: 1)

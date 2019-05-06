@@ -49,7 +49,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
     private func setupViews() {
         
 //        Add views into proper superviews
-        [detailContainerView, mainContainerView, lineView].forEach { (view) in
+        [/*detailContainerView, */mainContainerView, lineView].forEach { (view) in
             self.addSubview(view)
         }
         
@@ -57,7 +57,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
             mainContainerView.addSubview(view)
         }
         
-        detailContainerView.addSubview(exactTimeLabel)
+//        detailContainerView.addSubview(exactTimeLabel)
         
 //        Set constraints for views
 //         * Self
@@ -67,9 +67,9 @@ class CalendarGoalTableViewCell: UITableViewCell {
             make.height.equalTo(60)
         }
         
-        detailContainerView.snp.makeConstraints { (make) in
-            make.bottom.left.right.equalToSuperview()
-        }
+//        detailContainerView.snp.makeConstraints { (make) in
+//            make.bottom.left.right.equalToSuperview()
+//        }
         
 //         * mainContainerView
         lineView.snp.makeConstraints { (make) in
@@ -105,29 +105,34 @@ class CalendarGoalTableViewCell: UITableViewCell {
         }
 
 //         * detailContainerView
-        exactTimeLabel.snp.makeConstraints { (make) in
-            make.height.width.centerY.centerX.equalToSuperview()
-        }
+//        exactTimeLabel.snp.makeConstraints { (make) in
+//            make.height.width.centerY.centerX.equalToSuperview()
+//        }
     }
     
     func animateSelection(expanding: Bool, closure: ((Bool) -> Void)?) {
-//        if expanding {
-//            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
-//                self.mainContainerView.alpha = 1
-//            }) { (done) in
-//                if let closure = closure {
-//                    closure(done)
-//                }
-//            }
-//        } else {
-//            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
-//                self.mainContainerView.alpha = 0
-//            }) { (done) in
-//                if let closure = closure {
-                    closure!(true)
-//                }
-//            }
-//        }
+        if expanding {
+            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
+                self.detailContainerView.alpha = 1
+            }) { (done) in
+                if let closure = closure {
+                    closure(done)
+                }
+            }
+        } else {
+            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
+                self.mainContainerView.alpha = 0
+            }) { (done) in
+                if let closure = closure {
+                    closure(true)
+                }
+            }
+        }
+    }
+    
+    let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipedLeft(sender:)))
+    
+    @objc func swipedLeft(sender: UITapGestureRecognizer) {
     }
     
     let mainContainerView: UIView = {
@@ -139,6 +144,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
     let detailContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = Style.Colors.Palette01.gunMetal
+        view.backgroundColor = .green
         view.alpha = 0
         return view
     }()

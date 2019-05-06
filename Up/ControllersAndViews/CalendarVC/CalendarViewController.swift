@@ -58,7 +58,7 @@ class CalendarViewController: UIViewController {
     
     lazy var gregorian : NSCalendar = {
         let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
-        cal.timeZone = TimeZone(abbreviation: TimeZone.current.abbreviation()!)!
+        cal.timeZone = TimeZone.current
         return cal
     }()
     
@@ -73,7 +73,6 @@ class CalendarViewController: UIViewController {
         self.navigationItem.title = "Calendar"
         
         fetchData()
-        
         setupViews()
         setupTableView()
         
@@ -212,10 +211,10 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             return cvHeight + headerHeight + containerInsets
         default:
 //            This cell displays one goal at a time
-//            guard let _ = tableView.indexPathForSelectedRow else {
-            return 60
+//            if let indexPathForSelectedRow = tableView.indexPathForSelectedRow, indexPathForSelectedRow == indexPath {
+//                return 120
 //            }
-//            return 120
+            return 60
         }
     }
     
@@ -270,27 +269,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             return headerView
         }
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        guard let cell = tableView.cellForRow(at: indexPath) as? CalendarGoalTableViewCell else { return }
-//        tableView.beginUpdates()
-//
-//        cell.animateSelection(expanding: true) { (_) in
-//            tableView.endUpdates()
-//        }
-    }
-    
-//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-//        if indexPath.section == 0 { return nil }
-//        if let indexPathForSelectedRow = tableView.indexPathForSelectedRow,
-//            indexPathForSelectedRow == indexPath {
-//            tableView.deselectRow(at: indexPath, animated: true)
-//            tableView.beginUpdates()
-//            tableView.endUpdates()
-//            return nil
-//        }
-//        return indexPath
-//    }
     
     func reloadTableViewGoals() {
         
@@ -507,12 +485,15 @@ extension CalendarViewController: GoalCompletionDelegate {
             //            Edge case: what happens if they selected a day and they just switch to another day
             let lastNumOfSections = lastNumberOfSectionsOfTableView
             let numOfSections = numberOfSections(in: tableView)
+            
+            tableView.beginUpdates()
             if lastNumOfSections < numOfSections {
                 tableView.insertSections(IndexSet([lastNumOfSections]), with: .none)
             } else {
                 tableView.reloadSections(IndexSet([lastNumOfSections - 1]), with: .none)
             }
-            
+            tableView.reloadSections(IndexSet([1]), with: .none)
+            tableView.endUpdates()
         }
     }
 }
