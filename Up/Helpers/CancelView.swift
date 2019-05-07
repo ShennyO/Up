@@ -65,13 +65,13 @@ class CancelView: UIView {
     
     var horizontalSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return view
     }()
     
     var verticalSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return view
     }()
     
@@ -116,7 +116,7 @@ class CancelView: UIView {
         verticalSeparatorView.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.top.equalTo(buttonStackView.snp.top)
-            make.height.equalTo(45)
+            make.height.equalTo(44.8)
             make.width.equalTo(1)
         }
         

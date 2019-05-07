@@ -296,7 +296,7 @@ class SessionViewController: UIViewController {
             cancelView.alpha = 0
             
             UIView.animate(withDuration: 0.2, animations: {
-                self.blurEffectView.alpha = 0.7
+                self.blurEffectView.alpha = 0.4
                 self.cancelView.alpha = 1.0
             })
         }

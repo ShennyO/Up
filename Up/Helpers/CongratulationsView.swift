@@ -239,17 +239,6 @@ class CongratulationsView: UIView {
     }
     
     @objc private func addButtonTapped() {
-        self.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        [addMoreLabel,durationPicker,addButton,doneLabel,returnButton].forEach { (view) in
-            view.isHidden = true
-        }
-        
-        //show congrats
-        [congratulationsLabel, descriptionLabel, dismissButton, moreTimeLabel, moreTimeButton].forEach { (view) in
-            view.isHidden = false
-            view.alpha = 1
-        }
-        
         delegate.addButtonTapped(time: selectedTime)
     }
     
