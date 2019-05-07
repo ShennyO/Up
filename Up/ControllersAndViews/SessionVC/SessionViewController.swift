@@ -10,6 +10,7 @@ import AudioToolbox
 
 protocol SessionVCToTimeAnimationViewDelegate: class {
     
+    
     func pauseAnimation()
     
     func resumeAnimation()
@@ -20,18 +21,20 @@ protocol SessionVCToTimeAnimationViewDelegate: class {
     
     func updateMinuteLabel(timeString: String)
     
+    
 }
 
 class SessionViewController: UIViewController {
 
+    
     //MARK: VARIABLES
     var timedGoal: Goal?
     var currentTime: TimeInterval!
     var endTime: TimeInterval!
-    var sessionActive = false
     var timeInSeconds: Int = 0
     var addedTime: Int32 = 0
     var isSessionPaused = false
+    var sessionActive = false
     
     weak var delegate: SessionVCToTimeAnimationViewDelegate!
     
@@ -278,8 +281,11 @@ class SessionViewController: UIViewController {
     }
     
     @objc func cancelButtonTapped() {
-        
-        if sessionActive {
+        if sessionActive == false {
+            self.dismiss(animated: true)
+        } else {
+            
+            isSessionPaused = true
             
             stopTimer()
             delegate.pauseAnimation()
@@ -293,18 +299,10 @@ class SessionViewController: UIViewController {
                 self.blurEffectView.alpha = 0.7
                 self.cancelView.alpha = 1.0
             })
-            
-            
-        } else {
-            
-            self.dismiss(animated: true)
-            
         }
     }
     
-    
     @objc private func pauseGestureTapped() {
-        
         if sessionActive == false {
             return
         }
@@ -318,7 +316,6 @@ class SessionViewController: UIViewController {
             stopTimer()
             delegate.pauseAnimation()
         }
-        
     }
     
     private func setPauseGesture() {
@@ -349,10 +346,12 @@ class SessionViewController: UIViewController {
     deinit {
         print("Session VC Deinitialized!")
     }
+
     
 }
 
 extension SessionViewController: CongratsViewToSessionVCDelegate {
+    
     
     func addButtonTapped(time: Int) {
         //only add the time, don't save the time here
@@ -377,7 +376,6 @@ extension SessionViewController: CongratsViewToSessionVCDelegate {
             (value: Bool) in
             self.blurEffectView?.isHidden = true
         })
-        
     }
     
     func dismissTapped() {
@@ -385,9 +383,13 @@ extension SessionViewController: CongratsViewToSessionVCDelegate {
         dismissedBlock!()
         self.dismiss(animated: true, completion: nil)
     }
+    
+    
 }
 
 extension SessionViewController: CancelViewToSessionVCDelegate {
+    
+    
     func yesTapped() {
         self.delegate.removeAnimations()
         stopTimer()
@@ -395,7 +397,6 @@ extension SessionViewController: CancelViewToSessionVCDelegate {
     }
     
     func cancelTapped() {
-        
         UIView.animate(withDuration: 0.2, animations: {
             self.blurEffectView?.alpha = 0
             self.cancelView.alpha = 0
@@ -404,10 +405,9 @@ extension SessionViewController: CancelViewToSessionVCDelegate {
             self.blurEffectView?.isHidden = true
             self.cancelView.isHidden = true
         })
-        
+        isSessionPaused = false
         delegate.resumeAnimation()
         runTimer()
-        
     }
     
     
