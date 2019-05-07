@@ -304,6 +304,11 @@ class SessionViewController: UIViewController {
     
     
     @objc private func pauseGestureTapped() {
+        
+        if sessionActive == false {
+            return
+        }
+        
         if isSessionPaused {
             isSessionPaused = false
             runTimer()

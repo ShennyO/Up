@@ -44,7 +44,7 @@ class CancelView: UIView {
         button.addTarget(self, action: #selector(yesTapped), for: .touchUpInside)
         button.setTitle("Yes, I'm sure", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         button.contentEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
         return button
     }()
@@ -55,7 +55,7 @@ class CancelView: UIView {
         button.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         button.setTitle("Continue", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         button.contentEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
         return button
         
