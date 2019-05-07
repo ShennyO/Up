@@ -77,7 +77,6 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         configNavBar(navController: goalsNavVC)
         
         self.viewControllers = [goalsNavVC, calendarNavVC]
-//        self.viewControllers = [goalsNavVC, calendarNavVC, statsNavVC]
         
         let firstItemView = tabBar.subviews.first!
         firstTabbarItemImageView = firstItemView.subviews.first as? UIImageView
