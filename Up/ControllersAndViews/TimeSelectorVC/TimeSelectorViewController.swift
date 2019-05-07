@@ -145,7 +145,12 @@ extension TimeSelectorViewController: UIPickerViewDelegate, UIPickerViewDataSour
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let pickerLabel: UILabel = {
             let label = UILabel()
-            label.text = String(describing: times[row]) + " minutes"
+            if times[row] != 1 {
+                label.text = String(describing: times[row]) + " minutes"
+            } else {
+                label.text = String(describing: times[row]) + " minute"
+            }
+            
             label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
             label.textAlignment = .center
             label.textColor = UIColor.white

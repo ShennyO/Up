@@ -179,8 +179,6 @@ extension SunnyCustomInputView: newProjectVCToTextInputViewDelegate {
         tv.text = text
         
     }
-    
-    
 }
 
 
