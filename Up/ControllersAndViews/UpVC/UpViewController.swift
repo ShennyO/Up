@@ -300,7 +300,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             
         } else {
             let cell = tableView.cellForRow(at: indexPath) as! ProjectCell
-            cell.isUserInteractionEnabled = false
+            self.upTableView.isUserInteractionEnabled = false
             cell.complete()
         }
         
@@ -381,7 +381,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
                 self.stack.saveTo(context: self.stack.viewContext)
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[index.row])
                 self.goals.remove(at: index.row)
-                cell.isUserInteractionEnabled = true
+                self.upTableView.isUserInteractionEnabled = true
                 self.upTableView.deleteRows(at: [index], with: .right)
             }
             
@@ -522,7 +522,7 @@ extension UpViewController {
             self.hasSelectedCellBeenUnhidden = true
             
             
-            UIView.animate(withDuration: 0.25, animations: {
+            UIView.animate(withDuration: 0.35, animations: {
                 My.cellSnapShot?.center = cell.center
                 My.cellSnapShot?.alpha = 0.0
                 
