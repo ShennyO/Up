@@ -302,25 +302,54 @@ class SessionViewController: UIViewController {
         }
     }
     
-    @objc private func pauseGestureTapped() {
+    @objc private func pauseGestureTapped(gesture: UITapGestureRecognizer) {
         if sessionActive == false {
+            return
+        }
+        
+        var point = gesture.location(in: view)
+        point = self.animationView.convert(point, from: self.view)
+        
+        if !self.animationView.bounds.contains(point) {
             return
         }
         
         if isSessionPaused {
             isSessionPaused = false
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                self.blurEffectView?.alpha = 0
+                self.view.layoutIfNeeded()
+            }, completion:  {
+                (value: Bool) in
+                self.blurEffectView?.isHidden = true
+            })
+            
             runTimer()
             delegate.resumeAnimation()
         } else {
             isSessionPaused = true
+            
+            blurEffectView.isHidden = false
+            blurEffectView.alpha = 0.2
+            
             stopTimer()
             delegate.pauseAnimation()
         }
     }
     
     private func setPauseGesture() {
-        self.pauseGesture = UITapGestureRecognizer(target: self, action: #selector(pauseGestureTapped))
+        self.pauseGesture = UITapGestureRecognizer(target: self, action: #selector(pauseGestureTapped(gesture:)))
         self.view.addGestureRecognizer(pauseGesture!)
+    }
+    
+    private func hideBlur() {
+        UIView.animate(withDuration: 0.4, animations: {
+            self.blurEffectView?.alpha = 0
+        }, completion:  {
+            (value: Bool) in
+            self.blurEffectView?.isHidden = true
+        })
     }
     
     override func viewDidLoad() {
