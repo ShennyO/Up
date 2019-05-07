@@ -63,7 +63,8 @@ class CalendarGoalTableViewCell: UITableViewCell {
 //         * Self
         mainContainerView.snp.makeConstraints { (make) in
             make.left.top.right.equalToSuperview()
-            make.bottom.equalTo(detailContainerView.snp.top)
+//            make.bottom.equalTo(detailContainerView.snp.top)
+            make.bottom.equalToSuperview()
             make.height.equalTo(60)
         }
         
