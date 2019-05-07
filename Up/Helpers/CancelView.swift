@@ -86,7 +86,7 @@ class CancelView: UIView {
         
         self.addSubview(buttonStackView)
         self.addSubview(horizontalSeparatorView)
-        self.addSubview(verticalSeparatorView)
+//        self.addSubview(verticalSeparatorView)
         
     }
     
@@ -108,17 +108,17 @@ class CancelView: UIView {
         }
         
         horizontalSeparatorView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
+            make.left.right.equalToSuperview().inset(0.5)
             make.bottom.equalTo(buttonStackView.snp.top)
             make.height.equalTo(1)
         }
         
-        verticalSeparatorView.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(buttonStackView.snp.top)
-            make.height.equalTo(44.8)
-            make.width.equalTo(1)
-        }
+//        verticalSeparatorView.snp.makeConstraints { (make) in
+//            make.centerX.equalToSuperview()
+//            make.top.equalTo(buttonStackView.snp.top)
+//            make.height.equalTo(44.8)
+//            make.width.equalTo(1)
+//        }
         
     }
     
