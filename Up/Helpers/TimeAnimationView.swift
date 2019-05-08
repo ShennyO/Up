@@ -89,6 +89,16 @@ class TimeAnimationView: UIView {
 
 extension TimeAnimationView: SessionVCToTimeAnimationViewDelegate {
     
+    func hideMinuteLabel() {
+        self.minutesLabel.alpha = 0.5
+    }
+    
+    func showMinuteLabel() {
+        UIView.animate(withDuration: 0.7, animations: {
+            self.minutesLabel.alpha = 1
+        })
+    }
+    
     func resumeAnimation() {
         let pausedCircleTime: CFTimeInterval = circleLayer.timeOffset
         circleLayer.speed = 1.0

@@ -21,6 +21,10 @@ protocol SessionVCToTimeAnimationViewDelegate: class {
     
     func updateMinuteLabel(timeString: String)
     
+    func hideMinuteLabel()
+    
+    func showMinuteLabel()
+    
     
 }
 
@@ -36,6 +40,7 @@ class SessionViewController: UIViewController {
     var isSessionPaused = false
     var sessionActive = false
     var cancelViewShowing = false
+    var congratsViewShowing = false
     
     weak var delegate: SessionVCToTimeAnimationViewDelegate!
     
@@ -243,6 +248,8 @@ class SessionViewController: UIViewController {
     
     private func showCongratsView() {
         
+        congratsViewShowing = true
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.delegate.removeAnimations()
         }
@@ -319,7 +326,7 @@ class SessionViewController: UIViewController {
     }
     
     @objc private func pauseGestureTapped(gesture: UITapGestureRecognizer) {
-        if sessionActive == false || cancelViewShowing == true {
+        if sessionActive == false || cancelViewShowing == true || congratsViewShowing == true {
             return
         }
         
@@ -353,13 +360,14 @@ class SessionViewController: UIViewController {
             
             runTimer()
             delegate.resumeAnimation()
+            delegate.showMinuteLabel()
             
         } else {
             
             pauseIcon.isHidden = false
             pauseIcon.alpha = 0
             
-            UIView.animate(withDuration: 0.25, animations: {
+            UIView.animate(withDuration: 0.1, animations: {
                 self.pauseIcon.alpha = 1
             })
             
@@ -370,6 +378,7 @@ class SessionViewController: UIViewController {
             
             stopTimer()
             delegate.pauseAnimation()
+            delegate.hideMinuteLabel()
         }
     }
     
@@ -420,6 +429,9 @@ extension SessionViewController: CongratsViewToSessionVCDelegate {
     func addButtonTapped(time: Int) {
         //only add the time, don't save the time here
         //only when the user has completed the task (when they press done) do we save the update
+        
+        congratsViewShowing = false
+        
         self.addedTime += Int32(time)
         
         timeInSeconds += (time * 60)

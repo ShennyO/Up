@@ -239,6 +239,9 @@ class CongratulationsView: UIView {
     }
     
     @objc private func addButtonTapped() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.showCongrats()
+        }
         delegate.addButtonTapped(time: selectedTime)
     }
     
