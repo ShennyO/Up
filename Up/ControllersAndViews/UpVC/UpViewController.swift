@@ -35,7 +35,7 @@ class UpViewController: UIViewController {
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "blueAdd"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "Add"), for: .normal)
         return button
     }()
     
@@ -143,7 +143,7 @@ extension UpViewController {
     private func setConstraints() {
         addButton.snp.makeConstraints { (make) in
             make.right.bottom.equalToSuperview().inset(10)
-            make.height.width.equalTo(64)
+            make.height.width.equalTo(60)
         }
     }
     

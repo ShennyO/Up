@@ -92,6 +92,12 @@ class SessionViewController: UIViewController {
         return button
     }()
     
+    let pauseIcon: UIImageView = {
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "pauseIcon"))
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
     
     let animationView = TimeAnimationView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
@@ -159,17 +165,19 @@ class SessionViewController: UIViewController {
     }
     
     
-    private func setCongratsCancelAndBlur() {
+    private func setViewsOverBlur() {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         blurEffectView.isHidden = true
         blurEffectView.alpha = 0.7
-        view.addSubview(blurEffectView)
-        
+        self.view.addSubview(blurEffectView)
+    
         self.view.addSubview(congratsView)
         self.view.addSubview(cancelView)
+        self.view.addSubview(pauseIcon)
+        
         congratsView.delegate = self
         cancelView.delegate = self
         
@@ -185,6 +193,12 @@ class SessionViewController: UIViewController {
             make.centerY.equalToSuperview().offset(-12)
             make.height.equalTo(215)
             make.width.equalTo(300)
+        }
+        
+        pauseIcon.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(animationView.snp.centerY)
+            make.height.width.equalTo(40)
         }
         
     }
@@ -317,7 +331,17 @@ class SessionViewController: UIViewController {
         }
         
         if isSessionPaused {
+            
             isSessionPaused = false
+            pauseIcon.alpha = 1
+            
+            UIView.animate(withDuration: 0.4, animations: {
+                self.pauseIcon.alpha = 0
+            }, completion:  {
+                (value: Bool) in
+                self.pauseIcon.isHidden = true
+            })
+            
             
             UIView.animate(withDuration: 0.2, animations: {
                 self.blurEffectView?.alpha = 0
@@ -329,7 +353,16 @@ class SessionViewController: UIViewController {
             
             runTimer()
             delegate.resumeAnimation()
+            
         } else {
+            
+            pauseIcon.isHidden = false
+            pauseIcon.alpha = 0
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                self.pauseIcon.alpha = 1
+            })
+            
             isSessionPaused = true
             
             blurEffectView.isHidden = false
@@ -360,7 +393,7 @@ class SessionViewController: UIViewController {
         addOutlets()
         setPauseGesture()
         setConstraints()
-        setCongratsCancelAndBlur()
+        setViewsOverBlur()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.delegate = self.animationView
         cancelView.isHidden = true

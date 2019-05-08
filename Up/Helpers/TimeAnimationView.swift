@@ -22,7 +22,7 @@ class TimeAnimationView: UIView {
         return label
     }()
     
-    
+
     private func addOutlets() {
         self.addSubview(minutesLabel)
     }
@@ -32,7 +32,6 @@ class TimeAnimationView: UIView {
             make.centerY.equalToSuperview().offset(2)
             make.centerX.equalToSuperview()
         }
-        
     }
     
     private func addAnimationLayers() {
@@ -69,10 +68,12 @@ class TimeAnimationView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addOutlets()
         addAnimationLayers()
+        addOutlets()
         setConstraints()
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        self.layer.cornerRadius = 150
+        self.clipsToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {
