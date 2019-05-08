@@ -35,7 +35,7 @@ class UpViewController: UIViewController {
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "Add"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "Add-1"), for: .normal)
         return button
     }()
     
