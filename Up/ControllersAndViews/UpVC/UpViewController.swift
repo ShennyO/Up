@@ -35,7 +35,7 @@ class UpViewController: UIViewController {
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "lightBlueAdd"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "blueAdd"), for: .normal)
         return button
     }()
     
@@ -143,7 +143,7 @@ extension UpViewController {
     private func setConstraints() {
         addButton.snp.makeConstraints { (make) in
             make.right.bottom.equalToSuperview().inset(10)
-            make.height.width.equalTo(60)
+            make.height.width.equalTo(64)
         }
     }
     
@@ -287,7 +287,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
             sessionVC.dismissedBlock = {
                 self.goals[indexPath.row].completionDate = Date()
-                cell?.isUserInteractionEnabled = false
+                self.upTableView.isUserInteractionEnabled = false
                 self.timedCellDelegate.showBlackCheck()
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[indexPath.row])
                 self.stack.saveTo(context: self.stack.viewContext)
@@ -359,8 +359,8 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
     
     func completeTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            cell.isUserInteractionEnabled = true
             goals.remove(at: index.row)
+            self.upTableView.isUserInteractionEnabled = true
             upTableView.deleteRows(at: [index], with: .right)
         }
     }

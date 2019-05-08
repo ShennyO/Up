@@ -35,6 +35,7 @@ class SessionViewController: UIViewController {
     var addedTime: Int32 = 0
     var isSessionPaused = false
     var sessionActive = false
+    var cancelViewShowing = false
     
     weak var delegate: SessionVCToTimeAnimationViewDelegate!
     
@@ -286,6 +287,7 @@ class SessionViewController: UIViewController {
         } else {
             
             isSessionPaused = true
+            cancelViewShowing = true
             
             stopTimer()
             delegate.pauseAnimation()
@@ -303,7 +305,7 @@ class SessionViewController: UIViewController {
     }
     
     @objc private func pauseGestureTapped(gesture: UITapGestureRecognizer) {
-        if sessionActive == false {
+        if sessionActive == false || cancelViewShowing == true {
             return
         }
         
@@ -434,6 +436,7 @@ extension SessionViewController: CancelViewToSessionVCDelegate {
             self.blurEffectView?.isHidden = true
             self.cancelView.isHidden = true
         })
+        cancelViewShowing = false
         isSessionPaused = false
         delegate.resumeAnimation()
         runTimer()
