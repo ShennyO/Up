@@ -74,13 +74,10 @@ class UpViewController: UIViewController {
         let total = goals.count
         
         if total != 0 {
-            
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 15)
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 10)
             tableHeaderView.frame = tableHeaderFrame
             self.headerDelegate.alertHeaderView(total: total)
-            
         } else {
-        
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
                 self.tableHeaderView.frame = tableHeaderFrame
@@ -89,11 +86,7 @@ class UpViewController: UIViewController {
                 })
                 self.headerDelegate.alertHeaderView(total: total)
             }
-            
         }
-        
-        
-        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

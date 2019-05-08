@@ -167,7 +167,7 @@ class NewProjectViewController: UIViewController {
         
         
         typeStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(45)
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(30)
             make.centerX.equalTo(descriptionTextView)
         }
         
@@ -180,7 +180,7 @@ class NewProjectViewController: UIViewController {
         }
         
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(timeButton.snp.bottom).offset(-15)
+            make.top.equalTo(timeButton.snp.bottom).offset(-30)
             make.centerX.equalToSuperview()
             make.width.equalTo(125)
             make.height.equalTo(60)
@@ -204,7 +204,7 @@ class NewProjectViewController: UIViewController {
             self.timeButton.isHidden = true
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
+                make.top.equalTo(self.timeButton.snp.bottom).offset(-20)
                 make.centerX.equalToSuperview()
                 make.width.equalTo(125)
                 make.height.equalTo(60)
