@@ -139,6 +139,7 @@ extension TimeAnimationView: SessionVCToTimeAnimationViewDelegate {
         let circleBorderAnimation = CABasicAnimation(keyPath: "strokeEnd")
         circleBorderAnimation.toValue = 0
         circleBorderAnimation.duration = Double(timeInSeconds)
+        circleBorderAnimation.isRemovedOnCompletion = false
         circleLayer.add(circleBorderAnimation, forKey: "borderAnimation")
         
         //MARK: PULSATING ANIMATION
@@ -148,6 +149,7 @@ extension TimeAnimationView: SessionVCToTimeAnimationViewDelegate {
         pulsatingAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         pulsatingAnimation.autoreverses = true
         pulsatingAnimation.repeatCount = .greatestFiniteMagnitude
+        pulsatingAnimation.isRemovedOnCompletion = false
         pulsatingLayer.add(pulsatingAnimation, forKey: "pulsingAnimation")
         
         //MARK: OPACITY ANIMATION
@@ -157,6 +159,7 @@ extension TimeAnimationView: SessionVCToTimeAnimationViewDelegate {
         opacityAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         opacityAnimation.autoreverses = true
         opacityAnimation.repeatCount = .greatestFiniteMagnitude
+        opacityAnimation.isRemovedOnCompletion = false
         pulsatingLayer.add(opacityAnimation, forKey: "opacityAnimation")
     }
     

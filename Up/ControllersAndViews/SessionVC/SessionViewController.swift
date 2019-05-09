@@ -277,32 +277,6 @@ class SessionViewController: UIViewController {
         showCongratsView()
     }
     
-    private func displayStart() {
-        //HIDE DONE
-        doneButton.isUserInteractionEnabled = false
-        
-        UIView.animate(withDuration: 0.7, animations: {
-            self.doneButton.alpha = 0
-        }, completion:  {
-            (value: Bool) in
-            self.doneButton.isHidden = true
-        })
-        
-        //SHOW START
-        self.startButton.isHidden = false
-        self.startButton.alpha = 0
-        
-        UIView.animate(withDuration: 0.85, delay: 1.7, animations: {
-            self.startButton.alpha = 1
-        }, completion: { (value: Bool) in
-            
-            self.startButton.isUserInteractionEnabled = true
-        })
-        
-    }
-    
-   
-    
     @objc func startButtonTapped() {
         sessionActive = true
         runTimer()
@@ -411,12 +385,21 @@ class SessionViewController: UIViewController {
         if sessionActive {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.sessionActive = false
+                self.pauseIcon.isHidden = false
+                self.pauseIcon.alpha = 0
+                
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.pauseIcon.alpha = 1
+                })
+                
+                self.isSessionPaused = true
+                
+                self.blurEffectView.isHidden = false
+                self.blurEffectView.alpha = 0.2
+                
                 self.stopTimer()
-                self.timeInSeconds = self.originalTimeInSeconds
-                self.delegate.updateMinuteLabel(timeString: "\(self.timeString(time: self.timeInSeconds))")
-                self.delegate.removeAnimations()
-                self.displayStart()
+                self.delegate.pauseAnimation()
+                self.delegate.hideMinuteLabel()
             }
         }
     }
