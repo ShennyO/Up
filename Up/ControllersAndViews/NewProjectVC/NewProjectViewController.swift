@@ -141,10 +141,9 @@ class NewProjectViewController: UIViewController {
     private func setConstraints() {
 
         newProjectLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(125)
+            make.top.equalToSuperview().offset(120)
             make.centerX.equalToSuperview()
         }
-        
         
         descriptionTextView.snp.makeConstraints { (make) in
             make.top.equalTo(newProjectLabel.snp.bottom).offset(60)
@@ -152,8 +151,6 @@ class NewProjectViewController: UIViewController {
             make.right.equalToSuperview().offset(-40)
             make.height.equalTo(100)
         }
-        
-        
         
         taskButton.snp.makeConstraints { (make) in
             make.height.equalTo(66)
@@ -165,12 +162,10 @@ class NewProjectViewController: UIViewController {
             make.width.equalTo(66)
         }
         
-        
         typeStackView.snp.makeConstraints { (make) in
             make.top.equalTo(descriptionTextView.snp.bottom).offset(30)
             make.centerX.equalTo(descriptionTextView)
         }
-        
         
         timeButton.snp.makeConstraints { (make) in
             make.top.equalTo(typeStackView.snp.bottom).offset(30)
@@ -214,7 +209,7 @@ class NewProjectViewController: UIViewController {
     
     //if task has a time
     private func sessionButtonModeOn() {
-        
+
             sessionButton.isSelected = true
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
@@ -230,10 +225,7 @@ class NewProjectViewController: UIViewController {
         
     }
     
-    
     //MARK: OBJC FUNCTIONS
-    
-    
     @objc private func taskButtonSelected() {
         //switching button mode
         if taskButton.isSelected == false {
@@ -257,8 +249,6 @@ class NewProjectViewController: UIViewController {
                 self.timeButton.isHidden = true
             })
             self.view.layoutIfNeeded()
-            
-
         }
     }
     

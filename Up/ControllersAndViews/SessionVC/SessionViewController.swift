@@ -10,7 +10,6 @@ import AudioToolbox
 
 protocol SessionVCToTimeAnimationViewDelegate: class {
     
-    
     func pauseAnimation()
     
     func resumeAnimation()
@@ -25,7 +24,6 @@ protocol SessionVCToTimeAnimationViewDelegate: class {
     
     func showMinuteLabel()
     
-    
 }
 
 class SessionViewController: UIViewController {
@@ -35,6 +33,7 @@ class SessionViewController: UIViewController {
     var timedGoal: Goal?
     var currentTime: TimeInterval!
     var endTime: TimeInterval!
+    var originalTimeInSeconds = 0
     var timeInSeconds: Int = 0
     var addedTime: Int32 = 0
     var isSessionPaused = false
@@ -278,6 +277,32 @@ class SessionViewController: UIViewController {
         showCongratsView()
     }
     
+    private func displayStart() {
+        //HIDE DONE
+        doneButton.isUserInteractionEnabled = false
+        
+        UIView.animate(withDuration: 0.7, animations: {
+            self.doneButton.alpha = 0
+        }, completion:  {
+            (value: Bool) in
+            self.doneButton.isHidden = true
+        })
+        
+        //SHOW START
+        self.startButton.isHidden = false
+        self.startButton.alpha = 0
+        
+        UIView.animate(withDuration: 0.85, delay: 1.7, animations: {
+            self.startButton.alpha = 1
+        }, completion: { (value: Bool) in
+            
+            self.startButton.isUserInteractionEnabled = true
+        })
+        
+    }
+    
+   
+    
     @objc func startButtonTapped() {
         sessionActive = true
         runTimer()
@@ -382,6 +407,20 @@ class SessionViewController: UIViewController {
         }
     }
     
+    @objc private func appMovedToBackground() {
+        if sessionActive {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.sessionActive = false
+                self.stopTimer()
+                self.timeInSeconds = self.originalTimeInSeconds
+                self.delegate.updateMinuteLabel(timeString: "\(self.timeString(time: self.timeInSeconds))")
+                self.delegate.removeAnimations()
+                self.displayStart()
+            }
+        }
+    }
+    
     private func setPauseGesture() {
         self.pauseGesture = UITapGestureRecognizer(target: self, action: #selector(pauseGestureTapped(gesture:)))
         self.view.addGestureRecognizer(pauseGesture!)
@@ -409,11 +448,14 @@ class SessionViewController: UIViewController {
         
         if timedGoal != nil {
             timeInSeconds = Int(timedGoal!.duration) * 60
+            originalTimeInSeconds = timeInSeconds
             descriptionLabel.text = timedGoal!.goalDescription
         }
         
         delegate.updateMinuteLabel(timeString: "\(timeString(time: timeInSeconds))")
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     deinit {
