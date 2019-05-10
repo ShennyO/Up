@@ -140,15 +140,21 @@ class NewProjectViewController: UIViewController {
     
     private func setConstraints() {
 
+        cancelButton.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 64))
+            make.left.equalToSuperview().offset(16)
+            make.height.equalTo(20)
+        }
+        
         newProjectLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(120)
+            make.top.equalTo(cancelButton.snp.bottom).offset(heightScaleFactor(distance: 64))
             make.centerX.equalToSuperview()
         }
         
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalTo(newProjectLabel.snp.bottom).offset(60)
-            make.left.equalToSuperview().offset(40)
-            make.right.equalToSuperview().offset(-40)
+            make.top.equalTo(newProjectLabel.snp.bottom).offset(heightScaleFactor(distance: 64))
+            make.left.equalToSuperview().offset(32)
+            make.right.equalToSuperview().offset(-32)
             make.height.equalTo(100)
         }
         
@@ -163,28 +169,22 @@ class NewProjectViewController: UIViewController {
         }
         
         typeStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(30)
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(heightScaleFactor(distance: 46))
             make.centerX.equalTo(descriptionTextView)
         }
         
         timeButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(30)
+            make.top.equalTo(typeStackView.snp.bottom).offset(heightScaleFactor(distance: 32))
             make.centerX.equalToSuperview()
             make.width.equalTo(165)
             make.height.equalTo(50)
         }
         
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(timeButton.snp.bottom).offset(-30)
+            make.top.equalTo(typeStackView.snp.bottom).offset(heightScaleFactor(distance: 46))
             make.centerX.equalToSuperview()
             make.width.equalTo(125)
             make.height.equalTo(60)
-        }
-        
-        cancelButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(60)
-            make.left.equalToSuperview().offset(20)
-            make.height.equalTo(20)
         }
         
     }
@@ -199,7 +199,7 @@ class NewProjectViewController: UIViewController {
             self.timeButton.isHidden = true
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(-20)
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(heightScaleFactor(distance: 46))
                 make.centerX.equalToSuperview()
                 make.width.equalTo(125)
                 make.height.equalTo(60)
@@ -217,7 +217,7 @@ class NewProjectViewController: UIViewController {
             timeButton.isHidden = false
             self.timeButton.alpha = 1
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(35)
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(heightScaleFactor(distance: 114))
                 make.centerX.equalToSuperview()
                 make.width.equalTo(125)
                 make.height.equalTo(60)
@@ -235,7 +235,7 @@ class NewProjectViewController: UIViewController {
             taskButton.isSelected = true
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(heightScaleFactor(distance: 46))
                 make.centerX.equalToSuperview()
                 make.width.equalTo(125)
                 make.height.equalTo(60)
@@ -270,7 +270,7 @@ class NewProjectViewController: UIViewController {
             timeButton.alpha = 0
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(35)
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(heightScaleFactor(distance: 114))
                 make.centerX.equalToSuperview()
                 make.width.equalTo(125)
                 make.height.equalTo(60)
@@ -374,7 +374,6 @@ class NewProjectViewController: UIViewController {
         }
 
     }
-    
     
     
     

@@ -95,6 +95,8 @@ class UpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("PhoneHeight: ", UIScreen.main.bounds.height)
+        print("PhoneWidth: ", UIScreen.main.bounds.width)
         self.navigationItem.title = "Tasks"
         setUp()
         fetchGoals() {

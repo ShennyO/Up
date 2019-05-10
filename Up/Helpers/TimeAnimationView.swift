@@ -16,8 +16,9 @@ class TimeAnimationView: UIView {
     //MARK: OUTLETS
     var minutesLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 45)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 40, weight: UIFont.Weight.bold)
         label.text = "30:00"
+        label.textAlignment = .center
         label.textColor = UIColor.white
         return label
     }()

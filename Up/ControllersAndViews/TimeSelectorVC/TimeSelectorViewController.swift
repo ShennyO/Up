@@ -13,13 +13,10 @@ class TimeSelectorViewController: UIViewController {
     var times: [Int] = []
     var selectedTime = 30
     var onDoneBlock: ((Int) -> ())?
-    var canceledBlock: (() -> ())?
-    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
     
     //MARK: OUTLETS
     let containerView: UIView = {
@@ -62,10 +59,9 @@ class TimeSelectorViewController: UIViewController {
     private func setConstraints() {
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(200)
-            make.left.equalToSuperview().offset(85)
-            make.right.equalToSuperview().offset(-85)
-            make.height.equalTo(350)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 200))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
+            make.height.equalTo(352)
         }
         
         titleLabel.snp.makeConstraints { (make) in

@@ -107,10 +107,10 @@ class TimedProjectCell: UITableViewCell {
     private func setConstraints() {
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(7.5)
-            make.bottom.equalToSuperview().offset(-7.5)
-            make.left.equalToSuperview().offset(25)
-            make.right.equalToSuperview().offset(-25)
+            make.top.equalToSuperview().offset(8)
+            make.bottom.equalToSuperview().offset(-8)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
         }
         
         darkView.snp.makeConstraints { (make) in
@@ -121,7 +121,7 @@ class TimedProjectCell: UITableViewCell {
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(timeImageContainerView.snp.right).offset(15)
+            make.left.equalTo(timeImageContainerView.snp.right).offset(14)
             make.right.equalToSuperview().offset(-15)
             make.centerY.equalToSuperview()
         }

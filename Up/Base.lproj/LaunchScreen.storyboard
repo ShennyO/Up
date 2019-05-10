@@ -17,7 +17,17 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Up" translatesAutoresizingMaskIntoConstraints="NO" id="biv-Ap-bRN">
+                                <rect key="frame" x="-63" y="194" width="540" height="468"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.10980392156862745" green="0.10980392156862745" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="biv-Ap-bRN" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="0s5-5K-8Gu"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="biv-Ap-bRN" secondAttribute="bottom" constant="200" id="mcH-Qu-zYu"/>
+                            <constraint firstItem="biv-Ap-bRN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="150" id="uif-XD-rsQ"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -26,4 +36,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Up" width="540" height="540"/>
+    </resources>
 </document>

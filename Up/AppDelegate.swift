@@ -20,10 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        application.isIdleTimerDisabled = true
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-//        UINavigationBar.appearance().tintColor = UIColor.white
-//        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         let initialTabBarController = UpTabBarController()
         initialTabBarController.tabBar.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         initialTabBarController.tabBar.isTranslucent = false
