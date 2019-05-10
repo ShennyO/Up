@@ -92,12 +92,12 @@ class CancelView: UIView {
     
     private func setConstraints() {
         titleLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(25)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 25))
             make.centerX.equalToSuperview()
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.top.equalTo(titleLabel.snp.bottom).offset(heightScaleFactor(distance: 30))
             make.left.right.equalToSuperview().inset(15)
         }
         

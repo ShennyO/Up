@@ -16,7 +16,7 @@ class TimeAnimationView: UIView {
     //MARK: OUTLETS
     var minutesLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: 40, weight: UIFont.Weight.bold)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: widthScaleFactor(distance: 40), weight: UIFont.Weight.bold)
         label.text = "30:00"
         label.textAlignment = .center
         label.textColor = UIColor.white
@@ -38,18 +38,18 @@ class TimeAnimationView: UIView {
     private func addAnimationLayers() {
         
         let point = CGPoint(x: self.center.x, y: self.center.y)
-        let circularPath = UIBezierPath(arcCenter: point, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        let circularPath = UIBezierPath(arcCenter: point, radius: widthScaleFactor(distance: 100), startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         
         let backgroundLayer = CAShapeLayer()
         backgroundLayer.path = circularPath.cgPath
         backgroundLayer.strokeColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        backgroundLayer.lineWidth = 12
+        backgroundLayer.lineWidth = widthScaleFactor(distance: 12)
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.lineCap = .round
         self.layer.addSublayer(backgroundLayer)
         
         
-        let pulsatingPath = UIBezierPath(arcCenter: point, radius: 112, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        let pulsatingPath = UIBezierPath(arcCenter: point, radius: widthScaleFactor(distance: 112), startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         pulsatingLayer.path = pulsatingPath.cgPath
         pulsatingLayer.strokeColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         pulsatingLayer.lineWidth = 0
@@ -59,7 +59,7 @@ class TimeAnimationView: UIView {
         
         circleLayer.path = circularPath.cgPath
         circleLayer.strokeColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        circleLayer.lineWidth = 12
+        circleLayer.lineWidth = widthScaleFactor(distance: 12)
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineCap = .round
         circleLayer.strokeEnd = 0.8
@@ -73,7 +73,7 @@ class TimeAnimationView: UIView {
         addOutlets()
         setConstraints()
         self.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        self.layer.cornerRadius = 150
+        self.layer.cornerRadius = widthScaleFactor(distance: 150)
         self.clipsToBounds = true
     }
     

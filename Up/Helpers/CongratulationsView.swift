@@ -23,7 +23,7 @@ class CongratulationsView: UIView {
     let congratulationsLabel: UILabel = {
         let label = UILabel()
         label.text = "Congratulations"
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 35)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 35))
         label.textColor = UIColor.white
         return label
     }()
@@ -31,7 +31,7 @@ class CongratulationsView: UIView {
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "You completed the task!"
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
         label.textAlignment = .center
         label.textColor = UIColor.white
         return label
@@ -44,7 +44,7 @@ class CongratulationsView: UIView {
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         button.setTitle("Dismiss", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         button.contentEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
         return button
     }()
@@ -52,7 +52,7 @@ class CongratulationsView: UIView {
     let moreTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "Not done yet?"
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 11))
         label.textAlignment = .center
         label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         return label
@@ -63,7 +63,7 @@ class CongratulationsView: UIView {
         button.addTarget(self, action: #selector(showAddMore), for: .touchUpInside)
         button.setTitle("Add more time", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 14)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 14))
         return button
     }()
     
@@ -72,7 +72,7 @@ class CongratulationsView: UIView {
     let addMoreLabel: UILabel = {
         let label = UILabel()
         label.text = "Add more time"
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         label.textColor = UIColor.white
         label.isHidden = true
         return label
@@ -83,11 +83,11 @@ class CongratulationsView: UIView {
     let addButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = widthScaleFactor(distance: 20)
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         button.setTitle("Add", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
         button.contentEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
         button.isHidden = true
         return button
@@ -96,7 +96,7 @@ class CongratulationsView: UIView {
     let doneLabel: UILabel = {
         let label = UILabel()
         label.text = "Done?"
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 11))
         label.textAlignment = .center
         label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         label.isHidden = true
@@ -108,7 +108,7 @@ class CongratulationsView: UIView {
         button.addTarget(self, action: #selector(showCongrats), for: .touchUpInside)
         button.setTitle("Return", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 14)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 14))
         button.isHidden = true
         return button
     }()
@@ -130,24 +130,24 @@ class CongratulationsView: UIView {
     private func setConstraints() {
         
         congratulationsLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(35)
+            make.top.equalToSuperview().offset(widthScaleFactor(distance: 35))
             make.centerX.equalToSuperview()
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(congratulationsLabel.snp.bottom).offset(35)
+            make.top.equalTo(congratulationsLabel.snp.bottom).offset(widthScaleFactor(distance: 35))
             make.centerX.equalToSuperview()
         }
         
         dismissButton.snp.makeConstraints { (make) in
-            make.height.equalTo(60)
-            make.width.equalTo(150)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(50)
+            make.height.equalTo(widthScaleFactor(distance: 60))
+            make.width.equalTo(widthScaleFactor(distance: 150))
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(widthScaleFactor(distance: 50))
             make.centerX.equalToSuperview()
         }
         
         moreTimeLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(dismissButton.snp.bottom).offset(20)
+            make.top.equalTo(dismissButton.snp.bottom).offset(widthScaleFactor(distance: 20))
             make.centerX.equalToSuperview()
         }
         
@@ -157,26 +157,26 @@ class CongratulationsView: UIView {
         }
         
         addMoreLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(35)
+            make.top.equalToSuperview().offset(widthScaleFactor(distance: 35))
             make.centerX.equalToSuperview()
         }
         
         durationPicker.snp.makeConstraints { (make) in
-            make.top.equalTo(addMoreLabel.snp.bottom).offset(10)
+            make.top.equalTo(addMoreLabel.snp.bottom).offset(widthScaleFactor(distance: 10))
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(125)
+            make.height.equalTo(widthScaleFactor(distance: 125))
         }
         
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(durationPicker.snp.bottom).offset(10)
+            make.top.equalTo(durationPicker.snp.bottom).offset(widthScaleFactor(distance: 10))
             make.centerX.equalToSuperview()
-            make.height.equalTo(40)
-            make.width.equalTo(90)
+            make.height.equalTo(widthScaleFactor(distance: 40))
+            make.width.equalTo(widthScaleFactor(distance: 90))
         }
         
         doneLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(addButton.snp.bottom).offset(15)
+            make.top.equalTo(addButton.snp.bottom).offset(widthScaleFactor(distance: 15))
             make.centerX.equalToSuperview()
         }
         

@@ -58,7 +58,7 @@ class SessionViewController: UIViewController {
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -70,7 +70,7 @@ class SessionViewController: UIViewController {
         button.layer.cornerRadius = 30
         button.setTitle("Start", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -81,7 +81,7 @@ class SessionViewController: UIViewController {
         button.layer.cornerRadius = 30
         button.setTitle("Done", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.isHidden = true
         return button
@@ -90,7 +90,7 @@ class SessionViewController: UIViewController {
     var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Cancel", for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -102,11 +102,11 @@ class SessionViewController: UIViewController {
         return imageView
     }()
     
-    let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+    let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 350)))
     
-    let animationView = TimeAnimationView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+    let animationView = TimeAnimationView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 300)))
     
-    let cancelView = CancelView(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
+    let cancelView = CancelView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 200)))
     
     //MARK: FUNCTIONS
     
@@ -186,23 +186,23 @@ class SessionViewController: UIViewController {
         cancelView.delegate = self
         
         congratsView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
-            make.height.equalTo(325)
-            make.centerY.equalToSuperview().offset(550)
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 30))
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -30))
+            make.height.equalTo(heightScaleFactor(distance: 350))
+            make.centerY.equalToSuperview().offset(heightScaleFactor(distance: 600))
         }
         
         cancelView.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-12)
-            make.height.equalTo(215)
-            make.width.equalTo(300)
+            make.centerY.equalTo(animationView.snp.centerY)
+            make.height.equalTo(widthScaleFactor(distance: 216))
+            make.width.equalTo(widthScaleFactor(distance: 300))
         }
         
         pauseIcon.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.centerY.equalTo(animationView.snp.centerY)
-            make.height.width.equalTo(40)
+            make.height.width.equalTo(widthScaleFactor(distance: 40))
         }
         
     }
@@ -211,36 +211,35 @@ class SessionViewController: UIViewController {
     private func setConstraints() {
     
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(125)
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
-            make.height.equalTo(80)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 125))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 30))
+            make.height.equalTo(widthScaleFactor(distance: 80))
         }
         
         animationView.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.top.equalTo(descriptionLabel.snp.bottom)
-            make.height.width.equalTo(300)
+            make.height.width.equalTo(widthScaleFactor(distance: 300))
         }
         
         startButton.snp.makeConstraints { (make) in
-            make.top.equalTo(animationView.snp.bottom).offset(25)
+            make.top.equalTo(animationView.snp.bottom).offset(heightScaleFactor(distance: 32))
             make.centerX.equalToSuperview()
-            make.height.equalTo(60)
-            make.width.equalTo(150)
+            make.height.equalTo(widthScaleFactor(distance: 60))
+            make.width.equalTo(widthScaleFactor(distance: 150))
         }
         
         doneButton.snp.makeConstraints { (make) in
-            make.top.equalTo(animationView.snp.bottom).offset(25)
+            make.top.equalTo(animationView.snp.bottom).offset(heightScaleFactor(distance: 32))
             make.centerX.equalToSuperview()
-            make.height.equalTo(60)
-            make.width.equalTo(150)
+            make.height.equalTo(widthScaleFactor(distance: 60))
+            make.width.equalTo(widthScaleFactor(distance: 150))
         }
         
         cancelButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(50)
-            make.left.equalToSuperview().offset(20)
-            make.height.equalTo(20)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 50))
+            make.left.equalToSuperview().inset(widthScaleFactor(distance: 20))
+            make.height.equalTo(widthScaleFactor(distance: 20))
         }
         
     }
@@ -266,7 +265,7 @@ class SessionViewController: UIViewController {
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
             make.height.equalTo(325)
-            make.centerY.equalToSuperview().offset(-25)
+            make.centerY.equalToSuperview().offset(heightScaleFactor(distance: -25))
         }
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -469,7 +468,7 @@ extension SessionViewController: CongratsViewToSessionVCDelegate {
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
             make.height.equalTo(325)
-            make.centerY.equalToSuperview().offset(550)
+            make.centerY.equalToSuperview().offset(heightScaleFactor(distance: 550))
         }
         
         UIView.animate(withDuration: 0.4, animations: {

@@ -61,7 +61,7 @@ class ProjectCell: UITableViewCell {
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 15))
         label.numberOfLines = 2
         label.textColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         return label
@@ -114,10 +114,10 @@ class ProjectCell: UITableViewCell {
         
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(8)
-            make.bottom.equalToSuperview().offset(-8)
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 8))
+            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: -8))
+            make.left.equalToSuperview().offset(heightScaleFactor(distance: 20))
+            make.right.equalToSuperview().offset(heightScaleFactor(distance: -20))
         }
         
         darkView.snp.makeConstraints { (make) in
@@ -128,26 +128,26 @@ class ProjectCell: UITableViewCell {
         }
         
         taskSquareView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(15)
+            make.left.equalToSuperview().offset(heightScaleFactor(distance: 15))
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(22)
+            make.width.height.equalTo(heightScaleFactor(distance: 22))
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(taskSquareView.snp.right).offset(14)
-            make.right.equalToSuperview().offset(-15)
+            make.left.equalTo(taskSquareView.snp.right).offset(heightScaleFactor(distance: 16))
+            make.right.equalToSuperview().offset(heightScaleFactor(distance: -16))
             make.centerY.equalToSuperview()
         }
         
         taskSquareFillView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(15)
+            make.left.equalToSuperview().offset(heightScaleFactor(distance: 16))
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(22)
+            make.width.height.equalTo(heightScaleFactor(distance: 22))
         }
         
         checkMarkImage.snp.makeConstraints { (make) in
             make.centerY.centerX.equalToSuperview()
-            make.width.height.equalTo(12)
+            make.width.height.equalTo(heightScaleFactor(distance: 12))
         }
         
         

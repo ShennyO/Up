@@ -139,7 +139,7 @@ extension UpViewController {
         addButton.snp.makeConstraints { (make) in
             make.right.equalToSuperview().inset(10)
             make.bottom.equalToSuperview().inset(10)
-            make.height.width.equalTo(60)
+            make.height.width.equalTo(widthScaleFactor(distance: 60))
         }
     }
     
@@ -247,7 +247,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return widthScaleFactor(distance: 80)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -320,8 +320,8 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         action.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        action.image = UIGraphicsImageRenderer(size: CGSize(width: 23, height: 23)).image { _ in
-            #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: 22, height: 22))
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22))).image { _ in
+            #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22)))
         }
         return action
     }
@@ -341,8 +341,8 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         action.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        action.image = UIGraphicsImageRenderer(size: CGSize(width: 23, height: 23)).image { _ in
-            #imageLiteral(resourceName: "editIcon").draw(in: CGRect(x: 0, y: 0, width: 23, height: 23))
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23))).image { _ in
+            #imageLiteral(resourceName: "editIcon").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23)))
         }
         return action
     }

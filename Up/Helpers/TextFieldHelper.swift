@@ -66,7 +66,7 @@ class SunnyCustomInputView: UIView {
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.tintColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         tv.becomeFirstResponder()
-        tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13)
+        tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 13))
         tfOverlayLabel.text = "Description"
         tv.delegate = self
         
