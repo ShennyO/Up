@@ -90,6 +90,7 @@ class TimedProjectCell: UITableViewCell {
         return image
     }()
     
+    
     //MARK: FUNCTIONS
     private func addOutlets() {
 
@@ -121,13 +122,13 @@ class TimedProjectCell: UITableViewCell {
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(timeImageContainerView.snp.right).offset(widthScaleFactor(distance: 14))
-            make.right.equalToSuperview().inset(widthScaleFactor(distance: 15))
+            make.left.equalTo(timeImageContainerView.snp.right).offset(widthScaleFactor(distance: 15))
+            make.right.equalToSuperview().inset(widthScaleFactor(distance: 14))
             make.centerY.equalToSuperview()
         }
         
         timeImageContainerView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(widthScaleFactor(distance: 14))
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 13))
             make.centerY.equalToSuperview().offset(-3)
             make.width.height.equalTo(widthScaleFactor(distance: 27))
         }
@@ -204,8 +205,8 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
             rowTwoWidth = descriptionLabel.intrinsicContentSize.width / 2
         }
         if numberOfLines == 1 {
-            path.move(to: CGPoint(x: 80, y: self.bounds.height / 2))
-            path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 80), y: (self.bounds.height / 2)))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 80) + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -224,13 +225,13 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
             
         } else {
             
-            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + 10
-            path.move(to: CGPoint(x: 80, y: yPos))
-            path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: yPos))
+            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + heightScaleFactor(distance: 10)
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 80), y: yPos))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 80) + descriptionLabel.intrinsicContentSize.width, y: yPos))
             
             let yPos2 = (self.bounds.height / 2) + (descriptionLabel.bounds.height / 2) - 9
-            path.move(to: CGPoint(x: 80, y: yPos2))
-            path.addLine(to: CGPoint(x: 80 + rowTwoWidth, y: yPos2))
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 80), y: yPos2))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 80) + rowTwoWidth, y: yPos2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()

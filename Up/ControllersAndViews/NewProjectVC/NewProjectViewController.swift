@@ -152,7 +152,7 @@ class NewProjectViewController: UIViewController {
         }
         
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalTo(newProjectLabel.snp.bottom).offset(heightScaleFactor(distance: 64))
+            make.top.equalTo(newProjectLabel.snp.bottom).offset(heightScaleFactor(distance: 48))
             make.left.equalToSuperview().offset(32)
             make.right.equalToSuperview().offset(-32)
             make.height.equalTo(widthScaleFactor(distance: 100))
@@ -169,7 +169,7 @@ class NewProjectViewController: UIViewController {
         }
         
         typeStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(widthScaleFactor(distance: 48))
             make.centerX.equalTo(descriptionTextView)
         }
         
@@ -181,7 +181,7 @@ class NewProjectViewController: UIViewController {
         }
         
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 48))
             make.centerX.equalToSuperview()
             make.width.equalTo(widthScaleFactor(distance: 128))
             make.height.equalTo(widthScaleFactor(distance: 60))

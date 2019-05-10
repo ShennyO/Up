@@ -102,7 +102,7 @@ class SessionViewController: UIViewController {
         return imageView
     }()
     
-    let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 325)))
+    let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 300)))
     
     let animationView = TimeAnimationView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 300)))
     
@@ -188,7 +188,7 @@ class SessionViewController: UIViewController {
         congratsView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 30))
             make.right.equalToSuperview().offset(widthScaleFactor(distance: -30))
-            make.height.equalTo(heightScaleFactor(distance: 325))
+            make.height.equalTo(widthScaleFactor(distance: 300))
             make.centerY.equalToSuperview().offset(heightScaleFactor(distance: 600))
         }
         

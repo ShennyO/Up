@@ -95,8 +95,6 @@ class ProjectCell: UITableViewCell {
         
     }()
     
-
-    
     //MARK: FUNCTIONS
     private func addOutlets() {
         self.addSubview(containerView)
@@ -116,8 +114,8 @@ class ProjectCell: UITableViewCell {
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 8))
             make.bottom.equalToSuperview().offset(heightScaleFactor(distance: -8))
-            make.left.equalToSuperview().offset(heightScaleFactor(distance: 20))
-            make.right.equalToSuperview().offset(heightScaleFactor(distance: -20))
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 20))
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -20))
         }
         
         darkView.snp.makeConstraints { (make) in
@@ -128,28 +126,27 @@ class ProjectCell: UITableViewCell {
         }
         
         taskSquareView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(heightScaleFactor(distance: 15))
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 17))
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(heightScaleFactor(distance: 22))
+            make.width.height.equalTo(widthScaleFactor(distance: 22))
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(taskSquareView.snp.right).offset(heightScaleFactor(distance: 16))
-            make.right.equalToSuperview().offset(heightScaleFactor(distance: -16))
+            make.left.equalTo(taskSquareView.snp.right).offset(widthScaleFactor(distance: 15))
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -15))
             make.centerY.equalToSuperview()
         }
         
         taskSquareFillView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(heightScaleFactor(distance: 16))
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 17))
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(heightScaleFactor(distance: 22))
+            make.width.height.equalTo(widthScaleFactor(distance: 22))
         }
         
         checkMarkImage.snp.makeConstraints { (make) in
             make.centerY.centerX.equalToSuperview()
-            make.width.height.equalTo(heightScaleFactor(distance: 12))
+            make.width.height.equalTo(widthScaleFactor(distance: 12))
         }
-        
         
     }
     
@@ -197,8 +194,8 @@ class ProjectCell: UITableViewCell {
         
         
         if numberOfLines == 1 {
-            path.move(to: CGPoint(x: 76, y: self.bounds.height / 2))
-            path.addLine(to: CGPoint(x: 76 + rowOneWidth, y: self.bounds.height / 2))
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: self.bounds.height / 2))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + rowOneWidth, y: self.bounds.height / 2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -217,13 +214,13 @@ class ProjectCell: UITableViewCell {
             
         } else {
             
-            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + 10
-            path.move(to: CGPoint(x: 76, y: yPos))
-            path.addLine(to: CGPoint(x: 76 + CGFloat(rowOneWidth), y: yPos))
+            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + heightScaleFactor(distance: 10)
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: yPos))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + CGFloat(rowOneWidth), y: yPos))
             
             let yPos2 = (self.bounds.height / 2) + (descriptionLabel.bounds.height / 2) - 9
-            path.move(to: CGPoint(x: 76, y: yPos2))
-            path.addLine(to: CGPoint(x: 76 + CGFloat(rowTwoWidth), y: yPos2))
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: yPos2))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + CGFloat(rowTwoWidth), y: yPos2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()

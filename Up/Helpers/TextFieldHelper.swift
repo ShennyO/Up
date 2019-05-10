@@ -93,7 +93,7 @@ class SunnyCustomInputView: UIView {
         tv.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 20))
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 5))
-            make.right.equalToSuperview().offset(widthScaleFactor(distance: -10))
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -5))
             make.bottom.equalToSuperview().offset(heightScaleFactor(distance: -20))
         }
         
