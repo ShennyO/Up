@@ -22,7 +22,7 @@ class CancelView: UIView {
     
     var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         label.text = "Task in progress"
         label.textColor = UIColor.white
         return label
@@ -30,7 +30,7 @@ class CancelView: UIView {
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 15))
         label.text = "Are you sure you want to exit? All progress will be lost."
         label.textColor = UIColor.white
         label.numberOfLines = 2
@@ -44,7 +44,7 @@ class CancelView: UIView {
         button.addTarget(self, action: #selector(yesTapped), for: .touchUpInside)
         button.setTitle("Yes, I'm sure", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 17))
         button.contentEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
         return button
     }()
@@ -55,7 +55,7 @@ class CancelView: UIView {
         button.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         button.setTitle("Continue", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 17))
         button.contentEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
         return button
         
@@ -112,13 +112,6 @@ class CancelView: UIView {
             make.bottom.equalTo(buttonStackView.snp.top)
             make.height.equalTo(1)
         }
-        
-//        verticalSeparatorView.snp.makeConstraints { (make) in
-//            make.centerX.equalToSuperview()
-//            make.top.equalTo(buttonStackView.snp.top)
-//            make.height.equalTo(44.8)
-//            make.width.equalTo(1)
-//        }
         
     }
     

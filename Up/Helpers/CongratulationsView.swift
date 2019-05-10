@@ -40,7 +40,7 @@ class CongratulationsView: UIView {
     let dismissButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = widthScaleFactor(distance: 30)
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         button.setTitle("Dismiss", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
@@ -251,7 +251,7 @@ class CongratulationsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.layer.cornerRadius = 8
+        self.layer.cornerRadius = widthScaleFactor(distance: 8)
         self.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         durationPicker.isHidden = true
         durationPicker.delegate = self
@@ -284,7 +284,7 @@ extension CongratulationsView: UIPickerViewDelegate, UIPickerViewDataSource {
                 label.text = String(describing: times[row]) + " minutes"
             }
             
-            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
             label.textAlignment = .center
             label.textColor = UIColor.white
             return label

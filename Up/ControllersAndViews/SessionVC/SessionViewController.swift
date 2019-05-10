@@ -67,7 +67,7 @@ class SessionViewController: UIViewController {
     var startButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = widthScaleFactor(distance: 30)
         button.setTitle("Start", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
@@ -78,7 +78,7 @@ class SessionViewController: UIViewController {
     var doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = widthScaleFactor(distance: 30)
         button.setTitle("Done", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
@@ -102,7 +102,7 @@ class SessionViewController: UIViewController {
         return imageView
     }()
     
-    let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 350)))
+    let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 325)))
     
     let animationView = TimeAnimationView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 300)))
     
@@ -188,7 +188,7 @@ class SessionViewController: UIViewController {
         congratsView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 30))
             make.right.equalToSuperview().offset(widthScaleFactor(distance: -30))
-            make.height.equalTo(heightScaleFactor(distance: 350))
+            make.height.equalTo(heightScaleFactor(distance: 325))
             make.centerY.equalToSuperview().offset(heightScaleFactor(distance: 600))
         }
         
@@ -209,9 +209,14 @@ class SessionViewController: UIViewController {
     
     
     private func setConstraints() {
-    
+        
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 125))
+            if UIScreen.main.bounds.height > 736 {
+                make.top.equalToSuperview().offset(heightScaleFactor(distance: 140))
+            } else {
+                make.top.equalToSuperview().offset(heightScaleFactor(distance: 125))
+            }
+            
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 30))
             make.height.equalTo(widthScaleFactor(distance: 80))
         }
@@ -468,7 +473,7 @@ extension SessionViewController: CongratsViewToSessionVCDelegate {
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
             make.height.equalTo(325)
-            make.centerY.equalToSuperview().offset(heightScaleFactor(distance: 550))
+            make.centerY.equalToSuperview().offset(heightScaleFactor(distance: 600))
         }
         
         UIView.animate(withDuration: 0.4, animations: {
