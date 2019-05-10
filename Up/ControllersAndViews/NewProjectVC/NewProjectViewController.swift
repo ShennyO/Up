@@ -141,7 +141,7 @@ class NewProjectViewController: UIViewController {
     private func setConstraints() {
 
         cancelButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 64))
+            make.top.equalToSuperview().offset(widthScaleFactor(distance: 64))
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(widthScaleFactor(distance: 20))
         }
@@ -169,19 +169,19 @@ class NewProjectViewController: UIViewController {
         }
         
         typeStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(heightScaleFactor(distance: 46))
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(widthScaleFactor(distance: 46))
             make.centerX.equalTo(descriptionTextView)
         }
         
         timeButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(heightScaleFactor(distance: 32))
+            make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 32))
             make.centerX.equalToSuperview()
             make.width.equalTo(widthScaleFactor(distance: 166))
             make.height.equalTo(widthScaleFactor(distance: 56))
         }
         
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(heightScaleFactor(distance: 46))
+            make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
             make.centerX.equalToSuperview()
             make.width.equalTo(widthScaleFactor(distance: 128))
             make.height.equalTo(widthScaleFactor(distance: 60))
@@ -199,7 +199,7 @@ class NewProjectViewController: UIViewController {
             self.timeButton.isHidden = true
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.typeStackView.snp.bottom).offset(heightScaleFactor(distance: 46))
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
                 make.centerX.equalToSuperview()
                 make.width.equalTo(widthScaleFactor(distance: 128))
                 make.height.equalTo(widthScaleFactor(distance: 60))
@@ -217,7 +217,7 @@ class NewProjectViewController: UIViewController {
             timeButton.isHidden = false
             self.timeButton.alpha = 1
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.typeStackView.snp.bottom).offset(heightScaleFactor(distance: 120))
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
                 make.centerX.equalToSuperview()
                 make.width.equalTo(widthScaleFactor(distance: 128))
                 make.height.equalTo(widthScaleFactor(distance: 60))
@@ -235,7 +235,7 @@ class NewProjectViewController: UIViewController {
             taskButton.isSelected = true
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.typeStackView.snp.bottom).offset(heightScaleFactor(distance: 46))
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
                 make.centerX.equalToSuperview()
                 make.width.equalTo(widthScaleFactor(distance: 128))
                 make.height.equalTo(widthScaleFactor(distance: 60))
@@ -270,7 +270,7 @@ class NewProjectViewController: UIViewController {
             timeButton.alpha = 0
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.typeStackView.snp.bottom).offset(heightScaleFactor(distance: 120))
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
                 make.centerX.equalToSuperview()
                 make.width.equalTo(widthScaleFactor(distance: 128))
                 make.height.equalTo(widthScaleFactor(distance: 60))

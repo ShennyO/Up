@@ -60,7 +60,7 @@ class TimeSelectorViewController: UIViewController {
         
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 200))
-            make.left.right.equalToSuperview().inset(heightScaleFactor(distance: 80))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
             make.height.equalTo(widthScaleFactor(distance: 352))
         }
         
