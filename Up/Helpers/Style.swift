@@ -11,18 +11,18 @@ import UIKit
 struct Style {
     
     struct Fonts {
-        static let bold12 = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
-        static let semibold12 = UIFont(name: "AppleSDGothicNeo-Semibold", size: 12)
-        static let bold15 = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        static let medium18 = UIFont(name: "AppleSDGothicNeo-Medium", size: 18)
-        static let semibold18 = UIFont(name: "AppleSDGothicNeo-Semibold", size: 18)
-        static let bold18 = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
-        static let bold20 = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
-        static let bold25 = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-        static let bold30 = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
-        static let bold35 = UIFont(name: "AppleSDGothicNeo-Bold", size: 35)
-        static let bold40 = UIFont(name: "AppleSDGothicNeo-Bold", size: 40)
-        static let bold45 = UIFont(name: "AppleSDGothicNeo-Bold", size: 45)
+        static let bold12 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 12))
+        static let semibold12 = UIFont(name: "AppleSDGothicNeo-Semibold", size: widthScaleFactor(distance: 12))
+        static let bold15 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 15))
+        static let medium18 = UIFont(name: "AppleSDGothicNeo-Medium", size: widthScaleFactor(distance: 18))
+        static let semibold18 = UIFont(name: "AppleSDGothicNeo-Semibold", size: widthScaleFactor(distance: 18))
+        static let bold18 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 18))
+        static let bold20 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
+        static let bold25 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
+        static let bold30 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 30))
+        static let bold35 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 35))
+        static let bold40 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 40))
+        static let bold45 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 45))
     }
     
     struct Colors {
