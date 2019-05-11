@@ -13,13 +13,10 @@ class TimeSelectorViewController: UIViewController {
     var times: [Int] = []
     var selectedTime = 30
     var onDoneBlock: ((Int) -> ())?
-    var canceledBlock: (() -> ())?
-    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
     
     //MARK: OUTLETS
     let containerView: UIView = {
@@ -35,7 +32,7 @@ class TimeSelectorViewController: UIViewController {
         let label = UILabel()
         label.text = "Select duration"
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         return label
     }()
     
@@ -48,7 +45,7 @@ class TimeSelectorViewController: UIViewController {
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.setTitle("Done", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         return button
     }()
     
@@ -62,30 +59,29 @@ class TimeSelectorViewController: UIViewController {
     private func setConstraints() {
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(200)
-            make.left.equalToSuperview().offset(85)
-            make.right.equalToSuperview().offset(-85)
-            make.height.equalTo(350)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 200))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
+            make.height.equalTo(widthScaleFactor(distance: 352))
         }
         
         titleLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(45)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 45))
             make.centerX.equalToSuperview()
             
         }
         
         timePickerView.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.top.equalTo(titleLabel.snp.bottom).offset(heightScaleFactor(distance: 10))
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(185)
+            make.height.equalTo(widthScaleFactor(distance: 185))
         }
         
         doneButton.snp.makeConstraints { (make) in
             make.top.equalTo(timePickerView.snp.bottom).offset(5)
             make.centerX.equalToSuperview()
-            make.height.equalTo(45)
-            make.width.equalTo(125)
+            make.height.equalTo(widthScaleFactor(distance: 45))
+            make.width.equalTo(widthScaleFactor(distance: 125))
         }
         
     }
@@ -151,7 +147,7 @@ extension TimeSelectorViewController: UIPickerViewDelegate, UIPickerViewDataSour
                 label.text = String(describing: times[row]) + " minute"
             }
             
-            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
             label.textAlignment = .center
             label.textColor = UIColor.white
             return label

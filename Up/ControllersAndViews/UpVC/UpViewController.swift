@@ -35,7 +35,7 @@ class UpViewController: UIViewController {
     
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "lightBlueAdd"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "Add-1"), for: .normal)
         return button
     }()
     
@@ -74,13 +74,10 @@ class UpViewController: UIViewController {
         let total = goals.count
         
         if total != 0 {
-            
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 15)
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 10)
             tableHeaderView.frame = tableHeaderFrame
             self.headerDelegate.alertHeaderView(total: total)
-            
         } else {
-        
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
                 self.tableHeaderView.frame = tableHeaderFrame
@@ -89,11 +86,7 @@ class UpViewController: UIViewController {
                 })
                 self.headerDelegate.alertHeaderView(total: total)
             }
-            
         }
-        
-        
-        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -102,6 +95,8 @@ class UpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("PhoneHeight: ", UIScreen.main.bounds.height)
+        print("PhoneWidth: ", UIScreen.main.bounds.width)
         self.navigationItem.title = "Tasks"
         setUp()
         fetchGoals() {
@@ -142,8 +137,9 @@ extension UpViewController {
     
     private func setConstraints() {
         addButton.snp.makeConstraints { (make) in
-            make.right.bottom.equalToSuperview().inset(10)
-            make.height.width.equalTo(60)
+            make.right.equalToSuperview().inset(12)
+            make.bottom.equalToSuperview().inset(15)
+            make.height.width.equalTo(widthScaleFactor(distance: 60))
         }
     }
     
@@ -251,7 +247,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return widthScaleFactor(distance: 80)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -287,7 +283,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             timedCellDelegate = cell as? UpVCToTimedProjectCellDelegate
             sessionVC.dismissedBlock = {
                 self.goals[indexPath.row].completionDate = Date()
-                cell?.isUserInteractionEnabled = false
+                self.upTableView.isUserInteractionEnabled = false
                 self.timedCellDelegate.showBlackCheck()
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[indexPath.row])
                 self.stack.saveTo(context: self.stack.viewContext)
@@ -300,7 +296,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             
         } else {
             let cell = tableView.cellForRow(at: indexPath) as! ProjectCell
-            cell.isUserInteractionEnabled = false
+            self.upTableView.isUserInteractionEnabled = false
             cell.complete()
         }
         
@@ -324,8 +320,8 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         action.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        action.image = UIGraphicsImageRenderer(size: CGSize(width: 23, height: 23)).image { _ in
-            #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: 22, height: 22))
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22))).image { _ in
+            #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22)))
         }
         return action
     }
@@ -345,8 +341,8 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         action.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        action.image = UIGraphicsImageRenderer(size: CGSize(width: 23, height: 23)).image { _ in
-            #imageLiteral(resourceName: "editIcon").draw(in: CGRect(x: 0, y: 0, width: 23, height: 23))
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23))).image { _ in
+            #imageLiteral(resourceName: "editIcon").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23)))
         }
         return action
     }
@@ -359,8 +355,8 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
     
     func completeTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            cell.isUserInteractionEnabled = true
             goals.remove(at: index.row)
+            self.upTableView.isUserInteractionEnabled = true
             upTableView.deleteRows(at: [index], with: .right)
         }
     }
@@ -381,7 +377,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
                 self.stack.saveTo(context: self.stack.viewContext)
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[index.row])
                 self.goals.remove(at: index.row)
-                cell.isUserInteractionEnabled = true
+                self.upTableView.isUserInteractionEnabled = true
                 self.upTableView.deleteRows(at: [index], with: .right)
             }
             
@@ -522,7 +518,7 @@ extension UpViewController {
             self.hasSelectedCellBeenUnhidden = true
             
             
-            UIView.animate(withDuration: 0.25, animations: {
+            UIView.animate(withDuration: 0.35, animations: {
                 My.cellSnapShot?.center = cell.center
                 My.cellSnapShot?.alpha = 0.0
                 

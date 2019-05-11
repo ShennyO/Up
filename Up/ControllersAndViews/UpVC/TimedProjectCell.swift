@@ -56,7 +56,7 @@ class TimedProjectCell: UITableViewCell {
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 15))
         label.numberOfLines = 2
         label.textColor = #colorLiteral(red: 0.1019607843, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
         return label
@@ -65,13 +65,13 @@ class TimedProjectCell: UITableViewCell {
     var timeLabelView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.0862745098, blue: 0.09411764706, alpha: 1)
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = widthScaleFactor(distance: 10)
         return view
     }()
     
     var timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 10)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 10))
         label.numberOfLines = 0
         label.textColor = UIColor.white
         return label
@@ -90,6 +90,7 @@ class TimedProjectCell: UITableViewCell {
         return image
     }()
     
+    
     //MARK: FUNCTIONS
     private func addOutlets() {
 
@@ -107,10 +108,10 @@ class TimedProjectCell: UITableViewCell {
     private func setConstraints() {
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(7.5)
-            make.bottom.equalToSuperview().offset(-7.5)
-            make.left.equalToSuperview().offset(25)
-            make.right.equalToSuperview().offset(-25)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 8))
+            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: -8))
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 20))
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -20))
         }
         
         darkView.snp.makeConstraints { (make) in
@@ -121,21 +122,21 @@ class TimedProjectCell: UITableViewCell {
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(timeImageContainerView.snp.right).offset(15)
-            make.right.equalToSuperview().offset(-15)
+            make.left.equalTo(timeImageContainerView.snp.right).offset(widthScaleFactor(distance: 15))
+            make.right.equalToSuperview().inset(widthScaleFactor(distance: 14))
             make.centerY.equalToSuperview()
         }
         
         timeImageContainerView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(12)
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 13))
             make.centerY.equalToSuperview().offset(-3)
-            make.width.height.equalTo(27)
+            make.width.height.equalTo(widthScaleFactor(distance: 27))
         }
         
         timeLabelView.snp.makeConstraints { (make) in
-            make.left.equalTo(timeImageContainerView.snp.right).offset(-15)
-            make.top.equalTo(timeImageContainerView.snp.bottom).offset(-12)
-            make.width.height.equalTo(20)
+            make.left.equalTo(timeImageContainerView.snp.right).offset(widthScaleFactor(distance: -15))
+            make.top.equalTo(timeImageContainerView.snp.bottom).offset(widthScaleFactor(distance: -12))
+            make.width.height.equalTo(widthScaleFactor(distance: 20))
         }
         
         timeLabel.snp.makeConstraints { (make) in
@@ -144,13 +145,13 @@ class TimedProjectCell: UITableViewCell {
         }
         
         timeImageView.snp.makeConstraints { (make) in
-            make.width.height.equalTo(27)
+            make.width.height.equalTo(widthScaleFactor(distance: 27))
             make.centerX.centerY.equalToSuperview()
         }
         
         blackCheckMark.snp.makeConstraints { (make) in
             make.centerX.centerY.equalToSuperview()
-            make.width.height.equalTo(15)
+            make.width.height.equalTo(widthScaleFactor(distance: 15))
         }
     }
     
@@ -204,8 +205,8 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
             rowTwoWidth = descriptionLabel.intrinsicContentSize.width / 2
         }
         if numberOfLines == 1 {
-            path.move(to: CGPoint(x: 80, y: self.bounds.height / 2))
-            path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 80), y: (self.bounds.height / 2)))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 80) + descriptionLabel.intrinsicContentSize.width, y: self.bounds.height / 2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -224,13 +225,13 @@ extension TimedProjectCell: UpVCToTimedProjectCellDelegate {
             
         } else {
             
-            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + 10
-            path.move(to: CGPoint(x: 80, y: yPos))
-            path.addLine(to: CGPoint(x: 80 + descriptionLabel.intrinsicContentSize.width, y: yPos))
+            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + heightScaleFactor(distance: 10)
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 80), y: yPos))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 80) + descriptionLabel.intrinsicContentSize.width, y: yPos))
             
             let yPos2 = (self.bounds.height / 2) + (descriptionLabel.bounds.height / 2) - 9
-            path.move(to: CGPoint(x: 80, y: yPos2))
-            path.addLine(to: CGPoint(x: 80 + rowTwoWidth, y: yPos2))
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 80), y: yPos2))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 80) + rowTwoWidth, y: yPos2))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()

@@ -35,7 +35,6 @@
 		C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */; };
 		C3751A1D2256D6A100FF0E22 /* ProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */; };
 		C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */; };
-		C3751A2C225804DC00FF0E22 /* ProjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A2B225804DC00FF0E22 /* ProjectType.swift */; };
 		C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */; };
 		C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */; };
 		C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */; };
@@ -44,6 +43,7 @@
 		C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */; };
 		C3846726227FCA2200FAD570 /* TimeAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3846725227FCA2200FAD570 /* TimeAnimationView.swift */; };
 		C38467282280D90700FAD570 /* CancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38467272280D90700FAD570 /* CancelView.swift */; };
+		C384676422850DC900FAD570 /* ScaleFactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C384676322850DC900FAD570 /* ScaleFactor.swift */; };
 		C39B2C34227539EA0039A7BF /* LabelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39B2C33227539EA0039A7BF /* LabelHelper.swift */; };
 		C3B36B4E226A39AA007CC38A /* CongratulationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */; };
 		C3BE431F226E76EF00AB8C6F /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BE431E226E76EF00AB8C6F /* CoreDataStack.swift */; };
@@ -106,7 +106,6 @@
 		C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedProjectCell.swift; sourceTree = "<group>"; };
 		C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
 		C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewHelper.swift; sourceTree = "<group>"; };
-		C3751A2B225804DC00FF0E22 /* ProjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectType.swift; sourceTree = "<group>"; };
 		C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
 		C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPickerHelper.swift; sourceTree = "<group>"; };
 		C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldHelper.swift; sourceTree = "<group>"; };
@@ -115,6 +114,7 @@
 		C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
 		C3846725227FCA2200FAD570 /* TimeAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeAnimationView.swift; sourceTree = "<group>"; };
 		C38467272280D90700FAD570 /* CancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelView.swift; sourceTree = "<group>"; };
+		C384676322850DC900FAD570 /* ScaleFactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleFactor.swift; sourceTree = "<group>"; };
 		C39B2C33227539EA0039A7BF /* LabelHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelHelper.swift; sourceTree = "<group>"; };
 		C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongratulationsView.swift; sourceTree = "<group>"; };
 		C3BE431E226E76EF00AB8C6F /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -294,7 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */,
-				C3751A2B225804DC00FF0E22 /* ProjectType.swift */,
+				C384676322850DC900FAD570 /* ScaleFactor.swift */,
 				C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */,
 				2730344B22768E7A001B00A3 /* ChartType.swift */,
 				C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */,
@@ -570,6 +570,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48CCA55F226F9BDE0034BACB /* CalendarHeaderView.swift in Sources */,
+				C384676422850DC900FAD570 /* ScaleFactor.swift in Sources */,
 				C37519E52255114900FF0E22 /* AppDelegate.swift in Sources */,
 				2730344C22768E7A001B00A3 /* ChartType.swift in Sources */,
 				C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */,
@@ -589,7 +590,6 @@
 				C3353A4D226B7EFC00FFD25B /* KeyboardHelper.swift in Sources */,
 				488E0A19226A81D900ABDB50 /* CalendarViewController.swift in Sources */,
 				4859196D226A8C4F00A7634C /* CalendarCollectionViewCell.swift in Sources */,
-				C3751A2C225804DC00FF0E22 /* ProjectType.swift in Sources */,
 				48B38DFA2276437C00F0EA85 /* CalendarGoalCountHeaderView.swift in Sources */,
 				486A9D53227A9CED00D430F2 /* CalendarTimeTableViewCell.swift in Sources */,
 				48FAD06C227A437200E0A965 /* Calendar.swift in Sources */,

@@ -17,7 +17,7 @@ class TimeInputViewButton: UIView {
     
     let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
         label.textColor = UIColor.white
         label.text = "30 minutes"
         label.isUserInteractionEnabled = true
@@ -30,7 +30,7 @@ class TimeInputViewButton: UIView {
         super.init(frame: frame)
         self.isHidden = true
         self.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        self.layer.cornerRadius = 4
+        self.layer.cornerRadius = widthScaleFactor(distance: 4)
         self.isUserInteractionEnabled = true
         addOutlets()
         setConstraints()
@@ -48,14 +48,14 @@ class TimeInputViewButton: UIView {
     private func setConstraints() {
         
         timeLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(18)
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 18))
             make.centerY.equalToSuperview().offset(2)
         }
 
         upArrow.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview().offset(1)
-            make.right.equalToSuperview().offset(-20)
-            make.height.width.equalTo(15)
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -20))
+            make.height.width.equalTo(widthScaleFactor(distance: 15))
         }
     }
     
@@ -64,7 +64,11 @@ class TimeInputViewButton: UIView {
 // from NewProjectVC to TimeInputView
 extension TimeInputViewButton: NewProjectVCToTimeInputButtonDelegate {
     func sendSelectedTime(time: Int) {
-        timeLabel.text = String(describing: time) + " minutes "
+        if time == 1 {
+            timeLabel.text = String(describing: time) + " minute"
+        } else {
+            timeLabel.text = String(describing: time) + " minutes"
+        }
     }
     
     

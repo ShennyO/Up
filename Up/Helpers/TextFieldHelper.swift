@@ -66,7 +66,7 @@ class SunnyCustomInputView: UIView {
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.tintColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         tv.becomeFirstResponder()
-        tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13)
+        tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 13))
         tfOverlayLabel.text = "Description"
         tv.delegate = self
         
@@ -91,21 +91,21 @@ class SunnyCustomInputView: UIView {
     private func setConstraints(type: InputType) {
         
         tv.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(20)
-            make.left.equalToSuperview().offset(5)
-            make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 20))
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 5))
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -5))
+            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: -20))
         }
         
         tfOverlayLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(5)
-            make.left.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 5))
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 10))
         }
         
         bottomBorder.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(6)
+            make.height.equalTo(widthScaleFactor(distance: 6))
             make.bottom.equalToSuperview()
         }
         

@@ -10,7 +10,6 @@ import AudioToolbox
 
 protocol SessionVCToTimeAnimationViewDelegate: class {
     
-    
     func pauseAnimation()
     
     func resumeAnimation()
@@ -21,6 +20,9 @@ protocol SessionVCToTimeAnimationViewDelegate: class {
     
     func updateMinuteLabel(timeString: String)
     
+    func hideMinuteLabel()
+    
+    func showMinuteLabel()
     
 }
 
@@ -31,10 +33,13 @@ class SessionViewController: UIViewController {
     var timedGoal: Goal?
     var currentTime: TimeInterval!
     var endTime: TimeInterval!
+    var originalTimeInSeconds = 0
     var timeInSeconds: Int = 0
     var addedTime: Int32 = 0
     var isSessionPaused = false
     var sessionActive = false
+    var cancelViewShowing = false
+    var congratsViewShowing = false
     
     weak var delegate: SessionVCToTimeAnimationViewDelegate!
     
@@ -53,7 +58,7 @@ class SessionViewController: UIViewController {
     var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -62,10 +67,10 @@ class SessionViewController: UIViewController {
     var startButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = widthScaleFactor(distance: 30)
         button.setTitle("Start", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -73,10 +78,10 @@ class SessionViewController: UIViewController {
     var doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = widthScaleFactor(distance: 30)
         button.setTitle("Done", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.isHidden = true
         return button
@@ -85,17 +90,23 @@ class SessionViewController: UIViewController {
     var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Cancel", for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+    let pauseIcon: UIImageView = {
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "pauseIcon"))
+        imageView.isHidden = true
+        return imageView
+    }()
     
-    let animationView = TimeAnimationView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+    let congratsView = CongratulationsView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 300)))
     
-    let cancelView = CancelView(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
+    let animationView = TimeAnimationView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 300)))
+    
+    let cancelView = CancelView(frame: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 300), height: widthScaleFactor(distance: 200)))
     
     //MARK: FUNCTIONS
     
@@ -158,75 +169,89 @@ class SessionViewController: UIViewController {
     }
     
     
-    private func setCongratsCancelAndBlur() {
+    private func setViewsOverBlur() {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         blurEffectView.isHidden = true
         blurEffectView.alpha = 0.7
-        view.addSubview(blurEffectView)
-        
+        self.view.addSubview(blurEffectView)
+    
         self.view.addSubview(congratsView)
         self.view.addSubview(cancelView)
+        self.view.addSubview(pauseIcon)
+        
         congratsView.delegate = self
         cancelView.delegate = self
         
         congratsView.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
-            make.height.equalTo(325)
-            make.centerY.equalToSuperview().offset(550)
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 30))
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -30))
+            make.height.equalTo(widthScaleFactor(distance: 300))
+            make.centerY.equalToSuperview().offset(heightScaleFactor(distance: 600))
         }
         
         cancelView.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-12)
-            make.height.equalTo(215)
-            make.width.equalTo(300)
+            make.centerY.equalTo(animationView.snp.centerY)
+            make.height.equalTo(widthScaleFactor(distance: 216))
+            make.width.equalTo(widthScaleFactor(distance: 300))
+        }
+        
+        pauseIcon.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(animationView.snp.centerY)
+            make.height.width.equalTo(widthScaleFactor(distance: 40))
         }
         
     }
     
     
     private func setConstraints() {
-    
+        
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(125)
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
-            make.height.equalTo(80)
+            if UIScreen.main.bounds.height > 736 {
+                make.top.equalToSuperview().offset(heightScaleFactor(distance: 140))
+            } else {
+                make.top.equalToSuperview().offset(heightScaleFactor(distance: 125))
+            }
+            
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 30))
+            make.height.equalTo(widthScaleFactor(distance: 80))
         }
         
         animationView.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.top.equalTo(descriptionLabel.snp.bottom)
-            make.height.width.equalTo(300)
+            make.height.width.equalTo(widthScaleFactor(distance: 300))
         }
         
         startButton.snp.makeConstraints { (make) in
-            make.top.equalTo(animationView.snp.bottom).offset(25)
+            make.top.equalTo(animationView.snp.bottom).offset(heightScaleFactor(distance: 32))
             make.centerX.equalToSuperview()
-            make.height.equalTo(60)
-            make.width.equalTo(150)
+            make.height.equalTo(widthScaleFactor(distance: 60))
+            make.width.equalTo(widthScaleFactor(distance: 150))
         }
         
         doneButton.snp.makeConstraints { (make) in
-            make.top.equalTo(animationView.snp.bottom).offset(25)
+            make.top.equalTo(animationView.snp.bottom).offset(heightScaleFactor(distance: 32))
             make.centerX.equalToSuperview()
-            make.height.equalTo(60)
-            make.width.equalTo(150)
+            make.height.equalTo(widthScaleFactor(distance: 60))
+            make.width.equalTo(widthScaleFactor(distance: 150))
         }
         
         cancelButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(50)
-            make.left.equalToSuperview().offset(20)
-            make.height.equalTo(20)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 50))
+            make.left.equalToSuperview().inset(widthScaleFactor(distance: 20))
+            make.height.equalTo(widthScaleFactor(distance: 20))
         }
         
     }
     
     private func showCongratsView() {
+        
+        congratsViewShowing = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.delegate.removeAnimations()
@@ -245,7 +270,7 @@ class SessionViewController: UIViewController {
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
             make.height.equalTo(325)
-            make.centerY.equalToSuperview().offset(-25)
+            make.centerY.equalToSuperview().offset(heightScaleFactor(distance: -25))
         }
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -286,6 +311,7 @@ class SessionViewController: UIViewController {
         } else {
             
             isSessionPaused = true
+            cancelViewShowing = true
             
             stopTimer()
             delegate.pauseAnimation()
@@ -302,49 +328,127 @@ class SessionViewController: UIViewController {
         }
     }
     
-    @objc private func pauseGestureTapped() {
-        if sessionActive == false {
+    @objc private func pauseGestureTapped(gesture: UITapGestureRecognizer) {
+        if sessionActive == false || cancelViewShowing == true || congratsViewShowing == true {
+            return
+        }
+        
+        var point = gesture.location(in: view)
+        point = self.animationView.convert(point, from: self.view)
+        
+        if !self.animationView.bounds.contains(point) {
             return
         }
         
         if isSessionPaused {
+            
             isSessionPaused = false
+            pauseIcon.alpha = 1
+            
+            UIView.animate(withDuration: 0.4, animations: {
+                self.pauseIcon.alpha = 0
+            }, completion:  {
+                (value: Bool) in
+                self.pauseIcon.isHidden = true
+            })
+            
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                self.blurEffectView?.alpha = 0
+                self.view.layoutIfNeeded()
+            }, completion:  {
+                (value: Bool) in
+                self.blurEffectView?.isHidden = true
+            })
+            
             runTimer()
             delegate.resumeAnimation()
+            delegate.showMinuteLabel()
+            
         } else {
+            
+            pauseIcon.isHidden = false
+            pauseIcon.alpha = 0
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                self.pauseIcon.alpha = 1
+            })
+            
             isSessionPaused = true
+            
+            blurEffectView.isHidden = false
+            blurEffectView.alpha = 0.2
+            
             stopTimer()
             delegate.pauseAnimation()
+            delegate.hideMinuteLabel()
+        }
+    }
+    
+    @objc private func appMovedToBackground() {
+        if sessionActive {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.pauseIcon.isHidden = false
+                self.pauseIcon.alpha = 0
+                
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.pauseIcon.alpha = 1
+                })
+                
+                self.isSessionPaused = true
+                
+                self.blurEffectView.isHidden = false
+                self.blurEffectView.alpha = 0.2
+                
+                self.stopTimer()
+                self.delegate.pauseAnimation()
+                self.delegate.hideMinuteLabel()
+            }
         }
     }
     
     private func setPauseGesture() {
-        self.pauseGesture = UITapGestureRecognizer(target: self, action: #selector(pauseGestureTapped))
+        self.pauseGesture = UITapGestureRecognizer(target: self, action: #selector(pauseGestureTapped(gesture:)))
         self.view.addGestureRecognizer(pauseGesture!)
+    }
+    
+    private func hideBlur() {
+        UIView.animate(withDuration: 0.4, animations: {
+            self.blurEffectView?.alpha = 0
+        }, completion:  {
+            (value: Bool) in
+            self.blurEffectView?.isHidden = true
+        })
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.isIdleTimerDisabled = true
         configNavBar()
         addOutlets()
         setPauseGesture()
         setConstraints()
-        setCongratsCancelAndBlur()
+        setViewsOverBlur()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
         self.delegate = self.animationView
         cancelView.isHidden = true
         
         if timedGoal != nil {
             timeInSeconds = Int(timedGoal!.duration) * 60
+            originalTimeInSeconds = timeInSeconds
             descriptionLabel.text = timedGoal!.goalDescription
         }
         
         delegate.updateMinuteLabel(timeString: "\(timeString(time: timeInSeconds))")
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     deinit {
-        print("Session VC Deinitialized!")
+        UIApplication.shared.isIdleTimerDisabled = false
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self)
     }
 
     
@@ -356,6 +460,9 @@ extension SessionViewController: CongratsViewToSessionVCDelegate {
     func addButtonTapped(time: Int) {
         //only add the time, don't save the time here
         //only when the user has completed the task (when they press done) do we save the update
+        
+        congratsViewShowing = false
+        
         self.addedTime += Int32(time)
         
         timeInSeconds += (time * 60)
@@ -366,7 +473,7 @@ extension SessionViewController: CongratsViewToSessionVCDelegate {
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
             make.height.equalTo(325)
-            make.centerY.equalToSuperview().offset(550)
+            make.centerY.equalToSuperview().offset(heightScaleFactor(distance: 600))
         }
         
         UIView.animate(withDuration: 0.4, animations: {
@@ -405,6 +512,7 @@ extension SessionViewController: CancelViewToSessionVCDelegate {
             self.blurEffectView?.isHidden = true
             self.cancelView.isHidden = true
         })
+        cancelViewShowing = false
         isSessionPaused = false
         delegate.resumeAnimation()
         runTimer()

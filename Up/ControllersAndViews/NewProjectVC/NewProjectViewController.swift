@@ -56,13 +56,13 @@ class NewProjectViewController: UIViewController {
         let label = UILabel()
         label.text = "What's the next task?"
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         return label
     }()
     
     
     
-    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 75), fontSize: 18, type: .textView)
+    var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 75), fontSize: widthScaleFactor(distance: 18), type: .textView)
     
     
     var taskButton: UIButton = {
@@ -97,10 +97,10 @@ class NewProjectViewController: UIViewController {
     
     var addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = widthScaleFactor(distance: 30)
         button.setTitle("Add", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
@@ -109,7 +109,7 @@ class NewProjectViewController: UIViewController {
     var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Cancel", for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -140,56 +140,51 @@ class NewProjectViewController: UIViewController {
     
     private func setConstraints() {
 
+        cancelButton.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(widthScaleFactor(distance: 64))
+            make.left.equalToSuperview().offset(16)
+            make.height.equalTo(widthScaleFactor(distance: 20))
+        }
+        
         newProjectLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(125)
+            make.top.equalTo(cancelButton.snp.bottom).offset(heightScaleFactor(distance: 64))
             make.centerX.equalToSuperview()
         }
         
-        
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalTo(newProjectLabel.snp.bottom).offset(60)
-            make.left.equalToSuperview().offset(40)
-            make.right.equalToSuperview().offset(-40)
-            make.height.equalTo(100)
+            make.top.equalTo(newProjectLabel.snp.bottom).offset(heightScaleFactor(distance: 48))
+            make.left.equalToSuperview().offset(32)
+            make.right.equalToSuperview().offset(-32)
+            make.height.equalTo(widthScaleFactor(distance: 100))
         }
         
-        
-        
         taskButton.snp.makeConstraints { (make) in
-            make.height.equalTo(66)
-            make.width.equalTo(66)
+            make.height.equalTo(widthScaleFactor(distance: 66))
+            make.width.equalTo(widthScaleFactor(distance: 66))
         }
         
         sessionButton.snp.makeConstraints { (make) in
-            make.height.equalTo(66)
-            make.width.equalTo(66)
+            make.height.equalTo(widthScaleFactor(distance: 66))
+            make.width.equalTo(widthScaleFactor(distance: 66))
         }
         
-        
         typeStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(45)
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(widthScaleFactor(distance: 48))
             make.centerX.equalTo(descriptionTextView)
         }
         
-        
         timeButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(30)
+            make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 32))
             make.centerX.equalToSuperview()
-            make.width.equalTo(165)
-            make.height.equalTo(50)
+            make.width.equalTo(widthScaleFactor(distance: 166))
+            make.height.equalTo(widthScaleFactor(distance: 56))
         }
         
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(timeButton.snp.bottom).offset(-15)
+            make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 48))
             make.centerX.equalToSuperview()
-            make.width.equalTo(125)
-            make.height.equalTo(60)
-        }
-        
-        cancelButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(60)
-            make.left.equalToSuperview().offset(20)
-            make.height.equalTo(20)
+            make.width.equalTo(widthScaleFactor(distance: 128))
+            make.height.equalTo(widthScaleFactor(distance: 60))
         }
         
     }
@@ -204,17 +199,17 @@ class NewProjectViewController: UIViewController {
             self.timeButton.isHidden = true
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
                 make.centerX.equalToSuperview()
-                make.width.equalTo(125)
-                make.height.equalTo(60)
+                make.width.equalTo(widthScaleFactor(distance: 128))
+                make.height.equalTo(widthScaleFactor(distance: 60))
             }
         
     }
     
     //if task has a time
     private func sessionButtonModeOn() {
-        
+
             sessionButton.isSelected = true
             sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
             taskButton.backgroundColor = nil
@@ -222,18 +217,15 @@ class NewProjectViewController: UIViewController {
             timeButton.isHidden = false
             self.timeButton.alpha = 1
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(35)
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
                 make.centerX.equalToSuperview()
-                make.width.equalTo(125)
-                make.height.equalTo(60)
+                make.width.equalTo(widthScaleFactor(distance: 128))
+                make.height.equalTo(widthScaleFactor(distance: 60))
             }
         
     }
     
-    
     //MARK: OBJC FUNCTIONS
-    
-    
     @objc private func taskButtonSelected() {
         //switching button mode
         if taskButton.isSelected == false {
@@ -243,10 +235,10 @@ class NewProjectViewController: UIViewController {
             taskButton.isSelected = true
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(-15)
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
                 make.centerX.equalToSuperview()
-                make.width.equalTo(125)
-                make.height.equalTo(60)
+                make.width.equalTo(widthScaleFactor(distance: 128))
+                make.height.equalTo(widthScaleFactor(distance: 60))
             }
             //hiding timeButton
             UIView.animate(withDuration: 0.3, animations: {
@@ -257,8 +249,6 @@ class NewProjectViewController: UIViewController {
                 self.timeButton.isHidden = true
             })
             self.view.layoutIfNeeded()
-            
-
         }
     }
     
@@ -280,10 +270,10 @@ class NewProjectViewController: UIViewController {
             timeButton.alpha = 0
             
             self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.timeButton.snp.bottom).offset(35)
+                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
                 make.centerX.equalToSuperview()
-                make.width.equalTo(125)
-                make.height.equalTo(60)
+                make.width.equalTo(widthScaleFactor(distance: 128))
+                make.height.equalTo(widthScaleFactor(distance: 60))
             }
             //showing timeButton
             UIView.animate(withDuration: 0.4, animations: {
@@ -384,7 +374,6 @@ class NewProjectViewController: UIViewController {
         }
 
     }
-    
     
     
     
