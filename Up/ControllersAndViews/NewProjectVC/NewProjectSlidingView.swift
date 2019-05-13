@@ -7,12 +7,26 @@
 
 import UIKit
 
+protocol NewTaskViewToTimeInputButtonDelegate: class {
+    func sendSelectedTime(time: Int)
+    func tapStarted()
+    func tapEnded()
+}
+
+protocol NewTaskSlidingViewToNewTaskVCDelegate: class {
+    func timeButtonTapped(vc: UIViewController)
+}
+
 class NewProjectSlidingView: UIView {
     
     //MARK: VARIABLES
     var descriptionText: String?
+    var selectedTime = 30
+    weak var timeInputDelegate: NewTaskViewToTimeInputButtonDelegate!
+    weak var newTaskVCDelegate: NewTaskSlidingViewToNewTaskVCDelegate!
     
     //MARK: OUTLETS
+    var blurEffectView: UIVisualEffectView?
     
     var topHorizontalView: UIView = {
         let view = UIView()
@@ -25,7 +39,7 @@ class NewProjectSlidingView: UIView {
         let label = UILabel()
         label.text = "What's the next task?"
         label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 24))
         return label
     }()
     
@@ -40,7 +54,7 @@ class NewProjectSlidingView: UIView {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = true
-//        button.addTarget(self, action: #selector(taskButtonSelected), for: .touchUpInside)
+        button.addTarget(self, action: #selector(taskButtonSelected), for: .touchUpInside)
         return button
     }()
     
@@ -52,7 +66,7 @@ class NewProjectSlidingView: UIView {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = false
-//        button.addTarget(self, action: #selector(sessionButtonSelected), for: .touchUpInside)
+        button.addTarget(self, action: #selector(sessionButtonSelected), for: .touchUpInside)
         return button
     }()
     
@@ -62,10 +76,10 @@ class NewProjectSlidingView: UIView {
     
     var addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.layer.cornerRadius = widthScaleFactor(distance: 30)
+        button.layer.cornerRadius = widthScaleFactor(distance: 28)
         button.setTitle("Add", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
 //        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
@@ -85,14 +99,14 @@ class NewProjectSlidingView: UIView {
     private func setConstraints() {
         
         topHorizontalView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 16))
             make.centerX.equalToSuperview()
-            make.width.equalTo(80)
-            make.height.equalTo(6)
+            make.width.equalTo(widthScaleFactor(distance: 80))
+            make.height.equalTo(heightScaleFactor(distance: 6))
         }
         
         newTaskLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(80)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 80))
             make.centerX.equalToSuperview()
         }
         
@@ -128,8 +142,113 @@ class NewProjectSlidingView: UIView {
         addButton.snp.makeConstraints { (make) in
             make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 48))
             make.centerX.equalToSuperview()
-            make.width.equalTo(widthScaleFactor(distance: 128))
-            make.height.equalTo(widthScaleFactor(distance: 60))
+            make.width.equalTo(widthScaleFactor(distance: 120))
+            make.height.equalTo(widthScaleFactor(distance: 56))
+        }
+    }
+    
+    private func addBlur() {
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView?.frame = self.bounds
+        blurEffectView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView?.isHidden = true
+        blurEffectView?.alpha = 0.4
+        if blurEffectView != nil {
+            self.addSubview(blurEffectView!)
+        }
+    }
+    
+    @objc private func taskButtonSelected() {
+        //switching button mode
+        if taskButton.isSelected == true {
+            return
+        }
+        taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        sessionButton.backgroundColor = nil
+        sessionButton.isSelected = false
+        taskButton.isSelected = true
+        
+        self.addButton.snp.updateConstraints { (make) in
+            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.centerX.equalToSuperview()
+            make.width.equalTo(widthScaleFactor(distance: 120))
+            make.height.equalTo(widthScaleFactor(distance: 56))
+        }
+        //hiding timeButton
+        UIView.animate(withDuration: 0.3, animations: {
+            self.timeButton.alpha = 0
+            self.layoutIfNeeded()
+        }, completion:  {
+            (value: Bool) in
+            self.timeButton.isHidden = true
+        })
+        self.layoutIfNeeded()
+    }
+    
+    @objc private func sessionButtonSelected() {
+        if sessionButton.isSelected == true {
+            return
+        }
+        
+        if selectedTime == 0 {
+            selectedTime = 30
+        }
+        
+        sessionButton.isSelected = true
+        sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        taskButton.backgroundColor = nil
+        taskButton.isSelected = false
+        timeButton.isHidden = false
+        timeButton.alpha = 0
+        
+        self.addButton.snp.updateConstraints { (make) in
+            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
+            make.centerX.equalToSuperview()
+            make.width.equalTo(widthScaleFactor(distance: 120))
+            make.height.equalTo(widthScaleFactor(distance: 56))
+        }
+        //showing timeButton
+        UIView.animate(withDuration: 0.4, animations: {
+            self.timeButton.alpha = 1
+            self.layoutIfNeeded()
+        })
+    }
+    
+    @objc func handleTimeButtonTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            timeInputDelegate.tapStarted()
+        }
+        
+        if gestureRecognizer.state == .ended {
+            
+            timeInputDelegate.tapEnded()
+            
+            let nextVC = TimeSelectorViewController()
+            nextVC.selectedTime = selectedTime
+            
+            //MARK: CALLBACK
+            //CALLBACK IS RUN WHEN timeSelectorVC is dismissed
+            nextVC.onDoneBlock = { (result) in
+                
+                UIView.animate(withDuration: 0.4, animations: {
+                    self.blurEffectView?.alpha = 0
+                }, completion:  {
+                    (value: Bool) in
+                    self.blurEffectView?.isHidden = true
+                })
+                //THIS IS SENDING THE SELECTED TIME BACK TO THE TIMEINPUTBUTTONVIEW
+                self.timeInputDelegate.sendSelectedTime(time: result)
+                self.selectedTime = result
+            }
+            
+            blurEffectView?.isHidden = false
+            blurEffectView?.alpha = 0
+            UIView.animate(withDuration: 0.3, animations: {
+                self.blurEffectView?.alpha = 0.6
+            })
+            
+            newTaskVCDelegate.timeButtonTapped(vc: nextVC)
         }
     }
     
@@ -137,7 +256,12 @@ class NewProjectSlidingView: UIView {
         super.init(frame: frame)
         addOutlets()
         setConstraints()
-        roundCorners([.topLeft, .topRight], radius: 8)
+        roundCorners([.topLeft, .topRight], radius: 9)
+        addBlur()
+        timeInputDelegate = timeButton
+        let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTimeButtonTap(_:)))
+        tap.minimumPressDuration = 0
+        timeButton.addGestureRecognizer(tap)
         self.backgroundColor = Style.Colors.Palette01.gunMetal
     }
     

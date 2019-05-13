@@ -26,7 +26,7 @@ class NewTaskViewController: UIViewController {
         containerView.addGestureRecognizer(panGesture)
     }
     
-    
+    //MARK: OBJC FUNCTIONS
     
     @objc func draggedView(_ sender:UIPanGestureRecognizer) {
         
@@ -50,10 +50,10 @@ class NewTaskViewController: UIViewController {
         default:
             
             guard let minPos = originalPosMinY else {return}
-            let distanceFromTop = currentPosY - 120
+            let distanceFromTop = currentPosY - heightScaleFactor(distance: 120)
             let distanceFromBot = UIScreen.main.bounds.height - currentPosY
             
-            if currentPosY < minPos + 375 {
+            if currentPosY < minPos + heightScaleFactor(distance: 375) {
                 UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                     self.containerView.center.y -= distanceFromTop
                 })
@@ -78,10 +78,13 @@ class NewTaskViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(120)
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 120))
             make.bottom.equalToSuperview()
             make.left.right.equalToSuperview()
         }
+        
+        containerView.newTaskVCDelegate = self
+        
     }
 }
 
@@ -102,4 +105,13 @@ extension NewTaskViewController {
     @objc override func dismissKeyboard() {
         view.endEditing(true)
     }
+}
+
+extension NewTaskViewController: NewTaskSlidingViewToNewTaskVCDelegate {
+    
+    func timeButtonTapped(vc: UIViewController) {
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true, completion: nil)
+    }
+    
 }

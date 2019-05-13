@@ -12,7 +12,6 @@ import UIKit
 
 class TimeInputViewButton: UIView {
     
-    
     //MARK: OUTLETS
     
     let timeLabel: UILabel = {
@@ -62,7 +61,7 @@ class TimeInputViewButton: UIView {
     
 }
 // from NewProjectVC to TimeInputView
-extension TimeInputViewButton: NewProjectVCToTimeInputButtonDelegate {
+extension TimeInputViewButton: NewTaskViewToTimeInputButtonDelegate {
     func sendSelectedTime(time: Int) {
         if time == 1 {
             timeLabel.text = String(describing: time) + " minute"

@@ -17,11 +17,7 @@ protocol newProjectVCToUpVCDelegate: class {
     func editGoalToUpVC(goal: Goal, index: Int)
 }
 
-protocol NewProjectVCToTimeInputButtonDelegate: class {
-    func sendSelectedTime(time: Int)
-    func tapStarted()
-    func tapEnded()
-}
+
 
 
 class NewProjectViewController: UIViewController {
@@ -36,7 +32,7 @@ class NewProjectViewController: UIViewController {
     var selectedTime = 30
     var descriptionText: String?
     weak var textViewDelegate: newProjectVCToTextInputViewDelegate!
-    weak var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
+//    weak var timeInputDelegate: NewProjectVCToTimeInputButtonDelegate!
     weak var goalDelegate: newProjectVCToUpVCDelegate!
 
     
@@ -236,8 +232,6 @@ class NewProjectViewController: UIViewController {
         self.view.layoutIfNeeded()
     }
     
-    
-    
     @objc private func sessionButtonSelected() {
         if sessionButton.isSelected == true {
             return
@@ -265,7 +259,6 @@ class NewProjectViewController: UIViewController {
             self.timeButton.alpha = 1
             self.view.layoutIfNeeded()
         })
-    
     }
     
     
@@ -317,12 +310,12 @@ class NewProjectViewController: UIViewController {
     
     @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
         if gestureRecognizer.state == .began {
-            timeInputDelegate.tapStarted()
+//            timeInputDelegate.tapStarted()
         }
         
         if gestureRecognizer.state == .ended {
             
-            timeInputDelegate.tapEnded()
+//            timeInputDelegate.tapEnded()
             
             let nextVC = TimeSelectorViewController()
            nextVC.selectedTime = selectedTime
@@ -338,7 +331,7 @@ class NewProjectViewController: UIViewController {
                     self.blurEffectView?.isHidden = true
                 })
                 //THIS IS SENDING THE SELECTED TIME BACK TO THE TIMEINPUTBUTTONVIEW
-                self.timeInputDelegate.sendSelectedTime(time: result)
+//                self.timeInputDelegate.sendSelectedTime(time: result)
                 self.selectedTime = result
             }
             
@@ -374,7 +367,7 @@ class NewProjectViewController: UIViewController {
         if Int(selectedGoal!.duration) > 0 {
             sessionButtonModeOn()
             //setting time of timeInputButton
-            timeInputDelegate.sendSelectedTime(time: Int(selectedGoal!.duration))
+//            timeInputDelegate.sendSelectedTime(time: Int(selectedGoal!.duration))
             
         } else {
             taskButtonModeOn()
@@ -384,15 +377,15 @@ class NewProjectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        tap.minimumPressDuration = 0
-        timeButton.addGestureRecognizer(tap)
         hideKeyboard()
         configNavBar()
         addOutlets()
         addBlur()
         setConstraints()
-        timeInputDelegate = timeButton
+//        timeInputDelegate = timeButton
+        let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tap.minimumPressDuration = 0
+        timeButton.addGestureRecognizer(tap)
         textViewDelegate = descriptionTextView
         configureEdit()
     }

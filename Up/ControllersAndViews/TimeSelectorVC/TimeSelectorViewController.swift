@@ -110,6 +110,7 @@ class TimeSelectorViewController: UIViewController {
     }
     
     @objc func doneButtonTapped() {
+        print("Tapped")
         onDoneBlock!(selectedTime)
         dismiss(animated: true)
     }
