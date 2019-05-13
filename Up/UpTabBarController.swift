@@ -103,7 +103,6 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        
         switch item.tag {
         case 1:
             animate(firstTabbarItemImageView)
@@ -114,16 +113,9 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         default:
             return
         }
-        
-        
     }
-//
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
     }
-    
-    
-    
 }

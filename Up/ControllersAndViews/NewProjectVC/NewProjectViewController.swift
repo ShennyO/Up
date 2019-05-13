@@ -17,16 +17,11 @@ protocol newProjectVCToUpVCDelegate: class {
     func editGoalToUpVC(goal: Goal, index: Int)
 }
 
-//From NewProjectVC back to TimeInputButton
 protocol NewProjectVCToTimeInputButtonDelegate: class {
-    
     func sendSelectedTime(time: Int)
-    
     func tapStarted()
-    
     func tapEnded()
 }
-
 
 
 class NewProjectViewController: UIViewController {
@@ -35,7 +30,6 @@ class NewProjectViewController: UIViewController {
     let stack = CoreDataStack.instance
     var selectedGoal: Goal?
     
-
     //VARIABLES
     var selectedIndex: Int?
     var blurEffectView: UIVisualEffectView?
@@ -60,10 +54,7 @@ class NewProjectViewController: UIViewController {
         return label
     }()
     
-    
-    
     var descriptionTextView = SunnyCustomInputView(frame: CGRect(x: 0, y: 0, width: 230, height: 75), fontSize: widthScaleFactor(distance: 18), type: .textView)
-    
     
     var taskButton: UIButton = {
         let button = UIButton()
@@ -91,7 +82,6 @@ class NewProjectViewController: UIViewController {
     }()
     
     var typeStackView: UIStackView!
-    
     
     var timeButton = TimeInputViewButton(frame: CGRect(x: 0, y: 0, width: 165, height: 50))
     
@@ -135,11 +125,9 @@ class NewProjectViewController: UIViewController {
         typeStackView.alignment = .fill
         typeStackView.spacing = 35
         self.view.addSubview(typeStackView)
-        
     }
     
     private func setConstraints() {
-
         cancelButton.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(widthScaleFactor(distance: 64))
             make.left.equalToSuperview().offset(16)
@@ -186,102 +174,98 @@ class NewProjectViewController: UIViewController {
             make.width.equalTo(widthScaleFactor(distance: 128))
             make.height.equalTo(widthScaleFactor(distance: 60))
         }
-        
     }
     
     //if task doesn't have a time
     private func taskButtonModeOn() {
+        taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        taskButton.isSelected = true
+        sessionButton.backgroundColor = nil
+        sessionButton.isSelected = false
+        self.timeButton.isHidden = true
         
-            taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-            taskButton.isSelected = true
-            sessionButton.backgroundColor = nil
-            sessionButton.isSelected = false
-            self.timeButton.isHidden = true
-            
-            self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
-                make.centerX.equalToSuperview()
-                make.width.equalTo(widthScaleFactor(distance: 128))
-                make.height.equalTo(widthScaleFactor(distance: 60))
-            }
-        
+        self.addButton.snp.updateConstraints { (make) in
+            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.centerX.equalToSuperview()
+            make.width.equalTo(widthScaleFactor(distance: 128))
+            make.height.equalTo(widthScaleFactor(distance: 60))
+        }
     }
     
     //if task has a time
     private func sessionButtonModeOn() {
-
-            sessionButton.isSelected = true
-            sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-            taskButton.backgroundColor = nil
-            taskButton.isSelected = false
-            timeButton.isHidden = false
-            self.timeButton.alpha = 1
-            self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
-                make.centerX.equalToSuperview()
-                make.width.equalTo(widthScaleFactor(distance: 128))
-                make.height.equalTo(widthScaleFactor(distance: 60))
-            }
-        
+        sessionButton.isSelected = true
+        sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        taskButton.backgroundColor = nil
+        taskButton.isSelected = false
+        timeButton.isHidden = false
+        self.timeButton.alpha = 1
+        self.addButton.snp.updateConstraints { (make) in
+            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
+            make.centerX.equalToSuperview()
+            make.width.equalTo(widthScaleFactor(distance: 128))
+            make.height.equalTo(widthScaleFactor(distance: 60))
+        }
     }
     
     //MARK: OBJC FUNCTIONS
     @objc private func taskButtonSelected() {
         //switching button mode
-        if taskButton.isSelected == false {
-            taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-            sessionButton.backgroundColor = nil
-            sessionButton.isSelected = false
-            taskButton.isSelected = true
-            
-            self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
-                make.centerX.equalToSuperview()
-                make.width.equalTo(widthScaleFactor(distance: 128))
-                make.height.equalTo(widthScaleFactor(distance: 60))
-            }
-            //hiding timeButton
-            UIView.animate(withDuration: 0.3, animations: {
-                self.timeButton.alpha = 0
-                self.view.layoutIfNeeded()
-            }, completion:  {
-                (value: Bool) in
-                self.timeButton.isHidden = true
-            })
-            self.view.layoutIfNeeded()
+        if taskButton.isSelected == true {
+            return
         }
+        taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        sessionButton.backgroundColor = nil
+        sessionButton.isSelected = false
+        taskButton.isSelected = true
+        
+        self.addButton.snp.updateConstraints { (make) in
+            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.centerX.equalToSuperview()
+            make.width.equalTo(widthScaleFactor(distance: 128))
+            make.height.equalTo(widthScaleFactor(distance: 60))
+        }
+        //hiding timeButton
+        UIView.animate(withDuration: 0.3, animations: {
+            self.timeButton.alpha = 0
+            self.view.layoutIfNeeded()
+        }, completion:  {
+            (value: Bool) in
+            self.timeButton.isHidden = true
+        })
+        self.view.layoutIfNeeded()
     }
     
     
     
     @objc private func sessionButtonSelected() {
-        //switching button mode
-        
-        if sessionButton.isSelected == false {
-            if selectedTime == 0 {
-                selectedTime = 30
-            }
-            
-            sessionButton.isSelected = true
-            sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-            taskButton.backgroundColor = nil
-            taskButton.isSelected = false
-            timeButton.isHidden = false
-            timeButton.alpha = 0
-            
-            self.addButton.snp.updateConstraints { (make) in
-                make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
-                make.centerX.equalToSuperview()
-                make.width.equalTo(widthScaleFactor(distance: 128))
-                make.height.equalTo(widthScaleFactor(distance: 60))
-            }
-            //showing timeButton
-            UIView.animate(withDuration: 0.4, animations: {
-                self.timeButton.alpha = 1
-                self.view.layoutIfNeeded()
-                
-            })
+        if sessionButton.isSelected == true {
+            return
         }
+        
+        if selectedTime == 0 {
+            selectedTime = 30
+        }
+        
+        sessionButton.isSelected = true
+        sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        taskButton.backgroundColor = nil
+        taskButton.isSelected = false
+        timeButton.isHidden = false
+        timeButton.alpha = 0
+        
+        self.addButton.snp.updateConstraints { (make) in
+            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
+            make.centerX.equalToSuperview()
+            make.width.equalTo(widthScaleFactor(distance: 128))
+            make.height.equalTo(widthScaleFactor(distance: 60))
+        }
+        //showing timeButton
+        UIView.animate(withDuration: 0.4, animations: {
+            self.timeButton.alpha = 1
+            self.view.layoutIfNeeded()
+        })
+    
     }
     
     
@@ -320,24 +304,18 @@ class NewProjectViewController: UIViewController {
             }
             
             goalDelegate.addGoalToUpVC(goal: newGoal)
-            
+    
         }
         
         stack.saveTo(context: stack.viewContext)
-        
-        
-
         self.dismiss(animated: true)
     }
-    
     
     @objc private func cancelButtonTapped() {
         self.dismiss(animated: true)
-        
     }
     
     @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        
         if gestureRecognizer.state == .began {
             timeInputDelegate.tapStarted()
         }
@@ -372,10 +350,7 @@ class NewProjectViewController: UIViewController {
             nextVC.modalPresentationStyle = .overCurrentContext
             self.present(nextVC, animated: true, completion: nil)
         }
-
     }
-    
-    
     
     private func addBlur() {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
@@ -389,25 +364,22 @@ class NewProjectViewController: UIViewController {
         }
     }
     
-    
     private func configureEdit() {
-        if let goal = selectedGoal {
-            
-            //Set textview text
-            textViewDelegate.populateTextView(text: goal.goalDescription!)
-            
-            if Int(goal.duration) > 0 {
-                sessionButtonModeOn()
-                //setting time of timeInputButton
-                timeInputDelegate.sendSelectedTime(time: Int(goal.duration))
-                
-            } else {
-                taskButtonModeOn()
-            }
+        if selectedGoal == nil {
+            return
         }
+
+        textViewDelegate.populateTextView(text: selectedGoal!.goalDescription!)
         
+        if Int(selectedGoal!.duration) > 0 {
+            sessionButtonModeOn()
+            //setting time of timeInputButton
+            timeInputDelegate.sendSelectedTime(time: Int(selectedGoal!.duration))
+            
+        } else {
+            taskButtonModeOn()
+        }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -423,20 +395,16 @@ class NewProjectViewController: UIViewController {
         timeInputDelegate = timeButton
         textViewDelegate = descriptionTextView
         configureEdit()
-        
-        
-        // Do any additional setup after loading the view.
     }
     
     deinit {
         print("Deinitialized!")
     }
     
-
-    
 }
 
 extension NewProjectViewController: CustomTextViewToNewProjVCDelegate {
+    
     func sendText(text: String) {
         descriptionText = text
     }

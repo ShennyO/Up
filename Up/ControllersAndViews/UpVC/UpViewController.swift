@@ -114,9 +114,9 @@ extension UpViewController {
     
     
     func addButtonTapped() {
-        let nextVC = NewProjectViewController()
-        nextVC.goalDelegate = self
-        self.present(nextVC, animated: true, completion: nil)
+        let nextVC = NewTaskViewController()
+        nextVC.modalPresentationStyle = .overFullScreen
+        self.present(nextVC, animated: true)
     }
     
     private func fetchGoals(completion: @escaping () -> ()) {
@@ -210,12 +210,11 @@ extension UpViewController {
         } else if gestureRecognizer.state == .changed {
             
             center = gestureRecognizer.location(in: self.view)
-            print("Center: ", center)
             let width: CGFloat = 50
             let height: CGFloat = 50
             let box = CGRect(x: center!.x - width / 2, y: center!.y - height / 2, width: width, height: height)
             if box.contains(originalCenter) {
-                print("In the button")
+                
             } else {
                 //if it's outside the button
                 self.tap.isEnabled = false
