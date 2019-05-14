@@ -9,13 +9,16 @@ import UIKit
 
 class NewTaskViewController: UIViewController {
     
-    //MARK: VARIABLES
+    
+    //MARK: PANGESTURE VARIABLES
     var originalPosMinY: CGFloat?
     var startPosition: CGPoint?
     var panGesture = UIPanGestureRecognizer()
     
     //MARK: OUTLETS
-    let containerView = NewProjectSlidingView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+    let containerView = newTaskSlidingView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+    
+    let timeSelectorView = TimeSelectorView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: widthScaleFactor(distance: 352)))
     
     //MARK: FUNCTIONS
     private func setUpGesture() {
@@ -30,7 +33,7 @@ class NewTaskViewController: UIViewController {
     
     @objc func draggedView(_ sender:UIPanGestureRecognizer) {
         
-        self.view.bringSubviewToFront(containerView)
+//        self.view.bringSubviewToFront(containerView)
         
         let currentPosY = self.containerView.frame.minY
         
@@ -70,20 +73,34 @@ class NewTaskViewController: UIViewController {
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
+    private func addOutlets() {
         self.view.addSubview(containerView)
-        setUpGesture()
-        hideKeyboardWhenTappedAround()
-        
+        self.view.addSubview(timeSelectorView)
+    }
+    
+    private func setConstraints() {
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 120))
             make.bottom.equalToSuperview()
             make.left.right.equalToSuperview()
         }
         
+        timeSelectorView.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 352))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
+            make.height.equalTo(heightScaleFactor(distance: 352))
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
+        addOutlets()
+        setConstraints()
+        setUpGesture()
+        hideKeyboardWhenTappedAround()
         containerView.newTaskVCDelegate = self
+        timeSelectorView.isUserInteractionEnabled = true
         
     }
 }
@@ -109,9 +126,8 @@ extension NewTaskViewController {
 
 extension NewTaskViewController: NewTaskSlidingViewToNewTaskVCDelegate {
     
-    func timeButtonTapped(vc: UIViewController) {
-        vc.modalPresentationStyle = .overCurrentContext
-        self.present(vc, animated: true, completion: nil)
+    func timeButtonTapped(status: Bool) {
+        panGesture.isEnabled = status
     }
     
 }
