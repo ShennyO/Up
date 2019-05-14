@@ -42,7 +42,7 @@ class CancelView: UIView {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.1105717048, green: 0.1099219099, blue: 0.1110760495, alpha: 1)
         button.addTarget(self, action: #selector(yesTapped), for: .touchUpInside)
-        button.setTitle("Yes, I'm sure", for: .normal)
+        button.setTitle("Exit Task", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 17))
         button.contentEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
