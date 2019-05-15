@@ -64,6 +64,8 @@ class NewTaskViewController: UIViewController {
         slidingViewDelegate.sendGoalDescription(desc: selectedGoal!.goalDescription!)
         
         if Int(selectedGoal!.duration) > 0 {
+            selectedTime = Int(selectedGoal!.duration)
+            sessionButtonSelected = true
             slidingViewDelegate.sessionModeOn()
             //setting time of timeInputButton
             slidingViewDelegate.sendSelectedTimeForEdit(time: Int(selectedGoal!.duration))
@@ -174,6 +176,12 @@ extension NewTaskViewController {
 }
 
 extension NewTaskViewController: NewTaskSlidingViewToNewTaskVCDelegate {
+    
+    func sendDefaultTime(time: Int) {
+        if selectedTime == 0 {
+            selectedTime = time
+        }
+    }
     
     func sendSetTime(time: Int) {
         selectedTime = time

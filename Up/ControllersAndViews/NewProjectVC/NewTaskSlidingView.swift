@@ -14,6 +14,7 @@ protocol NewTaskViewToTimeInputButtonDelegate: class {
 }
 
 protocol NewTaskSlidingViewToNewTaskVCDelegate: class {
+    func sendDefaultTime(time: Int)
     func sendSetTime(time: Int)
     func configGestureStatus(status: Bool)
     func addButtonTapped()
@@ -213,9 +214,8 @@ class NewTaskSlidingView: UIView {
         if sessionButton.isSelected == true {
             return
         }
-        
+        newTaskVCDelegate.sendDefaultTime(time: 30)
         newTaskVCDelegate.sessionButtonTapped()
-        
         sessionButton.isSelected = true
         sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         taskButton.backgroundColor = nil
