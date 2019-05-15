@@ -364,7 +364,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
     
     func completeNonTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 self.goals[index.row].completionDate = Date()
                 self.stack.saveTo(context: self.stack.viewContext)
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[index.row])
