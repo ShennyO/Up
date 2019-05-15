@@ -112,8 +112,8 @@ class CalendarViewController: UIViewController {
         
         tableView.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalToSuperview()
-            
         }
+        
     }
     
     func updateHeaderView(offset: Int) {
@@ -196,7 +196,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             let goal = day.goals[indexPath.section - extraSectionsInTableView][indexPath.row]
         
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
-            cell.setup(goal: goal, withTime: nil)
+            cell.setup(goal: goal)
             return cell
         }
     }
@@ -210,10 +210,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             let containerInsets: CGFloat = 32
             return cvHeight + headerHeight + containerInsets
         default:
-//            This cell displays one goal at a time
-//            if let indexPathForSelectedRow = tableView.indexPathForSelectedRow, indexPathForSelectedRow == indexPath {
-//                return 120
-//            }
             return 60
         }
     }
@@ -244,6 +240,57 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             return 68
         }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if indexPath.section < extraSectionsInTableView {
+            return UISwipeActionsConfiguration(actions: [])
+        }
+        
+        let delete = deleteAction(index: indexPath)
+        let edit = restoreAction(index: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete, edit])
+    }
+    
+    func deleteAction(index: IndexPath) -> UIContextualAction {
+//        let goal = goals[index.row]
+        let action = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
+//            self.stack.viewContext.delete(goal)
+//            self.stack.saveTo(context: self.stack.viewContext)
+//            self.goals.remove(at: index.row)
+//            self.upTableView.deleteRows(at: [index], with: .left)
+            
+            completion(true)
+        }
+        
+        action.backgroundColor = Style.Colors.Palette01.gunMetal
+        
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22))).image { _ in
+            #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22)))
+        }
+        
+        return action
+    }
+    
+    func restoreAction(index: IndexPath) -> UIContextualAction {
+//        let goal = goals[index.row]
+        let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
+            
+//            let nextVC = NewProjectViewController()
+//            nextVC.selectedIndex = index.row
+//            nextVC.goalDelegate = self
+//            nextVC.selectedGoal = goal
+//            nextVC.selectedTime = Int(goal.duration)
+//            self.present(nextVC, animated: true, completion: nil)
+            
+            completion(true)
+        }
+        
+        action.backgroundColor = Style.Colors.Palette01.gunMetal
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23))).image { _ in
+            #imageLiteral(resourceName: "reset-icon-2").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23)))
+        }
+        return action
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

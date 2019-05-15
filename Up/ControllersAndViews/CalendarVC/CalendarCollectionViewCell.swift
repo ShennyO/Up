@@ -47,10 +47,13 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     func setup(day: String, goalCount: Int, isEnabled: Bool) {
         dayLabel.text = day
+        
         self.addSubview(dayLabel)
+        
         dayLabel.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalToSuperview()
         }
+        
         if isEnabled == true {
             self.isUserInteractionEnabled = true
             adjustBackgroundColor(goalCount: goalCount)

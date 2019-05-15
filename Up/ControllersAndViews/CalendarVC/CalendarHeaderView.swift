@@ -41,21 +41,23 @@ class CalendarHeaderView: UIView, HeaderViewToCalendarVCDelegate {
         }
         
         leftButton.snp.makeConstraints { (make) in
-            make.left.top.equalToSuperview().inset(8)
+            make.top.equalToSuperview().inset(heightScaleFactor(distance: 8))
+            make.left.equalToSuperview().inset(widthScaleFactor(distance: 8))
             make.width.equalTo(leftButton.snp.height)
             make.bottom.equalTo(monthLabel.snp.bottom)
         }
         
         rightButton.snp.makeConstraints { (make) in
-            make.right.top.equalToSuperview().inset(8)
+            make.right.equalToSuperview().inset(widthScaleFactor(distance: 8))
+            make.top.equalToSuperview().inset(heightScaleFactor(distance: 8))
             make.width.equalTo(leftButton.snp.height)
             make.bottom.equalTo(monthLabel.snp.bottom)
         }
         
         monthLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().inset(8)
-            make.right.equalTo(rightButton.snp.left).offset(-8)
-            make.left.equalTo(leftButton.snp.right).offset(8)
+            make.top.equalToSuperview().inset(heightScaleFactor(distance: 8))
+            make.right.equalTo(rightButton.snp.left).offset(widthScaleFactor(distance: -8))
+            make.left.equalTo(leftButton.snp.right).offset(widthScaleFactor(distance: 8))
         }
         
         makeDayLabels()
