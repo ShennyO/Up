@@ -15,14 +15,14 @@ enum InputType {
 }
 
 //from TextViewInputView to NewProjectVC
-protocol CustomTextViewToNewProjVCDelegate: class {
+protocol CustomTextViewToNewTaskViewDelegate: class {
     func sendText(text: String)
 }
 
 class SunnyCustomInputView: UIView {
     
     //MARK: VARIABLES
-    weak var textDelegate: CustomTextViewToNewProjVCDelegate!
+    weak var textDelegate: CustomTextViewToNewTaskViewDelegate!
     
     
     //MARK: OUTLETS
@@ -173,12 +173,13 @@ extension SunnyCustomInputView: UITextViewDelegate {
 }
 
 
-extension SunnyCustomInputView: newProjectVCToTextInputViewDelegate {
-    func populateTextView(text: String) {
-        tv.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+extension SunnyCustomInputView: NewTaskSlidingViewToDescriptionTextViewDelegate {
+    
+    func sendTextInEditMode(text: String) {
         tv.text = text
-        
+        tv.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
     }
+    
 }
 
 

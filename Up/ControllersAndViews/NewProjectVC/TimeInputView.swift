@@ -62,6 +62,7 @@ class TimeInputViewButton: UIView {
 }
 // from NewProjectVC to TimeInputView
 extension TimeInputViewButton: NewTaskViewToTimeInputButtonDelegate {
+    
     func sendSelectedTime(time: Int) {
         if time == 1 {
             timeLabel.text = String(describing: time) + " minute"
@@ -69,7 +70,6 @@ extension TimeInputViewButton: NewTaskViewToTimeInputButtonDelegate {
             timeLabel.text = String(describing: time) + " minutes"
         }
     }
-    
     
     func tapStarted() {
         upArrow.image = #imageLiteral(resourceName: "gray-Up-Arrow")

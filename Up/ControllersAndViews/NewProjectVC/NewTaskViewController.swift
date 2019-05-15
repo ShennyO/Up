@@ -7,8 +7,34 @@
 
 import UIKit
 
+protocol newProjectVCToUpVCDelegate: class {
+    func addGoalToUpVC(goal: Goal)
+    func editGoalToUpVC(goal: Goal, index: Int)
+}
+
+protocol newTaskVCToSlidingViewDelegate: class {
+    func sessionModeOn()
+    func taskModeOn()
+    func sendGoalDescription(desc: String)
+    func sendSelectedTimeForEdit(time: Int)
+}
+
+
 class NewTaskViewController: UIViewController {
     
+    //MARK: VARIABLES
+    let stack = CoreDataStack.instance
+    var selectedGoal: Goal?
+    var sessionButtonSelected = false
+    
+    var selectedIndex: Int?
+    var selectedTime = 30
+    var descriptionText: String?
+    
+    //MARK: DELEGATES
+    weak var upVCDelegate: newProjectVCToUpVCDelegate!
+    weak var slidingViewDelegate: newTaskVCToSlidingViewDelegate!
+
     
     //MARK: PANGESTURE VARIABLES
     var originalPosMinY: CGFloat?
@@ -16,7 +42,7 @@ class NewTaskViewController: UIViewController {
     var panGesture = UIPanGestureRecognizer()
     
     //MARK: OUTLETS
-    let containerView = newTaskSlidingView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+    let containerView = NewTaskSlidingView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
     
     let timeSelectorView = TimeSelectorView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: widthScaleFactor(distance: 352)))
     
@@ -27,6 +53,24 @@ class NewTaskViewController: UIViewController {
         originalPosMinY = self.containerView.frame.minY
         containerView.isUserInteractionEnabled = true
         containerView.addGestureRecognizer(panGesture)
+    }
+    
+    private func configureEdit() {
+
+        if selectedGoal == nil {
+            return
+        }
+        
+        slidingViewDelegate.sendGoalDescription(desc: selectedGoal!.goalDescription!)
+        
+        if Int(selectedGoal!.duration) > 0 {
+            slidingViewDelegate.sessionModeOn()
+            //setting time of timeInputButton
+            slidingViewDelegate.sendSelectedTimeForEdit(time: Int(selectedGoal!.duration))
+            
+        } else {
+            slidingViewDelegate.taskModeOn()
+        }
     }
     
     //MARK: OBJC FUNCTIONS
@@ -54,7 +98,7 @@ class NewTaskViewController: UIViewController {
             
             guard let minPos = originalPosMinY else {return}
             let distanceFromTop = currentPosY - heightScaleFactor(distance: 120)
-            let distanceFromBot = UIScreen.main.bounds.height - currentPosY
+            let distanceFromBot = (UIScreen.main.bounds.height - currentPosY) / 2
             
             if currentPosY < minPos + heightScaleFactor(distance: 375) {
                 UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
@@ -62,11 +106,13 @@ class NewTaskViewController: UIViewController {
                 })
             } else {
                 
-                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-                    self.containerView.center.y += (distanceFromBot)
-                }) { (res) in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     self.dismiss(animated: true, completion: nil)
                 }
+                
+                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+                    self.containerView.center.y += (distanceFromBot)
+                })
                 
             }
         }
@@ -94,12 +140,15 @@ class NewTaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
         addOutlets()
         setConstraints()
         setUpGesture()
-        hideKeyboardWhenTappedAround()
+        slidingViewDelegate = containerView
         containerView.newTaskVCDelegate = self
+        configureEdit()
+        hideKeyboardWhenTappedAround()
+        
+        
         timeSelectorView.isUserInteractionEnabled = true
         
     }
@@ -126,8 +175,69 @@ extension NewTaskViewController {
 
 extension NewTaskViewController: NewTaskSlidingViewToNewTaskVCDelegate {
     
-    func timeButtonTapped(status: Bool) {
+    func sendSetTime(time: Int) {
+        selectedTime = time
+    }
+    
+    func sendTextViewText(text: String) {
+        descriptionText = text
+    }
+    
+    func sessionButtonTapped() {
+        sessionButtonSelected = true
+    }
+    
+    func taskButtonTapped() {
+        sessionButtonSelected = false
+    }
+    
+    func addButtonTapped() {
+        guard let text = descriptionText else {
+            return
+        }
+        
+        if let goal = selectedGoal {
+            
+            goal.goalDescription = text
+            if sessionButtonSelected {
+                goal.duration = Int32(selectedTime)
+            } else {
+                goal.duration = Int32(0)
+            }
+            
+            upVCDelegate.editGoalToUpVC(goal: goal, index: selectedIndex!)
+            
+        } else {
+            
+            let goals = stack.fetchGoal(type: .all, completed: .incomplete, sorting: .listOrderNumberAscending) as? [Goal] ?? []
+            
+            let newGoal = Goal(context: stack.viewContext)
+            newGoal.completionDate = nil
+            newGoal.listOrderNumber = 0
+            for x in goals {
+                x.listOrderNumber += 1
+            }
+            newGoal.date = Date()
+            newGoal.goalDescription = text
+            if sessionButtonSelected {
+                newGoal.duration = Int32(selectedTime)
+            } else {
+                newGoal.duration = Int32(0)
+            }
+            
+            upVCDelegate.addGoalToUpVC(goal: newGoal)
+            
+        }
+        
+        stack.saveTo(context: stack.viewContext)
+        self.dismiss(animated: true)
+    }
+    
+    func configGestureStatus(status: Bool) {
         panGesture.isEnabled = status
     }
     
 }
+
+
+

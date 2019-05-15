@@ -17,6 +17,8 @@ protocol UpVCToUpVCHeaderDelegate {
     func alertHeaderView(total: Int)
 }
 
+
+
 class UpViewController: UIViewController {
     
     var originalCenter: CGPoint!
@@ -40,6 +42,13 @@ class UpViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "Add-1"), for: .normal)
         return button
+    }()
+    
+    let grayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
+        view.isHidden = true
+        return view
     }()
     
     var tableHeaderView: HeaderView!
@@ -115,6 +124,7 @@ extension UpViewController {
     
     func addButtonTapped() {
         let nextVC = NewTaskViewController()
+        nextVC.upVCDelegate = self
         nextVC.modalPresentationStyle = .overFullScreen
         self.present(nextVC, animated: true)
     }
@@ -129,6 +139,7 @@ extension UpViewController {
     
     private func addOutlets() {
         self.view.addSubview(addButton)
+        self.view.addSubview(grayView)
     }
     
     private func setConstraints() {
@@ -137,7 +148,13 @@ extension UpViewController {
             make.bottom.equalToSuperview().inset(15)
             make.height.width.equalTo(widthScaleFactor(distance: 60))
         }
+        
+        grayView.snp.makeConstraints { (make) in
+            make.left.right.top.bottom.equalToSuperview()
+        }
+        
     }
+    
     
     private func addLongTapGesture() {
         tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -320,13 +337,13 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     func editAction(index: IndexPath) -> UIContextualAction {
         let goal = goals[index.row]
         let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
-            
-            let nextVC = NewProjectViewController()
+            let nextVC = NewTaskViewController()
+            nextVC.upVCDelegate = self
             nextVC.selectedIndex = index.row
-            nextVC.goalDelegate = self
             nextVC.selectedGoal = goal
             nextVC.selectedTime = Int(goal.duration)
-            self.present(nextVC, animated: true, completion: nil)
+            nextVC.modalPresentationStyle = .overFullScreen
+            self.present(nextVC, animated: true)
             
             completion(true)
         }

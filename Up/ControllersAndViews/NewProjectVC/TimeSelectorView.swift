@@ -83,7 +83,6 @@ class TimeSelectorView: UIView {
     }
     
     @objc func doneButtonTapped() {
-        print("tapped")
         onDoneBlock!(selectedTime)
     }
     

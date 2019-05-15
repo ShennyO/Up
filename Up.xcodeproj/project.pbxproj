@@ -39,7 +39,6 @@
 		C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */; };
 		C3751A1D2256D6A100FF0E22 /* ProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */; };
 		C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */; };
-		C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */; };
 		C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */; };
 		C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */; };
 		C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A39226178D500FF0E22 /* TimeInputView.swift */; };
@@ -114,7 +113,6 @@
 		C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedProjectCell.swift; sourceTree = "<group>"; };
 		C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
 		C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewHelper.swift; sourceTree = "<group>"; };
-		C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
 		C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPickerHelper.swift; sourceTree = "<group>"; };
 		C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldHelper.swift; sourceTree = "<group>"; };
 		C3751A39226178D500FF0E22 /* TimeInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputView.swift; sourceTree = "<group>"; };
@@ -184,7 +182,6 @@
 		487E1BC622692A67000F9B09 /* NewProjectVC */ = {
 			isa = PBXGroup;
 			children = (
-				C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */,
 				C33B2E57228A5DBF009E325F /* TimeSelectorView.swift */,
 				C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */,
 				C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */,
@@ -589,7 +586,6 @@
 				C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */,
 				C38467282280D90700FAD570 /* CancelView.swift in Sources */,
 				C3B36B4E226A39AA007CC38A /* CongratulationsView.swift in Sources */,
-				C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */,
 				C3751A1D2256D6A100FF0E22 /* ProjectCell.swift in Sources */,
 				488438D0226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift in Sources */,
 				C3751A1722552DFE00FF0E22 /* UpViewController.swift in Sources */,

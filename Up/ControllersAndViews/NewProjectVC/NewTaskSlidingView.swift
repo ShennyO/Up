@@ -14,16 +14,24 @@ protocol NewTaskViewToTimeInputButtonDelegate: class {
 }
 
 protocol NewTaskSlidingViewToNewTaskVCDelegate: class {
-    func timeButtonTapped(status: Bool)
+    func sendSetTime(time: Int)
+    func configGestureStatus(status: Bool)
+    func addButtonTapped()
+    func sessionButtonTapped()
+    func taskButtonTapped()
+    func sendTextViewText(text: String)
 }
 
-class newTaskSlidingView: UIView {
+protocol NewTaskSlidingViewToDescriptionTextViewDelegate: class {
+    func sendTextInEditMode(text: String)
+}
+
+class NewTaskSlidingView: UIView {
     
     //MARK: VARIABLES
-    var descriptionText: String?
-    var selectedTime = 30
     weak var timeInputDelegate: NewTaskViewToTimeInputButtonDelegate!
     weak var newTaskVCDelegate: NewTaskSlidingViewToNewTaskVCDelegate!
+    weak var descriptionViewDelegate: NewTaskSlidingViewToDescriptionTextViewDelegate!
     
     //MARK: OUTLETS
     var blurEffectView: UIVisualEffectView?
@@ -81,7 +89,7 @@ class newTaskSlidingView: UIView {
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        //        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -176,6 +184,9 @@ class newTaskSlidingView: UIView {
         if taskButton.isSelected == true {
             return
         }
+        
+        newTaskVCDelegate.taskButtonTapped()
+        
         taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         sessionButton.backgroundColor = nil
         sessionButton.isSelected = false
@@ -203,9 +214,7 @@ class newTaskSlidingView: UIView {
             return
         }
         
-        if selectedTime == 0 {
-            selectedTime = 30
-        }
+        newTaskVCDelegate.sessionButtonTapped()
         
         sessionButton.isSelected = true
         sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
@@ -237,7 +246,6 @@ class newTaskSlidingView: UIView {
             
             timeInputDelegate.tapEnded()
             
-            
             //MARK: CALLBACK
             //CALLBACK IS RUN WHEN timeSelectorVC is dismissed
             timeSelectorView.onDoneBlock = { (result) in
@@ -259,11 +267,9 @@ class newTaskSlidingView: UIView {
                     self.layoutIfNeeded()
                 })
                 
-                self.newTaskVCDelegate.timeButtonTapped(status: true)
-                
-                //THIS IS SENDING THE SELECTED TIME BACK TO THE TIMEINPUTBUTTONVIEW
+                self.newTaskVCDelegate.configGestureStatus(status: true)
+                self.newTaskVCDelegate.sendSetTime(time: result)
                 self.timeInputDelegate.sendSelectedTime(time: result)
-                self.selectedTime = result
             }
             
             timeSelectorView.snp.updateConstraints { (make) in
@@ -282,8 +288,12 @@ class newTaskSlidingView: UIView {
                 self.blurEffectView?.alpha = 0.6
             })
             
-            newTaskVCDelegate.timeButtonTapped(status: false)
+            newTaskVCDelegate.configGestureStatus(status: false)
         }
+    }
+    
+    @objc private func addButtonTapped() {
+        newTaskVCDelegate.addButtonTapped()
     }
     
     
@@ -295,6 +305,8 @@ class newTaskSlidingView: UIView {
         addBlur()
         setUpTimeSelectorView()
         timeInputDelegate = timeButton
+        descriptionViewDelegate = descriptionTextView
+        descriptionTextView.textDelegate = self
         let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTimeButtonTap(_:)))
         tap.minimumPressDuration = 0
         timeButton.addGestureRecognizer(tap)
@@ -308,11 +320,52 @@ class newTaskSlidingView: UIView {
     
 }
 
-extension newTaskSlidingView: CustomTextViewToNewProjVCDelegate {
+extension NewTaskSlidingView: CustomTextViewToNewTaskViewDelegate {
     
     func sendText(text: String) {
-        descriptionText = text
+        newTaskVCDelegate.sendTextViewText(text: text)
     }
     
 }
 
+extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
+    
+    func sendSelectedTimeForEdit(time: Int) {
+        timeInputDelegate.sendSelectedTime(time: time)
+    }
+    
+    func sendGoalDescription(desc: String) {
+        descriptionViewDelegate.sendTextInEditMode(text: desc)
+    }
+    
+    func sessionModeOn() {
+        sessionButton.isSelected = true
+        sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        taskButton.backgroundColor = nil
+        taskButton.isSelected = false
+        timeButton.isHidden = false
+        self.timeButton.alpha = 1
+        self.addButton.snp.updateConstraints { (make) in
+            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
+            make.centerX.equalToSuperview()
+            make.width.equalTo(widthScaleFactor(distance: 128))
+            make.height.equalTo(widthScaleFactor(distance: 60))
+        }
+    }
+    
+    func taskModeOn() {
+        taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        taskButton.isSelected = true
+        sessionButton.backgroundColor = nil
+        sessionButton.isSelected = false
+        self.timeButton.isHidden = true
+        
+        self.addButton.snp.updateConstraints { (make) in
+            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.centerX.equalToSuperview()
+            make.width.equalTo(widthScaleFactor(distance: 128))
+            make.height.equalTo(widthScaleFactor(distance: 60))
+        }
+    }
+    
+}
