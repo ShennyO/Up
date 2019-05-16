@@ -26,6 +26,7 @@ class NewTaskViewController: UIViewController {
     let stack = CoreDataStack.instance
     var selectedGoal: Goal?
     var sessionButtonSelected = false
+    var backgroundColorAlpha: CGFloat = 0.7
     
     var selectedIndex: Int?
     var selectedTime = 30
@@ -79,9 +80,8 @@ class NewTaskViewController: UIViewController {
     
     @objc func draggedView(_ sender:UIPanGestureRecognizer) {
         
-//        self.view.bringSubviewToFront(containerView)
-        
         let currentPosY = self.containerView.frame.minY
+        let currentAlpha = backgroundColorAlpha - (currentPosY / 700)
         
         switch sender.state {
             
@@ -96,6 +96,8 @@ class NewTaskViewController: UIViewController {
             let newCenter = CGPoint(x: start.x, y: start.y + max(translation.y, 0))
             self.containerView.center = newCenter
             
+            self.view.backgroundColor = UIColor.gray.withAlphaComponent(currentAlpha)
+            
         default:
             
             guard let minPos = originalPosMinY else {return}
@@ -105,6 +107,7 @@ class NewTaskViewController: UIViewController {
             if currentPosY < minPos + heightScaleFactor(distance: 375) {
                 UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                     self.containerView.center.y -= distanceFromTop
+                    self.view.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
                 })
             } else {
                 
@@ -114,6 +117,7 @@ class NewTaskViewController: UIViewController {
                 
                 UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
                     self.containerView.center.y += (distanceFromBot)
+                    self.view.backgroundColor = UIColor.gray.withAlphaComponent(0)
                 })
                 
             }
@@ -142,6 +146,7 @@ class NewTaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.gray.withAlphaComponent(backgroundColorAlpha)
         addOutlets()
         setConstraints()
         setUpGesture()
@@ -238,7 +243,7 @@ extension NewTaskViewController: NewTaskSlidingViewToNewTaskVCDelegate {
         }
         
         stack.saveTo(context: stack.viewContext)
-        self.dismiss(animated: true)
+        self.dismiss(animated: false)
     }
     
     func configGestureStatus(status: Bool) {
