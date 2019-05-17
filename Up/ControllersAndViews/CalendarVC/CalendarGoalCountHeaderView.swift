@@ -8,11 +8,12 @@
 import Foundation
 import UIKit
 
-class CalendarGoalCountHeaderView: UIView {
+class CalendarGoalCountHeaderView: UITableViewHeaderFooterView {
     
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         self.backgroundColor = Style.Colors.Palette01.gunMetal
         setupViews()
     }
@@ -21,7 +22,10 @@ class CalendarGoalCountHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var goalCount: Int!
     func setup(dateString: String, goalCount: Int) {
+        
+        self.goalCount = goalCount
         
         dateLabel.isHidden = false
         bubbleView.isHidden = false
@@ -39,6 +43,19 @@ class CalendarGoalCountHeaderView: UIView {
         }
 //        let text = dateStr + " - " + goalStr
        goalLabel.text = goalStr
+    }
+    
+    func updateGoalCount(addition: Int) {
+        goalCount += addition
+        if goalCount == 0 {
+            self.setup(text: "No tasks were completed on that day.")
+            return
+        }
+        var goalStr = "Completed " + String(goalCount) + " task"
+        if goalCount > 1 {
+            goalStr += "s"
+        }
+        goalLabel.text = goalStr
     }
     
     func setup(text: String) {
