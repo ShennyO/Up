@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol CalendarGoalDelegate {
+    func restoredGoal(goal: Goal)
+}
+
 class CalendarViewController: UIViewController {
     
     let calendarTableViewCellID = "calendarTableViewCellID"
@@ -54,7 +58,8 @@ class CalendarViewController: UIViewController {
     }()
     
     
-    var delegate: HeaderViewToCalendarVCDelegate?
+    var headerViewDelegate: HeaderViewToCalendarVCDelegate?
+    var calendarGoalDelegate: CalendarGoalDelegate?
     
     lazy var gregorian : NSCalendar = {
         let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
@@ -118,7 +123,7 @@ class CalendarViewController: UIViewController {
     }
     
     func updateCalendarHeaderView(offset: Int) {
-        guard let delegate = self.delegate else { return }
+        guard let headerViewDelegate = self.headerViewDelegate else { return }
         
         var monthOffsetComponents = DateComponents()
         monthOffsetComponents.month = Int(offset)
@@ -131,7 +136,7 @@ class CalendarViewController: UIViewController {
         
         let year = String(self.gregorian.component(.year, from: yearDate))
         
-        delegate.changeLabelText(text: monthName + " " + year)
+        headerViewDelegate.changeLabelText(text: monthName + " " + year)
     }
     
     func generateMonthComponenents(forSection section: Int) {
@@ -187,7 +192,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 //            This cell contains the CalendarCollectionView
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
             cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
-            delegate = cell.calendarHeaderView
+            headerViewDelegate = cell.calendarHeaderView
             updateCalendarHeaderView(offset: 0)
             return cell
         default:
@@ -285,15 +290,16 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         let prevNumOfRows = day.goals[indexPath.section - extraSectionsInTableView].count
         
         let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
-            
-//            self.coreDataStack.viewContext.upda
-//            self.coreDataStack.saveTo(context: self.coreDataStack.viewContext)
-//            let completed = day.removeGoal(subArrayIndex: indexPath.section - self.extraSectionsInTableView, itemIndex: indexPath.row)
-//            if !completed {
-//                fatalError()
-//            }
-//
-//            self.deleteRowInTableView(indexPath: indexPath, numOfRowsInSection: prevNumOfRows - 1)
+            goal.completionDate = nil
+            self.coreDataStack.saveTo(context: self.coreDataStack.viewContext)
+            let completed = day.removeGoal(subArrayIndex: indexPath.section - self.extraSectionsInTableView, itemIndex: indexPath.row)
+            if !completed {
+                fatalError()
+            }
+            if let calendarGoalDelegate = self.calendarGoalDelegate {
+                calendarGoalDelegate.restoredGoal(goal: goal)
+            }
+            self.deleteRowInTableView(indexPath: indexPath, numOfRowsInSection: prevNumOfRows - 1)
             
             completion(true)
         }
