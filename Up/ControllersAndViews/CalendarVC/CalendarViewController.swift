@@ -248,6 +248,34 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch section {
+        case 0:
+            return nil
+        case 1:
+            let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
+            if let day = upCalendar.findDay(key: selectedDateKey) {
+                if day.itemCount == 0 {
+                    headerView.setup(text: "No tasks were completed on that day.")
+                } else {
+                    headerView.setup(dateString: selectedDateKey, goalCount: day.itemCount)
+                }
+            } else if selectedDateKey != ""  {
+                headerView.setup(text: "No tasks were completed on that day.")
+            } else {
+                headerView.setup(text: "Select a date to view acomplishments.")
+            }
+            return headerView
+        default:
+            guard let day = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
+            let headerView = CalendarTimeHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
+            let goal = day.goals[section - extraSectionsInTableView][0]
+            let hour = gregorian.component(.hour, from: goal.completionDate!)
+            headerView.setup(time: hour)
+            return headerView
+        }
+    }
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if indexPath.section < extraSectionsInTableView {
             return UISwipeActionsConfiguration(actions: [])
@@ -309,33 +337,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             #imageLiteral(resourceName: "reset-icon-2").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23)))
         }
         return action
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch section {
-        case 0:
-            return nil
-        case 1:
-            let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
-            if let day = upCalendar.findDay(key: selectedDateKey) {
-                if day.itemCount == 0 {
-                    headerView.setup(text: "No tasks were completed on that day.")
-                }
-                headerView.setup(dateString: selectedDateKey, goalCount: day.itemCount)
-            } else if selectedDateKey != ""  {
-                headerView.setup(text: "No tasks were completed on that day.")
-            } else {
-                headerView.setup(text: "Select a date to view acomplishments.")
-            }
-            return headerView
-        default:
-            guard let day = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
-            let headerView = CalendarTimeHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
-            let goal = day.goals[section - extraSectionsInTableView][0]
-            let hour = gregorian.component(.hour, from: goal.completionDate!)
-            headerView.setup(time: hour)
-            return headerView
-        }
     }
     
     func reloadTableViewGoals() {
