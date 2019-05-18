@@ -20,7 +20,7 @@ protocol newTaskVCToSlidingViewDelegate: class {
 }
 
 
-class NewTaskViewController: UIViewController {
+class NewTaskViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     //MARK: VARIABLES
     let stack = CoreDataStack.instance
@@ -46,6 +46,12 @@ class NewTaskViewController: UIViewController {
     let containerView = NewTaskSlidingView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
     
     let timeSelectorView = TimeSelectorView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: widthScaleFactor(distance: 352)))
+    
+    let grayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
+        return view
+    }()
     
     //MARK: FUNCTIONS
     private func setUpGesture() {
@@ -95,8 +101,7 @@ class NewTaskViewController: UIViewController {
             guard let start = self.startPosition else { return }
             let newCenter = CGPoint(x: start.x, y: start.y + max(translation.y, 0))
             self.containerView.center = newCenter
-            
-            self.view.backgroundColor = UIColor.gray.withAlphaComponent(currentAlpha)
+            self.grayView.backgroundColor = UIColor.gray.withAlphaComponent(currentAlpha)
             
         default:
             
@@ -107,17 +112,17 @@ class NewTaskViewController: UIViewController {
             if currentPosY < minPos + heightScaleFactor(distance: 375) {
                 UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                     self.containerView.center.y -= distanceFromTop
-                    self.view.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
+                    self.grayView.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
                 })
             } else {
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     self.dismiss(animated: true, completion: nil)
                 }
                 
                 UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
                     self.containerView.center.y += (distanceFromBot)
-                    self.view.backgroundColor = UIColor.gray.withAlphaComponent(0)
+                    self.grayView.backgroundColor = UIColor.gray.withAlphaComponent(0)
                 })
                 
             }
@@ -126,11 +131,16 @@ class NewTaskViewController: UIViewController {
     }
     
     private func addOutlets() {
+        self.view.addSubview(grayView)
         self.view.addSubview(containerView)
         self.view.addSubview(timeSelectorView)
     }
     
     private func setConstraints() {
+        grayView.snp.makeConstraints { (make) in
+            make.top.bottom.left.right.equalToSuperview()
+        }
+        
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 120))
             make.bottom.equalToSuperview()
@@ -146,7 +156,6 @@ class NewTaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.gray.withAlphaComponent(backgroundColorAlpha)
         addOutlets()
         setConstraints()
         setUpGesture()
@@ -154,11 +163,13 @@ class NewTaskViewController: UIViewController {
         containerView.newTaskVCDelegate = self
         configureEdit()
         hideKeyboardWhenTappedAround()
-        
-        
         timeSelectorView.isUserInteractionEnabled = true
-        
     }
+    
+    deinit {
+        print("newTaskVC deinitialized!")
+    }
+
 }
 
 extension NewTaskViewController: UIGestureRecognizerDelegate {

@@ -120,14 +120,14 @@ class NewTaskSlidingView: UIView {
     private func setConstraints() {
         
         topHorizontalView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 16))
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 32))
             make.centerX.equalToSuperview()
             make.width.equalTo(widthScaleFactor(distance: 80))
             make.height.equalTo(heightScaleFactor(distance: 6))
         }
         
         newTaskLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 80))
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 96))
             make.centerX.equalToSuperview()
         }
         

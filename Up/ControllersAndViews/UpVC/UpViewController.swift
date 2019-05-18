@@ -26,6 +26,8 @@ class UpViewController: UIViewController {
     var selectedReorderingIndexPath: IndexPath!
     var hasSelectedCellBeenUnhidden =  false
     
+    let transition = NewTaskVCAnimator()
+    
     
     let stack = CoreDataStack.instance
 
@@ -125,6 +127,7 @@ extension UpViewController {
     func addButtonTapped() {
         let nextVC = NewTaskViewController()
         nextVC.upVCDelegate = self
+        nextVC.transitioningDelegate = self
         nextVC.modalPresentationStyle = .overFullScreen
         self.present(nextVC, animated: true)
     }
@@ -559,4 +562,18 @@ extension UpViewController {
     struct Path {
         static var initialIndexPath: IndexPath? = nil
     }
+}
+
+
+//CUSTOM TRANSITION
+extension UpViewController: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return transition
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
+    }
+    
 }
