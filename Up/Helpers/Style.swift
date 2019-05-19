@@ -28,12 +28,18 @@ struct Style {
     
     struct Colors {
         static let calendarShade0 = UIColor.white
-        static let calendarShade1 = UIColor(displayP3Red: 139 / 255, green: 194 / 255, blue: 255 / 255, alpha: 1)
-        static let calendarShade2 = UIColor(displayP3Red: 92 / 255, green: 170 / 255, blue: 255 / 255, alpha: 1)
-        static let calendarShade3 = UIColor(displayP3Red: 46 / 255, green: 146 / 255, blue: 255 / 255, alpha: 1)
-        static let calendarShade4 = UIColor(displayP3Red: 23 / 255, green: 134 / 255, blue: 255 / 255, alpha: 1)
-        static let calendarShade5 = UIColor(displayP3Red: 25 / 255, green: 115 / 255, blue: 213 / 255, alpha: 1)
-        static let calendarShade6 = UIColor(displayP3Red: 0 / 255, green: 60 / 255, blue: 125 / 255, alpha: 1)
+        static let calendarShade1 = #colorLiteral(red: 0.5450980392, green: 0.737254902, blue: 0.9529411765, alpha: 1)
+        static let calendarShade2 = #colorLiteral(red: 0.2705882353, green: 0.5803921569, blue: 0.9254901961, alpha: 1)
+        static let calendarShade3 = #colorLiteral(red: 0, green: 0.4274509804, blue: 0.8980392157, alpha: 1)
+        static let calendarShade4 = #colorLiteral(red: 0, green: 0.3137254902, blue: 0.6549019608, alpha: 1)
+        static let calendarShade5 = #colorLiteral(red: 0, green: 0.1568627451, blue: 0.3294117647, alpha: 1)
+        
+        static let a = UIColor(displayP3Red: 139 / 255, green: 194 / 255, blue: 255 / 255, alpha: 1)
+        static let b = UIColor(displayP3Red: 92 / 255, green: 170 / 255, blue: 255 / 255, alpha: 1)
+        static let c = UIColor(displayP3Red: 46 / 255, green: 146 / 255, blue: 255 / 255, alpha: 1)
+        static let d = UIColor(displayP3Red: 23 / 255, green: 134 / 255, blue: 255 / 255, alpha: 1)
+        static let e = UIColor(displayP3Red: 25 / 255, green: 115 / 255, blue: 213 / 255, alpha: 1)
+        static let f = UIColor(displayP3Red: 0 / 255, green: 60 / 255, blue: 125 / 255, alpha: 1)
         
         struct Palette01 {
             static let mainBlue = UIColor(displayP3Red: 00 / 255, green: 109 / 255, blue: 229 / 255, alpha: 1)
@@ -41,7 +47,9 @@ struct Style {
             static let charcoal = UIColor(displayP3Red: 44 / 255, green: 66 / 255, blue: 81 / 255, alpha: 1)
             static let lightCyan = UIColor(displayP3Red: 222 / 255, green: 255 / 255, blue: 252 / 255, alpha: 1)
             static let pureWhite = UIColor(displayP3Red: 255 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1)
-            static let gunMetal = UIColor(displayP3Red: 14 / 255, green: 15 / 255, blue: 19 / 255, alpha: 1)
+//            static let pureWhite = UIColor.white
+            static let gunMetal = UIColor(displayP3Red: 20 / 255, green: 20 / 255, blue: 20 / 255, alpha: 1)
+//            static let gunMetal = UIColor.black
         }
     }
 }

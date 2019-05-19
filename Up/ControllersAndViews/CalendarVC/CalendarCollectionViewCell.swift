@@ -79,14 +79,12 @@ class CalendarCollectionViewCell: UICollectionViewCell {
             cellBackgroundColor = Style.Colors.calendarShade1
         } else if goalCount <= 5 {
             cellBackgroundColor = Style.Colors.calendarShade2
-        } else if goalCount <= 10 {
+        } else if goalCount <= 9 {
             cellBackgroundColor = Style.Colors.calendarShade3
-        } else if goalCount <= 15 {
+        } else if goalCount <= 14 {
             cellBackgroundColor = Style.Colors.calendarShade4
-        } else if goalCount <= 25 {
-            cellBackgroundColor = Style.Colors.calendarShade5
         } else {
-            cellBackgroundColor = Style.Colors.calendarShade6
+            cellBackgroundColor = Style.Colors.calendarShade5
         }
         if self.isSelected == false {
             self.backgroundColor = cellBackgroundColor
