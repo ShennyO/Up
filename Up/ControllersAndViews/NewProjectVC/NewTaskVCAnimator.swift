@@ -22,12 +22,12 @@ class NewTaskVCAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let slidingView = toViewController.containerView
         toVCView?.alpha = 1
         darkView.alpha = 0
-        slidingView.center = CGPoint(x: widthScaleFactor(distance: 212), y: heightScaleFactor(distance: 1104))
+        slidingView.center = CGPoint(x: widthScaleFactor(distance: 207), y: heightScaleFactor(distance: 1104))
         containerView.addSubview(toVCView!)
         
         UIView.animate(withDuration: 0.25,
                        animations: {
-                        slidingView.center = CGPoint(x: widthScaleFactor(distance: 212), y: heightScaleFactor(distance: 308))
+                        slidingView.center = CGPoint(x: widthScaleFactor(distance: 207), y: heightScaleFactor(distance: 308))
         }, completion: { _ in
             transitionContext.completeTransition(true)
         })

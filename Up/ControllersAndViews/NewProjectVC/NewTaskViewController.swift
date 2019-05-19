@@ -106,7 +106,7 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
             guard let minPos = originalPosMinY else {return}
             
             let distanceFromTop = currentPosY - heightScaleFactor(distance: 120)
-            let distanceFromBot = (UIScreen.main.bounds.height - currentPosY) / 2
+            let distanceFromBot = (UIScreen.main.bounds.height - currentPosY)
             
             if currentPosY < minPos + heightScaleFactor(distance: 375) {
                 UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
@@ -115,11 +115,13 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
                 })
             } else {
                 
-                UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseIn, animations: {
+                UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
                     self.containerView.center.y += distanceFromBot
                     self.darkView.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(0)
                 }, completion: { (res) in
-                    self.dismiss(animated: false, completion: nil)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
+                        self.dismiss(animated: false, completion: nil)
+                    })
                 })
             }
         }
@@ -243,11 +245,13 @@ extension NewTaskViewController: NewTaskSlidingViewToNewTaskVCDelegate {
         
         stack.saveTo(context: stack.viewContext)
         
-        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.25, delay: 0, options: [], animations: {
             self.containerView.center.y += (UIScreen.main.bounds.height - self.originalPosMinY!)
             self.darkView.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(0)
         }, completion: { (res) in
-            self.dismiss(animated: false, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
+                self.dismiss(animated: false, completion: nil)
+            })
         })
     }
     
