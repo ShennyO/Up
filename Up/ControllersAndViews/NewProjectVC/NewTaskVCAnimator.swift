@@ -27,7 +27,7 @@ class NewTaskVCAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         
         UIView.animate(withDuration: 0.25,
                        animations: {
-                        slidingView.center = CGPoint(x: widthScaleFactor(distance: 212), y: heightScaleFactor(distance: 268))
+                        slidingView.center = CGPoint(x: widthScaleFactor(distance: 212), y: heightScaleFactor(distance: 308))
         }, completion: { _ in
             transitionContext.completeTransition(true)
         })

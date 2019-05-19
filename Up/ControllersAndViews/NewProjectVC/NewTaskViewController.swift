@@ -84,7 +84,7 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
     @objc func draggedView(_ sender:UIPanGestureRecognizer) {
         
         let currentPosY = self.containerView.frame.minY
-        let currentAlpha = backgroundColorAlpha - (abs(heightScaleFactor(distance: 200) - currentPosY) / 700)
+        let currentAlpha = backgroundColorAlpha - (abs(heightScaleFactor(distance: 120) - currentPosY) / 700)
         
         switch sender.state {
             
@@ -105,7 +105,7 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
             
             guard let minPos = originalPosMinY else {return}
             
-            let distanceFromTop = currentPosY - heightScaleFactor(distance: 200)
+            let distanceFromTop = currentPosY - heightScaleFactor(distance: 120)
             let distanceFromBot = (UIScreen.main.bounds.height - currentPosY) / 2
             
             if currentPosY < minPos + heightScaleFactor(distance: 375) {
@@ -138,7 +138,7 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
         }
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 200))
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 120))
             make.bottom.equalToSuperview()
             make.left.right.equalToSuperview()
         }

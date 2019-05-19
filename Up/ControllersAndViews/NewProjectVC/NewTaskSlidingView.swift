@@ -135,7 +135,7 @@ class NewTaskSlidingView: UIView {
         }
         
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 80))
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 96))
             make.left.equalToSuperview().offset(32)
             make.right.equalToSuperview().offset(-32)
             make.height.equalTo(widthScaleFactor(distance: 100))
