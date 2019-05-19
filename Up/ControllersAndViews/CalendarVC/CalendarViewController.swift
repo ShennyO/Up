@@ -305,8 +305,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         
         action.backgroundColor = Style.Colors.Palette01.gunMetal
         
-        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22))).image { _ in
-            #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22)))
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 21), height: widthScaleFactor(distance: 21))).image { _ in
+            #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 21), height: widthScaleFactor(distance: 21)))
         }
         
         return action
@@ -333,8 +333,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         action.backgroundColor = Style.Colors.Palette01.gunMetal
-        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23))).image { _ in
-            #imageLiteral(resourceName: "reset-icon-2").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23)))
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 21), height: widthScaleFactor(distance: 21))).image { _ in
+            #imageLiteral(resourceName: "reset-icon-2").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 21), height: widthScaleFactor(distance: 21)))
         }
         return action
     }
@@ -384,7 +384,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func deleteRowInTableView(indexPath: IndexPath, numOfRowsInSection: Int) {
-        
+        self.tableView.isUserInteractionEnabled = false
         let currentFooterView = self.tableView.tableFooterView // Steal the current footer view
         let newView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: self.tableView.bounds.width, height: self.tableView.bounds.height*2.0)) // Create a new footer view with large enough height (Really making sure it is large enough)
         if let currentFooterView = currentFooterView {
@@ -394,8 +394,10 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         }
         self.tableView.tableFooterView = newView // Assign a new footer
         
-        let headerView = self.tableView.headerView(forSection: 1) as! CalendarGoalCountHeaderView
-        headerView.updateGoalCount(addition: -1)
+        if let headerView = self.tableView.headerView(forSection: 1) as? CalendarGoalCountHeaderView {
+            headerView.updateGoalCount(addition: -1)
+        }
+        
         
         self.tableView.beginUpdates()
         if numOfRowsInSection == 0 {
@@ -404,16 +406,18 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
         
-        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! CalendarTableViewCell
-        let cv = cell.calendarCollectionView!
-        
-        if let lastSelectedCollectionViewIndexPath = lastSelectedCollectionViewIndexPath {
-            let cvCell = cv.cellForItem(at: lastSelectedCollectionViewIndexPath) as! CalendarCollectionViewCell
-            cvCell.adjustBackgroundColor(addition: -1)
+        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CalendarTableViewCell {
+            let cv = cell.calendarCollectionView!
+            
+            if let lastSelectedCollectionViewIndexPath = lastSelectedCollectionViewIndexPath {
+                let cvCell = cv.cellForItem(at: lastSelectedCollectionViewIndexPath) as! CalendarCollectionViewCell
+                cvCell.adjustBackgroundColor(addition: -1)
+            }
         }
         
         self.tableView.endUpdates()
         self.tableView.tableFooterView = currentFooterView
+        self.tableView.isUserInteractionEnabled = true
     }
 }
 
