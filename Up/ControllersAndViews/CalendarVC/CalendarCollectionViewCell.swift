@@ -45,15 +45,21 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var goalCount = 0
+    
     func setup(day: String, goalCount: Int, isEnabled: Bool) {
         dayLabel.text = day
+        self.goalCount = goalCount
+        
         self.addSubview(dayLabel)
+        
         dayLabel.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalToSuperview()
         }
+        
         if isEnabled == true {
             self.isUserInteractionEnabled = true
-            adjustBackgroundColor(goalCount: goalCount)
+            adjustBackgroundColor(addition: nil)
         } else {
             self.isUserInteractionEnabled = false
             self.backgroundColor = Style.Colors.Palette01.pureWhite
@@ -61,7 +67,10 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private func adjustBackgroundColor(goalCount: Int) {
+    func adjustBackgroundColor(addition: Int?) {
+        if let addition = addition {
+            goalCount += addition
+        }
         cellTextColor = Style.Colors.Palette01.pureWhite
         if goalCount == 0 {
             cellBackgroundColor = Style.Colors.Palette01.pureWhite
@@ -79,8 +88,11 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         } else {
             cellBackgroundColor = Style.Colors.calendarShade6
         }
-        self.backgroundColor = cellBackgroundColor
-        dayLabel.textColor = cellTextColor
+        if self.isSelected == false {
+            self.backgroundColor = cellBackgroundColor
+            dayLabel.textColor = cellTextColor
+        }
+        
     }
     
 }

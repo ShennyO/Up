@@ -8,11 +8,12 @@
 import Foundation
 import UIKit
 
-class CalendarGoalCountHeaderView: UIView {
+class CalendarGoalCountHeaderView: UITableViewHeaderFooterView {
     
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         self.backgroundColor = Style.Colors.Palette01.gunMetal
         setupViews()
     }
@@ -21,7 +22,10 @@ class CalendarGoalCountHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var goalCount: Int!
     func setup(dateString: String, goalCount: Int) {
+        
+        self.goalCount = goalCount
         
         dateLabel.isHidden = false
         bubbleView.isHidden = false
@@ -41,6 +45,19 @@ class CalendarGoalCountHeaderView: UIView {
        goalLabel.text = goalStr
     }
     
+    func updateGoalCount(addition: Int) {
+        goalCount += addition
+        if goalCount == 0 {
+            self.setup(text: "No tasks were completed on that day.")
+            return
+        }
+        var goalStr = "Completed " + String(goalCount) + " task"
+        if goalCount > 1 {
+            goalStr += "s"
+        }
+        goalLabel.text = goalStr
+    }
+    
     func setup(text: String) {
         dateLabel.isHidden = true
         bubbleView.isHidden = true
@@ -56,25 +73,25 @@ class CalendarGoalCountHeaderView: UIView {
         }
         
         dateLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().inset(20)
+            make.left.equalToSuperview().inset(widthScaleFactor(distance: 20))
             make.centerY.equalToSuperview()
         }
         
         bubbleView.snp.makeConstraints { (make) in
             make.centerY.equalTo(dateLabel.snp.centerY)
-            make.left.equalTo(dateLabel.snp.right).offset(6)
-            make.width.height.equalTo(8)
+            make.left.equalTo(dateLabel.snp.right).offset(widthScaleFactor(distance: 6))
+            make.width.height.equalTo(widthScaleFactor(distance: 8))
         }
         
         goalLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(dateLabel.snp.bottom)
-            make.left.equalTo(bubbleView.snp.right).offset(6)
-            make.right.lessThanOrEqualToSuperview().inset(20)
+            make.left.equalTo(bubbleView.snp.right).offset(widthScaleFactor(distance: 6))
+            make.right.lessThanOrEqualToSuperview().inset(widthScaleFactor(distance: 20))
             make.top.equalTo(dateLabel.snp.top)
         }
         
         infoLabel.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview().inset(20)
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 20))
             make.centerY.equalToSuperview()
         }
     }

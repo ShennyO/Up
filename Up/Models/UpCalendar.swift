@@ -110,4 +110,25 @@ class UpCalendarDay {
         }
     }
     
+    func removeGoal(subArrayIndex: Int, itemIndex: Int) -> Bool{
+        
+        if goals.count <= subArrayIndex {
+            return false
+        }
+        
+        if goals[subArrayIndex].count <= itemIndex {
+            return false
+        }
+        
+        self.itemCount -= 1
+        
+        if goals[subArrayIndex].count == 1 {
+            goals.remove(at: subArrayIndex)
+            return true
+        }
+        
+        goals[subArrayIndex].remove(at: itemIndex)
+        return true
+    }
+    
 }
