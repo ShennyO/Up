@@ -403,7 +403,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         if numOfRowsInSection == 0 {
             self.tableView.deleteSections(IndexSet([indexPath.section]), with: .left)
         } else {
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            self.tableView.deleteRows(at: [indexPath], with: .left)
         }
         
         if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CalendarTableViewCell {
@@ -414,7 +414,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
                 cvCell.adjustBackgroundColor(addition: -1)
             }
         }
-        
         self.tableView.endUpdates()
         self.tableView.tableFooterView = currentFooterView
         self.tableView.isUserInteractionEnabled = true
