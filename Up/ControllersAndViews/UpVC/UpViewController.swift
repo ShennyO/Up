@@ -398,6 +398,13 @@ extension UpViewController: newProjectVCToUpVCDelegate {
         self.goals[index] = goal
         upTableView.reloadData()
     }
+}
+
+extension UpViewController: CalendarGoalDelegate {
+    func restoredGoal(goal: Goal) {
+        self.goals.insert(goal, at: 0)
+        upTableView.reloadData()
+    }
     
 }
 
