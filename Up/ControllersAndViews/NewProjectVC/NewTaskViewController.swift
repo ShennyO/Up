@@ -45,8 +45,6 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
     //MARK: OUTLETS
     let containerView = NewTaskSlidingView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
     
-    let timeSelectorView = TimeSelectorView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: widthScaleFactor(distance: 352)))
-    
     let darkView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(0.7)
@@ -132,7 +130,6 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
     private func addOutlets() {
         self.view.addSubview(darkView)
         self.view.addSubview(containerView)
-        self.view.addSubview(timeSelectorView)
     }
     
     private func setConstraints() {
@@ -144,12 +141,6 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 200))
             make.bottom.equalToSuperview()
             make.left.right.equalToSuperview()
-        }
-        
-        timeSelectorView.snp.makeConstraints { (make) in
-            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 352))
-            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
-            make.height.equalTo(heightScaleFactor(distance: 352))
         }
     }
     
@@ -163,7 +154,6 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
         containerView.newTaskVCDelegate = self
         configureEdit()
         hideKeyboardWhenTappedAround()
-        timeSelectorView.isUserInteractionEnabled = true
     }
     
     deinit {
