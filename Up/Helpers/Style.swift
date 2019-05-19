@@ -11,6 +11,7 @@ import UIKit
 struct Style {
     
     struct Fonts {
+        static let bold10 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 10))
         static let bold12 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 12))
         static let semibold12 = UIFont(name: "AppleSDGothicNeo-Semibold", size: widthScaleFactor(distance: 12))
         static let bold15 = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 15))
