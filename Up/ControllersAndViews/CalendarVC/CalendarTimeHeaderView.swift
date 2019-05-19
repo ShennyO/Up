@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class CalendarTimeHeaderView: UIView {
+class CalendarTimeHeaderView: UITableViewHeaderFooterView {
     
     func setup(time: Int) {
         setupViews()

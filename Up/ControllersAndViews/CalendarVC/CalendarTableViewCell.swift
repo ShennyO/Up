@@ -75,7 +75,7 @@ class CalendarTableViewCell: UITableViewCell {
         }
         
         containerView.snp.makeConstraints { (make) in
-            make.left.right.bottom.top.equalToSuperview().inset(16)
+            make.left.right.bottom.top.equalToSuperview().inset(widthScaleFactor(distance: 16))
         }
         
         calendarCollectionView.snp.makeConstraints { (make) in

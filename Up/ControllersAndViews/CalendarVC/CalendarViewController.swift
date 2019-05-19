@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol CalendarGoalDelegate {
+    func restoredGoal(goal: Goal)
+}
+
 class CalendarViewController: UIViewController {
     
     let calendarTableViewCellID = "calendarTableViewCellID"
@@ -45,7 +49,7 @@ class CalendarViewController: UIViewController {
     
     var upCalendar = UpCalendar()
     
-    let coreDataStack = CoreDataStack()
+    let coreDataStack = CoreDataStack.instance
     let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.timeStyle = .none
@@ -54,7 +58,8 @@ class CalendarViewController: UIViewController {
     }()
     
     
-    var delegate: HeaderViewToCalendarVCDelegate?
+    var headerViewDelegate: HeaderViewToCalendarVCDelegate?
+    var calendarGoalDelegate: CalendarGoalDelegate?
     
     lazy var gregorian : NSCalendar = {
         let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
@@ -64,6 +69,7 @@ class CalendarViewController: UIViewController {
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: CGRect.zero, style: .grouped)
+        tableView.showsVerticalScrollIndicator = false
         return tableView
     }()
     
@@ -112,12 +118,12 @@ class CalendarViewController: UIViewController {
         
         tableView.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalToSuperview()
-            
         }
+        
     }
     
-    func updateHeaderView(offset: Int) {
-        guard let delegate = self.delegate else { return }
+    func updateCalendarHeaderView(offset: Int) {
+        guard let headerViewDelegate = self.headerViewDelegate else { return }
         
         var monthOffsetComponents = DateComponents()
         monthOffsetComponents.month = Int(offset)
@@ -130,7 +136,7 @@ class CalendarViewController: UIViewController {
         
         let year = String(self.gregorian.component(.year, from: yearDate))
         
-        delegate.changeLabelText(text: monthName + " " + year)
+        headerViewDelegate.changeLabelText(text: monthName + " " + year)
     }
     
     func generateMonthComponenents(forSection section: Int) {
@@ -186,8 +192,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 //            This cell contains the CalendarCollectionView
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarTableViewCellID, for: indexPath) as! CalendarTableViewCell
             cell.configureProtocols(delegate: self, dataSource: self, headerViewDelegate: self)
-            delegate = cell.calendarHeaderView
-            updateHeaderView(offset: 0)
+            headerViewDelegate = cell.calendarHeaderView
+            updateCalendarHeaderView(offset: 0)
             return cell
         default:
 //            This cell displays one goal at a time
@@ -196,7 +202,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             let goal = day.goals[indexPath.section - extraSectionsInTableView][indexPath.row]
         
             let cell = tableView.dequeueReusableCell(withIdentifier: calendarGoalTableViewCellID, for: indexPath) as! CalendarGoalTableViewCell
-            cell.setup(goal: goal, withTime: nil)
+            cell.setup(goal: goal)
             return cell
         }
     }
@@ -210,25 +216,21 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             let containerInsets: CGFloat = 32
             return cvHeight + headerHeight + containerInsets
         default:
-//            This cell displays one goal at a time
-//            if let indexPathForSelectedRow = tableView.indexPathForSelectedRow, indexPathForSelectedRow == indexPath {
-//                return 120
-//            }
             return 60
         }
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 0 {
+        switch section {
+        case 0:
             return 16
-        }
-        if section == 1 {
+        case 1:
             return 8
-        }
-        if section == lastNumberOfSectionsOfTableView - 1 {
+        case lastNumberOfSectionsOfTableView - 1:
             return 32
+        default:
+            return 0
         }
-        return 0
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -253,7 +255,11 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
             if let day = upCalendar.findDay(key: selectedDateKey) {
-                headerView.setup(dateString: selectedDateKey, goalCount: day.itemCount)
+                if day.itemCount == 0 {
+                    headerView.setup(text: "No tasks were completed on that day.")
+                } else {
+                    headerView.setup(dateString: selectedDateKey, goalCount: day.itemCount)
+                }
             } else if selectedDateKey != ""  {
                 headerView.setup(text: "No tasks were completed on that day.")
             } else {
@@ -268,6 +274,69 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             headerView.setup(time: hour)
             return headerView
         }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if indexPath.section < extraSectionsInTableView {
+            return UISwipeActionsConfiguration(actions: [])
+        }
+        
+        let delete = deleteAction(indexPath: indexPath)
+        let edit = restoreAction(indexPath: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete, edit])
+    }
+    
+    func deleteAction(indexPath: IndexPath) -> UIContextualAction {
+        guard let day = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
+        let goal = day.goals[indexPath.section - extraSectionsInTableView][indexPath.row]
+        let prevNumOfRows = day.goals[indexPath.section - extraSectionsInTableView].count
+        
+        let action = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
+            self.coreDataStack.viewContext.delete(goal)
+            self.coreDataStack.saveTo(context: self.coreDataStack.viewContext)
+            let completed = day.removeGoal(subArrayIndex: indexPath.section - self.extraSectionsInTableView, itemIndex: indexPath.row)
+            if !completed {
+                fatalError()
+            }
+            
+            self.deleteRowInTableView(indexPath: indexPath, numOfRowsInSection: prevNumOfRows - 1)
+            completion(true)
+        }
+        
+        action.backgroundColor = Style.Colors.Palette01.gunMetal
+        
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22))).image { _ in
+            #imageLiteral(resourceName: "deleteIcon").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 22), height: widthScaleFactor(distance: 22)))
+        }
+        
+        return action
+    }
+    
+    func restoreAction(indexPath: IndexPath) -> UIContextualAction {
+        guard let day = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
+        let goal = day.goals[indexPath.section - extraSectionsInTableView][indexPath.row]
+        let prevNumOfRows = day.goals[indexPath.section - extraSectionsInTableView].count
+        
+        let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
+            goal.completionDate = nil
+            self.coreDataStack.saveTo(context: self.coreDataStack.viewContext)
+            let completed = day.removeGoal(subArrayIndex: indexPath.section - self.extraSectionsInTableView, itemIndex: indexPath.row)
+            if !completed {
+                fatalError()
+            }
+            if let calendarGoalDelegate = self.calendarGoalDelegate {
+                calendarGoalDelegate.restoredGoal(goal: goal)
+            }
+            self.deleteRowInTableView(indexPath: indexPath, numOfRowsInSection: prevNumOfRows - 1)
+            
+            completion(true)
+        }
+        
+        action.backgroundColor = Style.Colors.Palette01.gunMetal
+        action.image = UIGraphicsImageRenderer(size: CGSize(width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23))).image { _ in
+            #imageLiteral(resourceName: "reset-icon-2").draw(in: CGRect(x: 0, y: 0, width: widthScaleFactor(distance: 23), height: widthScaleFactor(distance: 23)))
+        }
+        return action
     }
     
     func reloadTableViewGoals() {
@@ -312,6 +381,39 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.endUpdates()
         
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
+    
+    func deleteRowInTableView(indexPath: IndexPath, numOfRowsInSection: Int) {
+        
+        let currentFooterView = self.tableView.tableFooterView // Steal the current footer view
+        let newView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: self.tableView.bounds.width, height: self.tableView.bounds.height*2.0)) // Create a new footer view with large enough height (Really making sure it is large enough)
+        if let currentFooterView = currentFooterView {
+            // Put the current footer view as a subview to the new one if it exists (this was not really tested)
+            currentFooterView.frame.origin = .zero // Just in case put it to zero
+            newView.addSubview(currentFooterView) // Add as subview
+        }
+        self.tableView.tableFooterView = newView // Assign a new footer
+        
+        let headerView = self.tableView.headerView(forSection: 1) as! CalendarGoalCountHeaderView
+        headerView.updateGoalCount(addition: -1)
+        
+        self.tableView.beginUpdates()
+        if numOfRowsInSection == 0 {
+            self.tableView.deleteSections(IndexSet([indexPath.section]), with: .left)
+        } else {
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        
+        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! CalendarTableViewCell
+        let cv = cell.calendarCollectionView!
+        
+        if let lastSelectedCollectionViewIndexPath = lastSelectedCollectionViewIndexPath {
+            let cvCell = cv.cellForItem(at: lastSelectedCollectionViewIndexPath) as! CalendarCollectionViewCell
+            cvCell.adjustBackgroundColor(addition: -1)
+        }
+        
+        self.tableView.endUpdates()
+        self.tableView.tableFooterView = currentFooterView
     }
 }
 
@@ -431,9 +533,12 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 extension CalendarViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.tag == 1 {
+        switch scrollView.tag {
+        case 1:
             let section = Int(round(scrollView.contentOffset.x / scrollView.bounds.width))
-            updateHeaderView(offset: section)
+            updateCalendarHeaderView(offset: section)
+        default:
+            return
         }
     }
 }

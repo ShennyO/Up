@@ -22,7 +22,8 @@ class CalendarGoalTableViewCell: UITableViewCell {
     }
     
     var goal: Goal!
-    func setup(goal: Goal, withTime time: Int?) {
+    
+    func setup(goal: Goal) {
         self.goal = goal
 //        Create formatter for date-string conversion
         let formatter = DateFormatter()
@@ -42,14 +43,13 @@ class CalendarGoalTableViewCell: UITableViewCell {
         }
         
         exactTimeLabel.text = formatter.string(from: goal.completionDate!)
-        
     }
     
     
     private func setupViews() {
         
 //        Add views into proper superviews
-        [/*detailContainerView, */mainContainerView, lineView].forEach { (view) in
+        [mainContainerView, lineView].forEach { (view) in
             self.addSubview(view)
         }
         
@@ -57,20 +57,11 @@ class CalendarGoalTableViewCell: UITableViewCell {
             mainContainerView.addSubview(view)
         }
         
-//        detailContainerView.addSubview(exactTimeLabel)
-        
 //        Set constraints for views
 //         * Self
         mainContainerView.snp.makeConstraints { (make) in
-            make.left.top.right.equalToSuperview()
-//            make.bottom.equalTo(detailContainerView.snp.top)
-            make.bottom.equalToSuperview()
-            make.height.equalTo(60)
+            make.left.top.right.bottom.equalToSuperview()
         }
-        
-//        detailContainerView.snp.makeConstraints { (make) in
-//            make.bottom.left.right.equalToSuperview()
-//        }
         
 //         * mainContainerView
         lineView.snp.makeConstraints { (make) in
@@ -84,56 +75,26 @@ class CalendarGoalTableViewCell: UITableViewCell {
             make.top.bottom.equalToSuperview().inset(16)
             make.width.equalTo(clockIconView.snp.height)
         }
-        
+
         boxView.snp.makeConstraints { (make) in
             make.left.equalTo(clockIconView.snp.left).inset(1)
             make.right.equalTo(clockIconView.snp.right).inset(1)
             make.top.equalTo(clockIconView.snp.top).inset(1)
             make.bottom.equalTo(clockIconView.snp.bottom).inset(1)
         }
-        
+
         checkmarkView.snp.makeConstraints { (make) in
             make.left.equalTo(clockIconView.snp.left).inset(8)
             make.right.equalTo(clockIconView.snp.right).inset(8)
             make.top.equalTo(clockIconView.snp.top).inset(8)
             make.bottom.equalTo(clockIconView.snp.bottom).inset(8)
         }
-        
+
         descriptionLabel.snp.makeConstraints { (make) in
             make.right.equalToSuperview().inset(16)
             make.left.equalTo(clockIconView.snp.right).offset(16)
             make.top.bottom.equalToSuperview()
         }
-
-//         * detailContainerView
-//        exactTimeLabel.snp.makeConstraints { (make) in
-//            make.height.width.centerY.centerX.equalToSuperview()
-//        }
-    }
-    
-    func animateSelection(expanding: Bool, closure: ((Bool) -> Void)?) {
-        if expanding {
-            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
-                self.detailContainerView.alpha = 1
-            }) { (done) in
-                if let closure = closure {
-                    closure(done)
-                }
-            }
-        } else {
-            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
-                self.mainContainerView.alpha = 0
-            }) { (done) in
-                if let closure = closure {
-                    closure(true)
-                }
-            }
-        }
-    }
-    
-    let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipedLeft(sender:)))
-    
-    @objc func swipedLeft(sender: UITapGestureRecognizer) {
     }
     
     let mainContainerView: UIView = {
