@@ -7,13 +7,17 @@
 
 import UIKit
 
-
+protocol TimeSelectorViewToNewTaskSlidingViewDelegate: class {
+    func sendSelectedTime(time: Int)
+    func doneButtonTapped()
+}
 
 class TimeSelectorView: UIView {
 
     //MARK: VARIABLES
     var times: [Int] = []
     var selectedTime = 30
+    weak var slidingViewDelegate: TimeSelectorViewToNewTaskSlidingViewDelegate!
     var onDoneBlock: ((Int) -> ())?
 
     
@@ -69,21 +73,8 @@ class TimeSelectorView: UIView {
         
     }
     
-    func dismissVCGesture() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(dismissVC))
-        
-        tap.cancelsTouchesInView = false
-        self.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissVC() {
-        onDoneBlock!(selectedTime)
-    }
-    
     @objc func doneButtonTapped() {
-        onDoneBlock!(selectedTime)
+        slidingViewDelegate.doneButtonTapped()
     }
     
     override init(frame: CGRect) {
@@ -139,7 +130,15 @@ extension TimeSelectorView: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedTime = times[row]
+        slidingViewDelegate.sendSelectedTime(time: selectedTime)
     }
     
-    
+}
+
+
+extension TimeSelectorView: NewTaskViewToTimeSelectorViewDelegate {
+    func setSelectedTimeForPicker(time: Int) {
+        selectedTime = time
+        timePickerView.selectRow(selectedTime - 1, inComponent: 0, animated: false)
+    }
 }

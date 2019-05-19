@@ -62,7 +62,6 @@ class UpViewController: UIViewController {
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     
     // Anytime goals is set (adding new tasks, deleting) we need to configure ordering
-    // Also need to configure after reordering, and maybe after editing?
     var goals: [Goal] = [] {
         didSet {
             configureHeaderAndTableView()
@@ -346,7 +345,6 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             nextVC.modalPresentationStyle = .overFullScreen
             nextVC.transitioningDelegate = self
             self.present(nextVC, animated: true)
-            
             completion(true)
         }
         

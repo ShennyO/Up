@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol NewTaskViewToTimeSelectorViewDelegate: class {
+    func setSelectedTimeForPicker(time: Int)
+}
+
 protocol NewTaskViewToTimeInputButtonDelegate: class {
     func sendSelectedTime(time: Int)
     func tapStarted()
@@ -30,9 +34,13 @@ protocol NewTaskSlidingViewToDescriptionTextViewDelegate: class {
 class NewTaskSlidingView: UIView {
     
     //MARK: VARIABLES
+    var selectedTime: Int = 30
+    
+    //MARK: DELEGATE VARIABLES
     weak var timeInputDelegate: NewTaskViewToTimeInputButtonDelegate!
     weak var newTaskVCDelegate: NewTaskSlidingViewToNewTaskVCDelegate!
     weak var descriptionViewDelegate: NewTaskSlidingViewToDescriptionTextViewDelegate!
+    weak var timeSelectorViewDelegate: NewTaskViewToTimeSelectorViewDelegate!
     
     //MARK: OUTLETS
     var blurEffectView: UIVisualEffectView?
@@ -98,7 +106,8 @@ class NewTaskSlidingView: UIView {
     
     private func setUpTimeSelectorView() {
         self.addSubview(timeSelectorView)
-        
+        timeSelectorView.slidingViewDelegate = self
+        self.timeSelectorViewDelegate = timeSelectorView
         timeSelectorView.snp.makeConstraints { (make) in
             make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 352))
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
@@ -169,6 +178,9 @@ class NewTaskSlidingView: UIView {
         blurEffectView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         blurEffectView?.isHidden = true
         blurEffectView?.alpha = 0.4
+        let tap = UITapGestureRecognizer(target: self, action: #selector(blurViewTapped))
+        blurEffectView?.addGestureRecognizer(tap)
+        
         if blurEffectView != nil {
             self.addSubview(blurEffectView!)
         }
@@ -239,33 +251,6 @@ class NewTaskSlidingView: UIView {
         if gestureRecognizer.state == .ended {
             
             timeInputDelegate.tapEnded()
-            
-            //MARK: CALLBACK
-            //CALLBACK IS RUN WHEN timeSelectorVC is dismissed
-            timeSelectorView.onDoneBlock = { (result) in
-                
-                UIView.animate(withDuration: 0.4, animations: {
-                    self.blurEffectView?.alpha = 0
-                }, completion:  {
-                    (value: Bool) in
-                    self.blurEffectView?.isHidden = true
-                })
-                
-                self.timeSelectorView.snp.updateConstraints { (make) in
-                    make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 352))
-                    make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
-                    make.height.equalTo(heightScaleFactor(distance: 352))
-                }
-                
-                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                    self.layoutIfNeeded()
-                })
-                
-                self.newTaskVCDelegate.configGestureStatus(status: true)
-                self.newTaskVCDelegate.sendSetTime(time: result)
-                self.timeInputDelegate.sendSelectedTime(time: result)
-            }
-            
             timeSelectorView.snp.updateConstraints { (make) in
                 make.bottom.equalToSuperview().inset(heightScaleFactor(distance: 144))
                 make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
@@ -284,6 +269,33 @@ class NewTaskSlidingView: UIView {
             
             newTaskVCDelegate.configGestureStatus(status: false)
         }
+    }
+    
+    @objc private func blurViewTapped() {
+        hideTimeSelectorView()
+    }
+    
+    private func hideTimeSelectorView() {
+        UIView.animate(withDuration: 0.4, animations: {
+            self.blurEffectView?.alpha = 0
+        }, completion:  {
+            (value: Bool) in
+            self.blurEffectView?.isHidden = true
+        })
+        
+        self.timeSelectorView.snp.updateConstraints { (make) in
+            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 352))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
+            make.height.equalTo(heightScaleFactor(distance: 352))
+        }
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.layoutIfNeeded()
+        })
+        
+        self.newTaskVCDelegate.configGestureStatus(status: true)
+        self.newTaskVCDelegate.sendSetTime(time: selectedTime)
+        self.timeInputDelegate.sendSelectedTime(time: selectedTime)
     }
     
     @objc private func addButtonTapped() {
@@ -325,6 +337,7 @@ extension NewTaskSlidingView: CustomTextViewToNewTaskViewDelegate {
 extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
     
     func sendSelectedTimeForEdit(time: Int) {
+        timeSelectorViewDelegate.setSelectedTimeForPicker(time: time)
         timeInputDelegate.sendSelectedTime(time: time)
     }
     
@@ -362,4 +375,14 @@ extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
         }
     }
     
+}
+
+extension NewTaskSlidingView: TimeSelectorViewToNewTaskSlidingViewDelegate {
+    func doneButtonTapped() {
+        hideTimeSelectorView()
+    }
+    
+    func sendSelectedTime(time: Int) {
+        self.selectedTime = time
+    }
 }
