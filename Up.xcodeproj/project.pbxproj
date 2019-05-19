@@ -43,7 +43,6 @@
 		C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */; };
 		C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */; };
 		C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A39226178D500FF0E22 /* TimeInputView.swift */; };
-		C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */; };
 		C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */; };
 		C3846726227FCA2200FAD570 /* TimeAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3846725227FCA2200FAD570 /* TimeAnimationView.swift */; };
 		C38467282280D90700FAD570 /* CancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38467272280D90700FAD570 /* CancelView.swift */; };
@@ -118,7 +117,6 @@
 		C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPickerHelper.swift; sourceTree = "<group>"; };
 		C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldHelper.swift; sourceTree = "<group>"; };
 		C3751A39226178D500FF0E22 /* TimeInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputView.swift; sourceTree = "<group>"; };
-		C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
 		C3846725227FCA2200FAD570 /* TimeAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeAnimationView.swift; sourceTree = "<group>"; };
 		C38467272280D90700FAD570 /* CancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelView.swift; sourceTree = "<group>"; };
@@ -195,14 +193,6 @@
 			path = NewProjectVC;
 			sourceTree = "<group>";
 		};
-		487E1BC722692A7D000F9B09 /* TimeSelectorVC */ = {
-			isa = PBXGroup;
-			children = (
-				C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */,
-			);
-			path = TimeSelectorVC;
-			sourceTree = "<group>";
-		};
 		487E1BC822692F62000F9B09 /* UpVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,7 +207,6 @@
 			isa = PBXGroup;
 			children = (
 				2730345122768EC4001B00A3 /* StatsVC */,
-				487E1BC722692A7D000F9B09 /* TimeSelectorVC */,
 				487E1BC622692A67000F9B09 /* NewProjectVC */,
 				487E1BC522692A1E000F9B09 /* SessionVC */,
 				488E0A17226A815200ABDB50 /* CalendarVC */,
@@ -616,7 +605,6 @@
 				C39B2C34227539EA0039A7BF /* LabelHelper.swift in Sources */,
 				C310DEAC226FD04500FCD80D /* UpTabBarController.swift in Sources */,
 				C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */,
-				C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */,
 				484D0AFC226E7122007AFACE /* CalendarLayout.swift in Sources */,
 				2730345022768EBF001B00A3 /* StatsViewController.swift in Sources */,
 				C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */,
