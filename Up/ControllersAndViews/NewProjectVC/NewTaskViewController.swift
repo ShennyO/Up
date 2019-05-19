@@ -115,13 +115,11 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
                 })
             } else {
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.dismiss(animated: true, completion: nil)
-                }
-                
-                UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
-                    self.containerView.center.y += (distanceFromBot)
+                UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseIn, animations: {
+                    self.containerView.center.y += distanceFromBot
                     self.darkView.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(0)
+                }, completion: { (res) in
+                    self.dismiss(animated: false, completion: nil)
                 })
             }
         }
@@ -245,9 +243,12 @@ extension NewTaskViewController: NewTaskSlidingViewToNewTaskVCDelegate {
         
         stack.saveTo(context: stack.viewContext)
         
-        self.darkView.backgroundColor = UIColor.clear
-        
-        self.dismiss(animated: true)
+        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseIn, animations: {
+            self.containerView.center.y += (UIScreen.main.bounds.height - self.originalPosMinY!)
+            self.darkView.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(0)
+        }, completion: { (res) in
+            self.dismiss(animated: false, completion: nil)
+        })
     }
     
     func configGestureStatus(status: Bool) {

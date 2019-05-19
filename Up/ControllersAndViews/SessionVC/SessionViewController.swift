@@ -423,7 +423,6 @@ class SessionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.isIdleTimerDisabled = true
         configNavBar()
         addOutlets()
         setPauseGesture()
@@ -446,7 +445,6 @@ class SessionViewController: UIViewController {
     }
     
     deinit {
-        UIApplication.shared.isIdleTimerDisabled = false
         let notificationCenter = NotificationCenter.default
         notificationCenter.removeObserver(self)
     }
