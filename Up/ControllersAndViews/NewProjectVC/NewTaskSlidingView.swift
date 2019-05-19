@@ -40,7 +40,7 @@ class NewTaskSlidingView: UIView {
     var topHorizontalView: UIView = {
         let view = UIView()
         view.backgroundColor = Style.Colors.Palette01.pureWhite
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = heightScaleFactor(distance: 3)
         return view
     }()
     
@@ -107,7 +107,7 @@ class NewTaskSlidingView: UIView {
     }
     
     private func addOutlets() {
-        [topHorizontalView, newTaskLabel,descriptionTextView, timeButton, addButton].forEach { (view) in
+        [topHorizontalView, descriptionTextView, timeButton, addButton].forEach { (view) in
             self.addSubview(view)
         }
         descriptionTextView.textDelegate = self
@@ -118,21 +118,15 @@ class NewTaskSlidingView: UIView {
     }
     
     private func setConstraints() {
-        
         topHorizontalView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 32))
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 16))
             make.centerX.equalToSuperview()
             make.width.equalTo(widthScaleFactor(distance: 80))
             make.height.equalTo(heightScaleFactor(distance: 6))
         }
         
-        newTaskLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 96))
-            make.centerX.equalToSuperview()
-        }
-        
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalTo(newTaskLabel.snp.bottom).offset(heightScaleFactor(distance: 48))
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 80))
             make.left.equalToSuperview().offset(32)
             make.right.equalToSuperview().offset(-32)
             make.height.equalTo(widthScaleFactor(distance: 100))

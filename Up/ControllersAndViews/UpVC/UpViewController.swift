@@ -18,7 +18,6 @@ protocol UpVCToUpVCHeaderDelegate {
 }
 
 
-
 class UpViewController: UIViewController {
     
     var originalCenter: CGPoint!
@@ -27,7 +26,6 @@ class UpViewController: UIViewController {
     var hasSelectedCellBeenUnhidden =  false
     
     let transition = NewTaskVCAnimator()
-    
     
     let stack = CoreDataStack.instance
 
@@ -346,6 +344,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
             nextVC.selectedGoal = goal
             nextVC.selectedTime = Int(goal.duration)
             nextVC.modalPresentationStyle = .overFullScreen
+            nextVC.transitioningDelegate = self
             self.present(nextVC, animated: true)
             
             completion(true)

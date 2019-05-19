@@ -18,22 +18,22 @@ class NewTaskVCAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         
         let toViewController = transitionContext.viewController(forKey: .to) as! NewTaskViewController
         let toVCView = toViewController.view
-        let toView = toViewController.grayView
+        let darkView = toViewController.darkView
         let slidingView = toViewController.containerView
         toVCView?.alpha = 1
-        toView.alpha = 0
+        darkView.alpha = 0
         slidingView.center = CGPoint(x: widthScaleFactor(distance: 212), y: heightScaleFactor(distance: 1104))
         containerView.addSubview(toVCView!)
         
-        UIView.animate(withDuration: 0.3,
+        UIView.animate(withDuration: 0.25,
                        animations: {
-                        slidingView.center = CGPoint(x: widthScaleFactor(distance: 212), y: heightScaleFactor(distance: 372))
+                        slidingView.center = CGPoint(x: widthScaleFactor(distance: 212), y: heightScaleFactor(distance: 268))
         }, completion: { _ in
             transitionContext.completeTransition(true)
         })
         
-        UIView.animate(withDuration: 0.3, delay: 0.1, options: [], animations: {
-            toView.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 0.07, options: [], animations: {
+            darkView.alpha = 1
         }, completion: nil)
         
     }

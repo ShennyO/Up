@@ -47,9 +47,9 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
     
     let timeSelectorView = TimeSelectorView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: widthScaleFactor(distance: 352)))
     
-    let grayView: UIView = {
+    let darkView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
+        view.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(0.7)
         return view
     }()
     
@@ -74,7 +74,6 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
             selectedTime = Int(selectedGoal!.duration)
             sessionButtonSelected = true
             slidingViewDelegate.sessionModeOn()
-            //setting time of timeInputButton
             slidingViewDelegate.sendSelectedTimeForEdit(time: Int(selectedGoal!.duration))
             
         } else {
@@ -87,12 +86,13 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
     @objc func draggedView(_ sender:UIPanGestureRecognizer) {
         
         let currentPosY = self.containerView.frame.minY
-        let currentAlpha = backgroundColorAlpha - (currentPosY / 700)
+        let currentAlpha = backgroundColorAlpha - (abs(heightScaleFactor(distance: 200) - currentPosY) / 700)
         
         switch sender.state {
             
         case .began:
             
+            view.endEditing(true)
             startPosition = self.containerView.center
             
         case .changed:
@@ -101,18 +101,19 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
             guard let start = self.startPosition else { return }
             let newCenter = CGPoint(x: start.x, y: start.y + max(translation.y, 0))
             self.containerView.center = newCenter
-            self.grayView.backgroundColor = UIColor.gray.withAlphaComponent(currentAlpha)
+            self.darkView.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(currentAlpha)
             
         default:
             
             guard let minPos = originalPosMinY else {return}
-            let distanceFromTop = currentPosY - heightScaleFactor(distance: 120)
+            
+            let distanceFromTop = currentPosY - heightScaleFactor(distance: 200)
             let distanceFromBot = (UIScreen.main.bounds.height - currentPosY) / 2
             
             if currentPosY < minPos + heightScaleFactor(distance: 375) {
                 UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                     self.containerView.center.y -= distanceFromTop
-                    self.grayView.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
+                    self.darkView.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(0.7)
                 })
             } else {
                 
@@ -120,29 +121,27 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
                     self.dismiss(animated: true, completion: nil)
                 }
                 
-                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+                UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                     self.containerView.center.y += (distanceFromBot)
-                    self.grayView.backgroundColor = UIColor.gray.withAlphaComponent(0)
+                    self.darkView.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(0)
                 })
-                
             }
         }
-        
     }
     
     private func addOutlets() {
-        self.view.addSubview(grayView)
+        self.view.addSubview(darkView)
         self.view.addSubview(containerView)
         self.view.addSubview(timeSelectorView)
     }
     
     private func setConstraints() {
-        grayView.snp.makeConstraints { (make) in
+        darkView.snp.makeConstraints { (make) in
             make.top.bottom.left.right.equalToSuperview()
         }
         
         containerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 120))
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 200))
             make.bottom.equalToSuperview()
             make.left.right.equalToSuperview()
         }
@@ -156,6 +155,7 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.clear
         addOutlets()
         setConstraints()
         setUpGesture()
@@ -254,7 +254,10 @@ extension NewTaskViewController: NewTaskSlidingViewToNewTaskVCDelegate {
         }
         
         stack.saveTo(context: stack.viewContext)
-        self.dismiss(animated: false)
+        
+        self.darkView.backgroundColor = UIColor.clear
+        
+        self.dismiss(animated: true)
     }
     
     func configGestureStatus(status: Bool) {

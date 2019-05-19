@@ -386,7 +386,7 @@ class SessionViewController: UIViewController {
     }
     
     @objc private func appMovedToBackground() {
-        if sessionActive {
+        if sessionActive && !cancelViewShowing && !congratsViewShowing{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.pauseIcon.isHidden = false
                 self.pauseIcon.alpha = 0
