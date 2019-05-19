@@ -36,13 +36,14 @@ class CalendarGoalTableViewCell: UITableViewCell {
 //        Display the right icon based on the goal type
         if goal.duration == 0 {
             clockIconView.isHidden = true
+            durationLabel.isHidden = true
             boxView.isHidden = false
         } else {
             clockIconView.isHidden = false
+            durationLabel.isHidden = false
             boxView.isHidden = true
         }
-        
-        exactTimeLabel.text = formatter.string(from: goal.completionDate!)
+        durationLabel.text = String(goal.duration)
     }
     
     
@@ -53,7 +54,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
             self.addSubview(view)
         }
         
-        [descriptionLabel, clockIconView, boxView, checkmarkView].forEach { (view) in
+        [descriptionLabel, clockIconView, boxView, checkmarkView,/* durationLabelView, durationLabel*/].forEach { (view) in
             mainContainerView.addSubview(view)
         }
         
@@ -75,6 +76,17 @@ class CalendarGoalTableViewCell: UITableViewCell {
             make.top.bottom.equalToSuperview().inset(16)
             make.width.equalTo(clockIconView.snp.height)
         }
+        /*
+        durationLabelView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(clockIconView.snp.bottom).offset(-4)
+            make.centerX.equalTo(clockIconView.snp.right).offset(-4)
+            make.width.height.equalTo(20)
+        }
+        
+        durationLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(durationLabelView.snp.centerY).offset(1)
+            make.centerX.equalTo(durationLabelView.snp.centerX)
+        } */
 
         boxView.snp.makeConstraints { (make) in
             make.left.equalTo(clockIconView.snp.left).inset(1)
@@ -147,11 +159,23 @@ class CalendarGoalTableViewCell: UITableViewCell {
         return label
     }()
     
-    let exactTimeLabel: UILabel = {
+    let durationLabel: UILabel = {
         let label = UILabel()
         label.font = Style.Fonts.bold12
+        label.textAlignment = .center
         label.textColor = Style.Colors.Palette01.pureWhite
+        label.numberOfLines = 1
         return label
+    }()
+    
+    var durationLabelView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Style.Colors.Palette01.gunMetal
+        view.clipsToBounds = true
+        view.layer.borderColor = Style.Colors.Palette01.pureWhite.cgColor
+        view.layer.borderWidth = 0.75
+        view.layer.cornerRadius = 10
+        return view
     }()
     
 }
