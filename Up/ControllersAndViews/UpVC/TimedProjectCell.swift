@@ -122,7 +122,7 @@ class TimedProjectCell: UITableViewCell {
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(timeImageContainerView.snp.right).offset(widthScaleFactor(distance: 15))
+            make.left.equalTo(timeImageContainerView.snp.right).offset(widthScaleFactor(distance: 14))
             make.right.equalToSuperview().inset(widthScaleFactor(distance: 14))
             make.centerY.equalToSuperview()
         }
