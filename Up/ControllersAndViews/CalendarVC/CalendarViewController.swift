@@ -409,8 +409,13 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             self.tableView.tableFooterView = newView // Assign a new footer
             didChange = true
         }
-        
         self.tableView.beginUpdates()
+        
+        if numOfRowsInSection == 0 {
+            self.tableView.deleteSections(IndexSet([indexPath.section]), with: .fade)
+        } else {
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
         
         if let headerView = self.tableView.headerView(forSection: 1) as? CalendarGoalCountHeaderView {
             headerView.updateGoalCount(addition: -1)
@@ -423,12 +428,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
                 let cvCell = cv.cellForItem(at: lastSelectedCollectionViewIndexPath) as! CalendarCollectionViewCell
                 cvCell.adjustBackgroundColor(addition: -1)
             }
-        }
-        
-        if numOfRowsInSection == 0 {
-            self.tableView.deleteSections(IndexSet([indexPath.section]), with: .fade)
-        } else {
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
         self.tableView.endUpdates()
         
