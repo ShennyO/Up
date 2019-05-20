@@ -18,6 +18,9 @@ class CalendarViewController: UIViewController {
     let calendarCollectionViewCellID = "calendarCollectionViewCellID"
     let calendarGoalTableViewCellID = "calendarGoalTableViewCellID"
     
+    let calendarGoalCountHeaderViewID = "calendarGoalCountHeaderViewID"
+    let calendarTimeHeaderViewID = "calendarTimeHeaderViewID"
+    
     var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
 
     var startDate = Date()
@@ -103,6 +106,9 @@ class CalendarViewController: UIViewController {
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
         tableView.register(CalendarGoalTableViewCell.self, forCellReuseIdentifier: calendarGoalTableViewCellID)
+        
+        tableView.register(CalendarGoalCountHeaderView.self, forHeaderFooterViewReuseIdentifier: calendarGoalCountHeaderViewID)
+        tableView.register(CalendarTimeHeaderView.self, forHeaderFooterViewReuseIdentifier: calendarTimeHeaderViewID)
         
         tableView.tag = 0
         tableView.backgroundColor = Style.Colors.Palette01.gunMetal
@@ -253,7 +259,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return nil
         case 1:
-            let headerView = CalendarGoalCountHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
+            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: calendarGoalCountHeaderViewID) as! CalendarGoalCountHeaderView
             if let day = upCalendar.findDay(key: selectedDateKey) {
                 if day.itemCount == 0 {
                     headerView.setup(text: "No tasks were completed on that day.")
@@ -268,7 +274,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             return headerView
         default:
             guard let day = upCalendar.findDay(key: selectedDateKey) else { fatalError() }
-            let headerView = CalendarTimeHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 68))
+            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: calendarTimeHeaderViewID) as! CalendarTimeHeaderView
             let goal = day.goals[section - extraSectionsInTableView][0]
             let hour = gregorian.component(.hour, from: goal.completionDate!)
             headerView.setup(time: hour)
@@ -385,25 +391,29 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func deleteRowInTableView(indexPath: IndexPath, numOfRowsInSection: Int) {
         self.tableView.isUserInteractionEnabled = false
+        
+        let cvHeight: CGFloat = (tableView.frame.width - 32) / 7 * 6
+        let headerHeight: CGFloat = 90
+        let containerInsets: CGFloat = 32
+        let firstCellHeight = cvHeight + headerHeight + containerInsets
+        
         let currentFooterView = self.tableView.tableFooterView // Steal the current footer view
-        let newView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: self.tableView.bounds.width, height: self.tableView.bounds.height*2.0)) // Create a new footer view with large enough height (Really making sure it is large enough)
-        if let currentFooterView = currentFooterView {
-            // Put the current footer view as a subview to the new one if it exists (this was not really tested)
-            currentFooterView.frame.origin = .zero // Just in case put it to zero
-            newView.addSubview(currentFooterView) // Add as subview
+        var didChange = false
+        if tableView.contentOffset.y <= firstCellHeight {
+            let newView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: self.tableView.bounds.width, height: self.tableView.bounds.height*2.0)) // Create a new footer view with large enough height (Really making sure it is large enough)
+            if let currentFooterView = currentFooterView {
+                // Put the current footer view as a subview to the new one if it exists (this was not really tested)
+                currentFooterView.frame.origin = .zero // Just in case put it to zero
+                newView.addSubview(currentFooterView) // Add as subview
+            }
+            self.tableView.tableFooterView = newView // Assign a new footer
+            didChange = true
         }
-        self.tableView.tableFooterView = newView // Assign a new footer
+        
+        self.tableView.beginUpdates()
         
         if let headerView = self.tableView.headerView(forSection: 1) as? CalendarGoalCountHeaderView {
             headerView.updateGoalCount(addition: -1)
-        }
-        
-        
-        self.tableView.beginUpdates()
-        if numOfRowsInSection == 0 {
-            self.tableView.deleteSections(IndexSet([indexPath.section]), with: .left)
-        } else {
-            self.tableView.deleteRows(at: [indexPath], with: .left)
         }
         
         if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CalendarTableViewCell {
@@ -414,9 +424,20 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
                 cvCell.adjustBackgroundColor(addition: -1)
             }
         }
+        
+        if numOfRowsInSection == 0 {
+            self.tableView.deleteSections(IndexSet([indexPath.section]), with: .fade)
+        } else {
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
         self.tableView.endUpdates()
-        self.tableView.tableFooterView = currentFooterView
+        
+        if didChange {
+            self.tableView.tableFooterView = currentFooterView
+        }
+        
         self.tableView.isUserInteractionEnabled = true
+        self.view.layoutIfNeeded()
     }
 }
 
