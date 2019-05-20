@@ -68,6 +68,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         
 //        Create tab item one
         let goalsVC = UpViewController()
+        calendarVC.calendarGoalDelegate = goalsVC
         goalsVC.goalCompletionDelegate = calendarVC
         let goalsNavVC = UINavigationController(rootViewController: goalsVC)
         goalsNavVC.tabBarItem.image = #imageLiteral(resourceName: "whiteList")

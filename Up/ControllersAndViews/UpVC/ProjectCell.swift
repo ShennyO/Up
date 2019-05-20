@@ -12,7 +12,6 @@ import AudioToolbox
 protocol NonTimedCellToUpVCDelegate {
     func deleteNonTimedCell(cell: UITableViewCell)
     func completeNonTimedCell(cell: UITableViewCell)
-    
 }
 
 class ProjectCell: UITableViewCell {
@@ -109,8 +108,6 @@ class ProjectCell: UITableViewCell {
     
     private func setConstraints() {
         
-        
-        
         containerView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 8))
             make.bottom.equalToSuperview().offset(heightScaleFactor(distance: -8))
@@ -150,19 +147,17 @@ class ProjectCell: UITableViewCell {
         
     }
     
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+    private func addCheckBoxGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(complete))
+        self.taskSquareView.addGestureRecognizer(tap)
         
-        if highlighted {
-            darkView.alpha = 0.55
-        } else {
-            darkView.alpha = 0
-        }
     }
     
     private func setUpCell() {
         self.backgroundColor = UIColor.clear
         addOutlets()
         setConstraints()
+        addCheckBoxGesture()
         if goal.completionDate != nil{
             taskSquareFillView.isHidden = false
             checkMarkImage.isHidden = false
@@ -173,8 +168,6 @@ class ProjectCell: UITableViewCell {
         
         descriptionLabel.text = goal.goalDescription
     }
-    
-    
     
     private func strikeThrough() {
         // Here we will draw the lines through the text
@@ -271,7 +264,7 @@ class ProjectCell: UITableViewCell {
     }
     
      //THIS FUNCTION IS CALLED FROM OUTSIDE WHEN USER TAPPED ON THE CELL
-    func complete() {
+    @objc private func complete() {
         //in here, after the checkbox animates, I need to run the line through the words.
         //I should create a function for this
         self.goal.completionDate = Date()

@@ -28,6 +28,9 @@ class UpViewController: UIViewController {
     let stack = CoreDataStack.instance
 
     //MARK: OUTLETS
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     var upTableView: UITableView!
     var tap: UILongPressGestureRecognizer!
     var reorderPress: UILongPressGestureRecognizer!
@@ -57,46 +60,8 @@ class UpViewController: UIViewController {
         }
     }
     
-    private func configureOrdering() {
-        //in here we have to set incomplete tasks order
-        //we can loop through the goals, and with the count, set the index of those tasks
-        
-        // we're only fetching the incomplete goals
-        for (idx, x) in goals.enumerated() {
-            x.listOrderNumber = Int32(idx)
-        }
-        
-        stack.saveTo(context: stack.viewContext)
-        
-    }
-
-    private func configureHeaderAndTableView() {
-        let total = goals.count
-        
-        if total != 0 {
-            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 10)
-            tableHeaderView.frame = tableHeaderFrame
-            self.headerDelegate.alertHeaderView(total: total)
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
-                self.tableHeaderView.frame = tableHeaderFrame
-                UIView.animate(withDuration: 0.6, animations: {
-                    self.view.layoutIfNeeded()
-                })
-                self.headerDelegate.alertHeaderView(total: total)
-            }
-        }
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("PhoneHeight: ", UIScreen.main.bounds.height)
-        print("PhoneWidth: ", UIScreen.main.bounds.width)
         self.navigationItem.title = "Tasks"
         setUp()
         fetchGoals() {
@@ -117,6 +82,37 @@ extension UpViewController {
     
     
     //MARK: PRIVATE FUNCTIONS
+    
+    private func configureOrdering() {
+        
+        for (idx, x) in goals.enumerated() {
+            x.listOrderNumber = Int32(idx)
+        }
+        
+        stack.saveTo(context: stack.viewContext)
+        
+    }
+    
+    private func configureHeaderAndTableView() {
+        let total = goals.count
+        
+        if total != 0 {
+            let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 10)
+            tableHeaderView.frame = tableHeaderFrame
+            self.headerDelegate.alertHeaderView(total: total)
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                let tableHeaderFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
+                self.tableHeaderView.frame = tableHeaderFrame
+                UIView.animate(withDuration: 0.6, animations: {
+                    self.view.layoutIfNeeded()
+                })
+                self.headerDelegate.alertHeaderView(total: total)
+            }
+        }
+    }
+    
+    
     func addButtonTapped() {
         let nextVC = NewProjectViewController()
         nextVC.goalDelegate = self
@@ -149,12 +145,49 @@ extension UpViewController {
         self.addButton.addGestureRecognizer(tap)
     }
     
+    private func setUp() {
+        self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        setUpTableView()
+        addOutlets()
+        setConstraints()
+        addLongTapGesture()
+        addReorderPressGesture()
+    }
     
+    private func setUpTableView() {
+        tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
+        self.upTableView = UITableView()
+        self.upTableView.estimatedRowHeight = 0
+        self.upTableView.estimatedSectionHeaderHeight = 0
+        self.upTableView.estimatedSectionFooterHeight = 0
+        self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        self.upTableView.separatorStyle = .none
+        self.upTableView.delegate = self
+        self.upTableView.dataSource = self
+        self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
+        self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
+        self.upTableView.tableHeaderView = tableHeaderView
+        headerDelegate = tableHeaderView
+        self.view.addSubview(upTableView)
+        
+        self.upTableView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.right.equalToSuperview()
+            make.left.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+        
+    }
+
+    
+}
+
+//ADD BUTTON ANIMATION
+extension UpViewController {
     
     @objc private func handleTap(_ gestureRecognizer: UILongPressGestureRecognizer) {
         
         if gestureRecognizer.state == .began {
-            //in here we want to animate size of our view, so we want to manipulate the height/width
             
             originalCenter = gestureRecognizer.location(in: self.view)
             
@@ -196,44 +229,7 @@ extension UpViewController {
                 return
             }
         }
-        
     }
-    
-    private func setUp() {
-        self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        setUpTableView()
-        addOutlets()
-        setConstraints()
-        addLongTapGesture()
-        addReorderPressGesture()
-    }
-    
-    private func setUpTableView() {
-        tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
-        self.upTableView = UITableView()
-        self.upTableView.estimatedRowHeight = 0
-        self.upTableView.estimatedSectionHeaderHeight = 0
-        self.upTableView.estimatedSectionFooterHeight = 0
-        self.upTableView.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        self.upTableView.separatorStyle = .none
-        self.upTableView.delegate = self
-        self.upTableView.dataSource = self
-        self.upTableView.register(ProjectCell.self, forCellReuseIdentifier: "projectCell")
-        self.upTableView.register(TimedProjectCell.self, forCellReuseIdentifier: "timedProjectCell")
-        self.upTableView.tableHeaderView = tableHeaderView
-        headerDelegate = tableHeaderView
-        self.view.addSubview(upTableView)
-        
-        self.upTableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
-            make.right.equalToSuperview()
-            make.left.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-        
-    }
-
-    
 }
 
 extension UpViewController: UITableViewDataSource, UITableViewDelegate {
@@ -276,6 +272,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     //TABLEVIEW DELEGATE FUNCTIONS
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if goals[indexPath.row].duration > 0 {
             let cell = tableView.cellForRow(at: indexPath)
@@ -294,12 +291,7 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
                 self.present(sessionVC, animated: true, completion: nil)
             })
             
-        } else {
-            let cell = tableView.cellForRow(at: indexPath) as! ProjectCell
-            self.upTableView.isUserInteractionEnabled = false
-            cell.complete()
         }
-        
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -372,7 +364,7 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
     
     func completeNonTimedCell(cell: UITableViewCell) {
         if let index = upTableView.indexPath(for: cell) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 self.goals[index.row].completionDate = Date()
                 self.stack.saveTo(context: self.stack.viewContext)
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[index.row])
@@ -380,7 +372,6 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
                 self.upTableView.isUserInteractionEnabled = true
                 self.upTableView.deleteRows(at: [index], with: .right)
             }
-            
         }
     }
     
@@ -392,7 +383,6 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
             upTableView.deleteRows(at: [index], with: .left)
         }
     }
-    
     
 }
 
@@ -408,7 +398,13 @@ extension UpViewController: newProjectVCToUpVCDelegate {
         self.goals[index] = goal
         upTableView.reloadData()
     }
-    
+}
+
+extension UpViewController: CalendarGoalDelegate {
+    func restoredGoal(goal: Goal) {
+        self.goals.insert(goal, at: 0)
+        upTableView.reloadData()
+    }
     
 }
 
@@ -417,6 +413,7 @@ extension UpViewController {
     
     func addReorderPressGesture() {
         reorderPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureRecognized(gestureRecognizer:)))
+        reorderPress.minimumPressDuration = 0.25
         self.view.addGestureRecognizer(reorderPress)
     }
     
@@ -516,7 +513,6 @@ extension UpViewController {
             cell.isHidden = false
             
             self.hasSelectedCellBeenUnhidden = true
-            
             
             UIView.animate(withDuration: 0.35, animations: {
                 My.cellSnapShot?.center = cell.center
