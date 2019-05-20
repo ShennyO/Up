@@ -86,6 +86,12 @@ class ProjectCell: UITableViewCell {
         
     }()
     
+    var hitBoxView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        return view
+    }()
+    
     var checkMarkImage: UIImageView = {
         
         let imageView = UIImageView(image: #imageLiteral(resourceName: "checkMark"))
@@ -103,6 +109,7 @@ class ProjectCell: UITableViewCell {
         containerView.addSubview(taskSquareFillView)
         containerView.addSubview(darkView)
         taskSquareFillView.addSubview(checkMarkImage)
+        containerView.addSubview(hitBoxView)
         
     }
     
@@ -140,6 +147,12 @@ class ProjectCell: UITableViewCell {
             make.width.height.equalTo(widthScaleFactor(distance: 22))
         }
         
+        hitBoxView.snp.makeConstraints { (make) in
+            make.top.bottom.equalToSuperview().inset(15)
+            make.left.equalToSuperview().inset(10)
+            make.right.equalTo(descriptionLabel.snp.left).offset(-10)
+        }
+        
         checkMarkImage.snp.makeConstraints { (make) in
             make.centerY.centerX.equalToSuperview()
             make.width.height.equalTo(widthScaleFactor(distance: 12))
@@ -149,7 +162,7 @@ class ProjectCell: UITableViewCell {
     
     private func addCheckBoxGesture() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(complete))
-        self.taskSquareView.addGestureRecognizer(tap)
+        self.hitBoxView.addGestureRecognizer(tap)
         
     }
     
@@ -276,7 +289,7 @@ class ProjectCell: UITableViewCell {
         taskSquareFillView.alpha = 0
         checkMarkImage.isHidden = false
         checkMarkImage.alpha = 0
-//        self.isUserInteractionEnabled = false
+        self.isUserInteractionEnabled = false
         generator.impactOccurred()
         
         strikethroughAndComplete {

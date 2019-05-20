@@ -369,7 +369,8 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
                 self.stack.saveTo(context: self.stack.viewContext)
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[index.row])
                 self.goals.remove(at: index.row)
-                self.upTableView.isUserInteractionEnabled = true
+                cell.isUserInteractionEnabled = true
+//                self.upTableView.isUserInteractionEnabled = true
                 self.upTableView.deleteRows(at: [index], with: .right)
             }
         }
