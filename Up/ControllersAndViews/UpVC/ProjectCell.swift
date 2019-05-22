@@ -148,9 +148,9 @@ class ProjectCell: UITableViewCell {
         }
         
         hitBoxView.snp.makeConstraints { (make) in
-            make.top.bottom.equalToSuperview().inset(15)
-            make.left.equalToSuperview().inset(10)
-            make.right.equalTo(descriptionLabel.snp.left).offset(-10)
+            make.top.bottom.equalToSuperview().inset(widthScaleFactor(distance: 12))
+            make.left.equalToSuperview().inset(widthScaleFactor(distance: 8))
+            make.right.equalTo(descriptionLabel.snp.left).offset(widthScaleFactor(distance: -8))
         }
         
         checkMarkImage.snp.makeConstraints { (make) in
