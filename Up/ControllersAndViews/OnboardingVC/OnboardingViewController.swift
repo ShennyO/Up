@@ -7,8 +7,11 @@
 
 import Foundation
 import UIKit
+import KeychainSwift
 
 class OnboardingViewController: UIViewController {
+    
+    let keychain = KeychainSwift()
     
     var onboardingCollectionView: UICollectionView!
     let footerContainerView: UIView = {
@@ -131,7 +134,21 @@ class OnboardingViewController: UIViewController {
         onboardingCollectionView.setContentOffset(CGPoint(x: attri.frame.origin.x, y: 0), animated: true)
     }
     
+    func finishOnboarding() {
+        keychain.set(true, forKey: "onboarded")
+        
+        guard let app = UIApplication.shared.delegate as? AppDelegate, let window = app.window
+            else { return }
+        let tabBarController = UpTabBarController()
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
+        return
+    }
+    
     @objc func nextButtonTapped(sender: UIButton) {
+        if pageControl.currentPage == pageControl.numberOfPages - 1 {
+            finishOnboarding()
+        }
         scrollCollectionView(offset: 1)
     }
     
