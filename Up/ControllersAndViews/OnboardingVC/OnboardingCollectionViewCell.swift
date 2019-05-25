@@ -52,6 +52,8 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 8
         imageView.clipsToBounds = true
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
