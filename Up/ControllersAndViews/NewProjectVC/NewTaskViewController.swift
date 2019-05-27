@@ -13,6 +13,7 @@ protocol newProjectVCToUpVCDelegate: class {
 }
 
 protocol newTaskVCToSlidingViewDelegate: class {
+    func hideTimeSelector()
     func sessionModeOn()
     func taskModeOn()
     func sendGoalDescription(desc: String)
@@ -89,7 +90,7 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
         switch sender.state {
             
         case .began:
-            
+            //here we also want to send a fxn back to newtaskslidingview to hide timeselectorview
             view.endEditing(true)
             startPosition = self.containerView.center
             

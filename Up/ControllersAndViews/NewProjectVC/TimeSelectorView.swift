@@ -23,52 +23,36 @@ class TimeSelectorView: UIView {
     
     //MARK: OUTLETS
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Select duration"
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
-        return label
-    }()
-    
-    let timePickerView = MyPickerView()
+    let timePickerView = UIPickerView()
     
     let doneButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        button.backgroundColor = Style.Colors.Palette01.mainBlue
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.setTitle("Done", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
         return button
     }()
     
     private func addOutlets() {
-        self.addSubview(titleLabel)
         self.addSubview(timePickerView)
         self.addSubview(doneButton)
     }
     
     private func setConstraints() {
-        
-        titleLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 45))
-            make.centerX.equalToSuperview()
-        }
-        
         timePickerView.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(heightScaleFactor(distance: 10))
+            make.top.equalToSuperview().inset(40)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(widthScaleFactor(distance: 185))
+            make.height.equalTo(widthScaleFactor(distance: 135))
         }
         
         doneButton.snp.makeConstraints { (make) in
-            make.top.equalTo(timePickerView.snp.bottom).offset(5)
-            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(20)
             make.height.equalTo(widthScaleFactor(distance: 45))
-            make.width.equalTo(widthScaleFactor(distance: 125))
+            make.left.right.equalToSuperview().inset(20)
         }
         
     }
@@ -82,10 +66,7 @@ class TimeSelectorView: UIView {
         for x in 1...60 {
             times.append(x)
         }
-        self.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        self.layer.cornerRadius = 8
-        timePickerView.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
-        timePickerView.layer.cornerRadius = 4
+        self.backgroundColor = Style.Colors.Palette01.keyBoardGray
         timePickerView.delegate = self
         timePickerView.dataSource = self
         timePickerView.selectRow(selectedTime - 1, inComponent: 0, animated: false)
@@ -110,9 +91,8 @@ extension TimeSelectorView: UIPickerViewDelegate, UIPickerViewDataSource {
                 label.text = String(describing: times[row]) + " minute"
             }
             
-            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
+            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
             label.textAlignment = .center
-            label.textColor = UIColor.white
             return label
             
         }()
@@ -137,6 +117,7 @@ extension TimeSelectorView: UIPickerViewDelegate, UIPickerViewDataSource {
 
 
 extension TimeSelectorView: NewTaskViewToTimeSelectorViewDelegate {
+    
     func setSelectedTimeForPicker(time: Int) {
         selectedTime = time
         timePickerView.selectRow(selectedTime - 1, inComponent: 0, animated: false)

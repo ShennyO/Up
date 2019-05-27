@@ -17,7 +17,7 @@ class TimeInputViewButton: UIView {
     let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
-        label.textColor = UIColor.white
+        label.textColor = UIColor.black
         label.text = "30 minutes"
         label.isUserInteractionEnabled = true
         return label
@@ -28,7 +28,7 @@ class TimeInputViewButton: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.isHidden = true
-        self.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        self.backgroundColor = Style.Colors.Palette01.pureWhite
         self.layer.cornerRadius = widthScaleFactor(distance: 4)
         self.isUserInteractionEnabled = true
         addOutlets()
@@ -47,7 +47,7 @@ class TimeInputViewButton: UIView {
     private func setConstraints() {
         
         timeLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(widthScaleFactor(distance: 18))
+            make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(2)
         }
 
@@ -78,6 +78,6 @@ extension TimeInputViewButton: NewTaskViewToTimeInputButtonDelegate {
     
     func tapEnded() {
         upArrow.image = #imageLiteral(resourceName: "up-arrow")
-        timeLabel.textColor = UIColor.white
+        timeLabel.textColor = UIColor.black
     }
 }

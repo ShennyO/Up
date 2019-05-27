@@ -43,7 +43,6 @@ class NewTaskSlidingView: UIView {
     weak var timeSelectorViewDelegate: NewTaskViewToTimeSelectorViewDelegate!
     
     //MARK: OUTLETS
-    var blurEffectView: UIVisualEffectView?
     
     var topHorizontalView: UIView = {
         let view = UIView()
@@ -64,10 +63,10 @@ class NewTaskSlidingView: UIView {
     
     var taskButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        button.backgroundColor = Style.Colors.Palette01.mainBlue
         button.layer.cornerRadius = 4
         button.setImage(#imageLiteral(resourceName: "whiteRectangle"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
+        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = true
@@ -79,7 +78,7 @@ class NewTaskSlidingView: UIView {
         let button = UIButton()
         button.layer.cornerRadius = 4
         button.setImage(#imageLiteral(resourceName: "whiteTimeIcon"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = false
@@ -89,41 +88,48 @@ class NewTaskSlidingView: UIView {
     
     var typeStackView: UIStackView!
     
+    var typeStackViewContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.0862745098, green: 0.08583535999, blue: 0.1098039216, alpha: 1)
+        view.layer.cornerRadius = widthScaleFactor(distance: 4)
+        return view
+    }()
+    
     var timeButton = TimeInputViewButton(frame: CGRect(x: 0, y: 0, width: 165, height: 50))
     
     var addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.layer.cornerRadius = widthScaleFactor(distance: 28)
+        button.layer.cornerRadius = widthScaleFactor(distance: 4)
         button.setTitle("Add", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
-        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        button.backgroundColor = Style.Colors.Palette01.mainBlue
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    let timeSelectorView = TimeSelectorView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: widthScaleFactor(distance: 352)))
+    let timeSelectorView = TimeSelectorView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: widthScaleFactor(distance: 272)))
     
     private func setUpTimeSelectorView() {
         self.addSubview(timeSelectorView)
         timeSelectorView.slidingViewDelegate = self
         self.timeSelectorViewDelegate = timeSelectorView
         timeSelectorView.snp.makeConstraints { (make) in
-            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 352))
-            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
-            make.height.equalTo(heightScaleFactor(distance: 352))
+            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 272))
+            make.left.right.equalToSuperview()
+            make.height.equalTo(heightScaleFactor(distance: 272))
         }
     }
     
     private func addOutlets() {
-        [topHorizontalView, descriptionTextView, timeButton, addButton].forEach { (view) in
+        [topHorizontalView, descriptionTextView, timeButton, addButton, typeStackViewContainer].forEach { (view) in
             self.addSubview(view)
         }
         descriptionTextView.textDelegate = self
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
         typeStackView.alignment = .fill
         typeStackView.spacing = 35
-        self.addSubview(typeStackView)
+        typeStackViewContainer.addSubview(typeStackView)
     }
     
     private func setConstraints() {
@@ -136,53 +142,41 @@ class NewTaskSlidingView: UIView {
         
         descriptionTextView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 96))
-            make.left.equalToSuperview().offset(32)
-            make.right.equalToSuperview().offset(-32)
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 32))
+            make.right.equalToSuperview().offset(widthScaleFactor(distance: -32))
             make.height.equalTo(widthScaleFactor(distance: 100))
         }
         
         taskButton.snp.makeConstraints { (make) in
-            make.height.equalTo(widthScaleFactor(distance: 66))
-            make.width.equalTo(widthScaleFactor(distance: 66))
+            make.height.equalTo(widthScaleFactor(distance: 75))
+            make.width.equalTo(widthScaleFactor(distance: 75))
         }
         
         sessionButton.snp.makeConstraints { (make) in
-            make.height.equalTo(widthScaleFactor(distance: 66))
-            make.width.equalTo(widthScaleFactor(distance: 66))
+            make.height.equalTo(widthScaleFactor(distance: 75))
+            make.width.equalTo(widthScaleFactor(distance: 75))
+        }
+        
+        typeStackViewContainer.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(widthScaleFactor(distance: 30))
+            make.height.equalTo(widthScaleFactor(distance: 120))
         }
         
         typeStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(widthScaleFactor(distance: 48))
-            make.centerX.equalTo(descriptionTextView)
+            make.centerY.centerX.equalToSuperview()
         }
         
         timeButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 32))
-            make.centerX.equalToSuperview()
-            make.width.equalTo(widthScaleFactor(distance: 166))
-            make.height.equalTo(widthScaleFactor(distance: 56))
+            make.top.equalTo(typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 30))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
+            make.height.equalTo(widthScaleFactor(distance: 54))
         }
         
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackView.snp.bottom).offset(widthScaleFactor(distance: 48))
-            make.centerX.equalToSuperview()
-            make.width.equalTo(widthScaleFactor(distance: 120))
-            make.height.equalTo(widthScaleFactor(distance: 56))
-        }
-    }
-    
-    private func addBlur() {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
-        blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView?.frame = self.bounds
-        blurEffectView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView?.isHidden = true
-        blurEffectView?.alpha = 0.4
-        let tap = UITapGestureRecognizer(target: self, action: #selector(blurViewTapped))
-        blurEffectView?.addGestureRecognizer(tap)
-        
-        if blurEffectView != nil {
-            self.addSubview(blurEffectView!)
+            make.top.equalTo(typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 48))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
+            make.height.equalTo(widthScaleFactor(distance: 44))
         }
     }
     
@@ -194,16 +188,15 @@ class NewTaskSlidingView: UIView {
         
         newTaskVCDelegate.taskButtonTapped()
         
-        taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        taskButton.backgroundColor = Style.Colors.Palette01.mainBlue
         sessionButton.backgroundColor = nil
         sessionButton.isSelected = false
         taskButton.isSelected = true
         
         self.addButton.snp.updateConstraints { (make) in
-            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
-            make.centerX.equalToSuperview()
-            make.width.equalTo(widthScaleFactor(distance: 120))
-            make.height.equalTo(widthScaleFactor(distance: 56))
+            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
+            make.height.equalTo(widthScaleFactor(distance: 44))
         }
         //hiding timeButton
         UIView.animate(withDuration: 0.3, animations: {
@@ -223,17 +216,16 @@ class NewTaskSlidingView: UIView {
         newTaskVCDelegate.sendDefaultTime(time: 30)
         newTaskVCDelegate.sessionButtonTapped()
         sessionButton.isSelected = true
-        sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        sessionButton.backgroundColor = Style.Colors.Palette01.mainBlue
         taskButton.backgroundColor = nil
         taskButton.isSelected = false
         timeButton.isHidden = false
         timeButton.alpha = 0
         
         self.addButton.snp.updateConstraints { (make) in
-            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
-            make.centerX.equalToSuperview()
-            make.width.equalTo(widthScaleFactor(distance: 120))
-            make.height.equalTo(widthScaleFactor(distance: 56))
+            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 120))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
+            make.height.equalTo(widthScaleFactor(distance: 44))
         }
         //showing timeButton
         UIView.animate(withDuration: 0.4, animations: {
@@ -252,41 +244,24 @@ class NewTaskSlidingView: UIView {
             
             timeInputDelegate.tapEnded()
             timeSelectorView.snp.updateConstraints { (make) in
-                make.bottom.equalToSuperview().inset(heightScaleFactor(distance: 144))
-                make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
-                make.height.equalTo(heightScaleFactor(distance: 352))
+                make.bottom.equalToSuperview()
+                make.left.right.equalToSuperview()
+                make.height.equalTo(heightScaleFactor(distance: 272))
             }
             
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                 self.layoutIfNeeded()
             })
             
-            blurEffectView?.isHidden = false
-            blurEffectView?.alpha = 0
-            UIView.animate(withDuration: 0.3, animations: {
-                self.blurEffectView?.alpha = 0.6
-            })
-            
             newTaskVCDelegate.configGestureStatus(status: false)
         }
     }
     
-    @objc private func blurViewTapped() {
-        hideTimeSelectorView()
-    }
-    
     private func hideTimeSelectorView() {
-        UIView.animate(withDuration: 0.4, animations: {
-            self.blurEffectView?.alpha = 0
-        }, completion:  {
-            (value: Bool) in
-            self.blurEffectView?.isHidden = true
-        })
-        
         self.timeSelectorView.snp.updateConstraints { (make) in
-            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 352))
-            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 80))
-            make.height.equalTo(heightScaleFactor(distance: 352))
+            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 272))
+            make.left.right.equalToSuperview()
+            make.height.equalTo(heightScaleFactor(distance: 272))
         }
         
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
@@ -308,7 +283,6 @@ class NewTaskSlidingView: UIView {
         addOutlets()
         setConstraints()
         roundCorners([.topLeft, .topRight], radius: 9)
-        addBlur()
         setUpTimeSelectorView()
         timeInputDelegate = timeButton
         descriptionViewDelegate = descriptionTextView
@@ -335,6 +309,9 @@ extension NewTaskSlidingView: CustomTextViewToNewTaskViewDelegate {
 }
 
 extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
+    func hideTimeSelector() {
+        hideTimeSelectorView()
+    }
     
     func sendSelectedTimeForEdit(time: Int) {
         timeSelectorViewDelegate.setSelectedTimeForPicker(time: time)
@@ -347,31 +324,29 @@ extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
     
     func sessionModeOn() {
         sessionButton.isSelected = true
-        sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        sessionButton.backgroundColor = Style.Colors.Palette01.mainBlue
         taskButton.backgroundColor = nil
         taskButton.isSelected = false
         timeButton.isHidden = false
         self.timeButton.alpha = 1
         self.addButton.snp.updateConstraints { (make) in
-            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 120))
-            make.centerX.equalToSuperview()
-            make.width.equalTo(widthScaleFactor(distance: 128))
-            make.height.equalTo(widthScaleFactor(distance: 60))
+            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 120))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
+            make.height.equalTo(widthScaleFactor(distance: widthScaleFactor(distance: 44)))
         }
     }
     
     func taskModeOn() {
-        taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
+        taskButton.backgroundColor = Style.Colors.Palette01.mainBlue
         taskButton.isSelected = true
         sessionButton.backgroundColor = nil
         sessionButton.isSelected = false
         self.timeButton.isHidden = true
         
         self.addButton.snp.updateConstraints { (make) in
-            make.top.equalTo(self.typeStackView.snp.bottom).offset(widthScaleFactor(distance: 46))
-            make.centerX.equalToSuperview()
-            make.width.equalTo(widthScaleFactor(distance: 128))
-            make.height.equalTo(widthScaleFactor(distance: 60))
+            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
+            make.height.equalTo(widthScaleFactor(distance: widthScaleFactor(distance: 44)))
         }
     }
     
