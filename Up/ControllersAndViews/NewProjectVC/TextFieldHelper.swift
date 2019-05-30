@@ -14,9 +14,10 @@ enum InputType {
     case textView
 }
 
-//from TextViewInputView to NewProjectVC
+//from TextViewInputView to NewTaskSlidingView
 protocol CustomTextViewToNewTaskViewDelegate: class {
     func sendText(text: String)
+    func dismissTimeSelectorView()
 }
 
 class SunnyCustomInputView: UIView {
@@ -26,26 +27,19 @@ class SunnyCustomInputView: UIView {
     
     
     //MARK: OUTLETS
-    
-    
-    
     let tv: UITextView = {
         let tv = UITextView()
         tv.backgroundColor = Style.Colors.Palette01.pureWhite
         tv.textColor = UIColor.gray
         tv.text = "Goal description"
         tv.returnKeyType = UIReturnKeyType.done
-//        tv.isScrollEnabled = false
         return tv
     }()
     
-    
     let tfOverlayLabel: UILabel = {
-        
         let label = UILabel()
         label.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         return label
-        
     }()
     
     let bottomBorder: UIView = {
@@ -69,9 +63,6 @@ class SunnyCustomInputView: UIView {
         tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 13))
         tfOverlayLabel.text = "Description"
         tv.delegate = self
-        
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,17 +70,12 @@ class SunnyCustomInputView: UIView {
     }
     
     private func addOutlets(type: InputType) {
-        
-        
         [tfOverlayLabel, bottomBorder, tv].forEach { (view) in
             self.addSubview(view)
         }
     }
     
-  
-    
     private func setConstraints(type: InputType) {
-        
         tv.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 20))
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 5))
@@ -157,6 +143,7 @@ extension SunnyCustomInputView: UITextViewDelegate {
             textView.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
         tfOverlayLabel.textColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
+        textDelegate.dismissTimeSelectorView()
         animateBottomBorder()
     }
     

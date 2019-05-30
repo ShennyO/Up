@@ -127,7 +127,6 @@ class NewTaskSlidingView: UIView {
         [topHorizontalView, descriptionTextView, timeButton, addButton, typeStackViewContainer].forEach { (view) in
             self.addSubview(view)
         }
-        descriptionTextView.textDelegate = self
         typeStackView = UIStackView(arrangedSubviews: [sessionButton, taskButton])
         typeStackView.alignment = .fill
         typeStackView.spacing = 35
@@ -172,7 +171,7 @@ class NewTaskSlidingView: UIView {
         timeButton.snp.makeConstraints { (make) in
             make.top.equalTo(typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 32))
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
-            make.height.equalTo(widthScaleFactor(distance: 54))
+            make.height.equalTo(widthScaleFactor(distance: 50))
         }
         
         addButton.snp.makeConstraints { (make) in
@@ -262,7 +261,9 @@ class NewTaskSlidingView: UIView {
     }
     
     @objc private func hideTimeSelectorAndKeyboard() {
+        
         self.endEditing(true)
+        
         if !isTimeSelectorViewShown {return}
         self.timeSelectorView.snp.updateConstraints { (make) in
             make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 272))
@@ -310,22 +311,36 @@ class NewTaskSlidingView: UIView {
 }
 
 extension NewTaskSlidingView: UIGestureRecognizerDelegate {
-    
     func hideWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.hideTimeSelectorAndKeyboard))
         tap.delegate = self
         tap.cancelsTouchesInView = false
         self.addGestureRecognizer(tap)
     }
-    
 }
 
 extension NewTaskSlidingView: CustomTextViewToNewTaskViewDelegate {
+    func dismissTimeSelectorView() {
+        if !isTimeSelectorViewShown { return }
+        self.timeSelectorView.snp.updateConstraints { (make) in
+            make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 272))
+            make.left.right.equalToSuperview()
+            make.height.equalTo(heightScaleFactor(distance: 272))
+        }
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.layoutIfNeeded()
+        })
+        
+        self.newTaskVCDelegate.configGestureStatus(status: true)
+        self.newTaskVCDelegate.sendSetTime(time: selectedTime)
+        self.timeInputDelegate.sendSelectedTime(time: selectedTime)
+        isTimeSelectorViewShown = false
+    }
     
     func sendText(text: String) {
         newTaskVCDelegate.sendTextViewText(text: text)
     }
-    
 }
 
 extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
