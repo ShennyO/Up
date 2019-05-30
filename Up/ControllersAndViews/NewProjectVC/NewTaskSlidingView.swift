@@ -263,6 +263,7 @@ class NewTaskSlidingView: UIView {
     @objc private func hideTimeSelectorAndKeyboard() {
         
         self.endEditing(true)
+        self.newTaskVCDelegate.configGestureStatus(status: true)
         
         if !isTimeSelectorViewShown {return}
         self.timeSelectorView.snp.updateConstraints { (make) in
@@ -275,7 +276,6 @@ class NewTaskSlidingView: UIView {
             self.layoutIfNeeded()
         })
         
-        self.newTaskVCDelegate.configGestureStatus(status: true)
         self.newTaskVCDelegate.sendSetTime(time: selectedTime)
         self.timeInputDelegate.sendSelectedTime(time: selectedTime)
         isTimeSelectorViewShown = false
@@ -320,6 +320,10 @@ extension NewTaskSlidingView: UIGestureRecognizerDelegate {
 }
 
 extension NewTaskSlidingView: CustomTextViewToNewTaskViewDelegate {
+    func configPangesture() {
+        newTaskVCDelegate.configGestureStatus(status: false)
+    }
+    
     func dismissTimeSelectorView() {
         if !isTimeSelectorViewShown { return }
         self.timeSelectorView.snp.updateConstraints { (make) in

@@ -18,6 +18,7 @@ enum InputType {
 protocol CustomTextViewToNewTaskViewDelegate: class {
     func sendText(text: String)
     func dismissTimeSelectorView()
+    func configPangesture()
 }
 
 class SunnyCustomInputView: UIView {
@@ -144,6 +145,7 @@ extension SunnyCustomInputView: UITextViewDelegate {
         }
         tfOverlayLabel.textColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
         textDelegate.dismissTimeSelectorView()
+        textDelegate.configPangesture()
         animateBottomBorder()
     }
     
