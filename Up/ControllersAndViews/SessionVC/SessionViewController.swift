@@ -70,7 +70,7 @@ class SessionViewController: UIViewController {
         button.layer.cornerRadius = widthScaleFactor(distance: 30)
         button.setTitle("Start", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -81,7 +81,7 @@ class SessionViewController: UIViewController {
         button.layer.cornerRadius = widthScaleFactor(distance: 30)
         button.setTitle("Done", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 25))
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.isHidden = true
         return button

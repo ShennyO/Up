@@ -35,6 +35,7 @@ class NewTaskSlidingView: UIView {
     
     //MARK: VARIABLES
     var selectedTime: Int = 30
+    var isTimeSelectorViewShown = false
     
     //MARK: DELEGATE VARIABLES
     weak var timeInputDelegate: NewTaskViewToTimeInputButtonDelegate!
@@ -63,9 +64,9 @@ class NewTaskSlidingView: UIView {
     
     var taskButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Style.Colors.Palette01.mainBlue
+        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 4
-        button.setImage(#imageLiteral(resourceName: "whiteRectangle"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "TaskBox"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
@@ -90,7 +91,7 @@ class NewTaskSlidingView: UIView {
     
     var typeStackViewContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.0862745098, green: 0.08583535999, blue: 0.1098039216, alpha: 1)
+        view.backgroundColor = Style.Colors.Palette01.gunMetal
         view.layer.cornerRadius = widthScaleFactor(distance: 4)
         return view
     }()
@@ -102,9 +103,10 @@ class NewTaskSlidingView: UIView {
         button.layer.cornerRadius = widthScaleFactor(distance: 4)
         button.setTitle("Add", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 18))
         button.backgroundColor = Style.Colors.Palette01.mainBlue
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        button.titleEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
         return button
     }()
     
@@ -141,7 +143,7 @@ class NewTaskSlidingView: UIView {
         }
         
         descriptionTextView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(heightScaleFactor(distance: 96))
+            make.top.equalToSuperview().offset(heightScaleFactor(distance: 64))
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 32))
             make.right.equalToSuperview().offset(widthScaleFactor(distance: -32))
             make.height.equalTo(widthScaleFactor(distance: 100))
@@ -159,7 +161,7 @@ class NewTaskSlidingView: UIView {
         
         typeStackViewContainer.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(widthScaleFactor(distance: 30))
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(widthScaleFactor(distance: 32))
             make.height.equalTo(widthScaleFactor(distance: 120))
         }
         
@@ -168,15 +170,15 @@ class NewTaskSlidingView: UIView {
         }
         
         timeButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 30))
+            make.top.equalTo(typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 32))
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
             make.height.equalTo(widthScaleFactor(distance: 54))
         }
         
         addButton.snp.makeConstraints { (make) in
-            make.top.equalTo(typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 48))
+            make.top.equalTo(typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 64))
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
-            make.height.equalTo(widthScaleFactor(distance: 44))
+            make.height.equalTo(widthScaleFactor(distance: 45))
         }
     }
     
@@ -188,15 +190,15 @@ class NewTaskSlidingView: UIView {
         
         newTaskVCDelegate.taskButtonTapped()
         
-        taskButton.backgroundColor = Style.Colors.Palette01.mainBlue
+        taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         sessionButton.backgroundColor = nil
         sessionButton.isSelected = false
         taskButton.isSelected = true
         
         self.addButton.snp.updateConstraints { (make) in
-            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 64))
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
-            make.height.equalTo(widthScaleFactor(distance: 44))
+            make.height.equalTo(widthScaleFactor(distance: 45))
         }
         //hiding timeButton
         UIView.animate(withDuration: 0.3, animations: {
@@ -216,16 +218,16 @@ class NewTaskSlidingView: UIView {
         newTaskVCDelegate.sendDefaultTime(time: 30)
         newTaskVCDelegate.sessionButtonTapped()
         sessionButton.isSelected = true
-        sessionButton.backgroundColor = Style.Colors.Palette01.mainBlue
+        sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         taskButton.backgroundColor = nil
         taskButton.isSelected = false
         timeButton.isHidden = false
         timeButton.alpha = 0
         
         self.addButton.snp.updateConstraints { (make) in
-            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 120))
+            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 118))
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
-            make.height.equalTo(widthScaleFactor(distance: 44))
+            make.height.equalTo(widthScaleFactor(distance: 45))
         }
         //showing timeButton
         UIView.animate(withDuration: 0.4, animations: {
@@ -253,11 +255,15 @@ class NewTaskSlidingView: UIView {
                 self.layoutIfNeeded()
             })
             
+            isTimeSelectorViewShown = true
             newTaskVCDelegate.configGestureStatus(status: false)
+            
         }
     }
     
-    private func hideTimeSelectorView() {
+    @objc private func hideTimeSelectorAndKeyboard() {
+        self.endEditing(true)
+        if !isTimeSelectorViewShown {return}
         self.timeSelectorView.snp.updateConstraints { (make) in
             make.bottom.equalToSuperview().offset(heightScaleFactor(distance: 272))
             make.left.right.equalToSuperview()
@@ -271,6 +277,8 @@ class NewTaskSlidingView: UIView {
         self.newTaskVCDelegate.configGestureStatus(status: true)
         self.newTaskVCDelegate.sendSetTime(time: selectedTime)
         self.timeInputDelegate.sendSelectedTime(time: selectedTime)
+        isTimeSelectorViewShown = false
+        
     }
     
     @objc private func addButtonTapped() {
@@ -292,10 +300,22 @@ class NewTaskSlidingView: UIView {
         timeButton.addGestureRecognizer(tap)
         self.backgroundColor = Style.Colors.Palette01.gunMetal
         self.clipsToBounds = true
+        hideWhenTappedAround()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+extension NewTaskSlidingView: UIGestureRecognizerDelegate {
+    
+    func hideWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.hideTimeSelectorAndKeyboard))
+        tap.delegate = self
+        tap.cancelsTouchesInView = false
+        self.addGestureRecognizer(tap)
     }
     
 }
@@ -309,10 +329,6 @@ extension NewTaskSlidingView: CustomTextViewToNewTaskViewDelegate {
 }
 
 extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
-    func hideTimeSelector() {
-        hideTimeSelectorView()
-    }
-    
     func sendSelectedTimeForEdit(time: Int) {
         timeSelectorViewDelegate.setSelectedTimeForPicker(time: time)
         timeInputDelegate.sendSelectedTime(time: time)
@@ -324,29 +340,29 @@ extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
     
     func sessionModeOn() {
         sessionButton.isSelected = true
-        sessionButton.backgroundColor = Style.Colors.Palette01.mainBlue
+        sessionButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         taskButton.backgroundColor = nil
         taskButton.isSelected = false
         timeButton.isHidden = false
         self.timeButton.alpha = 1
         self.addButton.snp.updateConstraints { (make) in
-            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 120))
+            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 118))
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
-            make.height.equalTo(widthScaleFactor(distance: widthScaleFactor(distance: 44)))
+            make.height.equalTo(widthScaleFactor(distance: widthScaleFactor(distance: 45)))
         }
     }
     
     func taskModeOn() {
-        taskButton.backgroundColor = Style.Colors.Palette01.mainBlue
+        taskButton.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         taskButton.isSelected = true
         sessionButton.backgroundColor = nil
         sessionButton.isSelected = false
         self.timeButton.isHidden = true
         
         self.addButton.snp.updateConstraints { (make) in
-            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 46))
+            make.top.equalTo(self.typeStackViewContainer.snp.bottom).offset(widthScaleFactor(distance: 64))
             make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 32))
-            make.height.equalTo(widthScaleFactor(distance: widthScaleFactor(distance: 44)))
+            make.height.equalTo(widthScaleFactor(distance: widthScaleFactor(distance: 45)))
         }
     }
     
@@ -354,7 +370,8 @@ extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
 
 extension NewTaskSlidingView: TimeSelectorViewToNewTaskSlidingViewDelegate {
     func doneButtonTapped() {
-        hideTimeSelectorView()
+        hideTimeSelectorAndKeyboard()
+        isTimeSelectorViewShown = false
     }
     
     func sendSelectedTime(time: Int) {

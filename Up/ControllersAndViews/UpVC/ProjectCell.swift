@@ -124,24 +124,25 @@ class ProjectCell: UITableViewCell {
         
         taskSquareView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 17))
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
             make.width.height.equalTo(widthScaleFactor(distance: 22))
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
             make.left.equalTo(taskSquareView.snp.right).offset(widthScaleFactor(distance: 15))
             make.right.equalToSuperview().offset(widthScaleFactor(distance: -15))
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
         }
         
         taskSquareFillView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 17))
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
             make.width.height.equalTo(widthScaleFactor(distance: 22))
         }
         
         checkMarkImage.snp.makeConstraints { (make) in
-            make.centerY.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
+            make.centerX.equalToSuperview()
             make.width.height.equalTo(widthScaleFactor(distance: 12))
         }
         
@@ -187,8 +188,8 @@ class ProjectCell: UITableViewCell {
         
         
         if numberOfLines == 1 {
-            path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: self.bounds.height / 2))
-            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + rowOneWidth, y: self.bounds.height / 2))
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: (self.bounds.height / 2) + 1))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + rowOneWidth, y: (self.bounds.height / 2) + 1))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -207,7 +208,7 @@ class ProjectCell: UITableViewCell {
             
         } else {
             
-            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + heightScaleFactor(distance: 10)
+            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + heightScaleFactor(distance: 11)
             path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: yPos))
             path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + CGFloat(rowOneWidth), y: yPos))
             

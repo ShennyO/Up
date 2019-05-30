@@ -32,7 +32,8 @@ class TimeSelectorView: UIView {
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.setTitle("Done", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 17))
+        button.titleEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: -1, right: 0)
         return button
     }()
     
@@ -91,7 +92,7 @@ extension TimeSelectorView: UIPickerViewDelegate, UIPickerViewDataSource {
                 label.text = String(describing: times[row]) + " minute"
             }
             
-            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 22))
+            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 20))
             label.textAlignment = .center
             return label
             

@@ -31,7 +31,7 @@ class SunnyCustomInputView: UIView {
     
     let tv: UITextView = {
         let tv = UITextView()
-        tv.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
+        tv.backgroundColor = Style.Colors.Palette01.pureWhite
         tv.textColor = UIColor.gray
         tv.text = "Goal description"
         tv.returnKeyType = UIReturnKeyType.done
@@ -61,7 +61,7 @@ class SunnyCustomInputView: UIView {
         self.layer.masksToBounds = true
         addOutlets(type: type)
         setConstraints(type: type)
-        self.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
+        self.backgroundColor = Style.Colors.Palette01.pureWhite
         self.layer.cornerRadius = 5
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.tintColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
