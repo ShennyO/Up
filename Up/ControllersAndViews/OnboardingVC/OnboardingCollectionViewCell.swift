@@ -32,7 +32,7 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
         
         descriptionLabel.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview().inset(16)
-            make.bottom.lessThanOrEqualToSuperview().offset(-16)
+            make.bottom.lessThanOrEqualToSuperview().offset(-32)
         }
         
         titleLabel.snp.makeConstraints { (make) in
@@ -50,7 +50,6 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
             } else {
                 make.height.equalTo(imageView.snp.width)
             }
-            
         }
     }
     
