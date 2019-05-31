@@ -12,7 +12,6 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -23,6 +22,7 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
         imageView.image = image
         titleLabel.text = title
         descriptionLabel.text = description
+        setupViews()
     }
     
     private func setupViews() {
@@ -42,9 +42,15 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
         
         imageView.snp.makeConstraints { (make) in
             make.top.left.equalToSuperview().offset(32)
-            make.right.lessThanOrEqualToSuperview().offset(-32)
+            make.right.equalToSuperview().offset(-32)
             make.bottom.lessThanOrEqualTo(titleLabel.snp.top).offset(-32)
-            make.width.equalTo(imageView.snp.height)
+            if let image = imageView.image {
+                let ratio = image.size.height / image.size.width
+                make.height.lessThanOrEqualTo(imageView.snp.width).multipliedBy(ratio)
+            } else {
+                make.height.equalTo(imageView.snp.width)
+            }
+            
         }
     }
     
