@@ -67,7 +67,7 @@ class NewTaskSlidingView: UIView {
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.2196078431, blue: 0.2196078431, alpha: 1)
         button.layer.cornerRadius = 4
         button.setImage(#imageLiteral(resourceName: "TaskBox"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        button.imageEdgeInsets = UIEdgeInsets(top: widthScaleFactor(distance: 20), left: widthScaleFactor(distance: 20), bottom: widthScaleFactor(distance: 20), right: widthScaleFactor(distance: 20))
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = true
@@ -79,7 +79,7 @@ class NewTaskSlidingView: UIView {
         let button = UIButton()
         button.layer.cornerRadius = 4
         button.setImage(#imageLiteral(resourceName: "whiteTimeIcon"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
+        button.imageEdgeInsets = UIEdgeInsets(top: widthScaleFactor(distance: 18), left: widthScaleFactor(distance: 18), bottom: widthScaleFactor(distance: 18), right: widthScaleFactor(distance: 18))
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
         button.isSelected = false

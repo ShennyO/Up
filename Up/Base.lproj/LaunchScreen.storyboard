@@ -18,14 +18,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Up" translatesAutoresizingMaskIntoConstraints="NO" id="05I-Pf-d6N">
-                                <rect key="frame" x="51" y="338.5" width="312" height="219"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Up-2" translatesAutoresizingMaskIntoConstraints="NO" id="05I-Pf-d6N">
+                                <rect key="frame" x="48" y="294" width="318" height="318"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="05I-Pf-d6N" secondAttribute="height" multiplier="1:1" id="JAG-x3-Ctx"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="05I-Pf-d6N" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ChS-xu-Yn7"/>
-                            <constraint firstItem="05I-Pf-d6N" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Ipp-WF-OFn"/>
+                            <constraint firstItem="05I-Pf-d6N" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="48" id="HMm-Dh-OOh"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="05I-Pf-d6N" secondAttribute="trailing" constant="48" id="O65-ld-X24"/>
+                            <constraint firstItem="05I-Pf-d6N" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="eER-x9-jPV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -36,6 +41,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Up" width="312" height="219"/>
+        <image name="Up-2" width="284" height="272"/>
     </resources>
 </document>

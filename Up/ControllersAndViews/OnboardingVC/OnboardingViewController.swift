@@ -169,7 +169,7 @@ extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDa
         case 0:
             cell.setup(image: #imageLiteral(resourceName: "Up-1"), title: "Welcome to Up", description: "A modern task manager that helps you keep track of your productivity")
         case 1:
-            cell.setup(image: #imageLiteral(resourceName: "up-tasks-screen"), title: "Manage your tasks", description: "Keep track of what you have to do using tasks or timed sessions.")
+            cell.setup(image: #imageLiteral(resourceName: "up-tasks-screen"), title: "Manage your tasks", description: "Keep track of what you have to do using regular or timed tasks.")
         default:
             cell.setup(image: #imageLiteral(resourceName: "up-calendar-screen"), title: "Track your progress", description: "The calendar shows how many tasks you've completed each day. Scroll down to view the details for the selected date.")
         }
