@@ -548,8 +548,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         let startMonth = gregorian.component(.month, from: startDate)
         let currentYear = gregorian.component(.year, from: today)
         let currentMonth = gregorian.component(.month, from: today)
-//        guard let initalSection = gregorian.components(.month, from: startDate, to: Date(), options: NSCalendar.Options()).month
-//            else { return }
+        
         let initialSection = (currentYear - startYear) * 12 + currentMonth - startMonth
         if initialSection < 0 {
             return
