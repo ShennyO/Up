@@ -26,10 +26,9 @@ class TimedProjectCell: UITableViewCell {
             setUpCell()
         }
     }
+    
     var index: IndexPath!
     var delegate: TimedCellToUpVCDelegate!
-    
-    
     
     //MARK: OUTLETS
     var containerView: UIView = {
@@ -51,8 +50,6 @@ class TimedProjectCell: UITableViewCell {
         view.alpha = 0
         return view
     }()
-    
-    
     
     var descriptionLabel: UILabel = {
         let label = UILabel()
@@ -89,7 +86,6 @@ class TimedProjectCell: UITableViewCell {
         image.isHidden = true
         return image
     }()
-    
     
     //MARK: FUNCTIONS
     private func addOutlets() {

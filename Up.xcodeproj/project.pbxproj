@@ -27,6 +27,11 @@
 		C310DEAC226FD04500FCD80D /* UpTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C310DEAB226FD04500FCD80D /* UpTabBarController.swift */; };
 		C331B63F227001B700E262D6 /* UIImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C331B63E227001B700E262D6 /* UIImageHelper.swift */; };
 		C3353A4D226B7EFC00FFD25B /* KeyboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */; };
+		C33B2E542288B89B009E325F /* RoundedCornersHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B2E532288B89B009E325F /* RoundedCornersHelper.swift */; };
+		C33B2E562288B903009E325F /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B2E552288B903009E325F /* NewTaskViewController.swift */; };
+		C33B2E58228A5DBF009E325F /* TimeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B2E57228A5DBF009E325F /* TimeSelectorView.swift */; };
+		C33B2E5A228A80A6009E325F /* NewTaskSlidingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B2E59228A80A6009E325F /* NewTaskSlidingView.swift */; };
+		C33B2E5E22907A73009E325F /* NewTaskVCAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B2E5D22907A73009E325F /* NewTaskVCAnimator.swift */; };
 		C37519E52255114900FF0E22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37519E42255114900FF0E22 /* AppDelegate.swift */; };
 		C37519EC2255114C00FF0E22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C37519EB2255114C00FF0E22 /* Assets.xcassets */; };
 		C37519EF2255114C00FF0E22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C37519ED2255114C00FF0E22 /* LaunchScreen.storyboard */; };
@@ -37,11 +42,9 @@
 		C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */; };
 		C3751A1D2256D6A100FF0E22 /* ProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */; };
 		C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */; };
-		C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */; };
 		C3751A32225B29D000FF0E22 /* UIPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */; };
 		C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */; };
 		C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A39226178D500FF0E22 /* TimeInputView.swift */; };
-		C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */; };
 		C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */; };
 		C3846726227FCA2200FAD570 /* TimeAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3846725227FCA2200FAD570 /* TimeAnimationView.swift */; };
 		C38467282280D90700FAD570 /* CancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38467272280D90700FAD570 /* CancelView.swift */; };
@@ -94,6 +97,11 @@
 		C310DEAB226FD04500FCD80D /* UpTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpTabBarController.swift; sourceTree = "<group>"; };
 		C331B63E227001B700E262D6 /* UIImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageHelper.swift; sourceTree = "<group>"; };
 		C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHelper.swift; sourceTree = "<group>"; };
+		C33B2E532288B89B009E325F /* RoundedCornersHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersHelper.swift; sourceTree = "<group>"; };
+		C33B2E552288B903009E325F /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
+		C33B2E57228A5DBF009E325F /* TimeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorView.swift; sourceTree = "<group>"; };
+		C33B2E59228A80A6009E325F /* NewTaskSlidingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskSlidingView.swift; sourceTree = "<group>"; };
+		C33B2E5D22907A73009E325F /* NewTaskVCAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskVCAnimator.swift; sourceTree = "<group>"; };
 		C37519E12255114900FF0E22 /* Up.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Up.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C37519E42255114900FF0E22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C37519EB2255114C00FF0E22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -110,11 +118,9 @@
 		C3751A1A2256D68B00FF0E22 /* TimedProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedProjectCell.swift; sourceTree = "<group>"; };
 		C3751A1C2256D6A100FF0E22 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
 		C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewHelper.swift; sourceTree = "<group>"; };
-		C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
 		C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPickerHelper.swift; sourceTree = "<group>"; };
 		C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldHelper.swift; sourceTree = "<group>"; };
 		C3751A39226178D500FF0E22 /* TimeInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputView.swift; sourceTree = "<group>"; };
-		C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
 		C3846725227FCA2200FAD570 /* TimeAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeAnimationView.swift; sourceTree = "<group>"; };
 		C38467272280D90700FAD570 /* CancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelView.swift; sourceTree = "<group>"; };
@@ -179,6 +185,9 @@
 			isa = PBXGroup;
 			children = (
 				C3751A3F2262E3C100FF0E22 /* SessionViewController.swift */,
+				C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */,
+				C3846725227FCA2200FAD570 /* TimeAnimationView.swift */,
+				C38467272280D90700FAD570 /* CancelView.swift */,
 			);
 			path = SessionVC;
 			sourceTree = "<group>";
@@ -186,17 +195,15 @@
 		487E1BC622692A67000F9B09 /* NewProjectVC */ = {
 			isa = PBXGroup;
 			children = (
-				C3751A2D225830CF00FF0E22 /* NewProjectViewController.swift */,
+				C33B2E57228A5DBF009E325F /* TimeSelectorView.swift */,
+				C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */,
+				C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */,
+				C3751A39226178D500FF0E22 /* TimeInputView.swift */,
+				C33B2E59228A80A6009E325F /* NewTaskSlidingView.swift */,
+				C33B2E552288B903009E325F /* NewTaskViewController.swift */,
+				C33B2E5D22907A73009E325F /* NewTaskVCAnimator.swift */,
 			);
 			path = NewProjectVC;
-			sourceTree = "<group>";
-		};
-		487E1BC722692A7D000F9B09 /* TimeSelectorVC */ = {
-			isa = PBXGroup;
-			children = (
-				C3751A3D2261A25C00FF0E22 /* TimeSelectorViewController.swift */,
-			);
-			path = TimeSelectorVC;
 			sourceTree = "<group>";
 		};
 		487E1BC822692F62000F9B09 /* UpVC */ = {
@@ -214,7 +221,6 @@
 			children = (
 				486501822294861D007F3E38 /* OnboardingVC */,
 				2730345122768EC4001B00A3 /* StatsVC */,
-				487E1BC722692A7D000F9B09 /* TimeSelectorVC */,
 				487E1BC622692A67000F9B09 /* NewProjectVC */,
 				487E1BC522692A1E000F9B09 /* SessionVC */,
 				488E0A17226A815200ABDB50 /* CalendarVC */,
@@ -309,17 +315,12 @@
 			children = (
 				C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */,
 				C384676322850DC900FAD570 /* ScaleFactor.swift */,
-				C3751A31225B29D000FF0E22 /* UIPickerHelper.swift */,
 				2730344B22768E7A001B00A3 /* ChartType.swift */,
-				C3751A35225D499A00FF0E22 /* TextFieldHelper.swift */,
-				C3751A39226178D500FF0E22 /* TimeInputView.swift */,
-				C3B36B4D226A39AA007CC38A /* CongratulationsView.swift */,
-				C3846725227FCA2200FAD570 /* TimeAnimationView.swift */,
-				C38467272280D90700FAD570 /* CancelView.swift */,
 				C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */,
 				48CCA560226FC22F0034BACB /* Style.swift */,
 				C331B63E227001B700E262D6 /* UIImageHelper.swift */,
 				C39B2C33227539EA0039A7BF /* LabelHelper.swift */,
+				C33B2E532288B89B009E325F /* RoundedCornersHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -585,6 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C33B2E562288B903009E325F /* NewTaskViewController.swift in Sources */,
 				48CCA55F226F9BDE0034BACB /* CalendarHeaderView.swift in Sources */,
 				C384676422850DC900FAD570 /* ScaleFactor.swift in Sources */,
 				C37519E52255114900FF0E22 /* AppDelegate.swift in Sources */,
@@ -593,24 +595,27 @@
 				C38467282280D90700FAD570 /* CancelView.swift in Sources */,
 				C3B36B4E226A39AA007CC38A /* CongratulationsView.swift in Sources */,
 				4865018422948633007F3E38 /* OnboardingViewController.swift in Sources */,
-				C3751A2E225830CF00FF0E22 /* NewProjectViewController.swift in Sources */,
 				C3751A1D2256D6A100FF0E22 /* ProjectCell.swift in Sources */,
 				488438D0226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift in Sources */,
 				C3751A1722552DFE00FF0E22 /* UpViewController.swift in Sources */,
+				C33B2E5E22907A73009E325F /* NewTaskVCAnimator.swift in Sources */,
 				48CCA561226FC22F0034BACB /* Style.swift in Sources */,
 				C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */,
+				C33B2E542288B89B009E325F /* RoundedCornersHelper.swift in Sources */,
 				C3BE4327226E797A00AB8C6F /* Up.xcdatamodeld in Sources */,
 				C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */,
 				48650186229486A0007F3E38 /* OnboardingCollectionViewCell.swift in Sources */,
 				C3751A1922552F3D00FF0E22 /* Project.swift in Sources */,
+				C33B2E58228A5DBF009E325F /* TimeSelectorView.swift in Sources */,
 				C331B63F227001B700E262D6 /* UIImageHelper.swift in Sources */,
 				C3BE4321226E772C00AB8C6F /* CoreDataInitializable.swift in Sources */,
 				C3353A4D226B7EFC00FFD25B /* KeyboardHelper.swift in Sources */,
 				488E0A19226A81D900ABDB50 /* CalendarViewController.swift in Sources */,
 				4859196D226A8C4F00A7634C /* CalendarCollectionViewCell.swift in Sources */,
 				48B38DFA2276437C00F0EA85 /* CalendarGoalCountHeaderView.swift in Sources */,
-				486A9D53227A9CED00D430F2 /* CalendarTimeHeaderView.swift in Sources */,
+				C33B2E5A228A80A6009E325F /* NewTaskSlidingView.swift in Sources */,
 				48FAD06C227A437200E0A965 /* UpCalendar.swift in Sources */,
+				486A9D53227A9CED00D430F2 /* CalendarTimeHeaderView.swift in Sources */,
 				C3BE431F226E76EF00AB8C6F /* CoreDataStack.swift in Sources */,
 				C3751A3A226178D500FF0E22 /* TimeInputView.swift in Sources */,
 				488E0A1B226A844C00ABDB50 /* CalendarTableViewCell.swift in Sources */,
@@ -618,7 +623,6 @@
 				C39B2C34227539EA0039A7BF /* LabelHelper.swift in Sources */,
 				C310DEAC226FD04500FCD80D /* UpTabBarController.swift in Sources */,
 				C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */,
-				C3751A3E2261A25C00FF0E22 /* TimeSelectorViewController.swift in Sources */,
 				484D0AFC226E7122007AFACE /* CalendarLayout.swift in Sources */,
 				2730345022768EBF001B00A3 /* StatsViewController.swift in Sources */,
 				C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */,

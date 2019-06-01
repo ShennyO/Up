@@ -14,38 +14,33 @@ enum InputType {
     case textView
 }
 
-//from TextViewInputView to NewProjectVC
-protocol CustomTextViewToNewProjVCDelegate: class {
+//from TextViewInputView to NewTaskSlidingView
+protocol CustomTextViewToNewTaskViewDelegate: class {
     func sendText(text: String)
+    func dismissTimeSelectorView()
+    func configPangesture()
 }
 
 class SunnyCustomInputView: UIView {
     
     //MARK: VARIABLES
-    weak var textDelegate: CustomTextViewToNewProjVCDelegate!
+    weak var textDelegate: CustomTextViewToNewTaskViewDelegate!
     
     
     //MARK: OUTLETS
-    
-    
-    
     let tv: UITextView = {
         let tv = UITextView()
-        tv.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
+        tv.backgroundColor = Style.Colors.Palette01.pureWhite
         tv.textColor = UIColor.gray
         tv.text = "Goal description"
         tv.returnKeyType = UIReturnKeyType.done
-//        tv.isScrollEnabled = false
         return tv
     }()
     
-    
     let tfOverlayLabel: UILabel = {
-        
         let label = UILabel()
         label.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         return label
-        
     }()
     
     let bottomBorder: UIView = {
@@ -61,7 +56,7 @@ class SunnyCustomInputView: UIView {
         self.layer.masksToBounds = true
         addOutlets(type: type)
         setConstraints(type: type)
-        self.backgroundColor = #colorLiteral(red: 0.7254901961, green: 0.7254901961, blue: 0.7254901961, alpha: 1)
+        self.backgroundColor = Style.Colors.Palette01.pureWhite
         self.layer.cornerRadius = 5
         tv.font = UIFont(name: "AppleSDGothicNeo-Bold", size: fontSize)
         tv.tintColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
@@ -69,9 +64,6 @@ class SunnyCustomInputView: UIView {
         tfOverlayLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: widthScaleFactor(distance: 13))
         tfOverlayLabel.text = "Description"
         tv.delegate = self
-        
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,17 +71,12 @@ class SunnyCustomInputView: UIView {
     }
     
     private func addOutlets(type: InputType) {
-        
-        
         [tfOverlayLabel, bottomBorder, tv].forEach { (view) in
             self.addSubview(view)
         }
     }
     
-  
-    
     private func setConstraints(type: InputType) {
-        
         tv.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(heightScaleFactor(distance: 20))
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 5))
@@ -157,6 +144,8 @@ extension SunnyCustomInputView: UITextViewDelegate {
             textView.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
         tfOverlayLabel.textColor = #colorLiteral(red: 0, green: 0.3391429484, blue: 0.7631449103, alpha: 1)
+        textDelegate.dismissTimeSelectorView()
+        textDelegate.configPangesture()
         animateBottomBorder()
     }
     
@@ -173,12 +162,13 @@ extension SunnyCustomInputView: UITextViewDelegate {
 }
 
 
-extension SunnyCustomInputView: newProjectVCToTextInputViewDelegate {
-    func populateTextView(text: String) {
-        tv.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+extension SunnyCustomInputView: NewTaskSlidingViewToDescriptionTextViewDelegate {
+    
+    func sendTextInEditMode(text: String) {
         tv.text = text
-        
+        tv.textColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
     }
+    
 }
 
 
