@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let keychain = KeychainSwift()
-        keychain.delete("onboarded")
+//        keychain.delete("onboarded")
         let onboarded = keychain.get("onboarded")
         
         if let _ = onboarded {
