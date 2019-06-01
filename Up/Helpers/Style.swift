@@ -42,7 +42,7 @@ struct Style {
             static let pureWhite = UIColor(displayP3Red: 255 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1)
 //            static let pureWhite = UIColor.white
             static let gunMetal = UIColor(displayP3Red: 20 / 255, green: 20 / 255, blue: 20 / 255, alpha: 1)
-//            static let gunMetal = UIColor.black
+            static let keyBoardGray = #colorLiteral(red: 0.7450980392, green: 0.7568627451, blue: 0.7803921569, alpha: 1)
         }
     }
 }

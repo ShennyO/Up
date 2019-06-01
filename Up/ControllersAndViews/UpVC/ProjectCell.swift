@@ -86,6 +86,12 @@ class ProjectCell: UITableViewCell {
         
     }()
     
+    var hitBoxView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        return view
+    }()
+    
     var checkMarkImage: UIImageView = {
         
         let imageView = UIImageView(image: #imageLiteral(resourceName: "checkMark"))
@@ -103,6 +109,7 @@ class ProjectCell: UITableViewCell {
         containerView.addSubview(taskSquareFillView)
         containerView.addSubview(darkView)
         taskSquareFillView.addSubview(checkMarkImage)
+        containerView.addSubview(hitBoxView)
         
     }
     
@@ -124,24 +131,31 @@ class ProjectCell: UITableViewCell {
         
         taskSquareView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 17))
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
             make.width.height.equalTo(widthScaleFactor(distance: 22))
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
             make.left.equalTo(taskSquareView.snp.right).offset(widthScaleFactor(distance: 15))
             make.right.equalToSuperview().offset(widthScaleFactor(distance: -15))
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
         }
         
         taskSquareFillView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(widthScaleFactor(distance: 17))
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
             make.width.height.equalTo(widthScaleFactor(distance: 22))
         }
         
+        hitBoxView.snp.makeConstraints { (make) in
+            make.top.bottom.equalToSuperview().inset(widthScaleFactor(distance: 12))
+            make.left.equalToSuperview().inset(widthScaleFactor(distance: 8))
+            make.right.equalTo(descriptionLabel.snp.left).offset(widthScaleFactor(distance: -8))
+        }
+        
         checkMarkImage.snp.makeConstraints { (make) in
-            make.centerY.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1)
+            make.centerX.equalToSuperview()
             make.width.height.equalTo(widthScaleFactor(distance: 12))
         }
         
@@ -149,7 +163,7 @@ class ProjectCell: UITableViewCell {
     
     private func addCheckBoxGesture() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(complete))
-        self.taskSquareView.addGestureRecognizer(tap)
+        self.hitBoxView.addGestureRecognizer(tap)
         
     }
     
@@ -187,8 +201,8 @@ class ProjectCell: UITableViewCell {
         
         
         if numberOfLines == 1 {
-            path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: self.bounds.height / 2))
-            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + rowOneWidth, y: self.bounds.height / 2))
+            path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: (self.bounds.height / 2) + 1))
+            path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + rowOneWidth, y: (self.bounds.height / 2) + 1))
             
             let shapeLayer: CAShapeLayer = {
                 let layer = CAShapeLayer()
@@ -207,7 +221,7 @@ class ProjectCell: UITableViewCell {
             
         } else {
             
-            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + heightScaleFactor(distance: 10)
+            let yPos = (self.bounds.height / 2) - (descriptionLabel.bounds.height / 2) + heightScaleFactor(distance: 11)
             path.move(to: CGPoint(x: widthScaleFactor(distance: 76), y: yPos))
             path.addLine(to: CGPoint(x: widthScaleFactor(distance: 76) + CGFloat(rowOneWidth), y: yPos))
             
@@ -276,7 +290,7 @@ class ProjectCell: UITableViewCell {
         taskSquareFillView.alpha = 0
         checkMarkImage.isHidden = false
         checkMarkImage.alpha = 0
-//        self.isUserInteractionEnabled = false
+        self.isUserInteractionEnabled = false
         generator.impactOccurred()
         
         strikethroughAndComplete {

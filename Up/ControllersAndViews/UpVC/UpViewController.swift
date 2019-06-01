@@ -17,6 +17,7 @@ protocol UpVCToUpVCHeaderDelegate {
     func alertHeaderView(total: Int)
 }
 
+
 class UpViewController: UIViewController {
     
     var originalCenter: CGPoint!
@@ -24,6 +25,7 @@ class UpViewController: UIViewController {
     var selectedReorderingIndexPath: IndexPath!
     var hasSelectedCellBeenUnhidden =  false
     
+    let transition = NewTaskVCAnimator()
     
     let stack = CoreDataStack.instance
 
@@ -42,6 +44,13 @@ class UpViewController: UIViewController {
         return button
     }()
     
+    let grayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
+        view.isHidden = true
+        return view
+    }()
+    
     var tableHeaderView: HeaderView!
     
     
@@ -53,7 +62,6 @@ class UpViewController: UIViewController {
     var timedCellDelegate: UpVCToTimedProjectCellDelegate!
     
     // Anytime goals is set (adding new tasks, deleting) we need to configure ordering
-    // Also need to configure after reordering, and maybe after editing?
     var goals: [Goal] = [] {
         didSet {
             configureHeaderAndTableView()
@@ -114,9 +122,11 @@ extension UpViewController {
     
     
     func addButtonTapped() {
-        let nextVC = NewProjectViewController()
-        nextVC.goalDelegate = self
-        self.present(nextVC, animated: true, completion: nil)
+        let nextVC = NewTaskViewController()
+        nextVC.upVCDelegate = self
+        nextVC.transitioningDelegate = self
+        nextVC.modalPresentationStyle = .overFullScreen
+        self.present(nextVC, animated: true)
     }
     
     private func fetchGoals(completion: @escaping () -> ()) {
@@ -129,6 +139,7 @@ extension UpViewController {
     
     private func addOutlets() {
         self.view.addSubview(addButton)
+        self.view.addSubview(grayView)
     }
     
     private func setConstraints() {
@@ -137,7 +148,13 @@ extension UpViewController {
             make.bottom.equalToSuperview().inset(15)
             make.height.width.equalTo(widthScaleFactor(distance: 60))
         }
+        
+        grayView.snp.makeConstraints { (make) in
+            make.left.right.top.bottom.equalToSuperview()
+        }
+        
     }
+    
     
     private func addLongTapGesture() {
         tap = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -210,12 +227,11 @@ extension UpViewController {
         } else if gestureRecognizer.state == .changed {
             
             center = gestureRecognizer.location(in: self.view)
-            print("Center: ", center)
             let width: CGFloat = 50
             let height: CGFloat = 50
             let box = CGRect(x: center!.x - width / 2, y: center!.y - height / 2, width: width, height: height)
             if box.contains(originalCenter) {
-                print("In the button")
+                
             } else {
                 //if it's outside the button
                 self.tap.isEnabled = false
@@ -321,14 +337,14 @@ extension UpViewController: UITableViewDataSource, UITableViewDelegate {
     func editAction(index: IndexPath) -> UIContextualAction {
         let goal = goals[index.row]
         let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
-            
-            let nextVC = NewProjectViewController()
+            let nextVC = NewTaskViewController()
+            nextVC.upVCDelegate = self
             nextVC.selectedIndex = index.row
-            nextVC.goalDelegate = self
             nextVC.selectedGoal = goal
             nextVC.selectedTime = Int(goal.duration)
-            self.present(nextVC, animated: true, completion: nil)
-            
+            nextVC.modalPresentationStyle = .overFullScreen
+            nextVC.transitioningDelegate = self
+            self.present(nextVC, animated: true)
             completion(true)
         }
         
@@ -369,7 +385,8 @@ extension UpViewController: TimedCellToUpVCDelegate, NonTimedCellToUpVCDelegate 
                 self.stack.saveTo(context: self.stack.viewContext)
                 self.goalCompletionDelegate.goalWasCompleted(goal: self.goals[index.row])
                 self.goals.remove(at: index.row)
-                self.upTableView.isUserInteractionEnabled = true
+                cell.isUserInteractionEnabled = true
+//                self.upTableView.isUserInteractionEnabled = true
                 self.upTableView.deleteRows(at: [index], with: .right)
             }
         }
@@ -550,4 +567,18 @@ extension UpViewController {
     struct Path {
         static var initialIndexPath: IndexPath? = nil
     }
+}
+
+
+//CUSTOM TRANSITION
+extension UpViewController: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return transition
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
+    }
+    
 }

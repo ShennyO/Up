@@ -167,7 +167,7 @@ extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: onboardingCollectionViewCellID, for: indexPath) as! OnboardingCollectionViewCell
         switch indexPath.row {
         case 0:
-            cell.setup(image: #imageLiteral(resourceName: "Up"), title: "Welcome to Up", description: "A modern task manager that helps you keep track of your productivity")
+            cell.setup(image: #imageLiteral(resourceName: "Up-1"), title: "Welcome to Up", description: "A modern task manager that helps you keep track of your productivity")
         case 1:
             cell.setup(image: #imageLiteral(resourceName: "up-tasks-screen"), title: "Manage your tasks", description: "Keep track of what you have to do using tasks or timed sessions.")
         default:
