@@ -7,6 +7,7 @@ target 'Up' do
 
   # Pods for Up
     pod 'SnapKit', '~> 4.0.0'
+    pod 'KeychainSwift'
     pod 'SwiftChart'
 
   target 'UpTests' do

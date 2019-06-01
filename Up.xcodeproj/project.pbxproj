@@ -13,7 +13,6 @@
 		4859196D226A8C4F00A7634C /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859196C226A8C4F00A7634C /* CalendarCollectionViewCell.swift */; };
 		4865018422948633007F3E38 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4865018322948633007F3E38 /* OnboardingViewController.swift */; };
 		48650186229486A0007F3E38 /* OnboardingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48650185229486A0007F3E38 /* OnboardingCollectionViewCell.swift */; };
-		4865018822948821007F3E38 /* OnboardingFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4865018722948821007F3E38 /* OnboardingFooterView.swift */; };
 		486A9D53227A9CED00D430F2 /* CalendarTimeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486A9D52227A9CED00D430F2 /* CalendarTimeHeaderView.swift */; };
 		488438D0226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488438CF226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift */; };
 		488E0A19226A81D900ABDB50 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488E0A18226A81D900ABDB50 /* CalendarViewController.swift */; };
@@ -78,7 +77,6 @@
 		4859196C226A8C4F00A7634C /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		4865018322948633007F3E38 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		48650185229486A0007F3E38 /* OnboardingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCollectionViewCell.swift; sourceTree = "<group>"; };
-		4865018722948821007F3E38 /* OnboardingFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFooterView.swift; sourceTree = "<group>"; };
 		486A9D52227A9CED00D430F2 /* CalendarTimeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTimeHeaderView.swift; sourceTree = "<group>"; };
 		488438CF226FF4EA00AAFA2C /* CalendarGoalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGoalTableViewCell.swift; sourceTree = "<group>"; };
 		488E0A18226A81D900ABDB50 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -173,7 +171,6 @@
 			children = (
 				4865018322948633007F3E38 /* OnboardingViewController.swift */,
 				48650185229486A0007F3E38 /* OnboardingCollectionViewCell.swift */,
-				4865018722948821007F3E38 /* OnboardingFooterView.swift */,
 			);
 			path = OnboardingVC;
 			sourceTree = "<group>";
@@ -564,6 +561,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Up/Pods-Up-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftChart/SwiftChart.framework",
 			);
@@ -571,6 +569,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftChart.framework",
 			);
@@ -602,7 +601,6 @@
 				C3751A402262E3C100FF0E22 /* SessionViewController.swift in Sources */,
 				C3BE4327226E797A00AB8C6F /* Up.xcdatamodeld in Sources */,
 				C3751A1F22573A1E00FF0E22 /* HeaderViewHelper.swift in Sources */,
-				4865018822948821007F3E38 /* OnboardingFooterView.swift in Sources */,
 				48650186229486A0007F3E38 /* OnboardingCollectionViewCell.swift in Sources */,
 				C3751A1922552F3D00FF0E22 /* Project.swift in Sources */,
 				C331B63F227001B700E262D6 /* UIImageHelper.swift in Sources */,
