@@ -60,6 +60,11 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
         containerView.addGestureRecognizer(panGesture)
     }
     
+    private func setUpDismissalGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissView))
+        self.darkView.addGestureRecognizer(tap)
+    }
+    
     private func configureEdit() {
 
         if selectedGoal == nil {
@@ -81,6 +86,12 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
     
     //MARK: OBJC FUNCTIONS
     
+    @objc func dismissView() {
+        self.view.endEditing(true)
+        self.darkView.backgroundColor = UIColor.clear
+        dismiss(animated: true, completion: nil)
+    }
+    
     @objc func draggedView(_ sender:UIPanGestureRecognizer) {
         
         let currentPosY = self.containerView.frame.minY
@@ -89,14 +100,14 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
         switch sender.state {
             
         case .began:
-            //here we also want to send a fxn back to newtaskslidingview to hide timeselectorview
-            view.endEditing(true)
             startPosition = self.containerView.center
             
         case .changed:
             
             let translation = sender.translation(in: self.view)
             guard let start = self.startPosition else { return }
+            // translation is always to the bottom, so positive, can't go up
+        
             let newCenter = CGPoint(x: start.x, y: start.y + max(translation.y, 0))
             self.containerView.center = newCenter
             self.darkView.backgroundColor = #colorLiteral(red: 0.2058082521, green: 0.2050952315, blue: 0.2267607152, alpha: 1).withAlphaComponent(currentAlpha)
@@ -150,6 +161,7 @@ class NewTaskViewController: UIViewController, UIViewControllerTransitioningDele
         addOutlets()
         setConstraints()
         setUpGesture()
+        setUpDismissalGesture()
         slidingViewDelegate = containerView
         containerView.newTaskVCDelegate = self
         configureEdit()

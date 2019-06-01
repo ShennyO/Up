@@ -272,7 +272,7 @@ class NewTaskSlidingView: UIView {
             make.height.equalTo(heightScaleFactor(distance: 272))
         }
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
             self.layoutIfNeeded()
         })
         
@@ -332,7 +332,7 @@ extension NewTaskSlidingView: CustomTextViewToNewTaskViewDelegate {
             make.height.equalTo(heightScaleFactor(distance: 272))
         }
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
             self.layoutIfNeeded()
         })
         
