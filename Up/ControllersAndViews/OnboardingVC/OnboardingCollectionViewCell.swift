@@ -33,29 +33,29 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
         descriptionLabel.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview().inset(16)
             make.bottom.lessThanOrEqualToSuperview().offset(-32)
+            make.height.equalTo(60)
+//            make.bottom.equalToSuperview().offset(-32)
         }
         
         titleLabel.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview().inset(16)
+            make.height.equalTo(30)
             make.bottom.equalTo(descriptionLabel.snp.top).offset(-16)
         }
         
         imageView.snp.makeConstraints { (make) in
-            make.top.left.equalToSuperview().offset(32)
-            make.right.equalToSuperview().offset(-32)
-            make.bottom.lessThanOrEqualTo(titleLabel.snp.top).offset(-32)
-            if let image = imageView.image {
-                let ratio = image.size.height / image.size.width
-                make.height.lessThanOrEqualTo(imageView.snp.width).multipliedBy(ratio)
-            } else {
-                make.height.equalTo(imageView.snp.width)
-            }
+            make.top.equalToSuperview().offset(32)
+            make.bottom.equalTo(titleLabel.snp.top).offset(-32)
+            make.centerX.equalToSuperview()
+            let ratio = imageView.image!.size.height / imageView.image!.size.width
+            make.height.equalTo(imageView.snp.width).multipliedBy(ratio)
+            make.width.lessThanOrEqualToSuperview().offset(-64)
         }
     }
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 8
+        imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFit
