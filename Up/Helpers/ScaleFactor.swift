@@ -27,7 +27,3 @@ public func widthScaleFactor(distance: CGFloat) -> CGFloat {
     
     return scaledDistance
 }
-
-
-
-

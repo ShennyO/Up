@@ -67,13 +67,13 @@ class CalendarGoalTableViewCell: UITableViewCell {
 //         * mainContainerView
         lineView.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
-            make.left.equalToSuperview().offset(50)
+            make.left.equalToSuperview().offset(widthScaleFactor(distance: 50))
             make.width.equalTo(0.5)
         }
         
         clockIconView.snp.makeConstraints { (make) in
-            make.left.equalTo(lineView.snp.right).offset(16)
-            make.top.bottom.equalToSuperview().inset(16)
+            make.left.equalTo(lineView.snp.right).offset(widthScaleFactor(distance: 16))
+            make.top.bottom.equalToSuperview().inset(heightScaleFactor(distance: 16))
             make.width.equalTo(clockIconView.snp.height)
         }
         /*
@@ -96,10 +96,10 @@ class CalendarGoalTableViewCell: UITableViewCell {
         }
 
         checkmarkView.snp.makeConstraints { (make) in
-            make.left.equalTo(clockIconView.snp.left).inset(8)
-            make.right.equalTo(clockIconView.snp.right).inset(8)
-            make.top.equalTo(clockIconView.snp.top).inset(8)
-            make.bottom.equalTo(clockIconView.snp.bottom).inset(8)
+            make.left.equalTo(clockIconView.snp.left).inset(heightScaleFactor(distance: 8))
+            make.right.equalTo(clockIconView.snp.right).inset(heightScaleFactor(distance: 8))
+            make.top.equalTo(clockIconView.snp.top).inset(heightScaleFactor(distance: 8))
+            make.bottom.equalTo(clockIconView.snp.bottom).inset(heightScaleFactor(distance: 8))
         }
 
         descriptionLabel.snp.makeConstraints { (make) in
@@ -167,7 +167,7 @@ class CalendarGoalTableViewCell: UITableViewCell {
         label.numberOfLines = 1
         return label
     }()
-    
+
     var durationLabelView: UIView = {
         let view = UIView()
         view.backgroundColor = Style.Colors.Palette01.gunMetal
