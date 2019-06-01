@@ -23,6 +23,7 @@ class CalendarViewController: UIViewController {
     
     var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
 
+    let today = Date()
     var startDate = Date()
     var endDate = Date()
     var startOfMonth = Date()
@@ -543,11 +544,18 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
             return
         }
         
-        guard let initalSection = gregorian.components(.month, from: startDate, to: Date(), options: NSCalendar.Options()).month
-            else { return }
+        let startYear = gregorian.component(.year, from: startDate)
+        let startMonth = gregorian.component(.month, from: startDate)
+        let currentYear = gregorian.component(.year, from: today)
+        let currentMonth = gregorian.component(.month, from: today)
+        
+        let initialSection = (currentYear - startYear) * 12 + currentMonth - startMonth
+        if initialSection < 0 {
+            return
+        }
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         
-        guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: initalSection)) else { return }
+        guard let attri = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: initialSection)) else { return }
         collectionView.setContentOffset(CGPoint(x: attri.frame.origin.x - 2, y: 0), animated: false)
         didScrollCollectionViewToToday = true
     }
