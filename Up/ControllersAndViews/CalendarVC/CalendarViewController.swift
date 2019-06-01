@@ -234,7 +234,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             let containerInsets: CGFloat = 32
             return cvHeight + headerHeight + containerInsets
         default:
-            return 60
+            return heightScaleFactor(distance: 60)
         }
     }
     
@@ -260,9 +260,9 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return 0
         case 1:
-            return 40
+            return heightScaleFactor(distance: 40)
         default:
-            return 68
+            return heightScaleFactor(distance: 68)
         }
     }
     

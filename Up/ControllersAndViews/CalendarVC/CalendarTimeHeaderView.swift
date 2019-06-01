@@ -46,8 +46,8 @@ class CalendarTimeHeaderView: UITableViewHeaderFooterView {
         //         * topContainerView
         timeLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().inset(20)
-            make.width.equalTo(60)
-            make.bottom.top.equalToSuperview().inset(16)
+            make.width.equalTo(heightScaleFactor(distance: 60))
+            make.bottom.top.equalToSuperview().inset(heightScaleFactor(distance: 16))
         }
     }
     

@@ -73,7 +73,7 @@ class CalendarGoalCountHeaderView: UITableViewHeaderFooterView {
         }
         
         dateLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().inset(widthScaleFactor(distance: 20))
+            make.left.equalToSuperview().inset(20)
             make.centerY.equalToSuperview()
         }
         
@@ -86,12 +86,12 @@ class CalendarGoalCountHeaderView: UITableViewHeaderFooterView {
         goalLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(dateLabel.snp.bottom)
             make.left.equalTo(bubbleView.snp.right).offset(widthScaleFactor(distance: 6))
-            make.right.lessThanOrEqualToSuperview().inset(widthScaleFactor(distance: 20))
+            make.right.lessThanOrEqualToSuperview().inset(20)
             make.top.equalTo(dateLabel.snp.top)
         }
         
         infoLabel.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview().inset(widthScaleFactor(distance: 20))
+            make.left.right.equalToSuperview().inset(20)
             make.centerY.equalToSuperview()
         }
     }
