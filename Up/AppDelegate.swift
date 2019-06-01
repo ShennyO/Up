@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KeychainSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,12 +24,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.isIdleTimerDisabled = true
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        let initialTabBarController = UpTabBarController()
-        initialTabBarController.tabBar.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
-        initialTabBarController.tabBar.isTranslucent = false
         
-        window!.rootViewController = initialTabBarController
+        let keychain = KeychainSwift()
+//        keychain.delete("onboarded")
+        let onboarded = keychain.get("onboarded")
+        
+        if let _ = onboarded {
+            let initialTabBarController = UpTabBarController()
+            window!.rootViewController = initialTabBarController
+        } else {
+            let onboardingVC = OnboardingViewController()
+            window!.rootViewController = onboardingVC
+        }
+        
         window!.makeKeyAndVisible()
+//
+//        window!.rootViewController = initialTabBarController
+//        window!.makeKeyAndVisible()
         return true
     }
 
