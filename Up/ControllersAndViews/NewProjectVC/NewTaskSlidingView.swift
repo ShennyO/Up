@@ -320,8 +320,8 @@ extension NewTaskSlidingView: UIGestureRecognizerDelegate {
 }
 
 extension NewTaskSlidingView: CustomTextViewToNewTaskViewDelegate {
-    func configPangesture() {
-        newTaskVCDelegate.configGestureStatus(status: false)
+    func configPangesture(status: Bool) {
+        newTaskVCDelegate.configGestureStatus(status: status)
     }
     
     func dismissTimeSelectorView() {

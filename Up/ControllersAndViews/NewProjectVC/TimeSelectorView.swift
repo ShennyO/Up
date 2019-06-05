@@ -44,10 +44,10 @@ class TimeSelectorView: UIView {
     
     private func setConstraints() {
         timePickerView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().inset(40)
+            make.top.equalToSuperview().inset(heightScaleFactor(distance: 40))
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(widthScaleFactor(distance: 135))
+            make.height.equalTo(widthScaleFactor(distance: heightScaleFactor(distance: 135)))
         }
         
         doneButton.snp.makeConstraints { (make) in
