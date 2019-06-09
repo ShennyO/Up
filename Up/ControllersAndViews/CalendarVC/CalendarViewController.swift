@@ -79,6 +79,9 @@ class CalendarViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 0
         tableView.estimatedSectionHeaderHeight = 0
+        tableView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+//        tableView.contentOffset = CGPoint(x: 0, y: 0)
+//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return tableView
     }()
     
@@ -258,7 +261,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
         case 0:
-            return 0
+            return 0.1
         case 1:
             return heightScaleFactor(distance: 40)
         default:
@@ -269,7 +272,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section {
         case 0:
-            return nil
+            return UIView(frame: CGRect.zero)
         case 1:
             let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: calendarGoalCountHeaderViewID) as! CalendarGoalCountHeaderView
             if let day = upCalendar.findDay(key: selectedDateKey) {
