@@ -355,6 +355,7 @@ extension NewTaskSlidingView: newTaskVCToSlidingViewDelegate {
     
     func sendGoalDescription(desc: String) {
         descriptionViewDelegate.sendTextInEditMode(text: desc)
+        addButton.setTitle("Edit", for: .normal)
     }
     
     func sessionModeOn() {

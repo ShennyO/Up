@@ -67,7 +67,7 @@ class TimeSelectorView: UIView {
         for x in 1...60 {
             times.append(x)
         }
-        self.backgroundColor = Style.Colors.Palette01.keyBoardGray
+        self.backgroundColor = #colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 0.9411764706, alpha: 1)
         timePickerView.delegate = self
         timePickerView.dataSource = self
         timePickerView.selectRow(selectedTime - 1, inComponent: 0, animated: false)
