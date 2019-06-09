@@ -79,6 +79,9 @@ class CalendarViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 0
         tableView.estimatedSectionHeaderHeight = 0
+        tableView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+//        tableView.contentOffset = CGPoint(x: 0, y: 0)
+//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return tableView
     }()
     
@@ -258,7 +261,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
         case 0:
-            return 0
+            return 0.1
         case 1:
             return heightScaleFactor(distance: 40)
         default:
@@ -269,7 +272,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section {
         case 0:
-            return nil
+            return UIView(frame: CGRect.zero)
         case 1:
             let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: calendarGoalCountHeaderViewID) as! CalendarGoalCountHeaderView
             if let day = upCalendar.findDay(key: selectedDateKey) {
@@ -402,25 +405,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func deleteRowInTableView(indexPath: IndexPath, numOfRowsInSection: Int) {
-//        self.tableView.isUserInteractionEnabled = false
-//
-//        let cvHeight: CGFloat = (tableView.frame.width - 32) / 7 * 6
-//        let headerHeight: CGFloat = 90
-//        let containerInsets: CGFloat = 32
-//        let firstCellHeight = cvHeight + headerHeight + containerInsets + 20
-//
-//        let currentFooterView = self.tableView.tableFooterView // Steal the current footer view
-//        var didChange = false
-//        if tableView.contentOffset.y <= firstCellHeight {
-//            let newView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: self.tableView.bounds.width, height: self.tableView.bounds.height*2.0)) // Create a new footer view with large enough height (Really making sure it is large enough)
-//            if let currentFooterView = currentFooterView {
-//                // Put the current footer view as a subview to the new one if it exists (this was not really tested)
-//                currentFooterView.frame.origin = .zero // Just in case put it to zero
-//                newView.addSubview(currentFooterView) // Add as subview
-//            }
-//            self.tableView.tableFooterView = newView // Assign a new footer
-//            didChange = true
-//        }
         self.tableView.beginUpdates()
         
         if numOfRowsInSection == 0 {
@@ -442,14 +426,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         self.tableView.endUpdates()
-//        tableView.setContentOffset(tableView.contentOffset, animated: false)
-        
-//        if didChange {
-//            self.tableView.tableFooterView = currentFooterView
-//        }
-//
-//        self.tableView.isUserInteractionEnabled = true
-//        self.view.layoutIfNeeded()
     }
 }
 
