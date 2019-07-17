@@ -90,27 +90,10 @@ class CalendarViewController: UIViewController {
 
         self.navigationItem.title = "Calendar"
         
-//        fetchData()
         setupViews()
         setupTableView()
         
     }
-    
-//    func fetchData() {
-//
-//        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, sorting: .completionDateAscending) as! [Goal]
-//        if goalsArr.count == 0 {
-//            startDate = gregorian.date(byAdding: .year, value: -1, to: Date(), options: NSCalendar.Options())!
-//            endDate = gregorian.date(byAdding: .year, value: 1, to: Date(), options: NSCalendar.Options())!
-//            return
-//        }
-//        startDate = gregorian.date(byAdding: .year, value: -1, to: goalsArr[0].completionDate!, options: NSCalendar.Options())!
-//        endDate = gregorian.date(byAdding: .year, value: 1, to: goalsArr.last!.completionDate!, options: NSCalendar.Options())!
-//
-//        for goal in goalsArr {
-//            upCalendar.appendGoal(goal: goal)
-//        }
-//    }
     
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
