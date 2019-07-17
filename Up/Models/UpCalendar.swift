@@ -9,14 +9,16 @@ import Foundation
 
 class UpCalendar {
     
-    let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .none
-        formatter.dateFormat = "dd/MM/yyyy"
-        return formatter
-    }()
+    static let shared = UpCalendar()
     
     var dayDict = [String: UpCalendarDay]()
+    
+    var startDate = Date()
+    var endDate = Date()
+    
+    init() {
+        self.fetchData()
+    }
     
     func findDay(completionYear year: Int, month: Int, day: Int) -> UpCalendarDay? {
         let y = String(year)
@@ -65,6 +67,37 @@ class UpCalendar {
         
         let key = d + "/" + m + "/" + y
         return key
+    }
+    
+    //    MARK: Private
+    private let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .none
+        formatter.dateFormat = "dd/MM/yyyy"
+        return formatter
+    }()
+    
+    private let coreDataStack = CoreDataStack.instance
+    
+    private lazy var gregorian : NSCalendar = {
+        let cal = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
+        cal.timeZone = TimeZone.current
+        return cal
+    }()
+    
+    private func fetchData() {
+        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, sorting: .completionDateAscending) as! [Goal]
+        if goalsArr.count == 0 {
+            startDate = gregorian.date(byAdding: .year, value: -1, to: Date(), options: NSCalendar.Options())!
+            endDate = gregorian.date(byAdding: .year, value: 1, to: Date(), options: NSCalendar.Options())!
+            return
+        }
+        startDate = gregorian.date(byAdding: .year, value: -1, to: goalsArr[0].completionDate!, options: NSCalendar.Options())!
+        endDate = gregorian.date(byAdding: .year, value: 1, to: goalsArr.last!.completionDate!, options: NSCalendar.Options())!
+        
+        for goal in goalsArr {
+            self.appendGoal(goal: goal)
+        }
     }
     
 }

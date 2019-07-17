@@ -24,8 +24,8 @@ class CalendarViewController: UIViewController {
     var calendarCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
 
     let today = Date()
-    var startDate = Date()
-    var endDate = Date()
+//    var startDate = Date()
+//    var endDate = Date()
     var startOfMonth = Date()
     var todayIndexPath: IndexPath?
     
@@ -51,7 +51,7 @@ class CalendarViewController: UIViewController {
         }
     }
     
-    var upCalendar = UpCalendar()
+    var upCalendar = UpCalendar.shared
     
     let coreDataStack = CoreDataStack.instance
     let formatter: DateFormatter = {
@@ -90,27 +90,27 @@ class CalendarViewController: UIViewController {
 
         self.navigationItem.title = "Calendar"
         
-        fetchData()
+//        fetchData()
         setupViews()
         setupTableView()
         
     }
     
-    func fetchData() {
-        
-        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, sorting: .completionDateAscending) as! [Goal]
-        if goalsArr.count == 0 {
-            startDate = gregorian.date(byAdding: .year, value: -1, to: Date(), options: NSCalendar.Options())!
-            endDate = gregorian.date(byAdding: .year, value: 1, to: Date(), options: NSCalendar.Options())!
-            return
-        }
-        startDate = gregorian.date(byAdding: .year, value: -1, to: goalsArr[0].completionDate!, options: NSCalendar.Options())!
-        endDate = gregorian.date(byAdding: .year, value: 1, to: goalsArr.last!.completionDate!, options: NSCalendar.Options())!
-        
-        for goal in goalsArr {
-            upCalendar.appendGoal(goal: goal)
-        }
-    }
+//    func fetchData() {
+//
+//        let goalsArr = coreDataStack.fetchGoal(type: .all, completed: .completed, sorting: .completionDateAscending) as! [Goal]
+//        if goalsArr.count == 0 {
+//            startDate = gregorian.date(byAdding: .year, value: -1, to: Date(), options: NSCalendar.Options())!
+//            endDate = gregorian.date(byAdding: .year, value: 1, to: Date(), options: NSCalendar.Options())!
+//            return
+//        }
+//        startDate = gregorian.date(byAdding: .year, value: -1, to: goalsArr[0].completionDate!, options: NSCalendar.Options())!
+//        endDate = gregorian.date(byAdding: .year, value: 1, to: goalsArr.last!.completionDate!, options: NSCalendar.Options())!
+//
+//        for goal in goalsArr {
+//            upCalendar.appendGoal(goal: goal)
+//        }
+//    }
     
     func setupTableView() {
         tableView.register(CalendarTableViewCell.self, forCellReuseIdentifier: calendarTableViewCellID)
@@ -169,8 +169,8 @@ class CalendarViewController: UIViewController {
     }
     
     func calculateInitialSection() -> Int {
-        let startYear = gregorian.component(.year, from: startDate)
-        let startMonth = gregorian.component(.month, from: startDate)
+        let startYear = gregorian.component(.year, from: upCalendar.startDate)
+        let startMonth = gregorian.component(.month, from: upCalendar.startDate)
         let currentYear = gregorian.component(.year, from: today)
         let currentMonth = gregorian.component(.month, from: today)
         
@@ -432,7 +432,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        var firstDayOfStartMonth = self.gregorian.components( [.era, .year, .month], from: startDate)
+        var firstDayOfStartMonth = self.gregorian.components( [.era, .year, .month], from: upCalendar.startDate)
         firstDayOfStartMonth.day = 1 // round to first day
         
         guard let dateFromDayOneComponents = self.gregorian.date(from: firstDayOfStartMonth) else {
@@ -444,7 +444,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         let today = Date()
         
         if startOfMonth.compare(today) == ComparisonResult.orderedAscending &&
-            endDate.compare(today) == ComparisonResult.orderedDescending {
+            upCalendar.endDate.compare(today) == ComparisonResult.orderedDescending {
             
             let differenceFromTodayComponents = self.gregorian.components([.month, .day], from: startOfMonth, to: today, options: NSCalendar.Options())
             
@@ -452,7 +452,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
             
         }
         
-        let differenceComponents = self.gregorian.components(.month, from: startDate, to: endDate, options: NSCalendar.Options())
+        let differenceComponents = self.gregorian.components(.month, from: upCalendar.startDate, to: upCalendar.endDate, options: NSCalendar.Options())
         
         numberOfSectionsInCollectionView = differenceComponents.month! + 1
         return numberOfSectionsInCollectionView
