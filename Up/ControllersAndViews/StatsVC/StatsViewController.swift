@@ -32,7 +32,7 @@ class StatsViewController: UIViewController {
     
     // MARK: HELPERS
     
-    private func chartSetup(chart: inout Chart, chartData : [Double], xLabels: [String]){
+    private func chartSetup(chart: inout Chart, chartData: [Double], xLabels: [String]){
         //TODO: Fetch data from Coredata
         let series = ChartSeries(chartData)
         print(chart.series)
@@ -45,6 +45,25 @@ class StatsViewController: UIViewController {
         chart.xLabelsFormatter = { String(xLabels[Int($1)]) }
         chart.yLabels = []
         chart.labelColor = .white
+    }
+    
+    private func setupChart(chart: inout Chart, goals: [Goal], type: ChartType) {
+        switch type {
+        case .day:
+            let today = Date()
+            for i in 1...goals.count {
+                let index = goals.count - i
+                if let comparisonResult = {
+                    if comparisonResult == .orderedSame
+                }
+            }
+        case .week:
+            
+        case .month
+            
+        case .year
+            
+        }
     }
     
     @objc private func segmentedControlSelected(sender: UISegmentedControl){

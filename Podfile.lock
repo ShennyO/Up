@@ -5,7 +5,7 @@ PODS:
 
 DEPENDENCIES:
   - KeychainSwift
-  - SnapKit (~> 4.0.0)
+  - SnapKit
   - SwiftChart
 
 SPEC REPOS:
@@ -19,6 +19,6 @@ SPEC CHECKSUMS:
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftChart: ba767a678d568a5ee22d419e146a0582865e1aff
 
-PODFILE CHECKSUM: 63b5db0423fa04626c048ee277cb7223c7d3b5ff
+PODFILE CHECKSUM: 2bcac012ad16d215774c8c7c4b9e1a8f6dbbb90e
 
 COCOAPODS: 1.6.1
