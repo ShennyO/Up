@@ -8,6 +8,7 @@
 import Foundation
 
 class ChartsDataSource {
+    static let shared = ChartsDataSource()
     
     var goals = [Goal]()
     let coreDataStack = CoreDataStack.instance
@@ -27,11 +28,19 @@ class ChartsDataSource {
         fetchData()
     }
     
-    func getYear() -> [Goal] {
-        if let yearStartIndex = yearStartIndex {
-            return Array(goals.suffix(from: yearStartIndex))
+    func getYearData() -> [Int] {
+        var result = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        guard let yearStartIndex = yearStartIndex else {
+            return []
         }
-        return []
+        for index in yearStartIndex..<goals.count {
+            let goal = goals[index]
+            if let completionDate = goal.completionDate {
+                let month = gregorian.component(.month, from: completionDate)
+                result[month - 1] += 1
+            }
+        }
+        return result
     }
     
     func getMonth() -> [Goal] {
