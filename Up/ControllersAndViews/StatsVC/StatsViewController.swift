@@ -47,24 +47,24 @@ class StatsViewController: UIViewController {
         chart.labelColor = .white
     }
     
-    private func setupChart(chart: inout Chart, goals: [Goal], type: ChartType) {
-        switch type {
-        case .day:
-            let today = Date()
-            for i in 1...goals.count {
-                let index = goals.count - i
-                if let comparisonResult = {
-                    if comparisonResult == .orderedSame
-                }
-            }
-        case .week:
-            
-        case .month
-            
-        case .year
-            
-        }
-    }
+//    private func setupChart(chart: inout Chart, goals: [Goal], type: ChartType) {
+//        switch type {
+//        case .day:
+//            let today = Date()
+//            for i in 1...goals.count {
+//                let index = goals.count - i
+//                if let comparisonResult = {
+//                    if comparisonResult == .orderedSame
+//                }
+//            }
+//        case .week:
+//
+//        case .month
+//
+//        case .year
+//
+//        }
+//    }
     
     @objc private func segmentedControlSelected(sender: UISegmentedControl){
         switch sender.selectedSegmentIndex {
