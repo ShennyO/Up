@@ -170,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				2730344F22768EBF001B00A3 /* StatsViewController.swift */,
+				48ECBB8F22ECCF3E000CACC9 /* ChartsDataSource.swift */,
 			);
 			path = StatsVC;
 			sourceTree = "<group>";
@@ -308,7 +309,6 @@
 				C3751A1822552F3D00FF0E22 /* Project.swift */,
 				C3BE4328226E7B7900AB8C6F /* Goal+extension.swift */,
 				48FAD06B227A437200E0A965 /* UpCalendar.swift */,
-				48ECBB8F22ECCF3E000CACC9 /* ChartsDataSource.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

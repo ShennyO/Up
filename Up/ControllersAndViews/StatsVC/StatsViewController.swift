@@ -105,7 +105,9 @@ class StatsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ChartsDataSource.shared.getYearData()
+        ChartsDataSource.shared.getSixMonthData()
+        ChartsDataSource.shared.getThirtyDayData()
+        ChartsDataSource.shared.getSevenDayData()
         chartSetup(chart: &chart, chartData:  [0, 5.5, 2, 3, 6, 4.1, 3, -10], xLabels: allHours)
         chartSegmentedControl.selectedSegmentIndex = 0
         configNavBar()
