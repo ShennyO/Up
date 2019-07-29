@@ -13,7 +13,6 @@ enum ChartType: String{
     case month = "Month"
     case year = "Year"
     
-    
     enum Day: String, CaseIterable{
         case sunday = "Sun"
         case monday = "Mon"
@@ -66,7 +65,7 @@ enum ChartType: String{
         case December = "Dec"
     }
     
-    static func allStringValues(_ chartType : ChartType) -> [String] {
+    static func allStringValues(_ chartType: ChartType) -> [String] {
         switch chartType {
         case .day:
             let values = Hour.allCases.map { $0.rawValue }
@@ -81,6 +80,20 @@ enum ChartType: String{
         case .year:
             let values = Month.allCases.map { $0.rawValue }
             return values
+        }
+    }
+    
+    static func stringValuesWith(_ chartType: ChartType, startingIndex: Int) -> [String] {
+        switch chartType {
+        case .week:
+            let values = Day.allCases.map { $0.rawValue }
+            for i in 0..<values.count {
+                let index = i + startingIndex
+                print(values[index])
+            }
+            return []
+        default:
+            return []
         }
     }
 }

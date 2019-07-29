@@ -171,6 +171,7 @@
 			children = (
 				2730344F22768EBF001B00A3 /* StatsViewController.swift */,
 				48ECBB8F22ECCF3E000CACC9 /* ChartsDataSource.swift */,
+				2730344B22768E7A001B00A3 /* ChartType.swift */,
 			);
 			path = StatsVC;
 			sourceTree = "<group>";
@@ -318,7 +319,6 @@
 			children = (
 				C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */,
 				C384676322850DC900FAD570 /* ScaleFactor.swift */,
-				2730344B22768E7A001B00A3 /* ChartType.swift */,
 				C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */,
 				48CCA560226FC22F0034BACB /* Style.swift */,
 				C331B63E227001B700E262D6 /* UIImageHelper.swift */,

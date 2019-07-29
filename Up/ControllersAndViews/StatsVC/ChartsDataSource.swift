@@ -27,9 +27,9 @@ class ChartsDataSource {
         fetchData()
     }
     
-    func getSixMonthData() -> [Int] {
+    func getSixMonthData() -> [Double] {
         let currentMonth = gregorian.component(.month, from: Date())
-        var result = [Int](repeating: 0, count: 6)
+        var result = [Double](repeating: 0, count: 6)
         guard let sixMonthStartIndex = sixMonthStartIndex else {
             return result
         }
@@ -44,9 +44,9 @@ class ChartsDataSource {
         return result
     }
     
-    func getThirtyDayData() -> [Int] {
+    func getThirtyDayData() -> [Double] {
         let currentDay = gregorian.startOfDay(for: Date())
-        var result = [Int](repeating: 0, count: 30)
+        var result = [Double](repeating: 0, count: 30)
         guard let thirtyDayStartIndex = thirtyDayStartIndex else {
             return result
         }
@@ -62,9 +62,9 @@ class ChartsDataSource {
         return result
     }
     
-    func getSevenDayData() -> [Int] {
+    func getSevenDayData() -> [Double] {
         let currentDay = gregorian.startOfDay(for: Date())
-        var result = [Int](repeating: 0, count: 7)
+        var result = [Double](repeating: 0, count: 7)
         guard let sevenDayStartIndex = sevenDayStartIndex else {
             return result
         }
@@ -79,6 +79,18 @@ class ChartsDataSource {
         }
         return result
     }
+    
+//    func getSevenDayLabels() -> [String] {
+//        return ChartType.stringValuesWith(.week, startingIndex: sevenDayStartIndex ?? 0)
+//    }
+//
+//    func getSixMonthLabels() -> [String] {
+//        return ChartType.stringValuesWith(.year, startingIndex: (sixMonthStartIndex ?? 0) % 12)
+//    }
+    
+//    func getThirtyDayLabels() -> [String] {
+//        return ChartType.stringValuesWith(.month, startingIndex: <#T##Int#>)
+//    }
     
     private func fetchData() {
         let now = Date()
