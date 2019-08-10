@@ -8,10 +8,9 @@
 import Foundation
 
 enum ChartType: String{
-    case day = "Day"
-    case week = "Week"
-    case month = "Month"
-    case year = "Year"
+    case sevenDays = "SevenDays"
+    case thirtyDays = "ThirtyDays"
+    case sixMonths = "SixMonths"
     
     enum Day: String, CaseIterable{
         case sunday = "Sun"
@@ -67,17 +66,14 @@ enum ChartType: String{
     
     static func allStringValues(_ chartType: ChartType) -> [String] {
         switch chartType {
-        case .day:
-            let values = Hour.allCases.map { $0.rawValue }
-            return values
-        case .week:
+        case .sevenDays:
             let values = Day.allCases.map { $0.rawValue }
             return values
-        case .month:
+        case .thirtyDays:
             let values = Array(1...30)
             let stringValues = values.map { String($0) }
             return stringValues
-        case .year:
+        case .sixMonths:
             let values = Month.allCases.map { $0.rawValue }
             return values
         }
@@ -85,13 +81,13 @@ enum ChartType: String{
     
     static func stringValuesWith(_ chartType: ChartType, startingIndex: Int) -> [String] {
         switch chartType {
-        case .week:
+        case .sevenDays:
             let values = Day.allCases.map { $0.rawValue }
             for i in 0..<values.count {
                 let index = i + startingIndex
                 print(values[index])
             }
-            return []
+            return values
         default:
             return []
         }

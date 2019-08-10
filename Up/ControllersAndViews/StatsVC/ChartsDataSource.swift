@@ -12,6 +12,7 @@ class ChartsDataSource {
     
     var goals = [Goal]()
     let coreDataStack = CoreDataStack.instance
+    let now = Date()
     
     private var sixMonthStartIndex: Int?
     private var thirtyDayStartIndex: Int?
@@ -80,9 +81,10 @@ class ChartsDataSource {
         return result
     }
     
-//    func getSevenDayLabels() -> [String] {
-//        return ChartType.stringValuesWith(.week, startingIndex: sevenDayStartIndex ?? 0)
-//    }
+    func getSevenDayLabels() -> [String] {
+//        let today = gregorian.component(.weekday, from: now)
+        return ChartType.stringValuesWith(.sevenDays, startingIndex: sevenDayStartIndex ?? 0)
+    }
 //
 //    func getSixMonthLabels() -> [String] {
 //        return ChartType.stringValuesWith(.year, startingIndex: (sixMonthStartIndex ?? 0) % 12)
