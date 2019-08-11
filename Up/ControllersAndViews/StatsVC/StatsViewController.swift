@@ -107,7 +107,7 @@ class StatsViewController: UIViewController {
             // TODO: Dynamic height for all screen sizes
             make.height.equalTo(400)
             make.left.right.equalToSuperview().inset(16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-64)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-60)
             make.top.equalTo(chartSegmentedControl.snp.bottom).offset(16)
         }
         
