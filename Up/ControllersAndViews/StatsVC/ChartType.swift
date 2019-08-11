@@ -79,15 +79,27 @@ enum ChartType: String{
         }
     }
     
-    static func stringValuesWith(_ chartType: ChartType, startingIndex: Int) -> [String] {
+    static func stringValuesWith(_ chartType: ChartType, currentIndex: Int) -> [String] {
         switch chartType {
         case .sevenDays:
             let values = Day.allCases.map { $0.rawValue }
+            var results = [String]()
             for i in 0..<values.count {
-                let index = i + startingIndex
+                let index = (i + currentIndex) % values.count
                 print(values[index])
+                results.append(values[index])
             }
-            return values
+            return results
+        case .sixMonths:
+            
+            let values = Month.allCases.map { $0.rawValue }
+            var results = [String]()
+            for i in 0..<6 {
+                let index = (i + 6 + currentIndex) % 12
+                print(values[index])
+                results.append(values[index])
+            }
+            return results
         default:
             return []
         }

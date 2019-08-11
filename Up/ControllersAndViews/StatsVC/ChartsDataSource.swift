@@ -82,17 +82,15 @@ class ChartsDataSource {
     }
     
     func getSevenDayLabels() -> [String] {
-//        let today = gregorian.component(.weekday, from: now)
-        return ChartType.stringValuesWith(.sevenDays, startingIndex: sevenDayStartIndex ?? 0)
+        let today = gregorian.component(.weekday, from: now)
+        print("Today is: ", today)
+        
+        return ChartType.stringValuesWith(.sevenDays, currentIndex: today)
     }
-//
-//    func getSixMonthLabels() -> [String] {
-//        return ChartType.stringValuesWith(.year, startingIndex: (sixMonthStartIndex ?? 0) % 12)
-//    }
-    
-//    func getThirtyDayLabels() -> [String] {
-//        return ChartType.stringValuesWith(.month, startingIndex: <#T##Int#>)
-//    }
+    func getSixMonthLabels() -> [String] {
+        let currentMonth = gregorian.component(.month, from: now)
+        return ChartType.stringValuesWith(.sixMonths, currentIndex: currentMonth)
+    }
     
     private func fetchData() {
         let now = Date()

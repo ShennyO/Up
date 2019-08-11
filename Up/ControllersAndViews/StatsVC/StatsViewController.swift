@@ -36,6 +36,10 @@ class StatsViewController: UIViewController {
         return segmentedControl
     }()
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     // MARK: HELPERS
     
     private func chartSetup(chart: inout Chart, chartData: [Double], xLabels: [String], type: ChartType){
@@ -50,6 +54,12 @@ class StatsViewController: UIViewController {
         switch type {
         case .sevenDays:
             chart.xLabels = [0,1,2,3,4,5,6]
+            chart.xLabelsFormatter = { String(xLabels[Int($1)]) }
+        case .thirtyDays:
+            chart.xLabels = []
+//            chart.xLabelsFormatter = { "" }
+        case .sixMonths:
+            chart.xLabels = [0,1,2,3,4,5]
             chart.xLabelsFormatter = { String(xLabels[Int($1)]) }
         default:
             break
@@ -82,10 +92,10 @@ class StatsViewController: UIViewController {
         switch sender.selectedSegmentIndex {
         case 0:
             chartSetup(chart: &chart, chartData: sevenDayData, xLabels: sevenDayLabels, type: .sevenDays)
-//        case 1:
-//            chartSetup(chart: &chart, chartData: thirtyDayData, xLabels: allDays)
-//        case 2:
-//            chartSetup(chart: &chart, chartData: sixMonthData, xLabels: sixMonthLabels)
+        case 1:
+            chartSetup(chart: &chart, chartData: thirtyDayData, xLabels: [], type: .thirtyDays)
+        case 2:
+            chartSetup(chart: &chart, chartData: sixMonthData, xLabels: sixMonthLabels, type: .sixMonths)
         default:
             break
         }
@@ -96,14 +106,14 @@ class StatsViewController: UIViewController {
         chart.snp.makeConstraints { (make) in
             // TODO: Dynamic height for all screen sizes
             make.height.equalTo(400)
-            make.left.equalToSuperview().offset(15)
-            make.right.equalToSuperview().offset(-15)
-            make.top.equalTo(chartSegmentedControl.snp.bottom).offset(20)
+            make.left.right.equalToSuperview().inset(16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-64)
+            make.top.equalTo(chartSegmentedControl.snp.bottom).offset(16)
         }
         
         chartSegmentedControl.snp.makeConstraints { (make) in
-            make.top.equalTo(view.snp.topMargin).offset(15)
-            make.centerX.equalToSuperview()
+            make.top.equalTo(view.snp.topMargin).offset(16)
+            make.left.right.equalToSuperview().inset(16)
             make.height.equalTo(45)
         }
 
@@ -112,13 +122,13 @@ class StatsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         sixMonthData = ChartsDataSource.shared.getSixMonthData()
-//        sixMonthLabels = ChartsDataSource.shared.getSixMonthData()
-//        thirtyDayData = ChartsDataSource.shared.getThirtyDayData()
-//        sevenDayData = ChartsDataSource.shared.getSevenDayData()
+        sixMonthLabels = ChartsDataSource.shared.getSixMonthLabels()
+        thirtyDayData = ChartsDataSource.shared.getThirtyDayData()
+        sevenDayData = ChartsDataSource.shared.getSevenDayData()
         sevenDayLabels = ChartsDataSource.shared.getSevenDayLabels()
-        sixMonthData = [30, 17, 25, 68, 40, 24]
-        sevenDayData = [4, 0, 5, 16, 23, 16, 20]
-        thirtyDayData = [3, 5, 8, 4, 6, 7, 10, 15, 17, 4, 17, 24, 19, 20, 4, 5, 19, 9, 5, 2, 4, 10, 1, 4, 0, 5, 16, 23, 16, 20]
+//        sixMonthData = [30, 17, 25, 68, 40, 24]
+//        sevenDayData = [4, 0, 5, 16, 23, 16, 20]
+//        thirtyDayData = [3, 5, 8, 4, 6, 7, 10, 15, 17, 4, 17, 24, 19, 20, 4, 5, 19, 9, 5, 2, 4, 10, 1, 4, 0, 5, 16, 23, 16, 20]
 //        let day
 //        ChartType.stringValuesWith(.week, startingIndex: 3)
         
@@ -133,6 +143,7 @@ extension StatsViewController{
     
     private func viewSetup(){
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        self.navigationItem.title = "Stats"
         self.view.addSubview(chartSegmentedControl)
         self.view.addSubview(chart)
         setConstraints()

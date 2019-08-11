@@ -56,6 +56,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueChart")
         statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         statsNavVC.tabBarItem.tag = 3
+        configNavBar(navController: statsNavVC)
         
 //        Create tab item two
         let calendarVC = CalendarViewController()
@@ -64,9 +65,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueCal")
         calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         calendarNavVC.tabBarItem.tag = 2
-        calendarNavVC.navigationBar.barTintColor = Style.Colors.Palette01.gunMetal
         configNavBar(navController: calendarNavVC)
-        calendarNavVC.navigationBar.barTintColor = Style.Colors.Palette01.gunMetal
         
 //        Create tab item one
         let goalsVC = UpViewController()
