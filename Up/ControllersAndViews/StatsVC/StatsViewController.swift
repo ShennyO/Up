@@ -14,25 +14,35 @@ class StatsViewController: UIViewController {
     
     // MARK: VARIABLES
     
-    var allDays = ChartType.allStringValues(.week)
-    var allDaysInMonth = ChartType.allStringValues(.month)
-    var allHours = ChartType.allStringValues(.day)
-    var allMonths = ChartType.allStringValues(.year)
+//    var allDays = ChartType.allStringValues(.sevenDays)
+//    var allDaysInMonth = ChartType.allStringValues(.month)
+//    var allHours = ChartType.allStringValues(.day)
+//    var allMonths = ChartType.allStringValues(.year)
     var chart = Chart(frame: .zero)
+    
+    var sixMonthData = [Double]()
+    var sixMonthLabels = [String]()
+    var thirtyDayData = [Double]()
+    var thirtyDayLabels = [String]()
+    var sevenDayData = [Double]()
+    var sevenDayLabels = [String]()
     
     var chartSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl()
         segmentedControl.addTarget(self, action: #selector(StatsViewController.segmentedControlSelected(sender:)), for: .valueChanged)
-        segmentedControl.insertSegment(withTitle: ChartType.day.rawValue, at: 0, animated: true)
-        segmentedControl.insertSegment(withTitle: ChartType.week.rawValue, at: 1, animated: true)
-        segmentedControl.insertSegment(withTitle: ChartType.month.rawValue, at: 2, animated: true)
-        segmentedControl.insertSegment(withTitle: ChartType.year.rawValue, at: 3, animated: true)
+        segmentedControl.insertSegment(withTitle: "7 Days", at: 0, animated: true)
+        segmentedControl.insertSegment(withTitle: "30 Days", at: 1, animated: true)
+        segmentedControl.insertSegment(withTitle: "6 Months", at: 2, animated: true)
         return segmentedControl
     }()
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     // MARK: HELPERS
     
-    private func chartSetup(chart: inout Chart, chartData : [Double], xLabels: [String]){
+    private func chartSetup(chart: inout Chart, chartData: [Double], xLabels: [String], type: ChartType){
         //TODO: Fetch data from Coredata
         let series = ChartSeries(chartData)
         print(chart.series)
@@ -41,26 +51,51 @@ class StatsViewController: UIViewController {
         }
         chart.add(series)
         // TODO: Dynamic xLabel data
-        chart.xLabels = [0,1,2,3,4,5,6]
-        chart.xLabelsFormatter = { String(xLabels[Int($1)]) }
-        chart.yLabels = []
+        switch type {
+        case .sevenDays:
+            chart.xLabels = [0,1,2,3,4,5,6]
+            chart.xLabelsFormatter = { String(xLabels[Int($1)]) }
+        case .thirtyDays:
+            chart.xLabels = []
+//            chart.xLabelsFormatter = { "" }
+        case .sixMonths:
+            chart.xLabels = [0,1,2,3,4,5]
+            chart.xLabelsFormatter = { String(xLabels[Int($1)]) }
+        default:
+            break
+        }
+        
+        
         chart.labelColor = .white
     }
+    
+//    private func setupChart(chart: inout Chart, goals: [Goal], type: ChartType) {
+//        switch type {
+//        case .day:
+//            let today = Date()
+//            for i in 1...goals.count {
+//                let index = goals.count - i
+//                if let comparisonResult = {
+//                    if comparisonResult == .orderedSame
+//                }
+//            }
+//        case .week:
+//
+//        case .month
+//
+//        case .year
+//
+//        }
+//    }
     
     @objc private func segmentedControlSelected(sender: UISegmentedControl){
         switch sender.selectedSegmentIndex {
         case 0:
-            let data = [0, 5.5, 0.4, 3, 6, 4.1, 3, -10]
-            chartSetup(chart: &chart, chartData: data, xLabels: allHours)
+            chartSetup(chart: &chart, chartData: sevenDayData, xLabels: sevenDayLabels, type: .sevenDays)
         case 1:
-            let data = [0, 5.5, 2, 3.6, 6, 4.1, 3, -10]
-            chartSetup(chart: &chart, chartData: data, xLabels: allDays)
+            chartSetup(chart: &chart, chartData: thirtyDayData, xLabels: [], type: .thirtyDays)
         case 2:
-            let data = [0, 5.5, 2, 3, 6, 4.1, 1, -10]
-            chartSetup(chart: &chart, chartData: data, xLabels: allDaysInMonth)
-        case 3:
-            let data = [0, 5.5, 2, 2.5, 6, 4.1, 1, -10]
-            chartSetup(chart: &chart, chartData: data, xLabels: allMonths)
+            chartSetup(chart: &chart, chartData: sixMonthData, xLabels: sixMonthLabels, type: .sixMonths)
         default:
             break
         }
@@ -71,14 +106,14 @@ class StatsViewController: UIViewController {
         chart.snp.makeConstraints { (make) in
             // TODO: Dynamic height for all screen sizes
             make.height.equalTo(400)
-            make.left.equalToSuperview().offset(15)
-            make.right.equalToSuperview().offset(-15)
-            make.top.equalTo(chartSegmentedControl.snp.bottom).offset(20)
+            make.left.right.equalToSuperview().inset(16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-60)
+            make.top.equalTo(chartSegmentedControl.snp.bottom).offset(16)
         }
         
         chartSegmentedControl.snp.makeConstraints { (make) in
-            make.top.equalTo(view.snp.topMargin).offset(15)
-            make.centerX.equalToSuperview()
+            make.top.equalTo(view.snp.topMargin).offset(16)
+            make.left.right.equalToSuperview().inset(16)
             make.height.equalTo(45)
         }
 
@@ -86,7 +121,18 @@ class StatsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        chartSetup(chart: &chart, chartData:  [0, 5.5, 2, 3, 6, 4.1, 3, -10], xLabels: allHours)
+        sixMonthData = ChartsDataSource.shared.getSixMonthData()
+        sixMonthLabels = ChartsDataSource.shared.getSixMonthLabels()
+        thirtyDayData = ChartsDataSource.shared.getThirtyDayData()
+        sevenDayData = ChartsDataSource.shared.getSevenDayData()
+        sevenDayLabels = ChartsDataSource.shared.getSevenDayLabels()
+//        sixMonthData = [30, 17, 25, 68, 40, 24]
+//        sevenDayData = [4, 0, 5, 16, 23, 16, 20]
+//        thirtyDayData = [3, 5, 8, 4, 6, 7, 10, 15, 17, 4, 17, 24, 19, 20, 4, 5, 19, 9, 5, 2, 4, 10, 1, 4, 0, 5, 16, 23, 16, 20]
+//        let day
+//        ChartType.stringValuesWith(.week, startingIndex: 3)
+        
+        chartSetup(chart: &chart, chartData: sevenDayData, xLabels: sevenDayLabels, type: .sevenDays)
         chartSegmentedControl.selectedSegmentIndex = 0
         configNavBar()
         viewSetup()
@@ -97,6 +143,7 @@ extension StatsViewController{
     
     private func viewSetup(){
         self.view.backgroundColor = #colorLiteral(red: 0.07843137255, green: 0.07843137255, blue: 0.07843137255, alpha: 1)
+        self.navigationItem.title = "Stats"
         self.view.addSubview(chartSegmentedControl)
         self.view.addSubview(chart)
         setConstraints()

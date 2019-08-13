@@ -8,11 +8,9 @@
 import Foundation
 
 enum ChartType: String{
-    case day = "Day"
-    case week = "Week"
-    case month = "Month"
-    case year = "Year"
-    
+    case sevenDays = "SevenDays"
+    case thirtyDays = "ThirtyDays"
+    case sixMonths = "SixMonths"
     
     enum Day: String, CaseIterable{
         case sunday = "Sun"
@@ -66,21 +64,44 @@ enum ChartType: String{
         case December = "Dec"
     }
     
-    static func allStringValues(_ chartType : ChartType) -> [String] {
+    static func allStringValues(_ chartType: ChartType) -> [String] {
         switch chartType {
-        case .day:
-            let values = Hour.allCases.map { $0.rawValue }
-            return values
-        case .week:
+        case .sevenDays:
             let values = Day.allCases.map { $0.rawValue }
             return values
-        case .month:
+        case .thirtyDays:
             let values = Array(1...30)
             let stringValues = values.map { String($0) }
             return stringValues
-        case .year:
+        case .sixMonths:
             let values = Month.allCases.map { $0.rawValue }
             return values
+        }
+    }
+    
+    static func stringValuesWith(_ chartType: ChartType, currentIndex: Int) -> [String] {
+        switch chartType {
+        case .sevenDays:
+            let values = Day.allCases.map { $0.rawValue }
+            var results = [String]()
+            for i in 0..<values.count {
+                let index = (i + currentIndex) % values.count
+                print(values[index])
+                results.append(values[index])
+            }
+            return results
+        case .sixMonths:
+            
+            let values = Month.allCases.map { $0.rawValue }
+            var results = [String]()
+            for i in 0..<6 {
+                let index = (i + 6 + currentIndex) % 12
+                print(values[index])
+                results.append(values[index])
+            }
+            return results
+        default:
+            return []
         }
     }
 }

@@ -6,7 +6,7 @@ target 'Up' do
   use_frameworks!
 
   # Pods for Up
-    pod 'SnapKit', '~> 4.0.0'
+    pod 'SnapKit'
     pod 'KeychainSwift'
     pod 'SwiftChart'
 

@@ -56,6 +56,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         statsNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueChart")
         statsNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         statsNavVC.tabBarItem.tag = 3
+        configNavBar(navController: statsNavVC)
         
 //        Create tab item two
         let calendarVC = CalendarViewController()
@@ -64,9 +65,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         calendarNavVC.tabBarItem.selectedImage = #imageLiteral(resourceName: "blueCal")
         calendarNavVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         calendarNavVC.tabBarItem.tag = 2
-        calendarNavVC.navigationBar.barTintColor = Style.Colors.Palette01.gunMetal
         configNavBar(navController: calendarNavVC)
-        calendarNavVC.navigationBar.barTintColor = Style.Colors.Palette01.gunMetal
         
 //        Create tab item one
         let goalsVC = UpViewController()
@@ -79,7 +78,7 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         goalsNavVC.tabBarItem.tag = 1
         configNavBar(navController: goalsNavVC)
         
-        self.viewControllers = [goalsNavVC, calendarNavVC]
+        self.viewControllers = [goalsNavVC, calendarNavVC, statsNavVC]
         
         let firstItemView = tabBar.subviews.first!
         firstTabbarItemImageView = firstItemView.subviews.first as? UIImageView
@@ -89,9 +88,9 @@ class UpTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.secondTabbarItemImageView = secondItemView.subviews.first as? UIImageView
         self.secondTabbarItemImageView.contentMode = .center
         
-//        let thirdItemView = self.tabBar.subviews[2]
-//        self.thirdTabbarItemImageView = thirdItemView.subviews.first as? UIImageView
-//        self.thirdTabbarItemImageView.contentMode = .center
+        let thirdItemView = self.tabBar.subviews[2]
+        self.thirdTabbarItemImageView = thirdItemView.subviews.first as? UIImageView
+        self.thirdTabbarItemImageView.contentMode = .center
         
     }
     

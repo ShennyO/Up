@@ -20,6 +20,7 @@
 		48B38DFA2276437C00F0EA85 /* CalendarGoalCountHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B38DF92276437C00F0EA85 /* CalendarGoalCountHeaderView.swift */; };
 		48CCA55F226F9BDE0034BACB /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCA55E226F9BDE0034BACB /* CalendarHeaderView.swift */; };
 		48CCA561226FC22F0034BACB /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCA560226FC22F0034BACB /* Style.swift */; };
+		48ECBB9022ECCF3E000CACC9 /* ChartsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECBB8F22ECCF3E000CACC9 /* ChartsDataSource.swift */; };
 		48FAD06C227A437200E0A965 /* UpCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FAD06B227A437200E0A965 /* UpCalendar.swift */; };
 		89AD2D5E8C07F86C3027019B /* Pods_UpUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4114A5A91A02837BDD8905 /* Pods_UpUITests.framework */; };
 		A17B58444EA2143E53E82C65 /* Pods_UpTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D38059CEB3F960AACF1FAE8 /* Pods_UpTests.framework */; };
@@ -87,6 +88,7 @@
 		48B38DF92276437C00F0EA85 /* CalendarGoalCountHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGoalCountHeaderView.swift; sourceTree = "<group>"; };
 		48CCA55E226F9BDE0034BACB /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		48CCA560226FC22F0034BACB /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		48ECBB8F22ECCF3E000CACC9 /* ChartsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartsDataSource.swift; sourceTree = "<group>"; };
 		48FAD06B227A437200E0A965 /* UpCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpCalendar.swift; sourceTree = "<group>"; };
 		71D4EAC4171F2BB88B7AD5FF /* Pods-Up.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Up.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Up/Pods-Up.debug.xcconfig"; sourceTree = "<group>"; };
 		9B6F8072BA291A03AEF32080 /* Pods_Up.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Up.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,6 +170,8 @@
 			isa = PBXGroup;
 			children = (
 				2730344F22768EBF001B00A3 /* StatsViewController.swift */,
+				48ECBB8F22ECCF3E000CACC9 /* ChartsDataSource.swift */,
+				2730344B22768E7A001B00A3 /* ChartType.swift */,
 			);
 			path = StatsVC;
 			sourceTree = "<group>";
@@ -315,7 +319,6 @@
 			children = (
 				C3751A1E22573A1E00FF0E22 /* HeaderViewHelper.swift */,
 				C384676322850DC900FAD570 /* ScaleFactor.swift */,
-				2730344B22768E7A001B00A3 /* ChartType.swift */,
 				C3353A4C226B7EFC00FFD25B /* KeyboardHelper.swift */,
 				48CCA560226FC22F0034BACB /* Style.swift */,
 				C331B63E227001B700E262D6 /* UIImageHelper.swift */,
@@ -624,6 +627,7 @@
 				C310DEAC226FD04500FCD80D /* UpTabBarController.swift in Sources */,
 				C3751A36225D499A00FF0E22 /* TextFieldHelper.swift in Sources */,
 				484D0AFC226E7122007AFACE /* CalendarLayout.swift in Sources */,
+				48ECBB9022ECCF3E000CACC9 /* ChartsDataSource.swift in Sources */,
 				2730345022768EBF001B00A3 /* StatsViewController.swift in Sources */,
 				C3751A1B2256D68B00FF0E22 /* TimedProjectCell.swift in Sources */,
 			);
@@ -794,7 +798,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X3T6G6B4MK;
+				DEVELOPMENT_TEAM = JDYWQEVARC;
 				INFOPLIST_FILE = Up/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -814,7 +818,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X3T6G6B4MK;
+				DEVELOPMENT_TEAM = JDYWQEVARC;
 				INFOPLIST_FILE = Up/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
